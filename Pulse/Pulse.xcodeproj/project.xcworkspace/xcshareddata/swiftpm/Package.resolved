@@ -1,0 +1,86 @@
+{
+  "pins" : [
+    {
+      "identity" : "activelabel.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/optonaut/ActiveLabel.swift",
+      "state" : {
+        "branch" : "master",
+        "revision" : "36949c1a69ef8b40574da20c9e24b115f387b1cf"
+      }
+    },
+    {
+      "identity" : "friendly-urlsession",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kefaxoo/friendly-urlsession",
+      "state" : {
+        "branch" : "main",
+        "revision" : "517cd503212361b5c7d055034a65e82767b29184"
+      }
+    },
+    {
+      "identity" : "realm-core",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-core.git",
+      "state" : {
+        "revision" : "c04f5e401a1ec682e6b08b1ee157e19a0f834a5f",
+        "version" : "13.17.1"
+      }
+    },
+    {
+      "identity" : "realm-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-swift",
+      "state" : {
+        "revision" : "933abaa8076966e237e66497def74df84c6adbb4",
+        "version" : "10.42.0"
+      }
+    },
+    {
+      "identity" : "sdwebimage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImage.git",
+      "state" : {
+        "revision" : "633996a807442ec28df9d33b0f88ce57a0e2fdbf",
+        "version" : "5.17.0"
+      }
+    },
+    {
+      "identity" : "slyderin",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/EdgarDegas/Slyderin",
+      "state" : {
+        "branch" : "main",
+        "revision" : "51717e3ea0291eae4e660dffb5971e0d86773be6"
+      }
+    },
+    {
+      "identity" : "snapkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SnapKit/SnapKit",
+      "state" : {
+        "revision" : "f222cbdf325885926566172f6f5f06af95473158",
+        "version" : "5.6.0"
+      }
+    },
+    {
+      "identity" : "spalert",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ivanvorobei/SPAlert",
+      "state" : {
+        "revision" : "1da133b6f630f4e11d141ce5c05d09b68200278e",
+        "version" : "5.0.1"
+      }
+    },
+    {
+      "identity" : "spindicator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ivanvorobei/SPIndicator",
+      "state" : {
+        "revision" : "e8a045f91757b32bb29c6feff1644ef79c8daedf",
+        "version" : "1.6.5"
+      }
+    }
+  ],
+  "version" : 2
+}
