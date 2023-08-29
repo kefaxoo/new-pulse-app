@@ -8,7 +8,7 @@
 import UIKit
 import InfiniteScrolling_SPM
 
-class CoversScrollingView: UIView {
+class CoversScrollingView: BaseUIView {
     private lazy var coversCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = 20
@@ -25,42 +25,6 @@ class CoversScrollingView: UIView {
     private var covers = [PulseCover]()
     private var startFrom = 0
     private var timer: Timer?
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.setupInterface()
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        self.setupInterface()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        guard self.infiniteScrollingBehaviour == nil else { return }
-        
-        let configuration = CollectionViewConfiguration(scrollingDirection: .horizontal, layoutType: .fixedSize(size: 150, lineSpacing: 20))
-        self.infiniteScrollingBehaviour = InfiniteScrollingBehaviour(with: self.coversCollectionView, and: covers, delegate: self, collectionConfiguration: configuration)
-    }
-    
-    private func setupInterface() {
-        setupLayout()
-        setupConstraints()
-    }
-    
-    private func setupLayout() {
-        self.addSubview(coversCollectionView)
-    }
-    
-    private func setupConstraints() {
-        self.snp.makeConstraints { make in
-            make.height.equalTo(150)
-            make.width.equalTo(UIScreen.main.bounds.width)
-        }
-        
-        self.coversCollectionView.snp.makeConstraints({ $0.edges.equalToSuperview() })
-    }
     
     func setupCovers(covers: [PulseCover], start: Int = 0) {
         self.covers = covers
@@ -82,6 +46,31 @@ class CoversScrollingView: UIView {
     
     func removeTimer() {
         timer?.invalidate()
+    }
+}
+
+// MARK: -
+// MARK: Setup interface methods
+extension CoversScrollingView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        guard self.infiniteScrollingBehaviour == nil else { return }
+        
+        let configuration = CollectionViewConfiguration(scrollingDirection: .horizontal, layoutType: .fixedSize(size: 150, lineSpacing: 20))
+        self.infiniteScrollingBehaviour = InfiniteScrollingBehaviour(with: self.coversCollectionView, and: covers, delegate: self, collectionConfiguration: configuration)
+    }
+    
+    override func setupLayout() {
+        self.addSubview(coversCollectionView)
+    }
+    
+    override func setupConstraints() {
+        self.snp.makeConstraints { make in
+            make.height.equalTo(150)
+            make.width.equalTo(UIScreen.main.bounds.width)
+        }
+        
+        self.coversCollectionView.snp.makeConstraints({ $0.edges.equalToSuperview() })
     }
 }
 

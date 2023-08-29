@@ -52,6 +52,9 @@
 		70AC1CBB2A9B58360095A793 /* Slyderin in Frameworks */ = {isa = PBXBuildFile; productRef = 70AC1CBA2A9B58360095A793 /* Slyderin */; };
 		70AC1CBE2A9B5ABF0095A793 /* ActiveLabel in Frameworks */ = {isa = PBXBuildFile; productRef = 70AC1CBD2A9B5ABF0095A793 /* ActiveLabel */; };
 		70AD04BC2A9E9D4D00DC4517 /* StaticGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AD04BB2A9E9D4D00DC4517 /* StaticGradientView.swift */; };
+		70AD04BE2A9EA42100DC4517 /* ResponsePulseCreateUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AD04BD2A9EA42100DC4517 /* ResponsePulseCreateUserModel.swift */; };
+		70AD04C02A9EA5D400DC4517 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AD04BF2A9EA5D400DC4517 /* AuthManager.swift */; };
+		70AD04C22A9EA62800DC4517 /* BaseUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AD04C12A9EA62800DC4517 /* BaseUIView.swift */; };
 		70BDBA802A9B56C000401359 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BDBA7F2A9B56C000401359 /* AppDelegate.swift */; };
 		70BDBA822A9B56C000401359 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BDBA812A9B56C000401359 /* SceneDelegate.swift */; };
 		70BDBA872A9B56C000401359 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 70BDBA852A9B56C000401359 /* Main.storyboard */; };
@@ -94,6 +97,9 @@
 		70996A5A2A9D548E00905847 /* ColorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorType.swift; sourceTree = "<group>"; };
 		70996A5C2A9D55A300905847 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		70AD04BB2A9E9D4D00DC4517 /* StaticGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticGradientView.swift; sourceTree = "<group>"; };
+		70AD04BD2A9EA42100DC4517 /* ResponsePulseCreateUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseCreateUserModel.swift; sourceTree = "<group>"; };
+		70AD04BF2A9EA5D400DC4517 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		70AD04C12A9EA62800DC4517 /* BaseUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUIView.swift; sourceTree = "<group>"; };
 		70BDBA7C2A9B56C000401359 /* Pulse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pulse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		70BDBA7F2A9B56C000401359 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		70BDBA812A9B56C000401359 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -127,13 +133,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		700A9C362A9E80C400E11DEB /* Modules */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Modules;
-			sourceTree = "<group>";
-		};
 		707FAF812A9E8D60008929FC /* CoversScrollingView */ = {
 			isa = PBXGroup;
 			children = (
@@ -167,9 +166,10 @@
 		70996A152A9D396700905847 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				70996A162A9D397200905847 /* ResponsePulseErrorModel.swift */,
 				70996A1A2A9D3AA400905847 /* ResponsePulseCoverModel.swift */,
 				70996A1C2A9D3AEB00905847 /* ResponsePulseCoverInfoModel.swift */,
+				70AD04BD2A9EA42100DC4517 /* ResponsePulseCreateUserModel.swift */,
+				70996A162A9D397200905847 /* ResponsePulseErrorModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -177,6 +177,7 @@
 		70996A1F2A9D3D2600905847 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				70AD04BF2A9EA5D400DC4517 /* AuthManager.swift */,
 				70996A202A9D3D2E00905847 /* NetworkManager.swift */,
 				70996A3B2A9D46D100905847 /* SettingsManager.swift */,
 			);
@@ -293,6 +294,7 @@
 		70996A4F2A9D4D9600905847 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				70AD04C12A9EA62800DC4517 /* BaseUIView.swift */,
 				70996A522A9D4DED00905847 /* BaseUIViewController.swift */,
 			);
 			path = UI;
@@ -301,12 +303,12 @@
 		70996A542A9D4FE100905847 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				70996A552A9D4FEE00905847 /* UILabel+Ext.swift */,
-				70996A5C2A9D55A300905847 /* UIColor+Ext.swift */,
-				700A9C312A9E774500E11DEB /* UIViewController+Ext.swift */,
 				707FAF842A9E8E00008929FC /* UICollectionView+Ext.swift */,
 				707FAF862A9E8E0B008929FC /* UICollectionViewCell+Ext.swift */,
+				70996A5C2A9D55A300905847 /* UIColor+Ext.swift */,
+				70996A552A9D4FEE00905847 /* UILabel+Ext.swift */,
 				707FAF8A2A9E8F05008929FC /* UIView+Ext.swift */,
+				700A9C312A9E774500E11DEB /* UIViewController+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -338,7 +340,6 @@
 		70BDBA7E2A9B56C000401359 /* Pulse */ = {
 			isa = PBXGroup;
 			children = (
-				700A9C362A9E80C400E11DEB /* Modules */,
 				70996A0F2A9D395400905847 /* Api */,
 				70996A4E2A9D4D8A00905847 /* BaseItems */,
 				70996A262A9D3F0600905847 /* Classes */,
@@ -350,8 +351,8 @@
 				70BDBA7F2A9B56C000401359 /* AppDelegate.swift */,
 				70BDBA812A9B56C000401359 /* SceneDelegate.swift */,
 				70BDBA852A9B56C000401359 /* Main.storyboard */,
-				70BDBA882A9B56C100401359 /* Assets.xcassets */,
 				70BDBA8A2A9B56C100401359 /* LaunchScreen.storyboard */,
+				70BDBA882A9B56C100401359 /* Assets.xcassets */,
 				70BDBA8D2A9B56C100401359 /* Info.plist */,
 			);
 			path = Pulse;
@@ -468,11 +469,13 @@
 				700A9C322A9E774500E11DEB /* UIViewController+Ext.swift in Sources */,
 				70996A1D2A9D3AEB00905847 /* ResponsePulseCoverInfoModel.swift in Sources */,
 				700A9C302A9E75BB00E11DEB /* BaseProtocol.swift in Sources */,
+				70AD04C22A9EA62800DC4517 /* BaseUIView.swift in Sources */,
 				70996A1B2A9D3AA400905847 /* ResponsePulseCoverModel.swift in Sources */,
 				70996A302A9D439900905847 /* ipifyApi.swift in Sources */,
 				70996A2A2A9D3FA000905847 /* ipApiProvider.swift in Sources */,
 				70996A122A9D395F00905847 /* PulseApi.swift in Sources */,
 				70996A3A2A9D467700905847 /* MainCoordinator.swift in Sources */,
+				70AD04BE2A9EA42100DC4517 /* ResponsePulseCreateUserModel.swift in Sources */,
 				70996A562A9D4FEE00905847 /* UILabel+Ext.swift in Sources */,
 				70996A3C2A9D46D100905847 /* SettingsManager.swift in Sources */,
 				70996A402A9D46F300905847 /* PulseModel.swift in Sources */,
@@ -495,6 +498,7 @@
 				70996A322A9D43D900905847 /* ipifyProvider.swift in Sources */,
 				70996A252A9D3E8700905847 /* ipApi.swift in Sources */,
 				707FAF852A9E8E00008929FC /* UICollectionView+Ext.swift in Sources */,
+				70AD04C02A9EA5D400DC4517 /* AuthManager.swift in Sources */,
 				70996A422A9D47E500905847 /* BaseKeychainModel.swift in Sources */,
 				707FAF8B2A9E8F05008929FC /* UIView+Ext.swift in Sources */,
 				70996A5B2A9D548E00905847 /* ColorType.swift in Sources */,

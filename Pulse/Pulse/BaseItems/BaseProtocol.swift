@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol BaseProtocol {
+protocol BaseProvider {
     func viewDidLoad()
 }

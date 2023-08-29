@@ -15,6 +15,38 @@ final class PulseProvider: BaseRestApiProvider {
         super.init(shouldPrintLog: Constants.isDebug, shouldCancelTask: shouldCancelTask)
     }
     
+    func createUser(credentials: Credentials, success: @escaping((PulseCreateUser) -> ()), failure: @escaping PulseDefaultErrorClosure) {
+        self.urlSession.dataTask(
+            with: URLRequest(
+                type: PulseApi.createUser(credentials: credentials),
+                decodeToHttp: true, 
+                shouldPrintLog: self.shouldPrintLog
+            )
+        ) { response in
+            switch response {
+                case .success(let response):
+                    guard self.checkStatusCode(response.statusCode, compareTo: 201),
+                          let createUser = response.data?.map(to: PulseCreateUser.self) else {
+                        failure(nil)
+                        return
+                    }
+                    
+                    success(createUser)
+                case .failure(let response):
+                    if let error = response.error {
+                        failure(PulseError(errorDescription: error.localizedDescription))
+                        return
+                    } else if let error = response.data?.map(to: PulseError.self) {
+                        failure(error)
+                        return
+                    }
+                    
+                    failure(nil)
+                    return
+            }
+        }
+    }
+    
     func getTopCovers(success: @escaping(([PulseCover]) -> ()), failure: EmptyClosure? = nil) {
         self.urlSession.dataTask(
             with: URLRequest(type: PulseApi.topCovers(country: NetworkManager.shared.country), shouldPrintLog: self.shouldPrintLog)

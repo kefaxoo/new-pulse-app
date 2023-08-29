@@ -11,7 +11,7 @@ protocol AuthProviderDelegate: AnyObject {
     func setupCovers(covers: [PulseCover])
 }
 
-final class AuthProvider: BaseProtocol {
+final class AuthProvider: BaseProvider {
     private var covers = [PulseCover]()
     
     weak var delegate: AuthProviderDelegate?

@@ -7,6 +7,13 @@
 
 import Foundation
 
-typealias PulseError     = ResponsePulseErrorModel
-typealias PulseCover     = ResponsePulseCoverModel
-typealias PulseCoverInfo = ResponsePulseCoverInfoModel
+// MARK: -
+// MARK: Models
+typealias PulseError      = ResponsePulseErrorModel
+typealias PulseCover      = ResponsePulseCoverModel
+typealias PulseCoverInfo  = ResponsePulseCoverInfoModel
+typealias PulseCreateUser = ResponsePulseCreateUserModel
+
+// MARK: -
+// MARK: Closures
+typealias PulseDefaultErrorClosure = ((PulseError?) -> ())
