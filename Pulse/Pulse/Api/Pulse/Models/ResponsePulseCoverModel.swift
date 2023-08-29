@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import InfiniteScrolling_SPM
 
 final class ResponsePulseCoverModel: Decodable {
     let small : String
@@ -29,3 +30,5 @@ final class ResponsePulseCoverModel: Decodable {
         self.xl = try container.decode(String.self, forKey: .xl)
     }
 }
+
+extension ResponsePulseCoverModel: InfiniteScrollingData {}

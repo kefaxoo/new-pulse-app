@@ -32,4 +32,14 @@ final class Constants {
         static let pulseCredentials = "pulseCredentials"
         static let pulseToken       = "pulseToken"
     }
+    
+    final class Images {
+        final class System {
+            static let appleLogo = "apple.logo"
+        }
+        
+        final class Custom {
+            
+        }
+    }
 }

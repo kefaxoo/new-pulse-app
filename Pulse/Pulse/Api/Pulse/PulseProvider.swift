@@ -15,20 +15,20 @@ final class PulseProvider: BaseRestApiProvider {
         super.init(shouldPrintLog: Constants.isDebug, shouldCancelTask: shouldCancelTask)
     }
     
-    func getTopCovers(success: @escaping(([PulseCover]) -> ()), failure: @escaping EmptyClosure) {
+    func getTopCovers(success: @escaping(([PulseCover]) -> ()), failure: EmptyClosure? = nil) {
         self.urlSession.dataTask(
             with: URLRequest(type: PulseApi.topCovers(country: NetworkManager.shared.country), shouldPrintLog: self.shouldPrintLog)
         ) { response in
             switch response {
                 case .success(let response):
                     guard let covers = response.data?.map(to: [PulseCoverInfo].self) else {
-                        failure()
+                        failure?()
                         return
                     }
                     
                     success(covers.map({ $0.cover }))
                 case .failure:
-                    failure()
+                    failure?()
                     return
             }
         }

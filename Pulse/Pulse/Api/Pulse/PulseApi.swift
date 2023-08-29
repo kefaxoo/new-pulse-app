@@ -41,7 +41,7 @@ extension PulseApi: BaseRestApiEnum {
         var parameters = Parameters()
         switch self {
             case .topCovers(let country):
-                parameters["country"] = country
+                parameters["country"] = "US"
         }
         
         return parameters

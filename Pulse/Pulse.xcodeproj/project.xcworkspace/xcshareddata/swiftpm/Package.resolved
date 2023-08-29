@@ -19,6 +19,15 @@
       }
     },
     {
+      "identity" : "infinitescrolling-spm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kefaxoo/InfiniteScrolling-SPM.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "f6e5c3758c2da55c031fbec7306cd68df5555195"
+      }
+    },
+    {
       "identity" : "realm-core",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/realm/realm-core.git",
