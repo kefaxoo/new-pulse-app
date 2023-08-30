@@ -22,6 +22,7 @@ class BaseUIView: UIView {
 extension BaseUIView {
     @objc func setupInterface() {
         setupLayout()
+        setupConstraints()
     }
     
     @objc func setupLayout() {}

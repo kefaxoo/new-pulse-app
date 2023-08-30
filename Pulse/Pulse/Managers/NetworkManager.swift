@@ -38,7 +38,7 @@ extension NetworkManager {
     
     var country: String {
         get {
-            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKey.country) as? String ?? ""
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKey.country) as? String ?? "US"
         }
         set {
             UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKey.country)

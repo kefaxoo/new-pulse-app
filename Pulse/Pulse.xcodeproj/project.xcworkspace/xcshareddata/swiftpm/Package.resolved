@@ -24,7 +24,7 @@
       "location" : "https://github.com/kefaxoo/InfiniteScrolling-SPM.git",
       "state" : {
         "branch" : "master",
-        "revision" : "f6e5c3758c2da55c031fbec7306cd68df5555195"
+        "revision" : "dbf989d01b1fcb1b10c3f2ca71ccad02950fd5e2"
       }
     },
     {
@@ -68,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SnapKit/SnapKit",
       "state" : {
-        "revision" : "f222cbdf325885926566172f6f5f06af95473158",
-        "version" : "5.6.0"
+        "revision" : "d458564516e5676af9c70b4f4b2a9178294f1bc6",
+        "version" : "5.0.1"
       }
     },
     {

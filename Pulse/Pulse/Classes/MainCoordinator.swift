@@ -11,6 +11,7 @@ final class MainCoordinator {
     static let shared = MainCoordinator()
     
     var window: UIWindow?
+    private var currentNavigationController: UINavigationController?
     
     fileprivate init() {}
     
@@ -19,7 +20,8 @@ final class MainCoordinator {
            !pulseAccessToken.isEmpty {
             
         } else {
-            let authVC = AuthViewController(nibName: nil, bundle: nil)
+            let authVC = AuthViewController(nibName: nil, bundle: nil).configureNavigationController(preferesLargeTitles: false)
+            self.currentNavigationController = authVC
             self.makeRootVC(vc: authVC)
         }
     }
@@ -29,5 +31,10 @@ final class MainCoordinator {
             self?.window?.rootViewController = vc
             self?.window?.makeKeyAndVisible()
         }
+    }
+    
+    func pushAuthViewController(authScreen type: AuthScreenType, covers: [PulseCover]) {
+        let authVC = AuthViewController(nibName: nil, bundle: nil)
+        self.currentNavigationController?.pushViewController(authVC, animated: true)
     }
 }

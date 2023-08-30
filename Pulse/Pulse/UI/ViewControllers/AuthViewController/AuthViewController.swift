@@ -48,14 +48,18 @@ final class AuthViewController: BaseUIViewController {
         button.configuration = UIButton.Configuration.filled()
         button.setTitle("Sign in", for: .normal)
         button.tintColor = SettingsManager.shared.color.color
+        button.tag = 1001
+        button.addTarget(self, action: #selector(authAction), for: .touchUpInside)
         return button
     }()
     
     private lazy var signUpButton: UIButton = {
         let button = UIButton()
-        button.configuration = UIButton.Configuration.filled()
+        button.configuration = UIButton.Configuration.tinted()
         button.setTitle("Sign up", for: .normal)
         button.tintColor = SettingsManager.shared.color.color
+        button.tag = 1002
+        button.addTarget(self, action: #selector(authAction), for: .touchUpInside)
         return button
     }()
     
@@ -85,6 +89,14 @@ final class AuthViewController: BaseUIViewController {
         provider.delegate = self
         return provider
     }()
+    
+    private var covers = [PulseCover]()
+    private var type: AuthScreenType = .none
+    
+    func setupController(authScreen type: AuthScreenType, covers: [PulseCover]) {
+        self.covers = covers
+        self.type = type
+    }
 }
 
 // MARK: -
@@ -95,7 +107,13 @@ extension AuthViewController {
         self.provider.viewDidLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.coversLines.forEach({ $0.setupTimer() })
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         self.coversLines.forEach({ $0.removeTimer() })
     }
 }
@@ -103,6 +121,11 @@ extension AuthViewController {
 // MARK: -
 // MARK: Setup interface methods
 extension AuthViewController {
+    override func setupInterface() {
+        super.setupInterface()
+        self.setupCovers(covers: covers)
+    }
+    
     override func setupLayout() {
         self.view.addSubview(firstCoversLine)
         self.view.addSubview(secondCoversLine)
@@ -119,7 +142,7 @@ extension AuthViewController {
     
     override func setupConstraints() {
         firstCoversLine.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(45)
+            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(-10)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(150)
         }
@@ -149,11 +172,24 @@ extension AuthViewController {
 }
 
 // MARK: -
+// MARK: Actions
+extension AuthViewController {
+    @objc private func authAction(_ sender: UIButton) {
+        guard let authScreenType = AuthScreenType(rawValue: sender.tag) else { return }
+        
+        MainCoordinator.shared.pushAuthViewController(authScreen: authScreenType, covers: covers)
+    }
+}
+
+// MARK: -
 // MARK: Provider methods
 extension AuthViewController: AuthProviderDelegate {
     func setupCovers(covers: [PulseCover]) {
-        guard covers.count >= 30 else { return }
+        guard self.covers.isEmpty,
+              covers.count >= 30
+        else { return }
         
+        self.covers = covers
         self.firstCoversLine.setupCovers(covers: Array(covers[0..<10]))
         self.secondCoversLine.setupCovers(covers: Array(covers[10..<20]), start: 1)
         self.thirdCoversLine.setupCovers(covers: Array(covers[20..<30]), start: 2)

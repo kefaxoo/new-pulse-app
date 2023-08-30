@@ -33,3 +33,15 @@ extension UIViewController {
         spinnerAlert?.dismiss()
     }
 }
+
+extension UIViewController {
+    func configureNavigationController(title: String? = nil, preferesLargeTitles: Bool = true) -> UINavigationController {
+        if let title {
+            self.navigationItem.title = title
+        }
+            
+        let navigationController = UINavigationController(rootViewController: self)
+        navigationController.navigationBar.prefersLargeTitles = preferesLargeTitles
+        return navigationController
+    }
+}
