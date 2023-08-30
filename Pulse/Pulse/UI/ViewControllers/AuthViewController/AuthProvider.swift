@@ -7,22 +7,14 @@
 
 import Foundation
 
-protocol AuthProviderDelegate: AnyObject {
-    func setupCovers(covers: [PulseCover])
-}
+protocol AuthProviderDelegate: CoversProviderDelegate {}
 
-final class AuthProvider: BaseProvider {
-    private var covers = [PulseCover]()
-    
-    weak var delegate: AuthProviderDelegate?
-    private var view: AuthViewController? {
-        return delegate as? AuthViewController
+final class AuthProvider: CoversProvider<AuthViewController> {
+    func pushSignUpVC() {
+        MainCoordinator.shared.pushSignUpViewController(covers: covers)
     }
     
-    func viewDidLoad() {
-        PulseProvider.shared.getTopCovers { [weak self] covers in
-            self?.covers = covers
-            self?.delegate?.setupCovers(covers: covers)
-        }
+    func pushSignInVC() {
+        MainCoordinator.shared.pushSignInViewController(covers: covers)
     }
 }

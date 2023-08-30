@@ -42,6 +42,7 @@ extension UIViewController {
             
         let navigationController = UINavigationController(rootViewController: self)
         navigationController.navigationBar.prefersLargeTitles = preferesLargeTitles
+        navigationController.navigationBar.tintColor = SettingsManager.shared.color.color
         return navigationController
     }
 }

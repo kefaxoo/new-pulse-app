@@ -33,8 +33,18 @@ final class MainCoordinator {
         }
     }
     
-    func pushAuthViewController(authScreen type: AuthScreenType, covers: [PulseCover]) {
-        let authVC = AuthViewController(nibName: nil, bundle: nil)
-        self.currentNavigationController?.pushViewController(authVC, animated: true)
+    private func pushViewController(vc: UIViewController, animated: Bool = true) {
+        DispatchQueue.main.async { [weak self] in
+            self?.currentNavigationController?.pushViewController(vc, animated: animated)
+        }
+    }
+    
+    func pushSignUpViewController(covers: [PulseCover]) {
+        let signUpVC = SignUpViewController.initWithCovers(covers)
+        self.pushViewController(vc: signUpVC)
+    }
+    
+    func pushSignInViewController(covers: [PulseCover]) {
+        
     }
 }

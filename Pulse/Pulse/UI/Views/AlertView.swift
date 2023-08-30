@@ -1,0 +1,31 @@
+//
+//  AlertView.swift
+//  Pulse
+//
+//  Created by Bahdan Piatrouski on 30.08.23.
+//
+
+import AlertKit
+import UIKit
+
+final class AlertView {
+    static let shared = AlertView()
+    
+    private var lastAlert16: AlertAppleMusic16View?
+    private var lastAlert17: AlertAppleMusic17View?
+    fileprivate init() {}
+    
+    func present(title: String? = nil, message: String? = nil, alertType: AlertIcon, system: AlertViewStyle, on view: UIView) {
+        lastAlert16?.dismiss()
+        lastAlert17?.dismiss()
+        
+        switch system {
+            case .iOS16AppleMusic:
+                lastAlert16 = AlertAppleMusic16View(title: title, subtitle: message, icon: alertType)
+                lastAlert16?.present(on: view)
+            case .iOS17AppleMusic:
+                lastAlert17 = AlertAppleMusic17View(title: title, subtitle: message, icon: alertType)
+                lastAlert17?.present(on: view)
+        }
+    }
+}

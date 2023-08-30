@@ -8,17 +8,10 @@
 import UIKit
 import SnapKit
 
-final class AuthViewController: BaseUIViewController {
-    private lazy var firstCoversLine = CoversScrollingView()
-    private lazy var secondCoversLine = CoversScrollingView()
-    private lazy var thirdCoversLine = CoversScrollingView()
-    private lazy var coversLines: [CoversScrollingView] = {
-        return [firstCoversLine, secondCoversLine, thirdCoversLine]
-    }()
-    
+final class AuthViewController: CoversViewController {
     private lazy var bottomGradientView: StaticGradientView = {
         let staticGradientView = StaticGradientView()
-        staticGradientView.updateGradient(startColor: .clear, endColor: .systemBackground, startLocation: 0, endLocation: 0.4)
+        staticGradientView.updateGradient(startColor: .systemBackground.withAlphaComponent(0), endColor: .systemBackground, startLocation: 0, endLocation: 0.33)
         return staticGradientView
     }()
     
@@ -89,47 +82,13 @@ final class AuthViewController: BaseUIViewController {
         provider.delegate = self
         return provider
     }()
-    
-    private var covers = [PulseCover]()
-    private var type: AuthScreenType = .none
-    
-    func setupController(authScreen type: AuthScreenType, covers: [PulseCover]) {
-        self.covers = covers
-        self.type = type
-    }
-}
-
-// MARK: -
-// MARK: Life cycle
-extension AuthViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.provider.viewDidLoad()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.coversLines.forEach({ $0.setupTimer() })
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        self.coversLines.forEach({ $0.removeTimer() })
-    }
 }
 
 // MARK: -
 // MARK: Setup interface methods
 extension AuthViewController {
-    override func setupInterface() {
-        super.setupInterface()
-        self.setupCovers(covers: covers)
-    }
-    
     override func setupLayout() {
-        self.view.addSubview(firstCoversLine)
-        self.view.addSubview(secondCoversLine)
-        self.view.addSubview(thirdCoversLine)
+        super.setupLayout()
         self.view.addSubview(bottomGradientView)
         self.view.addSubview(bottomStackView)
         bottomStackView.addArrangedSubview(titleLabel)
@@ -141,23 +100,7 @@ extension AuthViewController {
     }
     
     override func setupConstraints() {
-        firstCoversLine.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(-10)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(150)
-        }
-        
-        secondCoversLine.snp.makeConstraints { make in
-            make.top.equalTo(firstCoversLine.snp.bottom).offset(20)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(150)
-        }
-        
-        thirdCoversLine.snp.makeConstraints { make in
-            make.top.equalTo(secondCoversLine.snp.bottom).offset(20)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(150)
-        }
+        super.setupConstraints()
         
         bottomGradientView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
@@ -175,23 +118,13 @@ extension AuthViewController {
 // MARK: Actions
 extension AuthViewController {
     @objc private func authAction(_ sender: UIButton) {
-        guard let authScreenType = AuthScreenType(rawValue: sender.tag) else { return }
-        
-        MainCoordinator.shared.pushAuthViewController(authScreen: authScreenType, covers: covers)
-    }
-}
-
-// MARK: -
-// MARK: Provider methods
-extension AuthViewController: AuthProviderDelegate {
-    func setupCovers(covers: [PulseCover]) {
-        guard self.covers.isEmpty,
-              covers.count >= 30
-        else { return }
-        
-        self.covers = covers
-        self.firstCoversLine.setupCovers(covers: Array(covers[0..<10]))
-        self.secondCoversLine.setupCovers(covers: Array(covers[10..<20]), start: 1)
-        self.thirdCoversLine.setupCovers(covers: Array(covers[20..<30]), start: 2)
+        switch sender.tag {
+            case 1001:
+                self.provider.pushSignInVC()
+            case 1002:
+                self.provider.pushSignUpVC()
+            default:
+                break
+        }
     }
 }

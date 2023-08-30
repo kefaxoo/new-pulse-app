@@ -44,6 +44,6 @@ class ScrollingCoverCollectionViewCell: UICollectionViewCell {
     }
     
     func setupImage(link: String) {
-        coverImageView.sd_setImage(with: URL(string: link))
+        coverImageView.setImage(from: link)
     }
 }

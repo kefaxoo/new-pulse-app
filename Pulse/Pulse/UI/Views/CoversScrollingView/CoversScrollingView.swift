@@ -31,7 +31,6 @@ class CoversScrollingView: BaseUIView {
         self.startFrom = start
         self.infiniteScrollingBehaviour?.reload(with: covers)
         
-        self.coversCollectionView.setContentOffset(CGPoint(x: self.coversCollectionView.contentOffset.x + CGFloat(start * 150), y: self.coversCollectionView.contentOffset.y), animated: false)
         self.setupTimer()
     }
     
@@ -39,12 +38,30 @@ class CoversScrollingView: BaseUIView {
         var currentOffset = coversCollectionView.contentOffset
         currentOffset = CGPoint(x: currentOffset.x + 5 * (self.startFrom % 2 == 0 ? 1 : -1), y: currentOffset.y)
         
-        coversCollectionView.setContentOffset(currentOffset, animated: true)
+        UIView.animate(withDuration: 0.1) { [weak self] in
+            self?.coversCollectionView.setContentOffset(currentOffset, animated: true)
+        }
+        
         currentOffset = CGPoint(x: 0, y: currentOffset.y)
     }
     
     func setupTimer() {
-        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(newScrolling), userInfo: nil, repeats: true)
+        self.coversCollectionView.setContentOffset(
+            CGPoint(
+                x: self.coversCollectionView.contentOffset.x + CGFloat(self.startFrom * 150),
+                y: self.coversCollectionView.contentOffset.y
+            ),
+            animated: false
+        )
+        
+        timer = Timer.scheduledTimer(
+            timeInterval: 0.1,
+            target: self,
+            selector: #selector(newScrolling),
+            userInfo: nil,
+            repeats: true
+        )
+        
         timer?.fire()
     }
     
