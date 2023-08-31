@@ -20,9 +20,10 @@ final class MainCoordinator {
            !pulseAccessToken.isEmpty {
             
         } else {
-            let authVC = AuthViewController(nibName: nil, bundle: nil).configureNavigationController(preferesLargeTitles: false)
-            self.currentNavigationController = authVC
-            self.makeRootVC(vc: authVC)
+            self.makeAuthViewControllerAsRoot()
+            guard !SettingsManager.shared.pulse.username.isEmpty else { return }
+            
+            self.pushSignInViewController()
         }
     }
     
@@ -39,13 +40,20 @@ final class MainCoordinator {
         }
     }
     
+    func makeAuthViewControllerAsRoot() {
+        let authVC = AuthViewController(nibName: nil, bundle: nil).configureNavigationController(preferesLargeTitles: false)
+        self.currentNavigationController = authVC
+        self.makeRootVC(vc: authVC)
+    }
+    
     func pushSignUpViewController(covers: [PulseCover]) {
-        let signUpVC = SignUpViewController.initWithCovers(covers)
+        let signUpVC = SignUpViewController(covers: covers)
         self.pushViewController(vc: signUpVC)
     }
     
-    func pushSignInViewController(covers: [PulseCover]) {
-        
+    func pushSignInViewController(covers: [PulseCover] = []) {
+        let signInVC = SignInViewController(covers: covers)
+        self.pushViewController(vc: signInVC)
     }
     
     var currentViewController: UIViewController? {

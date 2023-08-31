@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 final class SettingsManager {
     static let shared = SettingsManager()

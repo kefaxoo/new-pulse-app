@@ -1,13 +1,13 @@
 //
-//  SignUpViewController.swift
+//  SignInViewController.swift
 //  Pulse
 //
-//  Created by Bahdan Piatrouski on 30.08.23.
+//  Created by Bahdan Piatrouski on 31.08.23.
 //
 
 import UIKit
 
-final class SignUpViewController: CoversViewController {
+final class SignInViewController: CoversViewController {
     private lazy var bottomGradientView: StaticGradientView = {
         let staticGradientView = StaticGradientView()
         staticGradientView.updateGradient(startColor: .systemBackground.withAlphaComponent(0), endColor: .systemBackground, startLocation: 0, endLocation: 0.33)
@@ -42,17 +42,25 @@ final class SignUpViewController: CoversViewController {
         return textField
     }()
     
-    private lazy var signUpButton: UIButton = {
+    private lazy var signInButton: UIButton = {
         let button = UIButton()
         button.configuration = UIButton.Configuration.tinted()
-        button.setTitle("Sign up", for: .normal)
+        button.setTitle("Sign in", for: .normal)
         button.tintColor = SettingsManager.shared.color.color
-        button.addTarget(self, action: #selector(signUpAction), for: .touchUpInside)
+        button.addTarget(self, action: #selector(signInAction), for: .touchUpInside)
         return button
     }()
     
-    private lazy var presenter: SignUpPresenter = {
-        let presenter = SignUpPresenter()
+    private lazy var resetPassword: UIButton = {
+        let button = UIButton()
+        button.setTitle("Forget password?", for: .normal)
+        button.setTitleColor(SettingsManager.shared.color.color, for: .normal)
+        button.contentHorizontalAlignment = .trailing
+        return button
+    }()
+    
+    private lazy var presenter: SignInPresenter = {
+        let presenter = SignInPresenter()
         presenter.delegate = self
         return presenter
     }()
@@ -71,7 +79,12 @@ final class SignUpViewController: CoversViewController {
 
 // MARK: -
 // MARK: Life cycle
-extension SignUpViewController {
+extension SignInViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.presenter.fetchEmailFromKeychain()
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.removeKeyboardObservers()
@@ -80,7 +93,7 @@ extension SignUpViewController {
 
 // MARK: -
 // MARK: Setup interface methods
-extension SignUpViewController {
+extension SignInViewController {
     override func setupInterface() {
         super.setupInterface()
         self.observeKeyboard(view: bottomStackView, defaultOffset: 30)
@@ -93,7 +106,8 @@ extension SignUpViewController {
         bottomStackView.addArrangedSubview(titleLabel)
         bottomStackView.addArrangedSubview(emailTextField)
         bottomStackView.addArrangedSubview(passwordTextField)
-        bottomStackView.addArrangedSubview(signUpButton)
+        bottomStackView.addArrangedSubview(signInButton)
+        bottomStackView.addArrangedSubview(resetPassword)
     }
     
     override func setupConstraints() {
@@ -113,13 +127,16 @@ extension SignUpViewController {
 
 // MARK: -
 // MARK: Delegate methods
-extension SignUpViewController: SignUpPresenterDelegate {}
+extension SignInViewController: SignInPresenterDelegate {
+    func setEmail(email: String) {
+        emailTextField.text = email
+    }
+}
 
 // MARK: -
 // MARK: Actions
-extension SignUpViewController {
-    @objc private func signUpAction() {
+extension SignInViewController {
+    @objc private func signInAction() {
         self.dismissKeyboard()
-        self.presenter.createUser(email: emailTextField.text, password: passwordTextField.text)
     }
 }

@@ -100,7 +100,7 @@ extension BaseUIViewController {
         animator.startAnimation()
     }
     
-    @objc private func dismissKeyboard() {
+    @objc func dismissKeyboard() {
         self.view.endEditing(true)
     }
     

@@ -25,7 +25,8 @@ struct Credentials {
         self.password = password
     }
     
-    func saveToKeychain(accountName: String) {
-        
+    init(email: String, accessToken: String?) {
+        self.username = email
+        self.password = accessToken
     }
 }

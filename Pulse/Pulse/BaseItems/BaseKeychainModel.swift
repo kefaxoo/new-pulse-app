@@ -15,14 +15,14 @@ class BaseKeychainModel {
         self.service = service
     }
     
-    func saveCredentials(username: String, password: String) -> Bool {
-        guard let passwordData = password.data(using: .utf8) else { return false }
+    func saveCredentials(_ credentials: Credentials) -> Bool {
+        guard let passwordData = credentials.password?.data(using: .utf8) else { return false }
         
         let attributes: [String: Any] = [
             kSecClass as String      : kSecClassGenericPassword,
             kSecAttrService as String: self.service,
-            kSecAttrAccount as String: username,
-            kSecValueData as String  : password
+            kSecAttrAccount as String: credentials.username,
+            kSecValueData as String  : passwordData
         ]
         
         return SecItemAdd(attributes as CFDictionary, nil) == noErr
@@ -49,13 +49,13 @@ class BaseKeychainModel {
         return Credentials(username: username, password: password)
     }
     
-    func updatePassword(username: String, password: String) -> Bool {
-        guard let passwordData = password.data(using: .utf8) else { return false }
+    func updatePassword(credentials: Credentials) -> Bool {
+        guard let passwordData = credentials.password?.data(using: .utf8) else { return false }
         
         let query: [String: Any] = [
             kSecClass as String      : kSecClassGenericPassword,
             kSecAttrService as String: self.service,
-            kSecAttrAccount as String: username
+            kSecAttrAccount as String: credentials.username
         ]
         
         let attributes: [String: Any] = [kSecValueData as String: passwordData]

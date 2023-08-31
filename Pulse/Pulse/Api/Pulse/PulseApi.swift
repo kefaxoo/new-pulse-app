@@ -11,6 +11,8 @@ import FriendlyURLSession
 enum PulseApi {
     // User
     case createUser(credentials: Credentials)
+    case loginUser(credentials: Credentials)
+    case resetPassword(credentials: Credentials)
     
     // Covers
     case topCovers(country: String? = nil)
@@ -23,8 +25,10 @@ extension PulseApi: BaseRestApiEnum {
     
     var path: String {
         switch self {
-            case .createUser:
+            case .createUser, .loginUser:
                 return "/user"
+            case .resetPassword:
+                return "/resetPassword"
             case .topCovers:
                 return "/topCovers"
         }
@@ -34,7 +38,7 @@ extension PulseApi: BaseRestApiEnum {
         switch self {
             case .createUser:
                 return .post
-            case .topCovers:
+            default:
                 return .get
         }
     }
@@ -48,9 +52,11 @@ extension PulseApi: BaseRestApiEnum {
     var parameters: FriendlyURLSession.Parameters? {
         var parameters = Parameters()
         switch self {
-            case .createUser(let credentials):
+            case .createUser(let credentials), .loginUser(let credentials):
                 parameters["email"] = credentials.username
                 parameters["password"] = credentials.password
+            case .resetPassword(let credentials):
+                parameters["email"] = credentials.username
             case .topCovers(let country):
                 parameters["country"] = country
         }

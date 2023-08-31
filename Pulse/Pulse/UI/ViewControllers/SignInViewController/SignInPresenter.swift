@@ -1,15 +1,17 @@
 //
-//  SignUpPresenter.swift
+//  SignInPresenter.swift
 //  Pulse
 //
-//  Created by Bahdan Piatrouski on 30.08.23.
+//  Created by Bahdan Piatrouski on 31.08.23.
 //
 
-import UIKit
+import Foundation
 
-protocol SignUpPresenterDelegate: CoversPresenterDelegate {}
+protocol SignInPresenterDelegate: CoversPresenterDelegate {
+    func setEmail(email: String)
+}
 
-final class SignUpPresenter: CoversPresenter<SignUpViewController> {
+final class SignInPresenter: CoversPresenter<SignInViewController> {
     func checkTextFrom(text: String?, textFieldKind: String) -> String? {
         guard let text,
               !text.isEmpty
@@ -32,18 +34,27 @@ final class SignUpPresenter: CoversPresenter<SignUpViewController> {
         return password
     }
     
-    func createUser(email: String?, password: String?) {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.fetchEmailFromKeychain()
+    }
+    
+    func fetchEmailFromKeychain() {
+        guard !SettingsManager.shared.pulse.username.isEmpty else { return }
+        
+        self.delegate?.setEmail(email: SettingsManager.shared.pulse.username)
+    }
+    
+    func loginUser(email: String?, password: String?) {
         guard let email = self.checkTextFrom(text: email, textFieldKind: "email"),
               let password = self.checkPassword(password)
         else { return }
         
         let pulseAccount = Credentials(email: email, password: password)
         MainCoordinator.shared.currentViewController?.presentSpinner()
-        PulseProvider.shared.createUser(credentials: pulseAccount.withEncryptedPassword) { createUser in
+        PulseProvider.shared.loginUser(credentials: pulseAccount.withEncryptedPassword) { loginUser in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
-            SettingsManager.shared.pulse.username = email
-            SettingsManager.shared.pulse.saveCredentials(pulseAccount)
-            VerifyPulseAccountPopUpViewController(verificationCode: createUser).present()
+            SettingsManager.shared.pulse.saveAcceessToken(Credentials(email: email, accessToken: loginUser.accessToken))
         } failure: { error in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
             AlertView.shared.present(title: "Error", message: error?.errorDescription ?? "Unknown Pulse error", alertType: .error, system: .iOS16AppleMusic)

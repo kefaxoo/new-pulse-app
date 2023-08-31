@@ -5,7 +5,7 @@
 //  Created by ios on 31.08.23.
 //
 
-import Foundation
+import UIKit
 
 final class VerifyPulseAccountPresenter: BasePresenter {
     private let verificationCodeModel: PulseCreateUser
@@ -23,6 +23,8 @@ final class VerifyPulseAccountPresenter: BasePresenter {
     }
     
     func openTelegramBot() {
+        guard let url = URL(string: verificationCodeModel.telegramBotLink) else { return }
         
+        UIApplication.shared.open(url)
     }
 }

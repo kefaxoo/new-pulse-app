@@ -7,25 +7,24 @@
 
 import Foundation
 
-final class ResponsePulseCreateUserModel: Decodable {
-    let success         : String
+final class ResponsePulseCreateUserModel: PulseSuccess {
     let message         : String
     let verificationCode: Int
-    let image           : String
+    let telegramBotLink : String
     
     enum CodingKeys: CodingKey {
-        case success
         case message
         case verificationCode
-        case image
+        case telegramBotLink
     }
     
-    init(from decoder: Decoder) throws {
+    override init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.success = try container.decode(String.self, forKey: .success)
         self.message = try container.decode(String.self, forKey: .message)
         self.verificationCode = try container.decode(Int.self, forKey: .verificationCode)
-        self.image = try container.decode(String.self, forKey: .image)
+        self.telegramBotLink = try container.decode(String.self, forKey: .telegramBotLink)
+        
+        try super.init(from: decoder)
     }
 }

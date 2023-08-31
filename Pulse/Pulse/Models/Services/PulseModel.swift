@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct PulseModel {
-    static var username: String {
+final class PulseModel {
+    var username: String {
         get {
             return UserDefaults.standard.value(forKey: Constants.UserDefaultsKey.pulseUsername) as? String ?? ""
         }
@@ -17,15 +17,13 @@ struct PulseModel {
         }
     }
     
-    var username   : String
     var password   : String?
     var accessToken: String?
     
-    fileprivate let credentialsKeychainModel = BaseKeychainModel(service: Constants.KeychainService.pulseCredentials)
-    fileprivate let accessTokenKeychainModel = BaseKeychainModel(service: Constants.KeychainService.pulseToken)
+    fileprivate var credentialsKeychainModel = BaseKeychainModel(service: Constants.KeychainService.pulseCredentials)
+    fileprivate var accessTokenKeychainModel = BaseKeychainModel(service: Constants.KeychainService.pulseToken)
     
     init() {
-        self.username = PulseModel.username
         if let password = credentialsKeychainModel.getCredentials(username: username)?.password {
             self.password = password
         }
@@ -33,5 +31,17 @@ struct PulseModel {
         if let accessToken = accessTokenKeychainModel.getCredentials(username: username)?.password {
             self.accessToken = accessToken
         }
+    }
+    
+    func saveCredentials(_ credentials: Credentials) {
+        guard self.credentialsKeychainModel.saveCredentials(credentials) else { return }
+        
+        self.password = credentials.password
+    }
+    
+    func saveAcceessToken(_ credentials: Credentials) {
+        guard self.accessTokenKeychainModel.saveCredentials(credentials) else { return }
+        
+        self.accessToken = credentials.password
     }
 }

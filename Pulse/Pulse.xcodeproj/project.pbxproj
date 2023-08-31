@@ -73,6 +73,10 @@
 		70CDCE9E2A9FD8EA00FBB125 /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CDCE9D2A9FD8EA00FBB125 /* PasswordTextField.swift */; };
 		70CDCEA02A9FDD7100FBB125 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CDCE9F2A9FDD7100FBB125 /* Device.swift */; };
 		70DB84472A9E8A3900BA9C89 /* CoversScrollingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DB84462A9E8A3900BA9C89 /* CoversScrollingView.swift */; };
+		70E3D57A2AA131900040E46A /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E3D5792AA131900040E46A /* SignInViewController.swift */; };
+		70E3D57C2AA131980040E46A /* SignInPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E3D57B2AA131980040E46A /* SignInPresenter.swift */; };
+		70E3D5822AA13A3C0040E46A /* ResponsePulseSuccessModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E3D5812AA13A3C0040E46A /* ResponsePulseSuccessModel.swift */; };
+		70E3D5842AA13A8E0040E46A /* ResponsePulseLoginUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E3D5832AA13A8E0040E46A /* ResponsePulseLoginUserModel.swift */; };
 		810E3D1A2A9F8875009891FC /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 810E3D192A9F8875009891FC /* SnapKit */; };
 		81B8EE3C2AA0E17F00C7F53E /* VerifyPulseAccountPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B8EE3B2AA0E17F00C7F53E /* VerifyPulseAccountPopUpViewController.swift */; };
 		81B8EE3E2AA0E1E600C7F53E /* VerifyPulseAccountPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B8EE3D2AA0E1E600C7F53E /* VerifyPulseAccountPresenter.swift */; };
@@ -138,6 +142,10 @@
 		70CDCE9D2A9FD8EA00FBB125 /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
 		70CDCE9F2A9FDD7100FBB125 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		70DB84462A9E8A3900BA9C89 /* CoversScrollingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoversScrollingView.swift; sourceTree = "<group>"; };
+		70E3D5792AA131900040E46A /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		70E3D57B2AA131980040E46A /* SignInPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPresenter.swift; sourceTree = "<group>"; };
+		70E3D5812AA13A3C0040E46A /* ResponsePulseSuccessModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseSuccessModel.swift; sourceTree = "<group>"; };
+		70E3D5832AA13A8E0040E46A /* ResponsePulseLoginUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseLoginUserModel.swift; sourceTree = "<group>"; };
 		81B8EE3B2AA0E17F00C7F53E /* VerifyPulseAccountPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyPulseAccountPopUpViewController.swift; sourceTree = "<group>"; };
 		81B8EE3D2AA0E1E600C7F53E /* VerifyPulseAccountPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyPulseAccountPresenter.swift; sourceTree = "<group>"; };
 		81B8EE412AA0E72400C7F53E /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
@@ -218,6 +226,8 @@
 				70996A1C2A9D3AEB00905847 /* ResponsePulseCoverInfoModel.swift */,
 				70AD04BD2A9EA42100DC4517 /* ResponsePulseCreateUserModel.swift */,
 				70996A162A9D397200905847 /* ResponsePulseErrorModel.swift */,
+				70E3D5812AA13A3C0040E46A /* ResponsePulseSuccessModel.swift */,
+				70E3D5832AA13A8E0040E46A /* ResponsePulseLoginUserModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -319,6 +329,7 @@
 		70996A482A9D4D6C00905847 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				70E3D5782AA131800040E46A /* SignInViewController */,
 				81B8EE392AA0E12A00C7F53E /* PopUpViewControllers */,
 				70CDCE8D2A9FC9A100FBB125 /* SignUpViewController */,
 				70CDCE882A9FC24F00FBB125 /* CoversViewController */,
@@ -453,6 +464,15 @@
 				70AD04BB2A9E9D4D00DC4517 /* StaticGradientView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		70E3D5782AA131800040E46A /* SignInViewController */ = {
+			isa = PBXGroup;
+			children = (
+				70E3D5792AA131900040E46A /* SignInViewController.swift */,
+				70E3D57B2AA131980040E46A /* SignInPresenter.swift */,
+			);
+			path = SignInViewController;
 			sourceTree = "<group>";
 		};
 		810E3D182A9F8875009891FC /* Frameworks */ = {
@@ -591,6 +611,7 @@
 				7054EF4F2AA0B24F00F55B92 /* PaddingLabel.swift in Sources */,
 				70996A2A2A9D3FA000905847 /* ipApiProvider.swift in Sources */,
 				70996A122A9D395F00905847 /* PulseApi.swift in Sources */,
+				70E3D5842AA13A8E0040E46A /* ResponsePulseLoginUserModel.swift in Sources */,
 				70996A3A2A9D467700905847 /* MainCoordinator.swift in Sources */,
 				70AD04BE2A9EA42100DC4517 /* ResponsePulseCreateUserModel.swift in Sources */,
 				70996A562A9D4FEE00905847 /* UILabel+Ext.swift in Sources */,
@@ -613,9 +634,11 @@
 				70996A4C2A9D4D7700905847 /* AuthPresenter.swift in Sources */,
 				70DB84472A9E8A3900BA9C89 /* CoversScrollingView.swift in Sources */,
 				70CDCE912A9FC9E700FBB125 /* SignUpPresenter.swift in Sources */,
+				70E3D5822AA13A3C0040E46A /* ResponsePulseSuccessModel.swift in Sources */,
 				707FAF872A9E8E0B008929FC /* UICollectionViewCell+Ext.swift in Sources */,
 				70CDCE972A9FCBBF00FBB125 /* ImageManager.swift in Sources */,
 				70996A2C2A9D423F00905847 /* ResponseIpApiModel.swift in Sources */,
+				70E3D57C2AA131980040E46A /* SignInPresenter.swift in Sources */,
 				70996A5D2A9D55A300905847 /* UIColor+Ext.swift in Sources */,
 				81B8EE3C2AA0E17F00C7F53E /* VerifyPulseAccountPopUpViewController.swift in Sources */,
 				70996A352A9D443400905847 /* ApiTypealiases.swift in Sources */,
@@ -623,6 +646,7 @@
 				70CDCEA02A9FDD7100FBB125 /* Device.swift in Sources */,
 				70996A252A9D3E8700905847 /* ipApi.swift in Sources */,
 				70399C622A9FE33200976098 /* AlertView.swift in Sources */,
+				70E3D57A2AA131900040E46A /* SignInViewController.swift in Sources */,
 				707FAF852A9E8E00008929FC /* UICollectionView+Ext.swift in Sources */,
 				70CDCE8F2A9FC9AC00FBB125 /* SignUpViewController.swift in Sources */,
 				70AD04C02A9EA5D400DC4517 /* AuthManager.swift in Sources */,

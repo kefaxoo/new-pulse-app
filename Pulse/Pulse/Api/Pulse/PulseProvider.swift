@@ -26,12 +26,44 @@ final class PulseProvider: BaseRestApiProvider {
             switch response {
                 case .success(let response):
                     guard self.checkStatusCode(response.statusCode, compareTo: 201),
-                          let createUser = response.data?.map(to: PulseCreateUser.self) else {
+                          let createUser = response.data?.map(to: PulseCreateUser.self) 
+                    else {
                         failure(nil)
                         return
                     }
                     
                     success(createUser)
+                case .failure(let response):
+                    if let error = response.error {
+                        failure(PulseError(errorDescription: error.localizedDescription))
+                        return
+                    } else if let error = response.data?.map(to: PulseError.self) {
+                        failure(error)
+                        return
+                    }
+                    
+                    failure(nil)
+                    return
+            }
+        }
+    }
+    
+    func loginUser(credentials: Credentials, success: @escaping((PulseLoginUser) -> ()), failure: @escaping PulseDefaultErrorClosure) {
+        self.urlSession.dataTask(with: URLRequest(
+            type: PulseApi.loginUser(credentials: credentials),
+            decodeToHttp: true,
+            shouldPrintLog: self.shouldPrintLog
+        )) { response in
+            switch response {
+                case .success(let response):
+                    guard self.checkStatusCode(response.statusCode, compareTo: 200),
+                          let loginUser = response.data?.map(to: PulseLoginUser.self)
+                    else { 
+                        failure(nil)
+                        return
+                    }
+                    
+                    success(loginUser)
                 case .failure(let response):
                     if let error = response.error {
                         failure(PulseError(errorDescription: error.localizedDescription))

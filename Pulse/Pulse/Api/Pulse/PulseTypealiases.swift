@@ -12,7 +12,9 @@ import Foundation
 typealias PulseError      = ResponsePulseErrorModel
 typealias PulseCover      = ResponsePulseCoverModel
 typealias PulseCoverInfo  = ResponsePulseCoverInfoModel
+typealias PulseSuccess    = ResponsePulseSuccessModel
 typealias PulseCreateUser = ResponsePulseCreateUserModel
+typealias PulseLoginUser  = ResponsePulseLoginUserModel
 
 // MARK: -
 // MARK: Closures
