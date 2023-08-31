@@ -39,6 +39,7 @@ final class Constants {
             static let exclamationMark = "exclamationmark.triangle"
             static let eye             = "eye"
             static let eyeWithSlash    = "eye.slash"
+            static let xInFilledCircle = "x.circle.fill"
         }
         
         final class Custom {

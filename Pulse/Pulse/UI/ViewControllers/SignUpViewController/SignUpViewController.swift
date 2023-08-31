@@ -109,11 +109,7 @@ extension SignUpViewController: SignUpProviderDelegate {}
 // MARK: Actions
 extension SignUpViewController {
     @objc private func signUpAction() {
-        guard let email = self.provider.checkTextFrom(textField: emailTextField, textFieldKind: "email"),
-              let password = self.provider.checkPassword(textField: passwordTextField)
-        else { return }
-        
-        // TODO: Complete writing create user logic
+        self.provider.createUser(email: emailTextField.text, password: passwordTextField.text)
     }
 }
 

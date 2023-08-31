@@ -12,6 +12,8 @@
 		70399C602A9FDED500976098 /* UIEdgeInsets+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70399C5F2A9FDED500976098 /* UIEdgeInsets+Ext.swift */; };
 		70399C622A9FE33200976098 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70399C612A9FE33200976098 /* AlertView.swift */; };
 		70399C642A9FE58200976098 /* NSRegularExpression+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70399C632A9FE58200976098 /* NSRegularExpression+Ext.swift */; };
+		7054EF4C2AA0B04200F55B92 /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7054EF4B2AA0B04200F55B92 /* PopUpViewController.swift */; };
+		7054EF4F2AA0B24F00F55B92 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7054EF4E2AA0B24F00F55B92 /* PaddingLabel.swift */; };
 		707FAF852A9E8E00008929FC /* UICollectionView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707FAF842A9E8E00008929FC /* UICollectionView+Ext.swift */; };
 		707FAF872A9E8E0B008929FC /* UICollectionViewCell+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707FAF862A9E8E0B008929FC /* UICollectionViewCell+Ext.swift */; };
 		707FAF892A9E8E56008929FC /* ScrollingCoverCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707FAF882A9E8E56008929FC /* ScrollingCoverCollectionViewCell.swift */; };
@@ -80,6 +82,8 @@
 		70399C5F2A9FDED500976098 /* UIEdgeInsets+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Ext.swift"; sourceTree = "<group>"; };
 		70399C612A9FE33200976098 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		70399C632A9FE58200976098 /* NSRegularExpression+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Ext.swift"; sourceTree = "<group>"; };
+		7054EF4B2AA0B04200F55B92 /* PopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewController.swift; sourceTree = "<group>"; };
+		7054EF4E2AA0B24F00F55B92 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		707FAF842A9E8E00008929FC /* UICollectionView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Ext.swift"; sourceTree = "<group>"; };
 		707FAF862A9E8E0B008929FC /* UICollectionViewCell+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Ext.swift"; sourceTree = "<group>"; };
 		707FAF882A9E8E56008929FC /* ScrollingCoverCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollingCoverCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -155,6 +159,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7054EF4A2AA0B03800F55B92 /* PopUpViewController */ = {
+			isa = PBXGroup;
+			children = (
+				7054EF4B2AA0B04200F55B92 /* PopUpViewController.swift */,
+			);
+			path = PopUpViewController;
+			sourceTree = "<group>";
+		};
+		7054EF4D2AA0B24800F55B92 /* Labels */ = {
+			isa = PBXGroup;
+			children = (
+				7054EF4E2AA0B24F00F55B92 /* PaddingLabel.swift */,
+			);
+			path = Labels;
+			sourceTree = "<group>";
+		};
 		707FAF812A9E8D60008929FC /* CoversScrollingView */ = {
 			isa = PBXGroup;
 			children = (
@@ -282,6 +302,7 @@
 		70996A472A9D4D6900905847 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				7054EF4D2AA0B24800F55B92 /* Labels */,
 				70CDCE9A2A9FD88900FBB125 /* TextFields */,
 				70DB84432A9E8A0400BA9C89 /* Views */,
 				70996A482A9D4D6C00905847 /* ViewControllers */,
@@ -292,6 +313,7 @@
 		70996A482A9D4D6C00905847 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				7054EF4A2AA0B03800F55B92 /* PopUpViewController */,
 				70CDCE8D2A9FC9A100FBB125 /* SignUpViewController */,
 				70CDCE882A9FC24F00FBB125 /* CoversViewController */,
 				70996A4D2A9D4D7A00905847 /* AuthViewController */,
@@ -536,9 +558,11 @@
 				700A9C302A9E75BB00E11DEB /* BaseProtocol.swift in Sources */,
 				70AD04C22A9EA62800DC4517 /* BaseUIView.swift in Sources */,
 				70CDCE9E2A9FD8EA00FBB125 /* PasswordTextField.swift in Sources */,
+				7054EF4C2AA0B04200F55B92 /* PopUpViewController.swift in Sources */,
 				70996A1B2A9D3AA400905847 /* ResponsePulseCoverModel.swift in Sources */,
 				70CDCE8C2A9FC2C900FBB125 /* CoversProvider.swift in Sources */,
 				70996A302A9D439900905847 /* ipifyApi.swift in Sources */,
+				7054EF4F2AA0B24F00F55B92 /* PaddingLabel.swift in Sources */,
 				70996A2A2A9D3FA000905847 /* ipApiProvider.swift in Sources */,
 				70996A122A9D395F00905847 /* PulseApi.swift in Sources */,
 				70996A3A2A9D467700905847 /* MainCoordinator.swift in Sources */,

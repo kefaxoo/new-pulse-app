@@ -47,4 +47,15 @@ final class MainCoordinator {
     func pushSignInViewController(covers: [PulseCover]) {
         
     }
+    
+    var currentViewController: UIViewController? {
+        guard let rootVC = window?.rootViewController else { return nil }
+        
+        var currentVC: UIViewController! = rootVC
+        while currentVC.presentedViewController != nil {
+            currentVC = currentVC.presentedViewController
+        }
+        
+        return currentVC
+    }
 }
