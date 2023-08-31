@@ -15,10 +15,10 @@ class CoversViewController: BaseUIViewController {
         return [firstCoversLine, secondCoversLine, thirdCoversLine]
     }()
     
-    private lazy var provider: CoversProvider = {
-        let provider = CoversProvider()
-        provider.delegate = self
-        return provider
+    private lazy var presenter: CoversPresenter = {
+        let presenter = CoversPresenter()
+        presenter.delegate = self
+        return presenter
     }()
 }
 
@@ -27,7 +27,7 @@ class CoversViewController: BaseUIViewController {
 extension CoversViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.provider.viewDidLoad()
+        self.presenter.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -72,8 +72,8 @@ extension CoversViewController {
 }
 
 // MARK: -
-// MARK: Provider methods
-extension CoversViewController: CoversProviderDelegate {
+// MARK: Presenter methods
+extension CoversViewController: CoversPresenterDelegate {
     func setupCovers(covers: [PulseCover]) {
         guard covers.count >= 30 else { return }
         

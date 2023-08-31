@@ -77,10 +77,10 @@ final class AuthViewController: CoversViewController {
         return button
     }()
     
-    private lazy var provider: AuthProvider = {
-        let provider = AuthProvider()
-        provider.delegate = self
-        return provider
+    private lazy var presenter: AuthPresenter = {
+        let presenter = AuthPresenter()
+        presenter.delegate = self
+        return presenter
     }()
 }
 
@@ -120,9 +120,9 @@ extension AuthViewController {
     @objc private func authAction(_ sender: UIButton) {
         switch sender.tag {
             case 1001:
-                self.provider.pushSignInVC()
+                self.presenter.pushSignInVC()
             case 1002:
-                self.provider.pushSignUpVC()
+                self.presenter.pushSignUpVC()
             default:
                 break
         }

@@ -1,5 +1,5 @@
 //
-//  SignUpProvider.swift
+//  SignUpPresenter.swift
 //  Pulse
 //
 //  Created by Bahdan Piatrouski on 30.08.23.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-protocol SignUpProviderDelegate: CoversProviderDelegate {}
+protocol SignUpPresenterDelegate: CoversPresenterDelegate {}
 
-final class SignUpProvider: CoversProvider<SignUpViewController> {
+final class SignUpPresenter: CoversPresenter<SignUpViewController> {
     func checkTextFrom(text: String?, textFieldKind: String) -> String? {
         guard let text,
               !text.isEmpty
@@ -39,9 +39,9 @@ final class SignUpProvider: CoversProvider<SignUpViewController> {
         
         let pulseAccount = Credentials(email: email, password: password)
         MainCoordinator.shared.currentViewController?.presentSpinner()
-        PulseProvider.shared.createUser(credentials: Credentials(username: email, password: password)) { createUser in
+        PulseProvider.shared.createUser(credentials: pulseAccount.withEncryptedPassword) { createUser in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
-            
+            VerifyPulseAccountPopUpViewController(verificationCode: createUser).present()
         } failure: { error in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
         }

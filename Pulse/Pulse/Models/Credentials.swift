@@ -11,6 +11,10 @@ struct Credentials {
     let username: String
     let password: String?
     
+    var withEncryptedPassword: Credentials {
+        return Credentials(email: username, password: password?.encode)
+    }
+    
     init(username: String, password: String?) {
         self.username = username
         self.password = password

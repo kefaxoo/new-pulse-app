@@ -1,5 +1,5 @@
 //
-//  AuthProvider.swift
+//  AuthPresenter.swift
 //  Pulse
 //
 //  Created by Bahdan Piatrouski on 29.08.23.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-protocol AuthProviderDelegate: CoversProviderDelegate {}
+protocol AuthPresenterDelegate: CoversPresenterDelegate {}
 
-final class AuthProvider: CoversProvider<AuthViewController> {
+final class AuthPresenter: CoversPresenter<AuthViewController> {
     func pushSignUpVC() {
         MainCoordinator.shared.pushSignUpViewController(covers: covers)
     }

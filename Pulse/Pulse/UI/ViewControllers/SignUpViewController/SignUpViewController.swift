@@ -52,10 +52,10 @@ final class SignUpViewController: CoversViewController {
         return button
     }()
     
-    private lazy var provider: SignUpProvider = {
-        let provider = SignUpProvider()
-        provider.delegate = self
-        return provider
+    private lazy var presenter: SignUpPresenter = {
+        let presenter = SignUpPresenter()
+        presenter.delegate = self
+        return presenter
     }()
 }
 
@@ -103,13 +103,13 @@ extension SignUpViewController {
 
 // MARK: -
 // MARK: Delegate methods
-extension SignUpViewController: SignUpProviderDelegate {}
+extension SignUpViewController: SignUpPresenterDelegate {}
 
 // MARK: -
 // MARK: Actions
 extension SignUpViewController {
     @objc private func signUpAction() {
-        self.provider.createUser(email: emailTextField.text, password: passwordTextField.text)
+        self.presenter.createUser(email: emailTextField.text, password: passwordTextField.text)
     }
 }
 
@@ -119,7 +119,7 @@ extension SignUpViewController {
     class func initWithCovers(_ covers: [PulseCover]) -> SignUpViewController {
         let vc = SignUpViewController(nibName: nil, bundle: nil)
         if covers.count > 30 {
-            vc.provider.covers = covers
+            vc.presenter.covers = covers
         }
         
         return vc

@@ -1,5 +1,5 @@
 //
-//  CoversProvider.swift
+//  CoversPresenter.swift
 //  Pulse
 //
 //  Created by Bahdan Piatrouski on 30.08.23.
@@ -7,11 +7,11 @@
 
 import Foundation
 
-protocol CoversProviderDelegate: AnyObject {
+protocol CoversPresenterDelegate: AnyObject {
     func setupCovers(covers: [PulseCover])
 }
 
-class CoversProvider<V: CoversViewController>: BaseProvider {
+class CoversPresenter<V: CoversViewController>: BasePresenter {
     var covers = [PulseCover]()
     
     weak var delegate: V?
