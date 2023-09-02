@@ -9,12 +9,14 @@ import Foundation
 
 // MARK: -
 // MARK: Models
-typealias PulseError      = ResponsePulseErrorModel
-typealias PulseCover      = ResponsePulseCoverModel
-typealias PulseCoverInfo  = ResponsePulseCoverInfoModel
-typealias PulseSuccess    = ResponsePulseSuccessModel
-typealias PulseCreateUser = ResponsePulseCreateUserModel
-typealias PulseLoginUser  = ResponsePulseLoginUserModel
+typealias PulseError            = ResponsePulseErrorModel
+typealias PulseCover            = ResponsePulseCoverModel
+typealias PulseCoverInfo        = ResponsePulseCoverInfoModel
+typealias PulseSuccess          = ResponsePulseSuccessModel
+typealias PulseCreateUser       = ResponsePulseCreateUserModel
+typealias PulseLoginUser        = ResponsePulseLoginUserModel
+typealias PulseLoginWithCode    = ResponsePulseLoginWithCodeModel
+typealias PulseVerificationCode = ResponsePulseVerificationCodeModel
 
 // MARK: -
 // MARK: Closures

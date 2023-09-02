@@ -34,10 +34,10 @@ final class VerifyPulseAccountPopUpViewController: PopUpViewController {
     
     private var presenter: VerifyPulseAccountPresenter?
     
-    init(verificationCode: PulseCreateUser) {
+    init(verificationCode: VerificationCode) {
         super.init(nibName: nil, bundle: nil)
         self.modalPresentationStyle = .overFullScreen
-        self.presenter = VerifyPulseAccountPresenter(verificationCodeModel: verificationCode)
+        self.presenter = VerifyPulseAccountPresenter(verificationCode: verificationCode)
     }
     
     required init?(coder: NSCoder) {

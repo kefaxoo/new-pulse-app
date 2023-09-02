@@ -43,7 +43,7 @@ final class SignUpPresenter: CoversPresenter<SignUpViewController> {
             MainCoordinator.shared.currentViewController?.dismissSpinner()
             SettingsManager.shared.pulse.username = email
             SettingsManager.shared.pulse.saveCredentials(pulseAccount)
-            VerifyPulseAccountPopUpViewController(verificationCode: createUser).present()
+            VerifyPulseAccountPopUpViewController(verificationCode: createUser.model).present()
         } failure: { error in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
             AlertView.shared.present(title: "Error", message: error?.errorDescription ?? "Unknown Pulse error", alertType: .error, system: .iOS16AppleMusic)

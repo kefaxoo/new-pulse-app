@@ -16,7 +16,7 @@ class ResponsePulseSuccessModel: Decodable {
         case image
     }
     
-    init(from decoder: Decoder) throws {
+    required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.success = try container.decode(String.self, forKey: .success)

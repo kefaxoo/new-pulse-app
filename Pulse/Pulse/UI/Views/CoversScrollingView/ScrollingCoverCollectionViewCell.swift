@@ -8,7 +8,7 @@
 import UIKit
 import SDWebImage
 
-class ScrollingCoverCollectionViewCell: UICollectionViewCell {
+class ScrollingCoverCollectionViewCell: BaseUICollectionViewCell {
     private lazy var mainView: UIView = UIView(with: .clear)
     private lazy var coverImageView: UIImageView = {
         let imageView = UIImageView()
@@ -18,32 +18,21 @@ class ScrollingCoverCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.setupInterface()
+    func setupImage(link: String) {
+        coverImageView.setImage(from: link)
     }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        self.setupInterface()
-    }
-    
-    private func setupInterface() {
-        setupLayout()
-        setupConstraints()
-    }
-    
-    private func setupLayout() {
+}
+
+// MARK: -
+// MARK: Setup interface methods
+extension ScrollingCoverCollectionViewCell {
+    override func setupLayout() {
         self.addSubview(mainView)
         mainView.addSubview(coverImageView)
     }
     
-    private func setupConstraints() {
+    override func setupConstraints() {
         mainView.snp.makeConstraints({ $0.edges.equalToSuperview() })
         coverImageView.snp.makeConstraints({ $0.edges.equalToSuperview() })
-    }
-    
-    func setupImage(link: String) {
-        coverImageView.setImage(from: link)
     }
 }

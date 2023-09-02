@@ -8,22 +8,22 @@
 import UIKit
 
 final class VerifyPulseAccountPresenter: BasePresenter {
-    private let verificationCodeModel: PulseCreateUser
+    private let verificationCodeModel: VerificationCode
     
     var verificationCodeAsString: String {
-        return "\(verificationCodeModel.verificationCode)"
+        return "\(verificationCodeModel.code)"
     }
     
     var descriptionText: String {
         return "To verify account, go to Telegram bot and enter \\verify \(self.verificationCodeAsString)"
     }
     
-    init(verificationCodeModel: PulseCreateUser) {
-        self.verificationCodeModel = verificationCodeModel
+    init(verificationCode: VerificationCode) {
+        self.verificationCodeModel = verificationCode
     }
     
     func openTelegramBot() {
-        guard let url = URL(string: verificationCodeModel.telegramBotLink) else { return }
+        guard let url = URL(string: verificationCodeModel.link) else { return }
         
         UIApplication.shared.open(url)
     }

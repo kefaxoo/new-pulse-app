@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class ResponsePulseErrorModel: Decodable {
+class ResponsePulseErrorModel: Decodable {
     let errorDescription: String
     let image           : String?
     
@@ -21,7 +21,7 @@ final class ResponsePulseErrorModel: Decodable {
         self.image = nil
     }
     
-    init(from decoder: Decoder) throws {
+    required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.errorDescription = try container.decode(String.self, forKey: .errorDescription)

@@ -54,7 +54,31 @@ final class SignInPresenter: CoversPresenter<SignInViewController> {
         MainCoordinator.shared.currentViewController?.presentSpinner()
         PulseProvider.shared.loginUser(credentials: pulseAccount.withEncryptedPassword) { loginUser in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
+            SettingsManager.shared.pulse.username = email
+            SettingsManager.shared.pulse.saveCredentials(pulseAccount)
             SettingsManager.shared.pulse.saveAcceessToken(Credentials(email: email, accessToken: loginUser.accessToken))
+        } failure: { error in
+            MainCoordinator.shared.currentViewController?.dismissSpinner()
+            AlertView.shared.present(title: "Error", message: error?.errorDescription ?? "Unknown Pulse error", alertType: .error, system: .iOS16AppleMusic)
+        } verifyClosure: { verificationCode in
+            MainCoordinator.shared.currentViewController?.dismissSpinner()
+            SettingsManager.shared.pulse.username = email
+            SettingsManager.shared.pulse.saveCredentials(pulseAccount)
+            VerifyPulseAccountPopUpViewController(verificationCode: verificationCode.model).present()
+        }
+    }
+    
+    func resetPassword(email: String?, password: String?) {
+        guard let email = self.checkTextFrom(text: email, textFieldKind: "email"),
+              let password = self.checkPassword(password)
+        else { return }
+        
+        let pulseAccount = Credentials(email: email, password: password)
+        MainCoordinator.shared.currentViewController?.presentSpinner()
+        PulseProvider.shared.resetPassword(credentials: pulseAccount) { verificationCode in
+            MainCoordinator.shared.currentViewController?.dismissSpinner()
+            SettingsManager.shared.pulse.username = email
+            VerifyPulseAccountPopUpViewController(verificationCode: verificationCode.model).present()
         } failure: { error in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
             AlertView.shared.present(title: "Error", message: error?.errorDescription ?? "Unknown Pulse error", alertType: .error, system: .iOS16AppleMusic)

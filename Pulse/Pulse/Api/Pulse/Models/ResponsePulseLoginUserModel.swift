@@ -16,7 +16,7 @@ final class ResponsePulseLoginUserModel: PulseSuccess {
         case isAdmin
     }
     
-    override init(from decoder: Decoder) throws {
+    required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.accessToken = try container.decode(String.self, forKey: .accessToken)

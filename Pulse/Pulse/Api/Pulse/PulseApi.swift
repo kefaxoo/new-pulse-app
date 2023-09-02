@@ -28,7 +28,7 @@ extension PulseApi: BaseRestApiEnum {
             case .createUser, .loginUser:
                 return "/user"
             case .resetPassword:
-                return "/resetPassword"
+                return "/user/resetPassword"
             case .topCovers:
                 return "/topCovers"
         }
@@ -52,11 +52,9 @@ extension PulseApi: BaseRestApiEnum {
     var parameters: FriendlyURLSession.Parameters? {
         var parameters = Parameters()
         switch self {
-            case .createUser(let credentials), .loginUser(let credentials):
+            case .createUser(let credentials), .loginUser(let credentials), .resetPassword(let credentials):
                 parameters["email"] = credentials.username
                 parameters["password"] = credentials.password
-            case .resetPassword(let credentials):
-                parameters["email"] = credentials.username
             case .topCovers(let country):
                 parameters["country"] = country
         }

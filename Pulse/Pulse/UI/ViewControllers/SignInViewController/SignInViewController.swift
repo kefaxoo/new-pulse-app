@@ -56,6 +56,7 @@ final class SignInViewController: CoversViewController {
         button.setTitle("Forget password?", for: .normal)
         button.setTitleColor(SettingsManager.shared.color.color, for: .normal)
         button.contentHorizontalAlignment = .trailing
+        button.addTarget(self, action: #selector(resetPasswordAction), for: .touchUpInside)
         return button
     }()
     
@@ -136,7 +137,13 @@ extension SignInViewController: SignInPresenterDelegate {
 // MARK: -
 // MARK: Actions
 extension SignInViewController {
-    @objc private func signInAction() {
+    @objc private func signInAction(_ sender: UIButton) {
         self.dismissKeyboard()
+        self.presenter.loginUser(email: emailTextField.text, password: passwordTextField.text)
+    }
+    
+    @objc private func resetPasswordAction(_ sender: UIButton) {
+        self.dismissKeyboard()
+        self.presenter.resetPassword(email: emailTextField.text, password: passwordTextField.text)
     }
 }

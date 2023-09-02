@@ -14,10 +14,17 @@
 		70399C642A9FE58200976098 /* NSRegularExpression+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70399C632A9FE58200976098 /* NSRegularExpression+Ext.swift */; };
 		7054EF4C2AA0B04200F55B92 /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7054EF4B2AA0B04200F55B92 /* PopUpViewController.swift */; };
 		7054EF4F2AA0B24F00F55B92 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7054EF4E2AA0B24F00F55B92 /* PaddingLabel.swift */; };
+		7069F73E2AA3194700255854 /* ResponsePulseLoginWithCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7069F73D2AA3194700255854 /* ResponsePulseLoginWithCodeModel.swift */; };
+		7069F7402AA31B8500255854 /* VerificationCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7069F73F2AA31B8500255854 /* VerificationCode.swift */; };
+		7069F7422AA31F2B00255854 /* ResponsePulseVerificationCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7069F7412AA31F2B00255854 /* ResponsePulseVerificationCodeModel.swift */; };
+		7069F7452AA3222C00255854 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7069F7442AA3222C00255854 /* MainTabBarController.swift */; };
+		7069F7472AA3225B00255854 /* BaseUICollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7069F7462AA3225B00255854 /* BaseUICollectionViewCell.swift */; };
+		7069F7492AA326F300255854 /* NowPlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7069F7482AA326F300255854 /* NowPlayingView.swift */; };
 		707FAF852A9E8E00008929FC /* UICollectionView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707FAF842A9E8E00008929FC /* UICollectionView+Ext.swift */; };
 		707FAF872A9E8E0B008929FC /* UICollectionViewCell+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707FAF862A9E8E0B008929FC /* UICollectionViewCell+Ext.swift */; };
 		707FAF892A9E8E56008929FC /* ScrollingCoverCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707FAF882A9E8E56008929FC /* ScrollingCoverCollectionViewCell.swift */; };
 		707FAF8B2A9E8F05008929FC /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707FAF8A2A9E8F05008929FC /* UIView+Ext.swift */; };
+		709858E42AA3298E00F58F6F /* CoverImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709858E32AA3298E00F58F6F /* CoverImageView.swift */; };
 		70996A122A9D395F00905847 /* PulseApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70996A112A9D395F00905847 /* PulseApi.swift */; };
 		70996A142A9D396400905847 /* PulseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70996A132A9D396400905847 /* PulseProvider.swift */; };
 		70996A172A9D397200905847 /* ResponsePulseErrorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70996A162A9D397200905847 /* ResponsePulseErrorModel.swift */; };
@@ -91,10 +98,17 @@
 		70399C632A9FE58200976098 /* NSRegularExpression+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Ext.swift"; sourceTree = "<group>"; };
 		7054EF4B2AA0B04200F55B92 /* PopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewController.swift; sourceTree = "<group>"; };
 		7054EF4E2AA0B24F00F55B92 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
+		7069F73D2AA3194700255854 /* ResponsePulseLoginWithCodeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseLoginWithCodeModel.swift; sourceTree = "<group>"; };
+		7069F73F2AA31B8500255854 /* VerificationCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationCode.swift; sourceTree = "<group>"; };
+		7069F7412AA31F2B00255854 /* ResponsePulseVerificationCodeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseVerificationCodeModel.swift; sourceTree = "<group>"; };
+		7069F7442AA3222C00255854 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		7069F7462AA3225B00255854 /* BaseUICollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUICollectionViewCell.swift; sourceTree = "<group>"; };
+		7069F7482AA326F300255854 /* NowPlayingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingView.swift; sourceTree = "<group>"; };
 		707FAF842A9E8E00008929FC /* UICollectionView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Ext.swift"; sourceTree = "<group>"; };
 		707FAF862A9E8E0B008929FC /* UICollectionViewCell+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Ext.swift"; sourceTree = "<group>"; };
 		707FAF882A9E8E56008929FC /* ScrollingCoverCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollingCoverCollectionViewCell.swift; sourceTree = "<group>"; };
 		707FAF8A2A9E8F05008929FC /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
+		709858E32AA3298E00F58F6F /* CoverImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverImageView.swift; sourceTree = "<group>"; };
 		70996A112A9D395F00905847 /* PulseApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseApi.swift; sourceTree = "<group>"; };
 		70996A132A9D396400905847 /* PulseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseProvider.swift; sourceTree = "<group>"; };
 		70996A162A9D397200905847 /* ResponsePulseErrorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseErrorModel.swift; sourceTree = "<group>"; };
@@ -189,6 +203,22 @@
 			path = Labels;
 			sourceTree = "<group>";
 		};
+		7069F7432AA3220F00255854 /* TabBarControllers */ = {
+			isa = PBXGroup;
+			children = (
+				7069F7442AA3222C00255854 /* MainTabBarController.swift */,
+			);
+			path = TabBarControllers;
+			sourceTree = "<group>";
+		};
+		7069F74B2AA3282100255854 /* ImageViews */ = {
+			isa = PBXGroup;
+			children = (
+				709858E32AA3298E00F58F6F /* CoverImageView.swift */,
+			);
+			path = ImageViews;
+			sourceTree = "<group>";
+		};
 		707FAF812A9E8D60008929FC /* CoversScrollingView */ = {
 			isa = PBXGroup;
 			children = (
@@ -228,6 +258,8 @@
 				70996A162A9D397200905847 /* ResponsePulseErrorModel.swift */,
 				70E3D5812AA13A3C0040E46A /* ResponsePulseSuccessModel.swift */,
 				70E3D5832AA13A8E0040E46A /* ResponsePulseLoginUserModel.swift */,
+				7069F73D2AA3194700255854 /* ResponsePulseLoginWithCodeModel.swift */,
+				7069F7412AA31F2B00255854 /* ResponsePulseVerificationCodeModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -303,6 +335,7 @@
 			children = (
 				70996A3E2A9D46EA00905847 /* Services */,
 				70996A432A9D48B700905847 /* Credentials.swift */,
+				7069F73F2AA31B8500255854 /* VerificationCode.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -318,6 +351,8 @@
 		70996A472A9D4D6900905847 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				7069F74B2AA3282100255854 /* ImageViews */,
+				7069F7432AA3220F00255854 /* TabBarControllers */,
 				7054EF4D2AA0B24800F55B92 /* Labels */,
 				70CDCE9A2A9FD88900FBB125 /* TextFields */,
 				70DB84432A9E8A0400BA9C89 /* Views */,
@@ -362,6 +397,7 @@
 			children = (
 				70AD04C12A9EA62800DC4517 /* BaseUIView.swift */,
 				70996A522A9D4DED00905847 /* BaseUIViewController.swift */,
+				7069F7462AA3225B00255854 /* BaseUICollectionViewCell.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -462,6 +498,7 @@
 				707FAF812A9E8D60008929FC /* CoversScrollingView */,
 				70399C612A9FE33200976098 /* AlertView.swift */,
 				70AD04BB2A9E9D4D00DC4517 /* StaticGradientView.swift */,
+				7069F7482AA326F300255854 /* NowPlayingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -606,13 +643,17 @@
 				70CDCE9E2A9FD8EA00FBB125 /* PasswordTextField.swift in Sources */,
 				7054EF4C2AA0B04200F55B92 /* PopUpViewController.swift in Sources */,
 				70996A1B2A9D3AA400905847 /* ResponsePulseCoverModel.swift in Sources */,
+				7069F7452AA3222C00255854 /* MainTabBarController.swift in Sources */,
 				70CDCE8C2A9FC2C900FBB125 /* CoversPresenter.swift in Sources */,
+				7069F7472AA3225B00255854 /* BaseUICollectionViewCell.swift in Sources */,
 				70996A302A9D439900905847 /* ipifyApi.swift in Sources */,
 				7054EF4F2AA0B24F00F55B92 /* PaddingLabel.swift in Sources */,
 				70996A2A2A9D3FA000905847 /* ipApiProvider.swift in Sources */,
 				70996A122A9D395F00905847 /* PulseApi.swift in Sources */,
 				70E3D5842AA13A8E0040E46A /* ResponsePulseLoginUserModel.swift in Sources */,
+				709858E42AA3298E00F58F6F /* CoverImageView.swift in Sources */,
 				70996A3A2A9D467700905847 /* MainCoordinator.swift in Sources */,
+				7069F7422AA31F2B00255854 /* ResponsePulseVerificationCodeModel.swift in Sources */,
 				70AD04BE2A9EA42100DC4517 /* ResponsePulseCreateUserModel.swift in Sources */,
 				70996A562A9D4FEE00905847 /* UILabel+Ext.swift in Sources */,
 				70996A3C2A9D46D100905847 /* SettingsManager.swift in Sources */,
@@ -636,10 +677,13 @@
 				70CDCE912A9FC9E700FBB125 /* SignUpPresenter.swift in Sources */,
 				70E3D5822AA13A3C0040E46A /* ResponsePulseSuccessModel.swift in Sources */,
 				707FAF872A9E8E0B008929FC /* UICollectionViewCell+Ext.swift in Sources */,
+				7069F73E2AA3194700255854 /* ResponsePulseLoginWithCodeModel.swift in Sources */,
 				70CDCE972A9FCBBF00FBB125 /* ImageManager.swift in Sources */,
 				70996A2C2A9D423F00905847 /* ResponseIpApiModel.swift in Sources */,
 				70E3D57C2AA131980040E46A /* SignInPresenter.swift in Sources */,
 				70996A5D2A9D55A300905847 /* UIColor+Ext.swift in Sources */,
+				7069F7492AA326F300255854 /* NowPlayingView.swift in Sources */,
+				7069F7402AA31B8500255854 /* VerificationCode.swift in Sources */,
 				81B8EE3C2AA0E17F00C7F53E /* VerifyPulseAccountPopUpViewController.swift in Sources */,
 				70996A352A9D443400905847 /* ApiTypealiases.swift in Sources */,
 				70996A322A9D43D900905847 /* ipifyProvider.swift in Sources */,
