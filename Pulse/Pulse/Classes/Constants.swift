@@ -40,6 +40,10 @@ final class Constants {
             static let eye             = "eye"
             static let eyeWithSlash    = "eye.slash"
             static let xInFilledCircle = "x.circle.fill"
+            static let eInFilledSquare = "e.square.fill"
+            static let playFilled      = "play.fill"
+            static let forwardFilled   = "forward.fill"
+            static let gear            = "gear"
         }
         
         final class Custom {

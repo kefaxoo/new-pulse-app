@@ -57,6 +57,7 @@ final class SignInPresenter: CoversPresenter<SignInViewController> {
             SettingsManager.shared.pulse.username = email
             SettingsManager.shared.pulse.saveCredentials(pulseAccount)
             SettingsManager.shared.pulse.saveAcceessToken(Credentials(email: email, accessToken: loginUser.accessToken))
+            MainCoordinator.shared.makeTabBarAsRoot()
         } failure: { error in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
             AlertView.shared.present(title: "Error", message: error?.errorDescription ?? "Unknown Pulse error", alertType: .error, system: .iOS16AppleMusic)
@@ -75,7 +76,7 @@ final class SignInPresenter: CoversPresenter<SignInViewController> {
         
         let pulseAccount = Credentials(email: email, password: password)
         MainCoordinator.shared.currentViewController?.presentSpinner()
-        PulseProvider.shared.resetPassword(credentials: pulseAccount) { verificationCode in
+        PulseProvider.shared.resetPassword(credentials: pulseAccount.withEncryptedPassword) { verificationCode in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
             SettingsManager.shared.pulse.username = email
             VerifyPulseAccountPopUpViewController(verificationCode: verificationCode.model).present()
