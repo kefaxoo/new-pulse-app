@@ -13,7 +13,7 @@ final class NetworkManager {
     fileprivate init() {}
     
     func updateValues() {
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global(qos: .background).async { [weak self] in
             ipifyProvider.shared.getIp { [weak self] ip in
                 self?.ip = ip
                 self?.getCountryCode()

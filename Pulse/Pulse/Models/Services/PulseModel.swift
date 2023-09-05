@@ -44,4 +44,13 @@ final class PulseModel {
         
         self.accessToken = credentials.password
     }
+    
+    func signOut() -> Bool {
+        guard credentialsKeychainModel.deleteAccount(username: username),
+              accessTokenKeychainModel.deleteAccount(username: username)
+        else { return false }
+        
+        username = ""
+        return true
+    }
 }

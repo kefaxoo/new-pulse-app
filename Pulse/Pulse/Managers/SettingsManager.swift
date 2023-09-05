@@ -24,4 +24,36 @@ final class SettingsManager {
             UserDefaults.standard.setValue(newValue.rawValue, forKey: Constants.UserDefaultsKey.colorType)
         }
     }
+    
+    // General settings
+    var isAdultContentEnabled: Bool {
+        get {
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKey.isAdultContentEnabled) as? Bool ?? true
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKey.isAdultContentEnabled)
+        }
+    }
+    
+    var isCanvasesEnabled: Bool {
+        get {
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKey.isCanvasesEnabled) as? Bool ?? true
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKey.isCanvasesEnabled)
+        }
+    }
+    
+    var autoDownload: Bool {
+        get {
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKey.autoDownload) as? Bool ?? false
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKey.autoDownload)
+        }
+    }
+    
+    func signOut() -> Bool {
+        return pulse.signOut()
+    }
 }

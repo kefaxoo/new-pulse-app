@@ -16,7 +16,7 @@ fileprivate final class NowPlayingTabBar: UITabBar {
         
         for member in subviews.reversed() {
             let subpoint = member.convert(point, from: self)
-            guard let result = member.hitTest(subpoint, with: event) else { return nil }
+            guard let result = member.hitTest(subpoint, with: event) else { continue }
             
             return result
         }

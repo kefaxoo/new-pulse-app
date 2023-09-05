@@ -38,13 +38,7 @@ final class SignUpViewController: CoversViewController {
         return textField
     }()
     
-    private lazy var passwordTextField: PasswordTextField = {
-        let textField = PasswordTextField(withPlaceholder: "Password")
-        textField.borderStyle = .roundedRect
-        textField.autocorrectionType = .no
-        textField.autocapitalizationType = .none
-        return textField
-    }()
+    private lazy var passwordTextField = PasswordTextField()
     
     private lazy var signUpButton: UIButton = {
         let button = UIButton()
