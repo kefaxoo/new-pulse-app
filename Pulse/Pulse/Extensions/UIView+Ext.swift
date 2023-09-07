@@ -13,5 +13,5 @@ extension UIView {
         self.backgroundColor = color
     }
     
-    static var spacer = UIView(with: .clear)
+    static let spacer = UIView(with: .clear)
 }

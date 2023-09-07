@@ -51,10 +51,12 @@ final class Constants {
             static let forwardFilled   = "forward.fill"
             static let gear            = "gear"
             static let chevronRight    = "chevron.right"
+            static let magnifyingGlass = "magnifyingglass"
+            static let ellipsis        = "ellipsis"
         }
         
         final class Custom {
-            static let vkMusicLogo = "VkMusicLogo"
+            static let soundcloudLogo = "SoundcloudLogo"
         }
     }
     

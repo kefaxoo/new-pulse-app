@@ -46,9 +46,9 @@ final class SignInPresenter: CoversPresenter<SignInViewController> {
     }
     
     func loginUser(email: String?, password: String?) {
-        guard let email = self.checkTextFrom(text: email, textFieldKind: "email"),
-              let password = self.checkPassword(password)
-        else { return }
+        guard let email = self.checkTextFrom(text: email, textFieldKind: "email") else { return }
+        
+        guard let password = email != "test@pulse.app" ? self.checkPassword(password) : self.checkTextFrom(text: password, textFieldKind: "password") else { return }
         
         let pulseAccount = Credentials(email: email, password: password)
         MainCoordinator.shared.currentViewController?.presentSpinner()

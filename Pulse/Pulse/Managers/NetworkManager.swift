@@ -10,6 +10,9 @@ import Foundation
 final class NetworkManager {
     static let shared = NetworkManager()
     
+    private(set) var city    : String?
+    private(set) var provider: String?
+    
     fileprivate init() {}
     
     func updateValues() {
@@ -46,8 +49,10 @@ extension NetworkManager {
     }
     
     func getCountryCode() {
-        ipApiProvider.shared.getCountryCode { [weak self] countryCode in
-            self?.country = countryCode
+        ipApiProvider.shared.getInfo { [weak self] model in
+            self?.country = model.countryCode ?? ""
+            self?.city = model.city
+            self?.provider = model.provider
         }
     }
 }

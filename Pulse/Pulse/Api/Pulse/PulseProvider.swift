@@ -115,4 +115,26 @@ final class PulseProvider: BaseRestApiProvider {
             }
         }
     }
+    
+    func sendLog(_ model: LogModel, success: ((PulseSuccess) -> ())? = nil, failure: PulseDefaultErrorClosure? = nil) {
+        urlSession.dataTask(with: URLRequest(type: PulseApi.log(log: model.log), shouldPrintLog: self.shouldPrintLog)) { response in
+            switch response {
+                case .success(let response):
+                    guard let model = response.data?.map(to: PulseSuccess.self) else {
+                        failure?(nil)
+                        return
+                    }
+                    
+                    success?(model)
+                case .failure(let response):
+                    if let error = response.error {
+                        failure?(PulseError(errorDescription: error.localizedDescription))
+                    } else if let error = response.data?.map(to: PulseError.self) {
+                        failure?(error)
+                    } else {
+                        failure?(nil)
+                    }
+            }
+        }
+    }
 }

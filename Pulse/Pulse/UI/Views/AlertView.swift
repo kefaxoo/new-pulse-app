@@ -22,7 +22,6 @@ final class AlertView {
         switch system {
             case .iOS16AppleMusic:
                 lastAlert16 = AlertAppleMusic16View(title: title, subtitle: message, icon: alertType)
-                
                 lastAlert16?.present(on: view)
             case .iOS17AppleMusic:
                 lastAlert17 = AlertAppleMusic17View(title: title, subtitle: message, icon: alertType)

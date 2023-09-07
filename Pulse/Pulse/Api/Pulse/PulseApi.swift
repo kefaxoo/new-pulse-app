@@ -16,6 +16,9 @@ enum PulseApi {
     
     // Covers
     case topCovers(country: String? = nil)
+    
+    // Log
+    case log(log: [String: Any])
 }
 
 extension PulseApi: BaseRestApiEnum {
@@ -31,12 +34,14 @@ extension PulseApi: BaseRestApiEnum {
                 return "/user/resetPassword"
             case .topCovers:
                 return "/topCovers"
+            case .log:
+                return "/log"
         }
     }
     
     var method: FriendlyURLSession.HTTPMethod {
         switch self {
-            case .createUser:
+            case .createUser, .log:
                 return .post
             default:
                 return .get
@@ -46,6 +51,15 @@ extension PulseApi: BaseRestApiEnum {
     var headers: FriendlyURLSession.Headers? {
         var headers = Headers()
         headers["User-Agent"] = NetworkManager.shared.userAgent
+        switch self {
+            case .log:
+                guard let accessToken = SettingsManager.shared.pulse.accessToken else { break }
+                
+                headers["Authorization"] = accessToken
+            default:
+                break
+        }
+        
         return headers
     }
     
@@ -57,8 +71,19 @@ extension PulseApi: BaseRestApiEnum {
                 parameters["password"] = credentials.password
             case .topCovers(let country):
                 parameters["country"] = country
+            default:
+                return nil
         }
         
         return parameters
+    }
+    
+    var body: JSON? {
+        switch self {
+            case .log(let log):
+                return log
+            default:
+                return nil
+        }
     }
 }
