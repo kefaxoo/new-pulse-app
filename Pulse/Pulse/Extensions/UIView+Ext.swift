@@ -12,4 +12,6 @@ extension UIView {
         self.init(frame: .zero)
         self.backgroundColor = color
     }
+    
+    static var spacer = UIView(with: .clear)
 }

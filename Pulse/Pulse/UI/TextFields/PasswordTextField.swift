@@ -29,9 +29,9 @@ final class PasswordTextField: UITextField {
         self.setupInterface()
     }
     
-    init(withPlaceholder: String) {
+    init() {
         super.init(frame: .zero)
-        self.placeholder = withPlaceholder
+        self.placeholder = "Password"
         self.setupInterface()
     }
     
@@ -39,6 +39,9 @@ final class PasswordTextField: UITextField {
         self.rightView = hideButton
         self.rightViewMode = .always
         self.isSecureTextEntry = true
+        self.borderStyle = .roundedRect
+        self.autocorrectionType = .no
+        self.autocapitalizationType = .none
     }
     
     @objc private func hidePasswordAction(_ sender: UIButton) {

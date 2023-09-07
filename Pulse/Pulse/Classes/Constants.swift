@@ -10,7 +10,7 @@ import Foundation
 final class Constants {
     final class UserDefaultsKey {
         // Network Manager
-        static let ip = "deviceIp"
+        static let ip      = "deviceIp"
         static let country = "deviceCountry"
         
         // Pulse
@@ -18,6 +18,12 @@ final class Constants {
         
         // Color
         static let colorType = "accentColorType"
+        
+        // MARK: Settings
+        // General settings
+        static let isAdultContentEnabled = "general.isAdultContentEnabled"
+        static let isCanvasesEnabled     = "general.isCanvasesEnabled"
+        static let autoDownload          = "general.autoDownload"
     }
     
     static var isDebug: Bool {
@@ -40,10 +46,15 @@ final class Constants {
             static let eye             = "eye"
             static let eyeWithSlash    = "eye.slash"
             static let xInFilledCircle = "x.circle.fill"
+            static let eInFilledSquare = "e.square.fill"
+            static let playFilled      = "play.fill"
+            static let forwardFilled   = "forward.fill"
+            static let gear            = "gear"
+            static let chevronRight    = "chevron.right"
         }
         
         final class Custom {
-            
+            static let vkMusicLogo = "VkMusicLogo"
         }
     }
     

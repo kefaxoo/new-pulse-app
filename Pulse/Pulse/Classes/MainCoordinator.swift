@@ -11,14 +11,25 @@ final class MainCoordinator {
     static let shared = MainCoordinator()
     
     var window: UIWindow?
-    private var currentNavigationController: UINavigationController?
+    var currentNavigationController: UINavigationController?
+    
+    var currentViewController: UIViewController? {
+        guard let rootVC = window?.rootViewController else { return nil }
+        
+        var currentVC: UIViewController! = rootVC
+        while currentVC.presentedViewController != nil {
+            currentVC = currentVC.presentedViewController
+        }
+        
+        return currentVC
+    }
     
     fileprivate init() {}
     
     func firstLaunch() {
         if let pulseAccessToken = SettingsManager.shared.pulse.accessToken,
            !pulseAccessToken.isEmpty {
-            
+            self.makeTabBarAsRoot()
         } else {
             self.makeAuthViewControllerAsRoot()
             guard !SettingsManager.shared.pulse.username.isEmpty else { return }
@@ -56,14 +67,8 @@ final class MainCoordinator {
         self.pushViewController(vc: signInVC)
     }
     
-    var currentViewController: UIViewController? {
-        guard let rootVC = window?.rootViewController else { return nil }
-        
-        var currentVC: UIViewController! = rootVC
-        while currentVC.presentedViewController != nil {
-            currentVC = currentVC.presentedViewController
-        }
-        
-        return currentVC
+    func makeTabBarAsRoot() {
+        let mainTabBarController = MainTabBarController()
+        self.makeRootVC(vc: mainTabBarController)
     }
 }

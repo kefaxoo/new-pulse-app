@@ -40,3 +40,9 @@ extension String {
         return result
     }
 }
+
+extension String {
+    init(length: Int, symbols: String) {
+        self = String((0..<length).map({ _ in symbols.randomElement()! }))
+    }
+}
