@@ -13,6 +13,7 @@ final class TrackTableViewCell: BaseUITableViewCell {
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFit
         imageView.layer.cornerRadius = 10
+        imageView.tintColor = SettingsManager.shared.color.color
         return imageView
     }()
     
@@ -20,10 +21,9 @@ final class TrackTableViewCell: BaseUITableViewCell {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.spacing = 8
+        stackView.distribution = .fillEqually
         return stackView
     }()
-    
-    private lazy var headerSpacer = UIView.spacer
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -60,8 +60,6 @@ final class TrackTableViewCell: BaseUITableViewCell {
         return label
     }()
     
-    private lazy var footerSpacer = UIView.spacer
-    
     private lazy var actionsButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: Constants.Images.System.ellipsis), for: .normal)
@@ -80,19 +78,28 @@ final class TrackTableViewCell: BaseUITableViewCell {
 }
 
 // MARK: -
+// MARK: Lifecycle methods
+extension TrackTableViewCell {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.coverImageView.image = nil
+        self.titleLabel.text = nil
+        self.serviceImageView.image = nil
+        self.artistLabel.text = nil
+    }
+}
+
+// MARK: -
 // MARK: Setup interface methods
 extension TrackTableViewCell {
     override func setupLayout() {
         self.contentView.addSubview(coverImageView)
         self.contentView.addSubview(trackInfoStackView)
-        trackInfoStackView.addArrangedSubview(headerSpacer)
         trackInfoStackView.addArrangedSubview(titleLabel)
         trackInfoStackView.addArrangedSubview(explicitAndArtistStackView)
         explicitAndArtistStackView.addArrangedSubview(serviceImageView)
         explicitAndArtistStackView.addArrangedSubview(explicitImageView)
         explicitAndArtistStackView.addArrangedSubview(artistLabel)
-        
-        trackInfoStackView.addArrangedSubview(footerSpacer)
         
         self.contentView.addSubview(actionsButton)
     }
@@ -111,12 +118,10 @@ extension TrackTableViewCell {
         }
         
         trackInfoStackView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
-            make.leading.equalTo(coverImageView.snp.trailing).offset(12)
-            make.trailing.equalTo(actionsButton.snp.leading).inset(12)
+            make.top.equalToSuperview().offset(12)
+            make.bottom.equalToSuperview().inset(12)
+            make.leading.equalTo(self.coverImageView.snp.trailing).offset(12)
+            make.trailing.equalTo(self.actionsButton.snp.leading).inset(12)
         }
-        
-        headerSpacer.snp.makeConstraints({ $0.width.equalTo(1) })
-        footerSpacer.snp.makeConstraints({ $0.width.equalTo(1) })
     }
 }

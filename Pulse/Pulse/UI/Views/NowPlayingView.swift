@@ -34,7 +34,7 @@ final class NowPlayingView: BaseUIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-        label.text = "Title"
+        label.text = "Not playing"
         return label
     }()
     
@@ -55,7 +55,7 @@ final class NowPlayingView: BaseUIView {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = UIColor(hex: "#848484")
-        label.text = "Artist"
+        label.isHidden = true
         return label
     }()
     
@@ -102,7 +102,7 @@ final class NowPlayingView: BaseUIView {
     }
     
     private func setupDelegate() {
-        // TODO: setup delegate
+        AudioPlayer.shared.nowPlayingViewDelegate = self
     }
     
     func setupTrackInfo() {
@@ -177,14 +177,36 @@ extension NowPlayingView {
 // MARK: Actions
 extension NowPlayingView {
     @objc private func playPauseAction() {
-        playPauseButton.setPlaying(!playPauseButton.isPlaying)
+        AudioPlayer.shared.playPause()
     }
     
     @objc private func nextTrackAction(_ sender: UIButton) {
-        
+        AudioPlayer.shared.nextTrack()
     }
     
     @objc private func presentNowPlayingVC() {
         
+    }
+}
+
+// MARK: -
+// MARK: AudioPlayerNowPlayingViewDelegate
+extension NowPlayingView: AudioPlayerNowPlayingViewDelegate {
+    func setupTrackInfo(_ track: TrackModel) {
+        self.titleLabel.text = track.title
+        self.artistLabel.text = track.artistText
+        self.artistLabel.isHidden = track.artistText.isEmpty
+    }
+    
+    func setupCover(_ cover: UIImage?) {
+        self.coverImageView.image = cover
+    }
+    
+    func updateDuration(_ duration: Float) {
+        self.durationProgressView.progress = duration
+    }
+    
+    func changeState(isPlaying: Bool) {
+        self.playPauseButton.changeState(isPlaying)
     }
 }

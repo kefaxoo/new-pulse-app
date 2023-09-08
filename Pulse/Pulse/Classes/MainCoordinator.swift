@@ -11,7 +11,15 @@ final class MainCoordinator {
     static let shared = MainCoordinator()
     
     var window: UIWindow?
-    var currentNavigationController: UINavigationController?
+    
+    private lazy var mainTabBarController: MainTabBarController = {
+        let mainTabBarController = MainTabBarController()
+        return mainTabBarController
+    }()
+    
+    var currentTabBarIndex: Int {
+        return mainTabBarController.selectedIndex
+    }
     
     var currentViewController: UIViewController? {
         guard let rootVC = window?.rootViewController else { return nil }
@@ -47,13 +55,12 @@ final class MainCoordinator {
     
     private func pushViewController(vc: UIViewController, animated: Bool = true) {
         DispatchQueue.main.async { [weak self] in
-            self?.currentNavigationController?.pushViewController(vc, animated: animated)
+            (self?.currentViewController as? UINavigationController)?.pushViewController(vc, animated: animated)
         }
     }
     
     func makeAuthViewControllerAsRoot() {
         let authVC = AuthViewController(nibName: nil, bundle: nil).configureNavigationController(preferesLargeTitles: false)
-        self.currentNavigationController = authVC
         self.makeRootVC(vc: authVC)
     }
     
@@ -68,7 +75,6 @@ final class MainCoordinator {
     }
     
     func makeTabBarAsRoot() {
-        let mainTabBarController = MainTabBarController()
-        self.makeRootVC(vc: mainTabBarController)
+        self.makeRootVC(vc: self.mainTabBarController)
     }
 }
