@@ -63,4 +63,26 @@ final class MuffonProvider: BaseRestApiProvider {
             }
         })
     }
+    
+    func trackInfo(id: Int, service: ServiceType, success: @escaping((MuffonTrack) -> ()), failure: @escaping(() -> ())) {
+        if self.shouldCancelTask {
+            task?.cancel()
+        }
+        
+        task = urlSession.returnDataTask(with: URLRequest(type: MuffonApi.trackInfoById(id, service: service), shouldPrintLog: self.shouldPrintLog), response: { response in
+            switch response {
+                case .success(let response):
+                    guard let track = response.data?.map(to: MuffonTrackInfo.self) else {
+                        failure()
+                        return
+                    }
+                    
+                    success(track.trackInfo)
+                case .failure(let response):
+                    guard response.statusCode != -1 else { return }
+                    
+                    failure()
+            }
+        })
+    }
 }

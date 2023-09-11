@@ -19,7 +19,7 @@ class ScrollingCoverCollectionViewCell: BaseUICollectionViewCell {
     }()
     
     func setupImage(link: String) {
-        coverImageView.setImage(from: link)
+        self.coverImageView.setImage(from: link)
     }
 }
 

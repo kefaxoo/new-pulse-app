@@ -16,8 +16,8 @@ final class NowPlayingView: BaseUIView {
         return view
     }()
     
-    private lazy var coverImageView: CoverImageView = {
-        let imageView = CoverImageView()
+    private lazy var coverImageView: UIImageView = {
+        let imageView = UIImageView()
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFit
         imageView.layer.cornerRadius = 10
@@ -42,6 +42,7 @@ final class NowPlayingView: BaseUIView {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = 6
+        stackView.isHidden = true
         return stackView
     }()
     
@@ -55,7 +56,6 @@ final class NowPlayingView: BaseUIView {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = UIColor(hex: "#848484")
-        label.isHidden = true
         return label
     }()
     
@@ -166,9 +166,8 @@ extension NowPlayingView {
         }
         
         durationProgressView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
             make.height.equalTo(2)
-            make.width.equalTo(UIScreen.main.bounds.width)
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
 }
@@ -195,7 +194,7 @@ extension NowPlayingView: AudioPlayerNowPlayingViewDelegate {
     func setupTrackInfo(_ track: TrackModel) {
         self.titleLabel.text = track.title
         self.artistLabel.text = track.artistText
-        self.artistLabel.isHidden = track.artistText.isEmpty
+        self.explicitAndArtistStackView.isHidden = track.artistText.isEmpty
     }
     
     func setupCover(_ cover: UIImage?) {

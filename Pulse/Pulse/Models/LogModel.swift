@@ -9,12 +9,11 @@ import Foundation
 
 struct LogModel {
     let log: [String: Any]
-    var attempToSend: Int = 0
     
-    init(callStack: [String], error: Any) {
+    init(callStack: [String], errorMessage: String) {
         self.log = [
             "callStack": callStack.joined(separator: ""),
-            "error": error
+            "error": errorMessage
         ]
     }
     
@@ -33,6 +32,7 @@ struct LogModel {
         return [
             "device": deviceInfo,
             "network": networkInfo,
+            "isDebug": Constants.isDebug,
             "log": log
         ]
     }

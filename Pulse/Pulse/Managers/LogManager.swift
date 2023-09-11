@@ -13,6 +13,8 @@ final class LogManager {
     fileprivate init() {}
     
     func sendLog(_ model: LogModel) {
+#if RELEASE
         PulseProvider.shared.sendLog(model)
+#endif
     }
 }

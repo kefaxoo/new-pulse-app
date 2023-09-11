@@ -9,8 +9,8 @@ import Foundation
 import RealmSwift
 
 final class LibraryArtistModel: Object {
-    @Persisted dynamic var name: String = ""
-    @Persisted dynamic var id  : Int = -1
+    @Persisted dynamic var name = ""
+    @Persisted dynamic var id   = -1
     
     convenience init(_ artist: ArtistModel) {
         self.init()

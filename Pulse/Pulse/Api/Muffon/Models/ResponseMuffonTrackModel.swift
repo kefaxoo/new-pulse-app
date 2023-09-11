@@ -29,6 +29,10 @@ final class ResponseMuffonTrackModel: Decodable {
     let image  : MuffonImage?
     let audio  : MuffonAudio
     
+    var `extension`: String {
+        return source.service == .spotify ? "ogg" : "mp3"
+    }
+    
     enum CodingKeys: CodingKey {
         case source
         case title

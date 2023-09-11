@@ -17,15 +17,20 @@ final class ArtistModel {
         self.id   = artist.id
     }
     
-    var library: LibraryArtistModel {
-        return LibraryArtistModel(self)
+    init(_ artist: LibraryArtistModel) {
+        self.name = artist.name
+        self.id   = artist.id
     }
 }
 
 extension [ArtistModel] {
     var library: List<LibraryArtistModel> {
-        var artists = List<LibraryArtistModel>()
+        let artists = List<LibraryArtistModel>()
         artists.append(objectsIn: self.map({ LibraryArtistModel($0) }))
         return artists
+    }
+    
+    var names: String {
+        return self.map({ $0.name }).joined(separator: ", ")
     }
 }

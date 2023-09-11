@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIImageView {
-    func setImage(from link: String) {
+    func setImage(from link: String?) {
         ImageManager.shared.image(from: link) { [weak self] image in
             self?.image = image
         }

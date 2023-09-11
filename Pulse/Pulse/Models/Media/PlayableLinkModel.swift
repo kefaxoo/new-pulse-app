@@ -19,4 +19,9 @@ final class PlayableLinkModel {
         streaming = model.link ?? ""
         offline   = model.link ?? ""
     }
+    
+    init(_ link: String) {
+        streaming = link
+        offline   = link
+    }
 }

@@ -27,12 +27,12 @@ fileprivate final class NowPlayingTabBar: UITabBar {
 
 final class MainTabBarController: UITabBarController {
     static var height: CGFloat {
-        return NowPlayingView.height + (MainCoordinator.shared.currentViewController?.tabBarController?.tabBar.frame.height ?? 0)
+        return MainCoordinator.shared.currentViewController?.tabBarController?.tabBar.frame.height ?? 0
     }
     
     private lazy var nowPlayingView = NowPlayingView()
-    private lazy var blurBackgroundView: UIView = {
-        let blurEffect = UIBlurEffect(style: .light)
+    private lazy var blurBackgroundView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: self.traitCollection.userInterfaceStyle == .dark ? .dark : .light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         return blurEffectView
     }()
@@ -66,7 +66,7 @@ final class MainTabBarController: UITabBarController {
     
     private func setupConstraints() {
         nowPlayingView.snp.makeConstraints { make in
-            make.width.equalTo(UIScreen.main.bounds.width)
+            make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(self.tabBar.snp.top)
         }
         
@@ -87,10 +87,18 @@ final class MainTabBarController: UITabBarController {
         let searchVC = SearchViewController(nibName: nil, bundle: nil)
         searchVC.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: Constants.Images.System.magnifyingGlass), tag: 1001)
         
+        let libraryVC = LibraryViewController(nibName: nil, bundle: nil)
+        libraryVC.tabBarItem = UITabBarItem(title: "Library", image: UIImage(systemName: Constants.Images.System.heart), selectedImage: UIImage(systemName: Constants.Images.System.heartFilled))
+        
         self.tabBar.tintColor = SettingsManager.shared.color.color
         self.viewControllers = [
+            libraryVC.configureNavigationController(title: "Library"),
             searchVC.configureNavigationController(title: "Search"),
             settingsVC.configureNavigationController(title: "Settings")
         ]
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        blurBackgroundView.effect = UIBlurEffect(style: self.traitCollection.userInterfaceStyle == .dark ? .dark : .light)
     }
 }

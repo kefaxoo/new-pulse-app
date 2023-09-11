@@ -12,6 +12,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         NetworkManager.shared.updateValues()
         MainCoordinator.shared.firstLaunch()
+        LibraryManager.shared.initialSetup()
+        
         return true
     }
 

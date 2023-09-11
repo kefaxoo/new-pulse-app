@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SourceType {
-    case muffon
-    case none
+enum SourceType: String {
+    case muffon = "muffon"
+    case none   = ""
 }

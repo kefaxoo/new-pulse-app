@@ -14,15 +14,15 @@ extension Data {
             object = try JSONDecoder().decode(type, from: self)
             return object
         } catch let DecodingError.dataCorrupted(context) {
-            debugPring(context)
+            debugLog(context)
         } catch let DecodingError.keyNotFound(key, context) {
-            debugPring("Key", key, "not found:", context.debugDescription, "\ncodingPath:", context.codingPath)
+            debugLog("Key", key, "not found:", context.debugDescription, "\ncodingPath:", context.codingPath)
         } catch let DecodingError.valueNotFound(value, context) {
-            debugPring("Value", value, "not found:", context.debugDescription, "\ncodingPath:", context.codingPath)
+            debugLog("Value", value, "not found:", context.debugDescription, "\ncodingPath:", context.codingPath)
         } catch let DecodingError.typeMismatch(type, context)  {
-            debugPring("Type", type, "mismatch:", context.debugDescription, "\ncodingPath", context.codingPath)
+            debugLog("Type", type, "mismatch:", context.debugDescription, "\ncodingPath", context.codingPath)
         } catch {
-            debugPring("error:", error)
+            debugLog("error:", error)
         }
         
         return nil
