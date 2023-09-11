@@ -6,6 +6,16 @@
 //
 
 import Foundation
+import Network
+
+enum NetworkState {
+    case hasInternet
+    case noInternet
+}
+
+protocol NetworkManagerDelegate: AnyObject {
+    func networkStateDidChange(_ status: NetworkState)
+}
 
 final class NetworkManager {
     static let shared = NetworkManager()
@@ -13,7 +23,18 @@ final class NetworkManager {
     private(set) var city    : String?
     private(set) var provider: String?
     
-    fileprivate init() {}
+    private lazy var monitor = NWPathMonitor()
+    private var status: NWPath.Status = .requiresConnection
+    private(set) var isReachableOnCellurar = false
+    private var isReachable: Bool {
+        return self.status == .satisfied
+    }
+    
+    weak var delegate: NetworkManagerDelegate?
+    
+    fileprivate init() {
+        self.startMonitoring()
+    }
     
     func updateValues() {
         DispatchQueue.global(qos: .background).async { [weak self] in
@@ -24,6 +45,10 @@ final class NetworkManager {
                 self?.getCountryCode()
             }
         }
+    }
+    
+    deinit {
+        self.stopMonitoring()
     }
 }
 
@@ -86,5 +111,28 @@ extension NetworkManager {
     
     var userAgent: String {
         return "\(appNameAndVersion) \(cfNetworkVersion) \(darvinVersion)"
+    }
+}
+
+// MARK: -
+// MARK: Monitoring
+extension NetworkManager {
+    private func startMonitoring() {
+        monitor.pathUpdateHandler = { [weak self] path in
+            guard let self,
+                  self.isReachable != (path.status == .satisfied && path.isExpensive)
+            else { return }
+            
+            self.status = path.status
+            self.isReachableOnCellurar = path.isExpensive
+            self.delegate?.networkStateDidChange(self.isReachable ? .hasInternet : .noInternet)
+        }
+        
+        let queue = DispatchQueue(label: "NetworkMonitor")
+        monitor.start(queue: queue)
+    }
+    
+    private func stopMonitoring() {
+        monitor.cancel()
     }
 }

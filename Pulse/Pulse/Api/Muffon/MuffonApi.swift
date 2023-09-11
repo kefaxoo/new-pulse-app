@@ -11,6 +11,7 @@ import FriendlyURLSession
 enum MuffonApi {
     case search(type: SearchType, service: ServiceType, query: String)
     case trackInfo(_ track: TrackModel)
+    case trackInfoById(_ id: Int, service: ServiceType)
 }
 
 extension MuffonApi: BaseRestApiEnum {
@@ -24,6 +25,8 @@ extension MuffonApi: BaseRestApiEnum {
                 return "/\(service.muffonApi)/search/\(type.muffonApi)"
             case .trackInfo(let track):
                 return "/\(track.service.muffonApi)/tracks/\(track.id)/"
+            case .trackInfoById(let id, let service):
+                return "/\(service.muffonApi)/tracks/\(id)/"
         }
     }
     

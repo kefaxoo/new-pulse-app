@@ -9,7 +9,11 @@ import Foundation
 
 final class ResponseMuffonLinksModel: Decodable {
     let streaming: String
-    let universal: String
+    let universal: String?
+    
+    var shareLink: String {
+        return universal ?? streaming
+    }
     
     enum CodingKeys: String, CodingKey {
         case streaming = "original"
@@ -20,6 +24,6 @@ final class ResponseMuffonLinksModel: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.streaming = try container.decode(String.self, forKey: .streaming)
-        self.universal = try container.decode(String.self, forKey: .universal)
+        self.universal = try container.decodeIfPresent(String.self, forKey: .universal)
     }
 }

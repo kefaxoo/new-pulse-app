@@ -50,6 +50,13 @@ final class SearchPresenter: BasePresenter {
     func textDidChange(_ text: String) {
         timer?.invalidate()
         
+        if text.isEmpty {
+            self.searchResponse = nil
+            self.delegate?.reloadData()
+            MuffonProvider.shared.cancelTask()
+            return
+        }
+        
         self.query = text
         timer = Timer(timeInterval: 1, target: self, selector: #selector(search), userInfo: nil, repeats: false)
         timer?.fire()
@@ -93,7 +100,7 @@ final class SearchPresenter: BasePresenter {
         return self.setupCell(tableView.dequeueReusableCell(withIdentifier: self.currentType.id, for: indexPath), for: indexPath)
     }
     
-    private func setupCell(_ cell: UITableViewCell, for indexPath: IndexPath) -> UITableViewCell {
+    func setupCell(_ cell: UITableViewCell, for indexPath: IndexPath) -> UITableViewCell {
         guard self.currentType != .none else { return UITableViewCell() }
         
         switch self.currentType {
@@ -123,7 +130,7 @@ final class SearchPresenter: BasePresenter {
                 else { return }
                 
                 let track = playlist[indexPath.item]
-                if track.playableLinks.streamingLinkNeedsToRefresh {
+                if track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
                     AudioManager.shared.updatePlayableLink(for: track) { [weak self] updatedTrack in
                         self?.searchResponse?.results[indexPath.item] = updatedTrack.response
                         AudioPlayer.shared.play(from: updatedTrack.track, playlist: playlist, position: indexPath.item)

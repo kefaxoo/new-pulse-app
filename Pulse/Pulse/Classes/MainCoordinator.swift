@@ -29,6 +29,13 @@ final class MainCoordinator {
             currentVC = currentVC.presentedViewController
         }
         
+        if currentVC is MainTabBarController {
+            currentVC = mainTabBarController.viewControllers?[self.currentTabBarIndex]
+            while currentVC.presentedViewController != nil {
+                currentVC = currentVC.presentedViewController
+            }
+        }
+        
         return currentVC
     }
     
@@ -76,5 +83,20 @@ final class MainCoordinator {
     
     func makeTabBarAsRoot() {
         self.makeRootVC(vc: self.mainTabBarController)
+    }
+    
+    func present(_ vc: UIViewController, animated: Bool = true) {
+        self.currentViewController?.present(vc, animated: animated)
+    }
+    
+    func popViewController(animated: Bool = true) {
+        DispatchQueue.main.async {
+            (self.currentViewController as? UINavigationController)?.popViewController(animated: animated)
+        }
+    }
+    
+    func pushTracksViewController(type: LibraryControllerType) {
+        let tracksVC = TracksViewController(type: type)
+        self.pushViewController(vc: tracksVC)
     }
 }

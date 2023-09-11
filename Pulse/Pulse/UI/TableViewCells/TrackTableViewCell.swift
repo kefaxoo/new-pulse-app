@@ -8,8 +8,8 @@
 import UIKit
 
 final class TrackTableViewCell: BaseUITableViewCell {
-    private lazy var coverImageView: CoverImageView = {
-        let imageView = CoverImageView()
+    private lazy var coverImageView: UIImageView = {
+        let imageView = UIImageView()
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFit
         imageView.layer.cornerRadius = 10
@@ -35,7 +35,8 @@ final class TrackTableViewCell: BaseUITableViewCell {
     private lazy var serviceImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = 10
+        imageView.layer.cornerRadius = 6
+        imageView.layer.masksToBounds = true
         return imageView
     }()
     
@@ -64,16 +65,26 @@ final class TrackTableViewCell: BaseUITableViewCell {
         let button = UIButton()
         button.setImage(UIImage(systemName: Constants.Images.System.ellipsis), for: .normal)
         button.tintColor = SettingsManager.shared.color.color
+        button.showsMenuAsPrimaryAction = true
         return button
     }()
     
+    private lazy var actionsManager: ActionsManager = {
+        return ActionsManager(self)
+    }()
+    
+    private var track: TrackModel?
+    
     func setupCell(_ track: TrackModel, isSearchController: Bool = false) {
-        self.coverImageView.setImage(from: track.image.small)
+        self.track = track
+        self.coverImageView.setImage(from: track.image?.small)
+        
         self.titleLabel.text  = track.title
         self.artistLabel.text = track.artistText
         self.serviceImageView.isHidden = isSearchController
         self.serviceImageView.image = track.service.image
         self.explicitImageView.isHidden = true
+        self.actionsButton.menu = actionsManager.trackActions(track)
     }
 }
 
@@ -86,6 +97,7 @@ extension TrackTableViewCell {
         self.titleLabel.text = nil
         self.serviceImageView.image = nil
         self.artistLabel.text = nil
+        self.actionsButton.menu = nil
     }
 }
 
@@ -123,5 +135,27 @@ extension TrackTableViewCell {
             make.leading.equalTo(self.coverImageView.snp.trailing).offset(12)
             make.trailing.equalTo(self.actionsButton.snp.leading).inset(12)
         }
+        
+        serviceImageView.snp.makeConstraints { make in
+            make.height.width.equalTo(self.explicitAndArtistStackView.snp.height)
+        }
+    }
+}
+
+// MARK: -
+// MARK: ActionsManagerDelegate
+extension TrackTableViewCell: ActionsManagerDelegate {
+    func updatedTrack(_ track: TrackModel) {
+        self.track = track
+    }
+    
+    func updateButtonMenu() {
+        guard let track else { return }
+        
+        actionsButton.menu = actionsManager.trackActions(track)
+    }
+    
+    func reloadData() {
+        self.delegate?.reloadData()
     }
 }

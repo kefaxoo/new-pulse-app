@@ -41,4 +41,10 @@ final class AudioManager {
                 return nil
         }
     }
+    
+    func getLocalLink(for track: TrackModel) -> String? {
+        guard !track.trackFilename.isEmpty else { return nil }
+        
+        return URL(filename: track.cachedFilename, path: .documentDirectory)?.absoluteString
+    }
 }

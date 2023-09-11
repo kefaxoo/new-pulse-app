@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol TableViewCellDelegate: AnyObject {
+    func reloadData()
+}
+
 class BaseUITableViewCell: UITableViewCell {
+    weak var delegate: TableViewCellDelegate?
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         self.setupInterface()

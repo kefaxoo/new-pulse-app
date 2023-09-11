@@ -12,6 +12,7 @@ enum SettingType {
     case `import`
     case canvasEnabled
     case autoDownload
+//    case accentColor
     case about
     
     var cellType: CellType {

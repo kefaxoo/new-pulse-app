@@ -41,19 +41,25 @@ final class Constants {
     
     final class Images {
         final class System {
-            static let appleLogo       = "apple.logo"
-            static let exclamationMark = "exclamationmark.triangle"
-            static let eye             = "eye"
-            static let eyeWithSlash    = "eye.slash"
-            static let xInFilledCircle = "x.circle.fill"
-            static let eInFilledSquare = "e.square.fill"
-            static let playFilled      = "play.fill"
-            static let forwardFilled   = "forward.fill"
-            static let gear            = "gear"
-            static let chevronRight    = "chevron.right"
-            static let magnifyingGlass = "magnifyingglass"
-            static let ellipsis        = "ellipsis"
-            static let pauseFilled     = "pause.fill"
+            static let appleLogo            = "apple.logo"
+            static let exclamationMark      = "exclamationmark.triangle"
+            static let eye                  = "eye"
+            static let eyeWithSlash         = "eye.slash"
+            static let xInFilledCircle      = "x.circle.fill"
+            static let eInFilledSquare      = "e.square.fill"
+            static let playFilled           = "play.fill"
+            static let forwardFilled        = "forward.fill"
+            static let gear                 = "gear"
+            static let chevronRight         = "chevron.right"
+            static let magnifyingGlass      = "magnifyingglass"
+            static let ellipsis             = "ellipsis"
+            static let pauseFilled          = "pause.fill"
+            static let heart                = "heart"
+            static let heartFilled          = "heart.fill"
+            static let heartWithSlashFilled = "heart.slash.fill"
+            static let share                = "square.and.arrow.up"
+            static let musicNote            = "music.note"
+            static let download             = "square.and.arrow.down"
         }
         
         final class Custom {

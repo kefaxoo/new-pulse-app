@@ -14,8 +14,8 @@ final class RealmManager<T> where T: Object {
     }()
     
     func write(object: T) {
-        try? realm.write {
-            realm.add(object)
+        try? realm.write { [weak self] in
+            self?.realm.add(object)
         }
     }
     
@@ -28,8 +28,8 @@ final class RealmManager<T> where T: Object {
     }
     
     func delete(object: T) {
-        try? realm.write {
-            realm.delete(object)
+        try? realm.write { [weak self] in
+            self?.realm.delete(object)
         }
     }
 }
