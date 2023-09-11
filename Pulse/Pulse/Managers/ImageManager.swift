@@ -19,8 +19,13 @@ final class ImageManager {
             return
         }
         
-        SDWebImageManager.shared.loadImage(with: URL(string: link), progress: nil) { image, _, _, _, _, _ in
-            imageClosure(image ?? UIImage(systemName: Constants.Images.System.exclamationMark))
+        SDWebImageManager.shared.loadImage(with: URL(string: link), progress: nil) { image, _, error, _, _, _ in
+            guard error != nil else {
+                imageClosure(UIImage(systemName: Constants.Images.System.exclamationMark))
+                return
+            }
+            
+            imageClosure(image)
         }
     }
 }

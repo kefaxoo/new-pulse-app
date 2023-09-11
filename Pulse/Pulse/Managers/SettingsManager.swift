@@ -25,7 +25,16 @@ final class SettingsManager {
         }
     }
     
-    // General settings
+    // MARK: Realm configuration
+    var realmConfiguration: Realm.Configuration {
+        let configuration = Realm.Configuration(schemaVersion: 1) { migration, oldSchemaVersion in
+            
+        }
+        
+        return configuration
+    }
+    
+    // MARK: General settings
     var isAdultContentEnabled: Bool {
         get {
             return UserDefaults.standard.value(forKey: Constants.UserDefaultsKey.isAdultContentEnabled) as? Bool ?? true

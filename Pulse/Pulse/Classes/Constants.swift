@@ -53,6 +53,7 @@ final class Constants {
             static let chevronRight    = "chevron.right"
             static let magnifyingGlass = "magnifyingglass"
             static let ellipsis        = "ellipsis"
+            static let pauseFilled     = "pause.fill"
         }
         
         final class Custom {

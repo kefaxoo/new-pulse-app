@@ -92,9 +92,5 @@ final class MainTabBarController: UITabBarController {
             searchVC.configureNavigationController(title: "Search"),
             settingsVC.configureNavigationController(title: "Settings")
         ]
-        
-        guard let firstNavigationController = self.viewControllers?.first(where: { $0 as? UINavigationController != nil }) else { return }
-        
-        MainCoordinator.shared.currentNavigationController = firstNavigationController as? UINavigationController
     }
 }

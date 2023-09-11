@@ -7,13 +7,13 @@
 
 import UIKit
 
-enum ServiceType {
-    case vk
-    case yandexMusic
-    case spotify
-    case deezer
-    case soundcloud
-    case none
+enum ServiceType: String {
+    case vk          = "vk"
+    case yandexMusic = "yandexMusic"
+    case spotify     = "spotify"
+    case deezer      = "deezer"
+    case soundcloud  = "soundcloud"
+    case none        = ""
     
     var muffonApi: String {
         switch self {

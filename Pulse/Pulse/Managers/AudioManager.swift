@@ -17,17 +17,28 @@ final class AudioManager {
     
     fileprivate init() {}
     
-    func updatePlayableLink(for track: TrackModel, success: @escaping((UpdatedTrack) -> ()), failure: @escaping(() -> ())) {
+    func updatePlayableLink(for track: TrackModel, success: @escaping((UpdatedTrack) -> ()), failure: (() -> ())? = nil) {
         switch track.service.source {
             case .muffon:
                 MuffonProvider.shared.trackInfo(track) { muffonTrack in
                     let track = TrackModel(muffonTrack)
                     success(UpdatedTrack(track: track, response: muffonTrack))
                 } failure: {
-                    failure()
+                    failure?()
                 }
             case .none:
-                failure()
+                failure?()
+        }
+    }
+    
+    func convertPlaylist(_ playlist: [Decodable], source: SourceType) -> [TrackModel]? {
+        switch source {
+            case .muffon:
+                guard let playlist = playlist as? [MuffonTrack] else { return nil }
+                
+                return playlist.map({ TrackModel($0) })
+            case .none:
+                return nil
         }
     }
 }

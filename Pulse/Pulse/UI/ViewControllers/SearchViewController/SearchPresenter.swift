@@ -70,10 +70,15 @@ final class SearchPresenter: BasePresenter {
         
         guard !self.query.isEmpty else {
             MuffonProvider.shared.cancelTask()
+            MainCoordinator.shared.currentViewController?.dismissSpinner()
             return
         }
         
-        MainCoordinator.shared.currentViewController?.presentSpinner()
+        if let isSpinnerPresented = MainCoordinator.shared.currentViewController?.isSpinnerPresented,
+           !isSpinnerPresented {
+            MainCoordinator.shared.currentViewController?.presentSpinner()
+        }
+        
         MuffonProvider.shared.search(query: query, in: self.currentService, type: self.currentType) { [weak self] response in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
             self?.searchResponse = response
@@ -113,16 +118,18 @@ final class SearchPresenter: BasePresenter {
     func didSelectRow(at indexPath: IndexPath) {
         switch self.currentType {
             case .tracks:
-                guard let muffonTrack = self.searchResponse?.results[indexPath.item] as? MuffonTrack else { return }
+                guard let playlist = AudioManager.shared.convertPlaylist(self.searchResponse?.results ?? [], source: self.currentSource),
+                      playlist.count == (self.searchResponse?.results.count ?? 0)
+                else { return }
                 
-                let track = TrackModel(muffonTrack)
+                let track = playlist[indexPath.item]
                 if track.playableLinks.streamingLinkNeedsToRefresh {
-                    AudioManager.shared.updatePlayableLink(for: track) { updatedTrack in
-                        self.searchResponse?.results[indexPath.item] = updatedTrack.response
-                        AudioPlayer.shared.play(from: updatedTrack.track)
-                    } failure: {}
+                    AudioManager.shared.updatePlayableLink(for: track) { [weak self] updatedTrack in
+                        self?.searchResponse?.results[indexPath.item] = updatedTrack.response
+                        AudioPlayer.shared.play(from: updatedTrack.track, playlist: playlist, position: indexPath.item)
+                    }
                 } else {
-                    AudioPlayer.shared.play(from: track)
+                    AudioPlayer.shared.play(from: track, playlist: playlist, position: indexPath.item)
                 }
             default:
                 return
