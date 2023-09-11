@@ -12,13 +12,16 @@ class SettingsViewController: BaseUIViewController {
     private lazy var settingsTableView: UITableView = {
         let tableView = UITableView()
         tableView.dataSource = self
-        tableView.register(SwitchTableViewCell.self, TextTableViewCell.self, ChevronTableViewCell.self, VKAuthTableViewCell.self)
+        tableView.register(SwitchTableViewCell.self, TextTableViewCell.self, ChevronTableViewCell.self)
         tableView.delegate = self
         return tableView
     }()
     
     private var closure: (() -> ())
-    private var sections = SettingSectionType.allCases
+    private lazy var presenter: SettingsPresenter = {
+        let presenter = SettingsPresenter()
+        return presenter
+    }()
     
     init(closure: @escaping(() -> ())) {
         self.closure = closure
@@ -67,36 +70,20 @@ extension SettingsViewController {
 // MARK: UITableViewDataSource
 extension SettingsViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.sections.count
+        return self.presenter.numberOfSections
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.sections[section].settings.count
+        return self.presenter.numberOfRows(in: section)
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return self.sections[section].title
+        return self.presenter.headerTitle(in: section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let setting = self.sections[indexPath.section].settings[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: setting.id, for: indexPath)
-        switch setting.cellType {
-            case .switch:
-                guard let switchCell = cell as? SwitchTableViewCell else { return cell }
-                
-                switchCell.setupCell(type: setting) { newState in
-                    setting.setState(newState)
-                }
-                
-                return switchCell
-            case .text:
-                (cell as? TextTableViewCell)?.setupCell(type: setting)
-                return cell
-            case .chevronText:
-                (cell as? ChevronTableViewCell)?.setupCell(type: setting)
-                return cell
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: self.presenter.cellIdFor(indexPath: indexPath), for: indexPath)
+        return self.presenter.setupCell(cell, for: indexPath)
     }
 }
 

@@ -15,16 +15,16 @@ final class ipApiProvider: BaseRestApiProvider {
         super.init(shouldPrintLog: Constants.isDebug, shouldCancelTask: shouldCancelTask)
     }
     
-    func getCountryCode(success: @escaping((String) -> ()), failure: EmptyClosure? = nil) {
+    func getInfo(success: @escaping((IpModel) -> ()), failure: EmptyClosure? = nil) {
         urlSession.dataTask(with: URLRequest(type: ipApi.getCountry, shouldPrintLog: self.shouldPrintLog)) { response in
             switch response {
                 case .success(let response):
-                    guard let countryCode = response.data?.map(to: ResponseIpApiModel.self)?.countryCode else {
+                    guard let ipModel = response.data?.map(to: ResponseIpApiModel.self) else {
                         failure?()
                         return
                     }
                     
-                    success(countryCode)
+                    success(ipModel)
                 case .failure:
                     failure?()
             }

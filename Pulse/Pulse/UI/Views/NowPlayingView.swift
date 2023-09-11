@@ -8,6 +8,8 @@
 import UIKit
 
 final class NowPlayingView: BaseUIView {
+    static let height: CGFloat = 55
+    
     private lazy var contentView: UIView = {
         let view = UIView(with: .clear)
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(presentNowPlayingVC)))
@@ -128,7 +130,7 @@ extension NowPlayingView {
     override func setupConstraints() {
         contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-            make.height.equalTo(55)
+            make.height.equalTo(NowPlayingView.height)
             make.width.equalTo(UIScreen.main.bounds.width)
         }
         
