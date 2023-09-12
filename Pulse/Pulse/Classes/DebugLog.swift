@@ -9,7 +9,7 @@ import Foundation
 
 func debugLog(_ items: Any?...) {
 #if DEBUG
-    let line = items.map({ String(describing: $0) }).joined(separator: " ")
+    let line = items.map({ "\($0 ?? "")" }).joined(separator: " ")
     print(line)
 #endif
 }

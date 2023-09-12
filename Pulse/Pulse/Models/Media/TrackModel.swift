@@ -5,7 +5,27 @@
 //  Created by Bahdan Piatrouski on 7.09.23.
 //
 
-import Foundation
+import UIKit
+
+enum TrackLibraryState {
+    case added
+    case downloaded
+    case none
+    
+    var image: UIImage? {
+        let imageType: ConstantsEnum.Images?
+        switch self {
+            case .added:
+                imageType = .inLibrary
+            case .downloaded:
+                imageType = .downloaded
+            case .none:
+                imageType = nil
+        }
+        
+        return imageType?.image
+    }
+}
 
 final class TrackModel {
     let id         : Int
@@ -23,6 +43,16 @@ final class TrackModel {
     var cachedFilename = ""
     var trackFilename  : String {
         return "Tracks/\(self.service.rawValue)-\(self.id).\(self.extension)"
+    }
+    
+    var libraryState: TrackLibraryState {
+        if LibraryManager.shared.isTrackDownloaded(self) {
+            return .downloaded
+        } else if LibraryManager.shared.isTrackInLibrary(self) {
+            return .added
+        }
+        
+        return .none
     }
     
     init(_ track: MuffonTrack) {

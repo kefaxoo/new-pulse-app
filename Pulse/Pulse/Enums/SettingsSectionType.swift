@@ -23,7 +23,7 @@ enum SettingSectionType: CaseIterable {
     var settings: [SettingType] {
         switch self {
             case .general:
-                return [.adultContent, .import, .canvasEnabled]
+                return [.adultContent, .import, .autoDownload, .canvasEnabled]
             case .help:
                 return [.about]
         }

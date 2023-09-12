@@ -10,19 +10,42 @@ import UIKit
 enum ConstantsEnum {
     enum Images {
         case warning
+        case inLibrary
+        case downloaded
+        case removeBin
+        case playNext
+        case playLast
         
         var image: UIImage? {
+            let type: System
             switch self {
                 case .warning:
-                    return System.warning.image
+                    type = .warning
+                case .inLibrary:
+                    type = .downloaded
+                case .downloaded:
+                    type = .downloaded
+                case .removeBin:
+                    type = .removeBin
+                case .playNext:
+                    type = .playNext
+                case .playLast:
+                    type = .playLast
             }
+            
+            return type.image
         }
     }
 }
 
 extension ConstantsEnum.Images {
     fileprivate enum System: String {
-        case warning = "exclamationmark.triangle"
+        case warning    = "exclamationmark.triangle"
+        case inLibrary  = "heart.fill"
+        case downloaded = "arrow.down.heart.fill"
+        case removeBin  = "trash.fill"
+        case playNext   = "text.insert"
+        case playLast   = "text.append"
         
         var image: UIImage? {
             return UIImage(systemName: self.rawValue)

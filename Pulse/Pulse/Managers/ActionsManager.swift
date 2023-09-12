@@ -27,13 +27,13 @@ final class ActionsManager {
     func trackActions(_ track: TrackModel) -> UIMenu {
         var libraryActions = [UIAction]()
         if LibraryManager.shared.isTrackInLibrary(track) {
-            libraryActions.append(self.removeTrackToLibrary(track))
+            libraryActions.append(self.removeTrackFromLibrary(track))
             if !LibraryManager.shared.isTrackDownloaded(track) {
                 if !LibraryManager.shared.isTrackDownloading(track) {
-                    libraryActions.append(downloadTrack(track))
+                    libraryActions.append(self.downloadTrack(track))
                 }
             } else {
-                
+                libraryActions.append(self.removeCacheFromLibrary(track))
             }
         } else {
             libraryActions.append(self.addTrackToLibrary(track))
@@ -41,9 +41,11 @@ final class ActionsManager {
         
         let libraryMenu = UIMenu(options: .displayInline, children: libraryActions)
         
+        let playerMenu = UIMenu(options: .displayInline, children: [self.playNext(track), self.playLast(track)])
+        
         let shareMenu = UIMenu(options: .displayInline, children: [self.shareTrackAsLink(track), self.shareTrackAsFile(track)])
         
-        return UIMenu(options: .displayInline, children: [libraryMenu, shareMenu])
+        return UIMenu(options: .displayInline, children: [libraryMenu, playerMenu, shareMenu])
     }
     
     private func addTrackToLibrary(_ track: TrackModel) -> UIAction {
@@ -59,13 +61,17 @@ final class ActionsManager {
         return action
     }
     
-    private func removeTrackToLibrary(_ track: TrackModel) -> UIAction {
+    private func removeTrackFromLibrary(_ track: TrackModel) -> UIAction {
         let action = UIAction(title: "Remove from library", image: UIImage(systemName: Constants.Images.System.heartWithSlashFilled), attributes: .destructive) { _ in
             guard let libraryTrack = RealmManager<LibraryTrackModel>().read().first(where: { $0.id == track.id && $0.service == track.service.rawValue }) else { return }
             
             if !libraryTrack.coverFilename.isEmpty,
                RealmManager<LibraryTrackModel>().read().filter({ track.image?.contains($0.coverFilename) ?? false }).count < 2 {
-                _ = LibraryManager.shared.removeFile(URL(filename: track.image?.original ?? "", path: .documentDirectory))
+                _ = LibraryManager.shared.removeFile(URL(filename: libraryTrack.coverFilename, path: .documentDirectory))
+            }
+            
+            if !libraryTrack.trackFilename.isEmpty {
+                _ = LibraryManager.shared.removeFile(URL(filename: libraryTrack.trackFilename, path: .documentDirectory))
             }
             
             let tracks = RealmManager<LibraryTrackModel>().read().filter({ $0.artistId == (track.artist?.id ?? -1) || $0.artistIds.contains(track.artist?.id ?? -1) })
@@ -87,6 +93,25 @@ final class ActionsManager {
         let action = UIAction(title: "Download track", image: UIImage(systemName: Constants.Images.System.download)) { _ in
             DownloadManager.shared.addTrackToQueue(track) { [weak self] in
                 self?.delegate?.updateButtonMenu()
+            }
+        }
+        
+        return action
+    }
+    
+    private func removeCacheFromLibrary(_ track: TrackModel) -> UIAction {
+        let action = UIAction(title: "Remove cache", image: ConstantsEnum.Images.removeBin.image, attributes: .destructive) { _ in
+            if let track = RealmManager<LibraryTrackModel>().read().first(where: { $0.id == track.id && $0.service == track.service.rawValue }),
+               LibraryManager.shared.removeFile(URL(filename: track.trackFilename, path: .documentDirectory)) {
+                RealmManager<LibraryTrackModel>().update { realm in
+                    try? realm.write {
+                        track.trackFilename = ""
+                    }
+                }
+                
+                AlertView.shared.present(title: "Removed cache", alertType: .done, system: .iOS16AppleMusic)
+                self.delegate?.reloadData()
+                self.delegate?.updateButtonMenu()
             }
         }
         
@@ -117,6 +142,42 @@ final class ActionsManager {
                 
                 MainCoordinator.shared.present(activityVC, animated: true)
             }
+        }
+        
+        return action
+    }
+}
+
+// MARK: -
+// MARK: Player actions
+fileprivate extension ActionsManager {
+    func playNext(_ track: TrackModel) -> UIAction {
+        let action = UIAction(title: "Play next", image: ConstantsEnum.Images.playNext.image) { _ in
+            if track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
+                AudioManager.shared.updatePlayableLink(for: track) { updatedTrack in
+                    AudioPlayer.shared.playNext(updatedTrack.track)
+                }
+                
+                return
+            }
+            
+            AudioPlayer.shared.playNext(track)
+        }
+        
+        return action
+    }
+    
+    func playLast(_ track: TrackModel) -> UIAction {
+        let action = UIAction(title: "Play last", image: ConstantsEnum.Images.playLast.image) { _ in
+            if track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
+                AudioManager.shared.updatePlayableLink(for: track) { updatedTrack in
+                    AudioPlayer.shared.playLast(updatedTrack.track)
+                }
+                
+                return
+            }
+            
+            AudioPlayer.shared.playLast(track)
         }
         
         return action

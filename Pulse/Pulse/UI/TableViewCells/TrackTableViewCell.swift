@@ -57,6 +57,13 @@ final class TrackTableViewCell: BaseUITableViewCell {
         return label
     }()
     
+    private lazy var libraryImageView: UIImageView = {
+        let imageView = UIImageView.default
+        imageView.tintColor = SettingsManager.shared.color.color
+        imageView.isHidden = true
+        return imageView
+    }()
+    
     private lazy var actionsButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: Constants.Images.System.ellipsis), for: .normal)
@@ -71,7 +78,7 @@ final class TrackTableViewCell: BaseUITableViewCell {
     
     private var track: TrackModel?
     
-    func setupCell(_ track: TrackModel, isSearchController: Bool = false) {
+    func setupCell(_ track: TrackModel, isSearchController: Bool = false, isLibraryController: Bool = false) {
         self.track = track
         self.coverImageView.setImage(from: track.image?.small)
         
@@ -81,6 +88,11 @@ final class TrackTableViewCell: BaseUITableViewCell {
         self.serviceImageView.image = track.service.image
         self.explicitImageView.isHidden = true
         self.actionsButton.menu = actionsManager.trackActions(track)
+        
+        if (track.libraryState == .added && !isLibraryController) || track.libraryState == .downloaded {
+            self.libraryImageView.image = track.libraryState.image
+            self.libraryImageView.isHidden = false
+        }
     }
 }
 
@@ -94,6 +106,7 @@ extension TrackTableViewCell {
         self.serviceImageView.image = nil
         self.artistLabel.text = nil
         self.actionsButton.menu = nil
+        self.libraryImageView.image = nil
     }
 }
 
@@ -109,6 +122,7 @@ extension TrackTableViewCell {
         explicitAndArtistStackView.addArrangedSubview(explicitImageView)
         explicitAndArtistStackView.addArrangedSubview(artistLabel)
         
+        self.contentView.addSubview(libraryImageView)
         self.contentView.addSubview(actionsButton)
     }
     
@@ -125,11 +139,17 @@ extension TrackTableViewCell {
             make.width.equalTo(self.contentView.snp.height)
         }
         
+        libraryImageView.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.trailing.equalTo(self.actionsButton.snp.leading).offset(12)
+            make.width.equalTo(20)
+        }
+        
         trackInfoStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(12)
             make.bottom.equalToSuperview().inset(12)
             make.leading.equalTo(self.coverImageView.snp.trailing).offset(12)
-            make.trailing.equalTo(self.actionsButton.snp.leading).inset(12)
+            make.trailing.equalTo((self.libraryImageView.isHidden ? self.actionsButton : self.libraryImageView).snp.leading).inset(12)
         }
         
         serviceImageView.snp.makeConstraints { make in
