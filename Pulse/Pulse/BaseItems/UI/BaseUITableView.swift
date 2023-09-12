@@ -9,7 +9,7 @@ import UIKit
 
 final class BaseUITableView: UITableView {
     private lazy var footerView: UIView = {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: MainTabBarController.height))
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: NowPlayingView.height))
         view.backgroundColor = .systemBackground
         return view
     }()

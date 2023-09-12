@@ -9,12 +9,16 @@ import UIKit
 
 extension UIImageView {
     func setImage(from link: String?) {
-        ImageManager.shared.image(from: link) { [weak self] image in
-            self?.image = image
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            ImageManager.shared.image(from: link) { [weak self] image in
+                DispatchQueue.main.async { [weak self] in
+                    self?.image = image
+                }
+            }
         }
     }
     
-    static var defaultImageView: UIImageView {
+    static var `default`: UIImageView {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFit
@@ -22,14 +26,14 @@ extension UIImageView {
     }
     
     static var explicitImageView: UIImageView {
-        let imageView = self.defaultImageView
+        let imageView = self.default
         imageView.tintColor = SettingsManager.shared.color.color
         imageView.image = UIImage(systemName: Constants.Images.System.eInFilledSquare)
         return imageView
     }
     
     static var chevronRightImageView: UIImageView {
-        let imageView = self.defaultImageView
+        let imageView = self.default
         imageView.tintColor = .label.withAlphaComponent(0.7)
         imageView.image = UIImage(systemName: Constants.Images.System.chevronRight)
         return imageView

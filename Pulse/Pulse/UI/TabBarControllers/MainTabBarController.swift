@@ -26,10 +26,6 @@ fileprivate final class NowPlayingTabBar: UITabBar {
 }
 
 final class MainTabBarController: UITabBarController {
-    static var height: CGFloat {
-        return MainCoordinator.shared.currentViewController?.tabBarController?.tabBar.frame.height ?? 0
-    }
-    
     private lazy var nowPlayingView = NowPlayingView()
     private lazy var blurBackgroundView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: self.traitCollection.userInterfaceStyle == .dark ? .dark : .light)

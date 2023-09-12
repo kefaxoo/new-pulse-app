@@ -9,9 +9,7 @@ import UIKit
 
 final class TrackTableViewCell: BaseUITableViewCell {
     private lazy var coverImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.layer.masksToBounds = true
-        imageView.contentMode = .scaleAspectFit
+        let imageView = UIImageView.default
         imageView.layer.cornerRadius = 10
         imageView.tintColor = SettingsManager.shared.color.color
         return imageView
@@ -33,10 +31,8 @@ final class TrackTableViewCell: BaseUITableViewCell {
     }()
     
     private lazy var serviceImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        let imageView = UIImageView.default
         imageView.layer.cornerRadius = 6
-        imageView.layer.masksToBounds = true
         return imageView
     }()
     

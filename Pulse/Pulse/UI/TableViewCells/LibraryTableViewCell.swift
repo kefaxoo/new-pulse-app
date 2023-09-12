@@ -16,9 +16,7 @@ final class LibraryTableViewCell: BaseUITableViewCell {
     }()
     
     private lazy var iconImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.masksToBounds = true
+        let imageView = UIImageView.default
         imageView.tintColor = SettingsManager.shared.color.color
         return imageView
     }()

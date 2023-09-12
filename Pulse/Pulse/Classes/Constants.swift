@@ -5,7 +5,30 @@
 //  Created by Bahdan Piatrouski on 28.08.23.
 //
 
-import Foundation
+import UIKit
+
+enum ConstantsEnum {
+    enum Images {
+        case warning
+        
+        var image: UIImage? {
+            switch self {
+                case .warning:
+                    return System.warning.image
+            }
+        }
+    }
+}
+
+extension ConstantsEnum.Images {
+    fileprivate enum System: String {
+        case warning = "exclamationmark.triangle"
+        
+        var image: UIImage? {
+            return UIImage(systemName: self.rawValue)
+        }
+    }
+}
 
 final class Constants {
     final class UserDefaultsKey {
@@ -60,6 +83,7 @@ final class Constants {
             static let share                = "square.and.arrow.up"
             static let musicNote            = "music.note"
             static let download             = "square.and.arrow.down"
+            static let warning              = "exclamationmark.triangle"
         }
         
         final class Custom {
