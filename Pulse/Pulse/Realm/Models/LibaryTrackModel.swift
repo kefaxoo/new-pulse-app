@@ -38,7 +38,5 @@ class LibraryTrackModel: Object {
             
             self?.coverFilename = filename
         }
-        
-        self.trackFilename = "\(track.source.rawValue)-\(track.id).\(track.extension)"
     }
 }

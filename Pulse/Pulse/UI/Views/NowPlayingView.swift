@@ -17,9 +17,7 @@ final class NowPlayingView: BaseUIView {
     }()
     
     private lazy var coverImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.layer.masksToBounds = true
-        imageView.contentMode = .scaleAspectFit
+        let imageView = UIImageView.default
         imageView.layer.cornerRadius = 10
         return imageView
     }()

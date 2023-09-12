@@ -19,7 +19,8 @@ final class ImageManager {
             return
         }
         
-        if let image = self.localImage(from: URL(string: link)) {
+        if link.contains("file://"),
+           let image = self.localImage(from: URL(string: link)) {
             imageClosure(image)
             return
         }

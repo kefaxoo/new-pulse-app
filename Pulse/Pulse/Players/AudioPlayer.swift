@@ -8,6 +8,7 @@
 import AVFoundation
 import UIKit
 import MediaPlayer
+import AlertKit
 
 protocol AudioPlayerNowPlayingViewDelegate: AnyObject {
     func setupTrackInfo(_ track: TrackModel)
@@ -220,5 +221,21 @@ extension AudioPlayer {
     @objc func previousTrack() -> MPRemoteCommandHandlerStatus {
         self.play(from: self.playlist[self.previousPosition], position: self.previousPosition)
         return .success
+    }
+}
+
+// MARK: -
+// MARK: Edit playlist
+extension AudioPlayer {
+    func playNext(_ track: TrackModel) {
+        self.playlist.insert(track, at: self.nextPosition)
+        let type: AlertIcon = ConstantsEnum.Images.playNext.image != nil ? .custom(ConstantsEnum.Images.playNext.image!) : .done
+        AlertView.shared.present(title: "Playing next", alertType: type, system: .iOS17AppleMusic)
+    }
+    
+    func playLast(_ track: TrackModel) {
+        self.playlist.append(track)
+        let type: AlertIcon = ConstantsEnum.Images.playNext.image != nil ? .custom(ConstantsEnum.Images.playLast.image!) : .done
+        AlertView.shared.present(title: "Playing last", alertType: type, system: .iOS17AppleMusic)
     }
 }

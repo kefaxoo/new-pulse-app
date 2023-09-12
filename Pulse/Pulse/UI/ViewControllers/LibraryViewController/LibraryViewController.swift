@@ -25,11 +25,6 @@ final class LibraryViewController: BaseUIViewController {
 // MARK: -
 // MARK: Setup interface methods
 extension LibraryViewController {
-    override func setupInterface() {
-        super.setupInterface()
-        self.setupNavigationController()
-    }
-    
     override func setupLayout() {
         self.view.addSubview(libraryTableView)
     }
@@ -40,10 +35,6 @@ extension LibraryViewController {
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(10)
         }
-    }
-    
-    private func setupNavigationController() {
-        self.navigationController?.navigationBar.prefersLargeTitles = true
     }
 }
 

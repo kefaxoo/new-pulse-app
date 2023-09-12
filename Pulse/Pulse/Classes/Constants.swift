@@ -5,7 +5,53 @@
 //  Created by Bahdan Piatrouski on 28.08.23.
 //
 
-import Foundation
+import UIKit
+
+enum ConstantsEnum {
+    enum Images {
+        case warning
+        case inLibrary
+        case downloaded
+        case removeBin
+        case playNext
+        case playLast
+        
+        var image: UIImage? {
+            let type: System
+            switch self {
+                case .warning:
+                    type = .warning
+                case .inLibrary:
+                    type = .downloaded
+                case .downloaded:
+                    type = .downloaded
+                case .removeBin:
+                    type = .removeBin
+                case .playNext:
+                    type = .playNext
+                case .playLast:
+                    type = .playLast
+            }
+            
+            return type.image
+        }
+    }
+}
+
+extension ConstantsEnum.Images {
+    fileprivate enum System: String {
+        case warning    = "exclamationmark.triangle"
+        case inLibrary  = "heart.fill"
+        case downloaded = "arrow.down.heart.fill"
+        case removeBin  = "trash.fill"
+        case playNext   = "text.insert"
+        case playLast   = "text.append"
+        
+        var image: UIImage? {
+            return UIImage(systemName: self.rawValue)
+        }
+    }
+}
 
 final class Constants {
     final class UserDefaultsKey {
@@ -60,6 +106,7 @@ final class Constants {
             static let share                = "square.and.arrow.up"
             static let musicNote            = "music.note"
             static let download             = "square.and.arrow.down"
+            static let warning              = "exclamationmark.triangle"
         }
         
         final class Custom {

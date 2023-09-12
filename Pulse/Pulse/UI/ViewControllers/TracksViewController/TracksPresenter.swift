@@ -63,7 +63,7 @@ extension TracksPresenter: BaseTableViewPresenter {
     }
     
     func setupCell(_ cell: UITableViewCell, at indexPath: IndexPath) -> UITableViewCell {
-        (cell as? TrackTableViewCell)?.setupCell(tracks[indexPath.item], isSearchController: false)
+        (cell as? TrackTableViewCell)?.setupCell(tracks[indexPath.item], isSearchController: false, isLibraryController: self.type == .library)
         (cell as? TrackTableViewCell)?.delegate = self
         return cell
     }
