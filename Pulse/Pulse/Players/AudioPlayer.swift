@@ -61,7 +61,7 @@ final class AudioPlayer: NSObject {
         
         self.setupPlayerItem { [weak self] playerItem in
             guard let playerItem else {
-                self?.nextTrack()
+                _ = self?.nextTrack()
                 return
             }
             
@@ -108,7 +108,7 @@ fileprivate extension AudioPlayer {
                   self.player.currentItem?.status == .readyToPlay
             else { return }
             
-            if track != nil {
+            if self.track != nil {
                 self.nowPlayingViewDelegate?.changeState(isPlaying: self.player.rate != 0)
             }
             
@@ -118,7 +118,7 @@ fileprivate extension AudioPlayer {
             if let duration = self.player.currentItem?.duration.seconds,
                round(duration) == round(self.player.currentTime().seconds) {
                 self.nowPlayingViewDelegate?.changeState(isPlaying: false)
-                self.nextTrack()
+                _ = self.nextTrack()
             }
         })
     }

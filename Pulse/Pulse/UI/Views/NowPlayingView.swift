@@ -174,11 +174,11 @@ extension NowPlayingView {
 // MARK: Actions
 extension NowPlayingView {
     @objc private func playPauseAction() {
-        AudioPlayer.shared.playPause()
+         _ = AudioPlayer.shared.playPause()
     }
     
     @objc private func nextTrackAction(_ sender: UIButton) {
-        AudioPlayer.shared.nextTrack()
+        _ = AudioPlayer.shared.nextTrack()
     }
     
     @objc private func presentNowPlayingVC() {
