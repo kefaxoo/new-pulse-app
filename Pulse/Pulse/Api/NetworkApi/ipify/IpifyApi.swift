@@ -1,5 +1,5 @@
 //
-//  ipifyApi.swift
+//  IpifyApi.swift
 //  Pulse
 //
 //  Created by Bahdan Piatrouski on 29.08.23.
@@ -8,11 +8,11 @@
 import Foundation
 import FriendlyURLSession
 
-enum ipifyApi {
+enum IpifyApi {
     case getIp
 }
 
-extension ipifyApi: BaseRestApiEnum {
+extension IpifyApi: BaseRestApiEnum {
     var baseUrl: String {
         return "https://api.ipify.org"
     }

@@ -19,7 +19,7 @@ extension Data {
             debugLog("Key", key, "not found:", context.debugDescription, "\ncodingPath:", context.codingPath)
         } catch let DecodingError.valueNotFound(value, context) {
             debugLog("Value", value, "not found:", context.debugDescription, "\ncodingPath:", context.codingPath)
-        } catch let DecodingError.typeMismatch(type, context)  {
+        } catch let DecodingError.typeMismatch(type, context) {
             debugLog("Type", type, "mismatch:", context.debugDescription, "\ncodingPath", context.codingPath)
         } catch {
             debugLog("error:", error)

@@ -29,7 +29,7 @@ final class DownloadManager {
             return
         }
         
-        urlSession.dataTask(with: URLRequest(url: url)) { data, response, error in
+        urlSession.dataTask(with: URLRequest(url: url)) { data, response, _ in
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode,
                   statusCode >= 200, statusCode < 300,
                   let data,
@@ -75,7 +75,7 @@ final class DownloadManager {
             return
         }
         
-        urlSession.dataTask(with: URLRequest(url: url), completionHandler: { data, response, error in
+        urlSession.dataTask(with: URLRequest(url: url), completionHandler: { data, response, _ in
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode,
                   statusCode >= 200, statusCode < 300,
                   let data

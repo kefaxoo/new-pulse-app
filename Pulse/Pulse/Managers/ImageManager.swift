@@ -15,7 +15,12 @@ final class ImageManager {
     
     func image(from link: String?, imageClosure: @escaping((UIImage?) -> ()), errorClosure: (() -> ())? = nil) {
         guard let link else {
-            errorClosure != nil ? errorClosure?() : imageClosure(UIImage(systemName: Constants.Images.System.exclamationMark))
+            if let errorClosure {
+                errorClosure()
+            } else {
+                imageClosure(Constants.Images.warning.image)
+            }
+            
             return
         }
         
@@ -34,7 +39,12 @@ final class ImageManager {
             if error == nil {
                 self?.downloadImage(from: link) { image in
                     guard error == nil else {
-                        errorClosure != nil ? errorClosure?() : imageClosure(UIImage(systemName: Constants.Images.System.exclamationMark))
+                        if let errorClosure {
+                            errorClosure()
+                        } else {
+                            imageClosure(Constants.Images.warning.image)
+                        }
+                        
                         return
                     }
                     
@@ -102,7 +112,7 @@ final class ImageManager {
         guard let image,
               let data = image.pngData(),
               let url = URL(filename: filename, path: .documentDirectory),
-              let _ = try? data.write(to: url)
+              (try? data.write(to: url)) != nil
         else {
             completion(nil)
             return

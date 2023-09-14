@@ -9,7 +9,9 @@ import UIKit
 
 extension UIColor {
     convenience init?(hex: String) {
+        // swiftlint:disable identifier_name
         let r, g, b: CGFloat
+        // swiftlint:enable identifier_name
         var hexCode = hex
         if hexCode.hasPrefix("#") {
             hexCode = hexCode.replacingOccurrences(of: "#", with: "")

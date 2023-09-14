@@ -10,7 +10,13 @@ import UIKit
 final class SignInViewController: CoversViewController {
     private lazy var bottomGradientView: StaticGradientView = {
         let staticGradientView = StaticGradientView()
-        staticGradientView.updateGradient(startColor: .systemBackground.withAlphaComponent(0), endColor: .systemBackground, startLocation: 0, endLocation: 0.33)
+        staticGradientView.updateGradient(
+            startColor: .systemBackground.withAlphaComponent(0),
+            endColor: .systemBackground,
+            startLocation: 0,
+            endLocation: 0.33
+        )
+        
         return staticGradientView
     }()
     

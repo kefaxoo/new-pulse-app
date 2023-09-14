@@ -31,26 +31,26 @@ extension BaseUIViewController {
 // MARK: Keyboard
 
 extension BaseUIViewController {
-    fileprivate struct newVariables {
+    fileprivate struct NewVariables {
         static var movingView: UIView?
         static var defaultOffset: CGFloat?
     }
-    
+
     private var movingView: UIView? {
         get {
-            return newVariables.movingView
+            return NewVariables.movingView
         }
         set {
-            newVariables.movingView = newValue
+            NewVariables.movingView = newValue
         }
     }
     
     private var defaultOffset: CGFloat? {
         get {
-            return newVariables.defaultOffset
+            return NewVariables.defaultOffset
         }
         set {
-            newVariables.defaultOffset = newValue
+            NewVariables.defaultOffset = newValue
         }
     }
     
@@ -62,8 +62,19 @@ extension BaseUIViewController {
     }
     
     func setupKeyboardObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
     
     @objc func keyboardWillShow(_ notification: NSNotification) {
@@ -74,6 +85,7 @@ extension BaseUIViewController {
         moveViewWithKeyboard(notification: notification, keyboardWillShow: false)
     }
     
+    // swiftlint:disable force_cast
     @objc func moveViewWithKeyboard(notification: NSNotification, keyboardWillShow: Bool) {
         // Keyboard's size
         guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
@@ -88,7 +100,9 @@ extension BaseUIViewController {
         // Change the constant
         let showedOffset = (defaultOffset ?? 0) + keyboardHeight
         let hidingOffset = defaultOffset ?? 0
-        self.movingView?.snp.updateConstraints({ $0.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(keyboardWillShow ? showedOffset : hidingOffset) })
+        self.movingView?.snp.updateConstraints({
+            $0.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(keyboardWillShow ? showedOffset : hidingOffset)
+        })
         
         // Animate the view the same way the keyboard animates
         let animator = UIViewPropertyAnimator(duration: keyboardDuration, curve: keyboardCurve) { [weak self] in
@@ -99,6 +113,7 @@ extension BaseUIViewController {
         // Perform the animation
         animator.startAnimation()
     }
+    // swiftlint:enable force_cast
     
     @objc func dismissKeyboard() {
         self.view.endEditing(true)

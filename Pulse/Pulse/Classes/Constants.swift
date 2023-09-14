@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum ConstantsEnum {
+enum Constants {
     enum Images {
         case warning
         case inLibrary
@@ -15,106 +15,163 @@ enum ConstantsEnum {
         case removeBin
         case playNext
         case playLast
+        case dismissNowPlaying
+        case removeFromLibrary
+        case chevronRight
+        case explicit
+        case actions
+        case play
+        case pause
+        case download
+        case share
+        case appleLogo
+        case dismiss
+        case eye
+        case crossedEye
+        case soundcloudLogo
+        case settings
+        case search
+        case libraryNonSelected
+        case librarySelected
+        case tracks
         
         var image: UIImage? {
             let type: System
             switch self {
                 case .warning:
-                    type = .warning
-                case .inLibrary:
-                    type = .downloaded
+                    type = .exclamationMarkTriangle
+                case .inLibrary, .librarySelected:
+                    type = .heartFill
                 case .downloaded:
-                    type = .downloaded
+                    type = .arrowDownHeartFill
                 case .removeBin:
-                    type = .removeBin
+                    type = .trashFill
                 case .playNext:
-                    type = .playNext
+                    type = .textInsert
                 case .playLast:
-                    type = .playLast
+                    type = .textAppend
+                case .dismissNowPlaying:
+                    type = .minus
+                case .removeFromLibrary:
+                    type = .heartSlashFill
+                case .chevronRight:
+                    type = .chevronRight
+                case .explicit:
+                    type = .eSquareFill
+                case .actions:
+                    type = .ellipsis
+                case .play:
+                    type = .playFill
+                case .pause:
+                    type = .pauseFill
+                case .download:
+                    type = .squareAndArrowDown
+                case .share:
+                    type = .squareAndArrowUp
+                case .appleLogo:
+                    type = .appleLogo
+                case .dismiss:
+                    type = .xCircleFill
+                case .eye:
+                    type = .eye
+                case .crossedEye:
+                    type = .eyeSlash
+                case .settings:
+                    type = .gear
+                case .search:
+                    type = .magnifyingGlass
+                case .libraryNonSelected:
+                    type = .heart
+                case .tracks:
+                    type = .musicNote
+                default:
+                    return self.customImage
+            }
+            
+            return type.image
+        }
+        
+        fileprivate var customImage: UIImage? {
+            let type: Custom
+            switch self {
+                case .soundcloudLogo:
+                    type = .soundcloudLogo
+                default:
+                    return nil
             }
             
             return type.image
         }
     }
-}
-
-extension ConstantsEnum.Images {
-    fileprivate enum System: String {
-        case warning    = "exclamationmark.triangle"
-        case inLibrary  = "heart.fill"
-        case downloaded = "arrow.down.heart.fill"
-        case removeBin  = "trash.fill"
-        case playNext   = "text.insert"
-        case playLast   = "text.append"
-        
-        var image: UIImage? {
-            return UIImage(systemName: self.rawValue)
-        }
+    
+    // swiftlint:disable redundant_string_enum_value
+    enum KeychainService: String {
+        case pulseCredentials = "pulseCredentials"
+        case pulseToken       = "pulseToken"
     }
-}
-
-final class Constants {
-    final class UserDefaultsKey {
-        // Network Manager
-        static let ip      = "deviceIp"
-        static let country = "deviceCountry"
+    
+    enum UserDefaultsKeys: String {
+        case pulseUsername = "pulseUsername"
         
-        // Pulse
-        static let pulseUsername = "pulseUsername"
+        case autoDownload          = "general.autoDownload"
+        case isAdultContentEnabled = "general.isAdultContentEnabled"
+        case isCanvasesEnabled     = "general.isCanvasesEnabled"
         
-        // Color
-        static let colorType = "accentColorType"
+        case colorType = "accentColorType"
         
-        // MARK: Settings
-        // General settings
-        static let isAdultContentEnabled = "general.isAdultContentEnabled"
-        static let isCanvasesEnabled     = "general.isCanvasesEnabled"
-        static let autoDownload          = "general.autoDownload"
+        case ip      = "deviceIp"
+        case country = "deviceCountry"
+    }
+    // swiftlint:enable redundant_string_enum_value
+    
+    enum RegularExpressions: String {
+        case pulsePassword = "(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}"
     }
     
     static var isDebug: Bool {
 #if DEBUG
         return true
-#else
-        return false
 #endif
+        return false
     }
-    
-    final class KeychainService {
-        static let pulseCredentials = "pulseCredentials"
-        static let pulseToken       = "pulseToken"
-    }
-    
-    final class Images {
-        final class System {
-            static let appleLogo            = "apple.logo"
-            static let exclamationMark      = "exclamationmark.triangle"
-            static let eye                  = "eye"
-            static let eyeWithSlash         = "eye.slash"
-            static let xInFilledCircle      = "x.circle.fill"
-            static let eInFilledSquare      = "e.square.fill"
-            static let playFilled           = "play.fill"
-            static let forwardFilled        = "forward.fill"
-            static let gear                 = "gear"
-            static let chevronRight         = "chevron.right"
-            static let magnifyingGlass      = "magnifyingglass"
-            static let ellipsis             = "ellipsis"
-            static let pauseFilled          = "pause.fill"
-            static let heart                = "heart"
-            static let heartFilled          = "heart.fill"
-            static let heartWithSlashFilled = "heart.slash.fill"
-            static let share                = "square.and.arrow.up"
-            static let musicNote            = "music.note"
-            static let download             = "square.and.arrow.down"
-            static let warning              = "exclamationmark.triangle"
-        }
+}
+
+extension Constants.Images {
+    fileprivate enum System: String {
+        case exclamationMarkTriangle = "exclamationmark.triangle"
+        case heartFill               = "heart.fill"
+        case arrowDownHeartFill      = "arrow.down.heart.fill"
+        case trashFill               = "trash.fill"
+        case textInsert              = "text.insert"
+        case textAppend              = "text.append"
+        case minus                   = "minus"
+        case heartSlashFill          = "heart.slash.fill"
+        case chevronRight            = "chevron.right"
+        case eSquareFill             = "e.square.fill"
+        case ellipsis                = "ellipsis"
+        case playFill                = "play.fill"
+        case pauseFill               = "pause.fill"
+        case squareAndArrowDown      = "square.and.arrow.down"
+        case squareAndArrowUp        = "square.and.arrow.up"
+        case appleLogo               = "apple.logo"
+        case xCircleFill             = "x.circle.fill"
+        case eye                     = "eye"
+        case eyeSlash                = "eye.slash"
+        case gear                    = "gear"
+        case magnifyingGlass         = "magnifyingGlass"
+        case heart                   = "heart"
+        case musicNote               = "music.note"
         
-        final class Custom {
-            static let soundcloudLogo = "SoundcloudLogo"
+        var image: UIImage? {
+            return UIImage(systemName: self.rawValue)
         }
     }
     
-    final class RegularExpressions {
-        static let pulsePassword = "(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}"
+    fileprivate enum Custom: String {
+        case soundcloudLogo = "SoundcloudLogo"
+        
+        var image: UIImage? {
+            return UIImage(systemName: self.rawValue)
+        }
     }
 }

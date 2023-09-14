@@ -8,7 +8,9 @@
 import UIKit
 
 enum ServiceType: String {
+    // swiftlint:disable identifier_name
     case vk          = "vk"
+    // swiftlint:enable identifier_name
     case yandexMusic = "yandexMusic"
     case spotify     = "spotify"
     case deezer      = "deezer"
@@ -65,7 +67,7 @@ enum ServiceType: String {
     var image: UIImage? {
         switch self {
             case .soundcloud:
-                return UIImage(named: Constants.Images.Custom.soundcloudLogo)
+                return Constants.Images.soundcloudLogo.image
             default:
                 return nil
         }

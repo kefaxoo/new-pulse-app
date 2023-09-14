@@ -23,17 +23,6 @@ final class SignInPresenter: CoversPresenter<SignInViewController> {
         return text
     }
     
-    func checkPassword(_ password: String?) -> String? {
-        guard let password = self.checkTextFrom(text: password, textFieldKind: "password") else { return nil }
-        
-        guard NSRegularExpression(Constants.RegularExpressions.pulsePassword).isMatch(password) else {
-            AlertView.shared.present(title: "Error", message: "Password doesn't meet requirements", alertType: .error, system: .iOS16AppleMusic)
-            return nil
-        }
-        
-        return password
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.fetchEmailFromKeychain()
@@ -46,9 +35,9 @@ final class SignInPresenter: CoversPresenter<SignInViewController> {
     }
     
     func loginUser(email: String?, password: String?) {
-        guard let email = self.checkTextFrom(text: email, textFieldKind: "email") else { return }
-        
-        guard let password = email != "test@pulse.app" ? self.checkPassword(password) : self.checkTextFrom(text: password, textFieldKind: "password") else { return }
+        guard let email = self.checkTextFrom(text: email, textFieldKind: "email"),
+              let password = self.checkTextFrom(text: password, textFieldKind: "password")
+        else { return }
         
         let pulseAccount = Credentials(email: email, password: password)
         MainCoordinator.shared.currentViewController?.presentSpinner()
@@ -60,7 +49,12 @@ final class SignInPresenter: CoversPresenter<SignInViewController> {
             MainCoordinator.shared.makeTabBarAsRoot()
         } failure: { error in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
-            AlertView.shared.present(title: "Error", message: error?.errorDescription ?? "Unknown Pulse error", alertType: .error, system: .iOS16AppleMusic)
+            AlertView.shared.present(
+                title: "Error",
+                message: error?.errorDescription ?? "Unknown Pulse error",
+                alertType: .error,
+                system: .iOS16AppleMusic
+            )
         } verifyClosure: { verificationCode in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
             SettingsManager.shared.pulse.username = email
@@ -71,7 +65,7 @@ final class SignInPresenter: CoversPresenter<SignInViewController> {
     
     func resetPassword(email: String?, password: String?) {
         guard let email = self.checkTextFrom(text: email, textFieldKind: "email"),
-              let password = self.checkPassword(password)
+              let password = self.checkTextFrom(text: password, textFieldKind: "password")
         else { return }
         
         let pulseAccount = Credentials(email: email, password: password)
@@ -82,7 +76,12 @@ final class SignInPresenter: CoversPresenter<SignInViewController> {
             VerifyPulseAccountPopUpViewController(verificationCode: verificationCode.model).present()
         } failure: { error in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
-            AlertView.shared.present(title: "Error", message: error?.errorDescription ?? "Unknown Pulse error", alertType: .error, system: .iOS16AppleMusic)
+            AlertView.shared.present(
+                title: "Error",
+                message: error?.errorDescription ?? "Unknown Pulse error",
+                alertType: .error,
+                system: .iOS16AppleMusic
+            )
         }
     }
 }

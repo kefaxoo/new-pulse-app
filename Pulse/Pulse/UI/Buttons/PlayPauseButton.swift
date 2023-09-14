@@ -29,7 +29,7 @@ final class PlayPauseButton: UIButton {
     }
     
     private func setupImage() {
-        self.setImage(UIImage(systemName: self.isPlaying ? Constants.Images.System.pauseFilled : Constants.Images.System.playFilled), for: .normal)
+        self.setImage(self.isPlaying ? Constants.Images.pause.image : Constants.Images.play.image, for: .normal)
     }
     
     func toggle() {

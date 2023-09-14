@@ -78,13 +78,17 @@ final class MainTabBarController: UITabBarController {
             self?.tabBar.tintColor = SettingsManager.shared.color.color
         }
         
-        settingsVC.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: Constants.Images.System.gear), tag: 1000)
+        settingsVC.tabBarItem = UITabBarItem(title: "Settings", image: Constants.Images.settings.image, tag: 1000)
         
         let searchVC = SearchViewController(nibName: nil, bundle: nil)
-        searchVC.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: Constants.Images.System.magnifyingGlass), tag: 1001)
+        searchVC.tabBarItem = UITabBarItem(title: "Search", image: Constants.Images.search.image, tag: 1001)
         
         let libraryVC = LibraryViewController(nibName: nil, bundle: nil)
-        libraryVC.tabBarItem = UITabBarItem(title: "Library", image: UIImage(systemName: Constants.Images.System.heart), selectedImage: UIImage(systemName: Constants.Images.System.heartFilled))
+        libraryVC.tabBarItem = UITabBarItem(
+            title: "Library",
+            image: Constants.Images.libraryNonSelected.image,
+            selectedImage: Constants.Images.librarySelected.image
+        )
         
         self.tabBar.tintColor = SettingsManager.shared.color.color
         self.viewControllers = [

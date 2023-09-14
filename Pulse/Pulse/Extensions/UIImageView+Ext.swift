@@ -28,14 +28,14 @@ extension UIImageView {
     static var explicitImageView: UIImageView {
         let imageView = self.default
         imageView.tintColor = SettingsManager.shared.color.color
-        imageView.image = UIImage(systemName: Constants.Images.System.eInFilledSquare)
+        imageView.image = Constants.Images.explicit.image
         return imageView
     }
     
     static var chevronRightImageView: UIImageView {
         let imageView = self.default
         imageView.tintColor = .label.withAlphaComponent(0.7)
-        imageView.image = UIImage(systemName: Constants.Images.System.chevronRight)
+        imageView.image = Constants.Images.chevronRight.image
         return imageView
     }
 }

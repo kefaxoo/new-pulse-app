@@ -8,6 +8,7 @@
 import Foundation
 import InfiniteScrolling_SPM
 
+// swiftlint:disable identifier_name
 final class ResponsePulseCoverModel: Decodable {
     let small : String
     let medium: String
@@ -30,5 +31,6 @@ final class ResponsePulseCoverModel: Decodable {
         self.xl = try container.decode(String.self, forKey: .xl)
     }
 }
+// swiftlint:enable identifier_name
 
 extension ResponsePulseCoverModel: InfiniteScrollingData {}

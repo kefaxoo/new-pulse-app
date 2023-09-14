@@ -18,10 +18,14 @@ final class SettingsManager {
     var pulse = PulseModel()
     var color: ColorType {
         get {
-            return ColorType(rawValue: UserDefaults.standard.value(forKey: Constants.UserDefaultsKey.colorType) as? String ?? "") ?? .purple
+            return ColorType(
+                rawValue: UserDefaults.standard.value(
+                    forKey: Constants.UserDefaultsKeys.colorType.rawValue
+                ) as? String ?? ""
+            ) ?? .purple
         }
         set {
-            UserDefaults.standard.setValue(newValue.rawValue, forKey: Constants.UserDefaultsKey.colorType)
+            UserDefaults.standard.setValue(newValue.rawValue, forKey: Constants.UserDefaultsKeys.colorType.rawValue)
         }
     }
     
@@ -29,25 +33,25 @@ final class SettingsManager {
     var realmConfiguration: Realm.Configuration {
         let configuration = Realm.Configuration(schemaVersion: 5) { migration, oldSchemaVersion in
             if oldSchemaVersion < 2 {
-                migration.enumerateObjects(ofType: LibraryTrackModel.className()) { oldObject, newObject in
+                migration.enumerateObjects(ofType: LibraryTrackModel.className()) { _, newObject in
                     newObject?["shareLink"] = ""
                 }
             }
             
             if oldSchemaVersion < 3 {
-                migration.enumerateObjects(ofType: LibraryTrackModel.className()) { oldObject, newObject in
+                migration.enumerateObjects(ofType: LibraryTrackModel.className()) { _, newObject in
                     newObject?["extension"] = ""
                 }
             }
             
             if oldSchemaVersion < 4 {
-                migration.enumerateObjects(ofType: LibraryTrackModel.className()) { oldObject, newObject in
+                migration.enumerateObjects(ofType: LibraryTrackModel.className()) { _, newObject in
                     newObject?["source"] = "muffon"
                 }
             }
             
             if oldSchemaVersion < 5 {
-                migration.enumerateObjects(ofType: LibraryTrackModel.className()) { oldObject, newObject in
+                migration.enumerateObjects(ofType: LibraryTrackModel.className()) { _, newObject in
                     newObject?["trackFilename"] = ""
                 }
             }
@@ -59,28 +63,28 @@ final class SettingsManager {
     // MARK: General settings
     var isAdultContentEnabled: Bool {
         get {
-            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKey.isAdultContentEnabled) as? Bool ?? true
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.isAdultContentEnabled.rawValue) as? Bool ?? true
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKey.isAdultContentEnabled)
+            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.isAdultContentEnabled.rawValue)
         }
     }
     
     var isCanvasesEnabled: Bool {
         get {
-            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKey.isCanvasesEnabled) as? Bool ?? true
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.isCanvasesEnabled.rawValue) as? Bool ?? true
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKey.isCanvasesEnabled)
+            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.isCanvasesEnabled.rawValue)
         }
     }
     
     var autoDownload: Bool {
         get {
-            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKey.autoDownload) as? Bool ?? false
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.autoDownload.rawValue) as? Bool ?? false
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKey.autoDownload)
+            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.autoDownload.rawValue)
         }
     }
     

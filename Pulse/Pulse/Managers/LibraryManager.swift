@@ -46,13 +46,23 @@ final class LibraryManager {
     
     func isTrackDownloaded(_ track: TrackModel) -> Bool {
         return RealmManager<LibraryTrackModel>().read().first { [weak self] libraryTrack in
-            return self?.isTrackInLibrary(track) ?? false && libraryTrack.id == track.id && libraryTrack.service == track.service.rawValue && !libraryTrack.trackFilename.isEmpty && libraryTrack.trackFilename != "downloading"
+            let isTrackInLibrary = self?.isTrackInLibrary(track) ?? false
+            let idsAreEqual = libraryTrack.id == track.id
+            let servicesAreEqual = libraryTrack.service == track.service.rawValue
+            let isTrackFilenameEmpty = libraryTrack.trackFilename.isEmpty
+            let isTrackDownloading = libraryTrack.trackFilename == "downloading"
+            return isTrackInLibrary && idsAreEqual && servicesAreEqual && !isTrackFilenameEmpty && !isTrackDownloading
         } != nil
     }
     
     func isTrackDownloading(_ track: TrackModel) -> Bool {
         return RealmManager<LibraryTrackModel>().read().first { [weak self] libraryTrack in
-            return self?.isTrackInLibrary(track) ?? false && libraryTrack.id == track.id && libraryTrack.service == track.service.rawValue && !libraryTrack.trackFilename.isEmpty && libraryTrack.trackFilename == "downloading"
+            let isTrackInLibrary = self?.isTrackInLibrary(track) ?? false
+            let idsAreEqual = libraryTrack.id == track.id
+            let servicesAreEqual = libraryTrack.service == track.service.rawValue
+            let isTrackFilenameEmpty = libraryTrack.trackFilename.isEmpty
+            let isTrackDownloading = libraryTrack.trackFilename == "downloading"
+            return isTrackInLibrary && idsAreEqual && servicesAreEqual && !isTrackFilenameEmpty && isTrackDownloading
         } != nil
     }
     

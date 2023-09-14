@@ -24,7 +24,7 @@ final class SignUpPresenter: CoversPresenter<SignUpViewController> {
     func checkPassword(_ password: String?) -> String? {
         guard let password = self.checkTextFrom(text: password, textFieldKind: "password") else { return nil }
         
-        guard NSRegularExpression(Constants.RegularExpressions.pulsePassword).isMatch(password) else {
+        guard NSRegularExpression(Constants.RegularExpressions.pulsePassword.rawValue).isMatch(password) else {
             AlertView.shared.present(title: "Error", message: "Password doesn't meet requirements", alertType: .error, system: .iOS16AppleMusic)
             return nil
         }
@@ -46,7 +46,12 @@ final class SignUpPresenter: CoversPresenter<SignUpViewController> {
             VerifyPulseAccountPopUpViewController(verificationCode: createUser.model).present()
         } failure: { error in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
-            AlertView.shared.present(title: "Error", message: error?.errorDescription ?? "Unknown Pulse error", alertType: .error, system: .iOS16AppleMusic)
+            AlertView.shared.present(
+                title: "Error",
+                message: error?.errorDescription ?? "Unknown Pulse error",
+                alertType: .error,
+                system: .iOS16AppleMusic
+            )
         }
     }
 }

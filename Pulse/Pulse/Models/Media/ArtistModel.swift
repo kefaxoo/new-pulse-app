@@ -21,6 +21,19 @@ final class ArtistModel {
         self.name = artist.name
         self.id   = artist.id
     }
+    
+    var json: [String: Any] {
+        return [
+            "id"  : self.id,
+            "name": self.name
+        ]
+    }
+    
+    func json(service: ServiceType) -> [String: Any] {
+        var dict = self.json
+        dict["service"] = service.rawValue
+        return dict
+    }
 }
 
 extension [ArtistModel] {

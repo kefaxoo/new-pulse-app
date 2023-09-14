@@ -21,7 +21,9 @@ class StaticGradientView: UIView {
     }
     
     private var gradientLayer: CAGradientLayer {
+        // swiftlint:disable force_cast
         return layer as! CAGradientLayer
+        // swiftlint:enable force_cast
     }
     
     override init(frame: CGRect) {
@@ -40,7 +42,14 @@ class StaticGradientView: UIView {
         self.updatePoints()
     }
     
-    func updateGradient(startColor: UIColor? = nil, endColor: UIColor? = nil, startLocation: Double? = nil, endLocation: Double? = nil, isHorizontal: Bool? = nil, isDiagonal: Bool? = nil) {
+    func updateGradient(
+        startColor: UIColor? = nil,
+        endColor: UIColor? = nil,
+        startLocation: Double? = nil,
+        endLocation: Double? = nil,
+        isHorizontal: Bool? = nil,
+        isDiagonal: Bool? = nil
+    ) {
         if let startColor {
             self.startColor = startColor
             self.updateColors()

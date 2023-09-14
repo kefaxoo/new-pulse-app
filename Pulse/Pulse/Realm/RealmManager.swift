@@ -10,7 +10,9 @@ import RealmSwift
 
 final class RealmManager<T> where T: Object {
     private lazy var realm: Realm = {
+        // swiftlint:disable force_try
         return try! Realm(configuration: SettingsManager.shared.realmConfiguration)
+        // swiftlint:enable force_try
     }()
     
     func write(object: T) {

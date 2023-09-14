@@ -11,7 +11,7 @@ final class PasswordTextField: UITextField {
     private lazy var hideButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.plain()
-        configuration.image = UIImage(systemName: Constants.Images.System.eye)
+        configuration.image = Constants.Images.eye.image
         configuration.imagePadding = 5
         button.configuration = configuration
         button.tintColor = .label.withAlphaComponent(0.7)
@@ -47,7 +47,7 @@ final class PasswordTextField: UITextField {
     @objc private func hidePasswordAction(_ sender: UIButton) {
         self.isSecureTextEntry.toggle()
         self.hideButton.setImage(
-            UIImage(systemName: self.isSecureTextEntry ? Constants.Images.System.eye : Constants.Images.System.eyeWithSlash),
+            self.isSecureTextEntry ? Constants.Images.eye.image : Constants.Images.crossedEye.image,
             for: .normal
         )
     }

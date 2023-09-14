@@ -29,7 +29,7 @@ class PopUpViewController: BaseUIViewController {
     
     lazy var dismissButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: Constants.Images.System.xInFilledCircle), for: .normal)
+        button.setImage(Constants.Images.dismiss.image, for: .normal)
         button.tintColor = UIColor.label.withAlphaComponent(0.7)
         button.contentHorizontalAlignment = .trailing
         button.addTarget(self, action: #selector(dismissAction), for: .touchUpInside)
@@ -96,7 +96,7 @@ extension PopUpViewController {
         UIView.animate(withDuration: 0.2) { [weak self] in
             self?.view.backgroundColor = UIColor.clear
             self?.view.layoutIfNeeded()
-        } completion: { [weak self] isCompleted in
+        } completion: { [weak self] _ in
             self?.dismiss(animated: false)
         }
     }

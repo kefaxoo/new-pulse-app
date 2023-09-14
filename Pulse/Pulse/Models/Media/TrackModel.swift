@@ -13,7 +13,7 @@ enum TrackLibraryState {
     case none
     
     var image: UIImage? {
-        let imageType: ConstantsEnum.Images?
+        let imageType: Constants.Images?
         switch self {
             case .added:
                 imageType = .inLibrary
@@ -37,9 +37,10 @@ final class TrackModel {
     let shareLink  : String
     let `extension`: String
     let source     : SourceType
+    let isAvailable: Bool
     
-    var image          : ImageModel? = nil
-    var playableLinks  : PlayableLinkModel? = nil
+    var image          : ImageModel?
+    var playableLinks  : PlayableLinkModel?
     var cachedFilename = ""
     var trackFilename  : String {
         return "Tracks/\(self.service.rawValue)-\(self.id).\(self.extension)"
@@ -64,6 +65,7 @@ final class TrackModel {
         self.shareLink     = track.source.links?.shareLink ?? ""
         self.extension     = track.extension
         self.source        = .muffon
+        self.isAvailable   = track.audio.isAvailable
         if track.artist.id == -1,
            let artist = track.artists.first(where: { $0.name == track.artist.name }) {
             self.artist = ArtistModel(artist)
@@ -85,6 +87,7 @@ final class TrackModel {
         self.image          = ImageModel(coverFilename: track.coverFilename)
         self.source         = SourceType(rawValue: track.source) ?? .none
         self.cachedFilename = track.trackFilename
+        self.isAvailable    = true
         var artists = [ArtistModel]()
         track.artistIds.forEach { id in
             guard let artist = LibraryManager.shared.findLibraryArtist(id: id) else { return }
@@ -94,5 +97,25 @@ final class TrackModel {
         
         self.artists    = artists
         self.artistText = artists.names
+    }
+    
+    var json: [String: Any] {
+        var dict: [String: Any] = [
+            "id"   : self.id,
+            "title": self.title
+        ]
+        
+        if let artist = self.artist {
+            dict["artist"] = artist.json(service: self.service)
+        }
+        
+        if self.artists.count > 0 {
+            dict["artists"] = self.artists.map({ $0.json(service: self.service) })
+        }
+        
+        dict["service"] = self.service.rawValue
+        dict["source"]  = self.source.rawValue
+        
+        return dict
     }
 }

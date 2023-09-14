@@ -44,7 +44,22 @@ final class MainCoordinator {
     func firstLaunch() {
         if let pulseAccessToken = SettingsManager.shared.pulse.accessToken,
            !pulseAccessToken.isEmpty {
-            self.makeTabBarAsRoot()
+            let emptyVC = UIViewController()
+            emptyVC.modalPresentationStyle = .overFullScreen
+            emptyVC.view.backgroundColor = .systemBackground
+            self.makeRootVC(vc: emptyVC)
+            emptyVC.presentSpinner()
+            PulseProvider.shared.accessToken { [weak self] loginUser in
+                emptyVC.dismissSpinner()
+                SettingsManager.shared.pulse.updateAccessToken(loginUser.accessToken)
+                self?.makeTabBarAsRoot()
+            } failure: { [weak self] error in
+                self?.makeAuthViewControllerAsRoot()
+                AlertView.shared.present(title: "Error", message: error?.errorDescription, alertType: .error, system: .iOS16AppleMusic)
+                guard !SettingsManager.shared.pulse.username.isEmpty else { return }
+                
+                self?.pushSignInViewController()
+            }
         } else {
             self.makeAuthViewControllerAsRoot()
             guard !SettingsManager.shared.pulse.username.isEmpty else { return }

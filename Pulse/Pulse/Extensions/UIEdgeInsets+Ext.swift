@@ -20,4 +20,3 @@ extension UIEdgeInsets {
         self.init(top: all, left: all, bottom: all, right: all)
     }
 }
-

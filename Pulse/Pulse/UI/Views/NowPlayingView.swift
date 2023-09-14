@@ -66,7 +66,7 @@ final class NowPlayingView: BaseUIView {
     private lazy var nextTrackButton: UIButton = {
         let button = UIButton()
         button.tintColor = SettingsManager.shared.color.color
-        button.setImage(UIImage(systemName: Constants.Images.System.forwardFilled), for: .normal)
+        button.setImage(Constants.Images.dismiss.image, for: .normal)
         button.addTarget(self, action: #selector(nextTrackAction), for: .touchUpInside)
         return button
     }()

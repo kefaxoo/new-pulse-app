@@ -17,6 +17,10 @@ protocol AudioPlayerNowPlayingViewDelegate: AnyObject {
     func changeState(isPlaying: Bool)
 }
 
+protocol AudioPlayerNowPlayingControllerDelegate: AnyObject {
+    func setupCover(_ cover: UIImage?)
+}
+
 final class AudioPlayer: NSObject {
     static let shared = AudioPlayer()
     
@@ -40,13 +44,15 @@ final class AudioPlayer: NSObject {
     private var track          : TrackModel?
     private var playlist       = [TrackModel]()
     private var position       = 0
-    private var cover          : UIImage?
     private var observer       : Any?
     private var nowPlayingInfo = [String: Any]()
     
+    private(set) var cover: UIImage?
+    
     private let commandCenter = MPRemoteCommandCenter.shared()
     
-    weak var nowPlayingViewDelegate: AudioPlayerNowPlayingViewDelegate?
+    weak var nowPlayingViewDelegate          : AudioPlayerNowPlayingViewDelegate?
+    weak var nowPlayingViewControllerDelegate: AudioPlayerNowPlayingControllerDelegate?
     
     func play(from track: TrackModel, position: Int) {
         self.play(from: track, playlist: self.playlist, position: position)
@@ -103,30 +109,37 @@ fileprivate extension AudioPlayer {
     }
     
     func setupObserver() {
-        self.observer = self.player.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 600), queue: .main, using: { [weak self] _ in
-            guard let self,
-                  self.player.currentItem?.status == .readyToPlay
-            else { return }
-            
-            if self.track != nil {
-                self.nowPlayingViewDelegate?.changeState(isPlaying: self.player.rate != 0)
+        self.observer = self.player.addPeriodicTimeObserver(
+            forInterval: CMTime(value: 1, timescale: 600),
+            queue: .main,
+            using: { [weak self] _ in
+                guard let self,
+                      self.player.currentItem?.status == .readyToPlay
+                else { return }
+                
+                if self.track != nil {
+                    self.nowPlayingViewDelegate?.changeState(isPlaying: self.player.rate != 0)
+                }
+                
+                self.nowPlayingViewDelegate?.updateDuration(self.nowPlayingViewDuration)
+                self.setupNowPlaying()
+                
+                if let duration = self.player.currentItem?.duration.seconds,
+                   round(duration) == round(self.player.currentTime().seconds) {
+                    self.nowPlayingViewDelegate?.changeState(isPlaying: false)
+                    _ = self.nextTrack()
+                }
             }
-            
-            self.nowPlayingViewDelegate?.updateDuration(self.nowPlayingViewDuration)
-            self.setupNowPlaying()
-            
-            if let duration = self.player.currentItem?.duration.seconds,
-               round(duration) == round(self.player.currentTime().seconds) {
-                self.nowPlayingViewDelegate?.changeState(isPlaying: false)
-                _ = self.nextTrack()
-            }
-        })
+        )
     }
     
     func setupCover() {
         ImageManager.shared.image(from: self.track?.image?.original) { [weak self] image in
-            self?.cover = image
-            self?.nowPlayingViewDelegate?.setupCover(image)
+            DispatchQueue.main.async { [weak self] in
+                self?.cover = image
+                self?.setupCoverInDelegates()
+                self?.setupNowPlaying()
+            }
         }
     }
     
@@ -148,11 +161,14 @@ fileprivate extension AudioPlayer {
         commandCenter.changePlaybackPositionCommand.addTarget { [weak self] commandEvent in
             let playerRate = self?.player.rate ?? 0
             if let event = commandEvent as? MPChangePlaybackPositionCommandEvent {
-                self?.player.seek(to: CMTime(seconds: event.positionTime, preferredTimescale: 600), completionHandler: { [weak self] success in
-                    if success {
+                self?.player.seek(
+                    to: CMTime(seconds: event.positionTime, preferredTimescale: 600),
+                    completionHandler: { [weak self] success in
+                        guard success else { return }
+                        
                         self?.player.rate = playerRate
                     }
-                })
+                )
             }
             
             return .success
@@ -172,9 +188,12 @@ fileprivate extension AudioPlayer {
         nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentItem.currentTime().seconds
         
         if let cover {
-            nowPlayingInfo[MPMediaItemPropertyAlbumArtist] = MPMediaItemArtwork(boundsSize: cover.size, requestHandler: { size -> UIImage in
-                return cover
-            })
+            nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(
+                boundsSize: cover.size,
+                requestHandler: { _ -> UIImage in
+                    return cover
+                }
+            )
         }
         
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
@@ -229,13 +248,22 @@ extension AudioPlayer {
 extension AudioPlayer {
     func playNext(_ track: TrackModel) {
         self.playlist.insert(track, at: self.nextPosition)
-        let type: AlertIcon = ConstantsEnum.Images.playNext.image != nil ? .custom(ConstantsEnum.Images.playNext.image!) : .done
+        let type: AlertIcon = Constants.Images.playNext.image != nil ? .custom(Constants.Images.playNext.image!) : .done
         AlertView.shared.present(title: "Playing next", alertType: type, system: .iOS17AppleMusic)
     }
     
     func playLast(_ track: TrackModel) {
         self.playlist.append(track)
-        let type: AlertIcon = ConstantsEnum.Images.playNext.image != nil ? .custom(ConstantsEnum.Images.playLast.image!) : .done
+        let type: AlertIcon = Constants.Images.playNext.image != nil ? .custom(Constants.Images.playLast.image!) : .done
         AlertView.shared.present(title: "Playing last", alertType: type, system: .iOS17AppleMusic)
+    }
+}
+
+// MARK: -
+// MARK: Delegates methods
+extension AudioPlayer {
+    private func setupCoverInDelegates() {
+        self.nowPlayingViewDelegate?.setupCover(self.cover)
+        self.nowPlayingViewControllerDelegate?.setupCover(self.cover)
     }
 }

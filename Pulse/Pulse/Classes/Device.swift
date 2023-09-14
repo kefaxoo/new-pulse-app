@@ -18,7 +18,17 @@ final class Device {
     var deviceCode: String? {
         var systemInfo = utsname()
         uname(&systemInfo)
-        let modelCode = withUnsafePointer(to: &systemInfo.machine, { $0.withMemoryRebound(to: CChar.self, capacity: 1, { String(validatingUTF8: $0) })})
+        let modelCode = withUnsafePointer(
+            to: &systemInfo.machine, {
+                $0.withMemoryRebound(
+                    to: CChar.self,
+                    capacity: 1, {
+                        String(validatingUTF8: $0)    
+                    }
+                )
+            }
+        )
+        
         return modelCode
     }
     

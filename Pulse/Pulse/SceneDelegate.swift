@@ -12,7 +12,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         MainCoordinator.shared.window = self.window
-        guard let _ = (scene as? UIWindowScene) else { return }
+        guard (scene as? UIWindowScene) != nil else { return }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -43,4 +43,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 }
-

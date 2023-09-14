@@ -38,7 +38,7 @@ final class NetworkManager {
     
     func updateValues() {
         DispatchQueue.global(qos: .background).async { [weak self] in
-            ipifyProvider.shared.getIp { [weak self] ip in
+            IpifyProvider.shared.getIp { [weak self] ip in
                 self?.ip = ip
                 self?.getCountryCode()
             } failure: { [weak self] in
@@ -57,24 +57,24 @@ final class NetworkManager {
 extension NetworkManager {
     var ip: String {
         get {
-            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKey.ip) as? String ?? ""
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.ip.rawValue) as? String ?? ""
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKey.ip)
+            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.ip.rawValue)
         }
     }
     
     var country: String {
         get {
-            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKey.country) as? String ?? "US"
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.country.rawValue) as? String ?? "US"
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKey.country)
+            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.country.rawValue)
         }
     }
     
     func getCountryCode() {
-        ipApiProvider.shared.getInfo { [weak self] model in
+        IpApiProvider.shared.getInfo { [weak self] model in
             self?.country = model.countryCode ?? ""
             self?.city = model.city
             self?.provider = model.provider
@@ -98,14 +98,14 @@ extension NetworkManager {
     
     private var cfNetworkVersion: String {
         let dictionary = Bundle(identifier: "com.apple.CFNetwork")?.infoDictionary!
-        let version = dictionary?["CFBundleShortVersionString"] as! String
+        let version = dictionary?["CFBundleShortVersionString"] as? String ?? ""
         return "CFNetwork/\(version)"
     }
     
     private var appNameAndVersion: String {
         let dictionary = Bundle.main.infoDictionary!
-        let version = dictionary["CFBundleShortVersionString"] as! String
-        let name = dictionary["CFBundleName"] as! String
+        let version = dictionary["CFBundleShortVersionString"] as? String ?? ""
+        let name = dictionary["CFBundleName"] as? String ?? ""
         return "\(name)/\(version)"
     }
     

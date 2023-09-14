@@ -1,5 +1,5 @@
 //
-//  ipApi.swift
+//  IpApi.swift
 //  Pulse
 //
 //  Created by Bahdan Piatrouski on 28.08.23.
@@ -8,11 +8,11 @@
 import Foundation
 import FriendlyURLSession
 
-enum ipApi {
+enum IpApi {
     case getCountry
 }
 
-extension ipApi: BaseRestApiEnum {
+extension IpApi: BaseRestApiEnum {
     var baseUrl: String {
         return "http://ip-api.com"
     }

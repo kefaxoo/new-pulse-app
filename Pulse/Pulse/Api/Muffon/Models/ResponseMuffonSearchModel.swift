@@ -10,6 +10,10 @@ import Foundation
 final class ResponseMuffonSearchModel: Decodable {
     let search: MuffonSearchInfo
     
+    var searchResponse: SearchResponse {
+        return SearchResponse(page: search.page, totalPages: search.totalPages ?? 0, results: search.results)
+    }
+    
     enum CodingKeys: CodingKey {
         case search
     }

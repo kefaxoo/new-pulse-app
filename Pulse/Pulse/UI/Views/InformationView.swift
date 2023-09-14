@@ -14,7 +14,7 @@ enum InformationStyles {
     var image: UIImage? {
         switch self {
             case .empty:
-                return ConstantsEnum.Images.warning.image
+                return Constants.Images.warning.image
             default:
                 return nil
         }

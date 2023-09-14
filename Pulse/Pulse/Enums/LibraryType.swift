@@ -20,7 +20,7 @@ enum LibraryType: CaseIterable {
     var image: UIImage? {
         switch self {
             case .tracks:
-                return UIImage(systemName: Constants.Images.System.musicNote)
+                return Constants.Images.tracks.image
         }
     }
     

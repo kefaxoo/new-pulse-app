@@ -1,0 +1,15 @@
+disabled_rules:
+  - trailing_whitespace
+  - void_return
+  - switch_case_alignment
+  - colon
+  - private_over_fileprivate
+  - identifier_name
+
+opt_in_rules:
+  - empty_count
+  - missing_docs
+
+line_length:
+  warning: 150
+  error: 200

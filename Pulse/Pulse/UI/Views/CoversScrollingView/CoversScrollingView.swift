@@ -79,7 +79,12 @@ extension CoversScrollingView {
         guard self.infiniteScrollingBehaviour == nil else { return }
         
         let configuration = CollectionViewConfiguration(scrollingDirection: .horizontal, layoutType: .fixedSize(size: 150, lineSpacing: 20))
-        self.infiniteScrollingBehaviour = InfiniteScrollingBehaviour(with: self.coversCollectionView, and: covers, delegate: self, collectionConfiguration: configuration)
+        self.infiniteScrollingBehaviour = InfiniteScrollingBehaviour(
+            with: self.coversCollectionView,
+            and: covers,
+            delegate: self,
+            collectionConfiguration: configuration
+        )
     }
     
     override func setupLayout() {
@@ -97,7 +102,12 @@ extension CoversScrollingView {
 }
 
 extension CoversScrollingView: InfiniteScrollingBehaviourDelegate {
-    func configuredCell(forItemAt indexPath: IndexPath, originallyAt index: Int, and data: InfiniteScrollingData, for behaviour: InfiniteScrollingBehaviour) -> UICollectionViewCell {
+    func configuredCell(
+        forItemAt indexPath: IndexPath,
+        originallyAt index: Int,
+        and data: InfiniteScrollingData,
+        for behaviour: InfiniteScrollingBehaviour
+    ) -> UICollectionViewCell {
         let cell = coversCollectionView.dequeueReusableCell(withReuseIdentifier: ScrollingCoverCollectionViewCell.id, for: indexPath)
         guard let scrollingCoverCell = cell as? ScrollingCoverCollectionViewCell,
               let cover = data as? PulseCover

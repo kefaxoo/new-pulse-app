@@ -49,21 +49,33 @@ final class ActionsManager {
     }
     
     private func addTrackToLibrary(_ track: TrackModel) -> UIAction {
-        let action = UIAction(title: "Add to library", image: UIImage(systemName: Constants.Images.System.heartFilled)) { [weak self] _ in
+        let action = UIAction(title: "Add to library", image: Constants.Images.inLibrary.image) { [weak self] _ in
             let libraryTrack = LibraryTrackModel(track)
             RealmManager<LibraryTrackModel>().write(object: libraryTrack)
             AlertView.shared.present(title: "Added to library", alertType: .done, system: .iOS17AppleMusic)
             track.image = ImageModel(coverFilename: libraryTrack.coverFilename)
             self?.delegate?.updatedTrack(track)
             self?.delegate?.updateButtonMenu()
+            
+            guard SettingsManager.shared.autoDownload else { return }
+            
+            DownloadManager.shared.addTrackToQueue(track) {
+                self?.delegate?.updateButtonMenu()
+            }
         }
         
         return action
     }
     
     private func removeTrackFromLibrary(_ track: TrackModel) -> UIAction {
-        let action = UIAction(title: "Remove from library", image: UIImage(systemName: Constants.Images.System.heartWithSlashFilled), attributes: .destructive) { _ in
-            guard let libraryTrack = RealmManager<LibraryTrackModel>().read().first(where: { $0.id == track.id && $0.service == track.service.rawValue }) else { return }
+        let action = UIAction(
+            title: "Remove from library",
+            image: Constants.Images.removeFromLibrary.image,
+            attributes: .destructive
+        ) { _ in
+            guard let libraryTrack = RealmManager<LibraryTrackModel>().read().first(where: {
+                $0.id == track.id && $0.service == track.service.rawValue
+            }) else { return }
             
             if !libraryTrack.coverFilename.isEmpty,
                RealmManager<LibraryTrackModel>().read().filter({ track.image?.contains($0.coverFilename) ?? false }).count < 2 {
@@ -74,7 +86,10 @@ final class ActionsManager {
                 _ = LibraryManager.shared.removeFile(URL(filename: libraryTrack.trackFilename, path: .documentDirectory))
             }
             
-            let tracks = RealmManager<LibraryTrackModel>().read().filter({ $0.artistId == (track.artist?.id ?? -1) || $0.artistIds.contains(track.artist?.id ?? -1) })
+            let tracks = RealmManager<LibraryTrackModel>().read().filter({
+                $0.artistId == (track.artist?.id ?? -1) || $0.artistIds.contains(track.artist?.id ?? -1)
+            })
+            
             if tracks.count < 2,
                let artist = RealmManager<LibraryArtistModel>().read().first(where: { $0.id == tracks[0].artistId }) {
                 RealmManager<LibraryArtistModel>().delete(object: artist)
@@ -90,7 +105,7 @@ final class ActionsManager {
     }
     
     private func downloadTrack(_ track: TrackModel) -> UIAction {
-        let action = UIAction(title: "Download track", image: UIImage(systemName: Constants.Images.System.download)) { _ in
+        let action = UIAction(title: "Download track", image: Constants.Images.download.image) { _ in
             DownloadManager.shared.addTrackToQueue(track) { [weak self] in
                 self?.delegate?.updateButtonMenu()
             }
@@ -100,7 +115,7 @@ final class ActionsManager {
     }
     
     private func removeCacheFromLibrary(_ track: TrackModel) -> UIAction {
-        let action = UIAction(title: "Remove cache", image: ConstantsEnum.Images.removeBin.image, attributes: .destructive) { _ in
+        let action = UIAction(title: "Remove cache", image: Constants.Images.removeBin.image, attributes: .destructive) { _ in
             if let track = RealmManager<LibraryTrackModel>().read().first(where: { $0.id == track.id && $0.service == track.service.rawValue }),
                LibraryManager.shared.removeFile(URL(filename: track.trackFilename, path: .documentDirectory)) {
                 RealmManager<LibraryTrackModel>().update { realm in
@@ -119,7 +134,7 @@ final class ActionsManager {
     }
     
     private func shareTrackAsLink(_ track: TrackModel) -> UIAction {
-        let action = UIAction(title: "Share track as link", image: UIImage(systemName: Constants.Images.System.share)) { _ in
+        let action = UIAction(title: "Share track as link", image: Constants.Images.share.image) { _ in
             let text = "Listen to \(track.title) by \(track.artistText)\n\(track.shareLink)"
             let activityVC = UIActivityViewController(activityItems: [text], applicationActivities: nil)
             MainCoordinator.shared.present(activityVC, animated: true)
@@ -129,7 +144,7 @@ final class ActionsManager {
     }
     
     private func shareTrackAsFile(_ track: TrackModel) -> UIAction {
-        let action = UIAction(title: "Share track as file", image: UIImage(systemName: Constants.Images.System.share)) { _ in
+        let action = UIAction(title: "Share track as file", image: Constants.Images.share.image) { _ in
             MainCoordinator.shared.currentViewController?.presentSpinner()
             DownloadManager.shared.downloadTempTrack(track) { url in
                 MainCoordinator.shared.currentViewController?.dismissSpinner()
@@ -152,7 +167,7 @@ final class ActionsManager {
 // MARK: Player actions
 fileprivate extension ActionsManager {
     func playNext(_ track: TrackModel) -> UIAction {
-        let action = UIAction(title: "Play next", image: ConstantsEnum.Images.playNext.image) { _ in
+        let action = UIAction(title: "Play next", image: Constants.Images.playNext.image) { _ in
             if track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
                 AudioManager.shared.updatePlayableLink(for: track) { updatedTrack in
                     AudioPlayer.shared.playNext(updatedTrack.track)
@@ -168,7 +183,7 @@ fileprivate extension ActionsManager {
     }
     
     func playLast(_ track: TrackModel) -> UIAction {
-        let action = UIAction(title: "Play last", image: ConstantsEnum.Images.playLast.image) { _ in
+        let action = UIAction(title: "Play last", image: Constants.Images.playLast.image) { _ in
             if track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
                 AudioManager.shared.updatePlayableLink(for: track) { updatedTrack in
                     AudioPlayer.shared.playLast(updatedTrack.track)

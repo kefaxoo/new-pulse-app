@@ -66,10 +66,16 @@ final class TrackTableViewCell: BaseUITableViewCell {
     
     private lazy var actionsButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: Constants.Images.System.ellipsis), for: .normal)
+        button.setImage(Constants.Images.actions.image, for: .normal)
         button.tintColor = SettingsManager.shared.color.color
         button.showsMenuAsPrimaryAction = true
         return button
+    }()
+    
+    private lazy var unavailableView = {
+        let view = UIView(with: .label.withAlphaComponent(0.5))
+        view.isHidden = true
+        return view
     }()
     
     private lazy var actionsManager: ActionsManager = {
@@ -93,6 +99,8 @@ final class TrackTableViewCell: BaseUITableViewCell {
             self.libraryImageView.image = track.libraryState.image
             self.libraryImageView.isHidden = false
         }
+        
+        self.unavailableView.isHidden = track.isAvailable
     }
 }
 
@@ -124,6 +132,7 @@ extension TrackTableViewCell {
         
         self.contentView.addSubview(libraryImageView)
         self.contentView.addSubview(actionsButton)
+        self.contentView.addSubview(unavailableView)
     }
     
     override func setupConstraints() {
@@ -155,6 +164,8 @@ extension TrackTableViewCell {
         serviceImageView.snp.makeConstraints { make in
             make.height.width.equalTo(self.explicitAndArtistStackView.snp.height)
         }
+        
+        unavailableView.snp.makeConstraints({ $0.edges.equalToSuperview() })
     }
 }
 

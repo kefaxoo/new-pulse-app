@@ -10,21 +10,21 @@ import Foundation
 final class PulseModel {
     var username: String {
         get {
-            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKey.pulseUsername) as? String ?? ""
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.pulseUsername.rawValue) as? String ?? ""
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKey.pulseUsername)
+            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.pulseUsername.rawValue)
         }
     }
     
     var password   : String?
     var accessToken: String?
     
-    fileprivate var credentialsKeychainModel = BaseKeychainModel(service: Constants.KeychainService.pulseCredentials)
-    fileprivate var accessTokenKeychainModel = BaseKeychainModel(service: Constants.KeychainService.pulseToken)
+    fileprivate var credentialsKeychainModel = BaseKeychainModel(service: Constants.KeychainService.pulseCredentials.rawValue)
+    fileprivate var accessTokenKeychainModel = BaseKeychainModel(service: Constants.KeychainService.pulseToken.rawValue)
     
     init() {
-        if let password = credentialsKeychainModel.getCredentials(username: username)?.password {
+        if let password = credentialsKeychainModel.getCredentials(username: username)?.withEncryptedPassword.password {
             self.password = password
         }
         
@@ -43,6 +43,12 @@ final class PulseModel {
         guard self.accessTokenKeychainModel.saveCredentials(credentials) else { return }
         
         self.accessToken = credentials.password
+    }
+    
+    func updateAccessToken(_ accessToken: String) {
+        guard self.accessTokenKeychainModel.updatePassword(credentials: Credentials(email: self.username, accessToken: accessToken)) else { return }
+        
+        self.accessToken = accessToken
     }
     
     func signOut() -> Bool {
