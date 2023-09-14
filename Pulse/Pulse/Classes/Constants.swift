@@ -115,6 +115,7 @@ enum Constants {
     
     enum UserDefaultsKeys: String {
         case pulseUsername = "pulseUsername"
+        case pulseExpireAt = "pulseExpireAt"
         
         case autoDownload          = "general.autoDownload"
         case isAdultContentEnabled = "general.isAdultContentEnabled"

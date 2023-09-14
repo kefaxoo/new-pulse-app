@@ -44,6 +44,7 @@ final class SignInPresenter: CoversPresenter<SignInViewController> {
         PulseProvider.shared.loginUser(credentials: pulseAccount.withEncryptedPassword) { loginUser in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
             SettingsManager.shared.pulse.username = email
+            SettingsManager.shared.pulse.expireAt = loginUser.expireAt ?? 0
             SettingsManager.shared.pulse.saveCredentials(pulseAccount)
             SettingsManager.shared.pulse.saveAcceessToken(Credentials(email: email, accessToken: loginUser.accessToken))
             MainCoordinator.shared.makeTabBarAsRoot()

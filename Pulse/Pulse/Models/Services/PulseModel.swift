@@ -17,6 +17,14 @@ final class PulseModel {
         }
     }
     
+    var expireAt: Int {
+        get {
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.pulseExpireAt.rawValue) as? Int ?? 0
+        } set {
+            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.pulseExpireAt.rawValue)
+        }
+    }
+    
     var password   : String?
     var accessToken: String?
     

@@ -44,12 +44,14 @@ final class MainCoordinator {
     func firstLaunch(completion: @escaping(() -> ())) {
         if let pulseAccessToken = SettingsManager.shared.pulse.accessToken,
            !pulseAccessToken.isEmpty {
-            if NetworkManager.shared.isReachable {
+            if NetworkManager.shared.isReachable,
+               SettingsManager.shared.pulse.expireAt <= Int(Date().timeIntervalSince1970) {
                 let emptyVC = UIViewController.empty
                 self.makeRootVC(vc: emptyVC)
                 emptyVC.presentSpinner()
                 PulseProvider.shared.accessToken { [weak self] loginUser in
                     emptyVC.dismissSpinner()
+                    SettingsManager.shared.pulse.expireAt = loginUser.expireAt ?? 0
                     SettingsManager.shared.pulse.updateAccessToken(loginUser.accessToken)
                     completion()
                     self?.makeTabBarAsRoot()
