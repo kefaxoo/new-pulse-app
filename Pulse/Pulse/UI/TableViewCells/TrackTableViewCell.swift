@@ -98,6 +98,7 @@ final class TrackTableViewCell: BaseUITableViewCell {
         if (track.libraryState == .added && !isLibraryController) || track.libraryState == .downloaded {
             self.libraryImageView.image = track.libraryState.image
             self.libraryImageView.isHidden = false
+            self.setupConstraints()
         }
         
         self.unavailableView.isHidden = track.isAvailable
@@ -151,20 +152,17 @@ extension TrackTableViewCell {
         libraryImageView.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
             make.trailing.equalTo(self.actionsButton.snp.leading).offset(12)
-            make.width.equalTo(20)
+            make.width.equalTo(30)
         }
         
         trackInfoStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(12)
             make.bottom.equalToSuperview().inset(12)
             make.leading.equalTo(self.coverImageView.snp.trailing).offset(12)
-            make.trailing.equalTo((self.libraryImageView.isHidden ? self.actionsButton : self.libraryImageView).snp.leading).inset(12)
+            make.trailing.equalTo((self.libraryImageView.isHidden ? self.actionsButton : self.libraryImageView).snp.leading).offset(-12)
         }
         
-        serviceImageView.snp.makeConstraints { make in
-            make.height.width.equalTo(self.explicitAndArtistStackView.snp.height)
-        }
-        
+        serviceImageView.snp.makeConstraints({ $0.height.width.equalTo(self.explicitAndArtistStackView.snp.height) })
         unavailableView.snp.makeConstraints({ $0.edges.equalToSuperview() })
     }
 }

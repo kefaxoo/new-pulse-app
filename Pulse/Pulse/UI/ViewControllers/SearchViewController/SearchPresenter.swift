@@ -28,6 +28,8 @@ final class SearchPresenter: BasePresenter {
     private var searchResponse: SearchResponse?
     private var currentSource: SourceType = .none
     
+    private var isResultsLoading = false
+    
     weak var delegate: SearchPresenterDelegate?
     
     var resultsCount: Int {
@@ -81,11 +83,7 @@ final class SearchPresenter: BasePresenter {
             return
         }
         
-        if let isSpinnerPresented = MainCoordinator.shared.currentViewController?.isSpinnerPresented,
-           !isSpinnerPresented {
-            MainCoordinator.shared.currentViewController?.presentSpinner()
-        }
-        
+        MainCoordinator.shared.currentViewController?.presentSpinner()
         MuffonProvider.shared.search(query: query, in: self.currentService, type: self.currentType) { [weak self] response in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
             self?.searchResponse = response
@@ -140,6 +138,31 @@ final class SearchPresenter: BasePresenter {
                 }
             default:
                 return
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (scrollView.contentOffset.y + scrollView.frame.size.height) > scrollView.contentSize.height,
+           !isResultsLoading,
+           resultsCount > 0,
+           let searchResponse,
+           searchResponse.canLoadMore {
+            self.isResultsLoading = true
+            MainCoordinator.shared.currentViewController?.presentSpinner()
+            switch currentSource {
+                case .muffon:
+                    MuffonProvider.shared.search(query: self.query, in: self.currentService, type: self.currentType, page: searchResponse.page + 1) { [weak self] searchResponse in
+                        MainCoordinator.shared.currentViewController?.dismissSpinner()
+                        self?.searchResponse?.addResults(searchResponse)
+                        self?.delegate?.reloadData()
+                    } failure: {
+                        MainCoordinator.shared.currentViewController?.dismissSpinner()
+                        self.searchResponse?.cannotLoadMore()
+                    }
+                case .none:
+                    MainCoordinator.shared.currentViewController?.dismissSpinner()
+                    self.searchResponse?.cannotLoadMore()
+            }
         }
     }
 }

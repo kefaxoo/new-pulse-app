@@ -9,7 +9,7 @@ import Foundation
 import FriendlyURLSession
 
 enum MuffonApi {
-    case search(type: SearchType, service: ServiceType, query: String)
+    case search(type: SearchType, service: ServiceType, query: String, page: Int)
     case trackInfo(_ track: TrackModel)
     case trackInfoById(_ id: Int, service: ServiceType)
 }
@@ -21,7 +21,7 @@ extension MuffonApi: BaseRestApiEnum {
     
     var path: String {
         switch self {
-            case .search(let type, let service, _):
+            case .search(let type, let service, _, _):
                 return "/\(service.muffonApi)/search/\(type.muffonApi)"
             case .trackInfo(let track):
                 return "/\(track.service.muffonApi)/tracks/\(track.id)/"
@@ -42,8 +42,9 @@ extension MuffonApi: BaseRestApiEnum {
         var parameters = Parameters()
         parameters["token"] = "1b80e13d-b306-4223-b0a7-cf9013bda6cf"
         switch self {
-            case .search(_, _, let query):
+            case .search(_, _, let query, let page):
                 parameters["query"] = query
+                parameters["page"]  = page
             default:
                 break
         }

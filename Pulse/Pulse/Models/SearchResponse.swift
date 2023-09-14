@@ -8,7 +8,18 @@
 import Foundation
 
 struct SearchResponse {
-    let page: Int
+    var page: Int
     let totalPages: Int
     var results: [Decodable]
+    var canLoadMore: Bool = true
+    
+    mutating func addResults(_ searchResponse: SearchResponse) {
+        self.page = searchResponse.page
+        self.results.append(contentsOf: searchResponse.results)
+        self.canLoadMore = true
+    }
+    
+    mutating func cannotLoadMore() {
+        self.canLoadMore = false
+    }
 }

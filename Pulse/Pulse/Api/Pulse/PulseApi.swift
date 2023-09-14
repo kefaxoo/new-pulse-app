@@ -95,7 +95,7 @@ extension PulseApi: BaseRestApiEnum {
             case .log(let log):
                 return log
             case .addTrackToLibrary(let track):
-                
+                return nil
             default:
                 return nil
         }

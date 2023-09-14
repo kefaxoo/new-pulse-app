@@ -19,7 +19,7 @@ final class MuffonProvider: BaseRestApiProvider {
         task?.cancel()
     }
     
-    func search(query: String, in service: ServiceType, type: SearchType, success: @escaping((SearchResponse) -> ()), failure: @escaping(() -> ())) {
+    func search(query: String, in service: ServiceType, type: SearchType, page: Int = 1, success: @escaping((SearchResponse) -> ()), failure: @escaping(() -> ())) {
         if self.shouldCancelTask {
             task?.cancel()
         }
@@ -29,7 +29,8 @@ final class MuffonProvider: BaseRestApiProvider {
                 type: MuffonApi.search(
                     type: type,
                     service: service,
-                    query: query
+                    query: query,
+                    page: page
                 ),
                 shouldPrintLog: self.shouldPrintLog
             ), response: { response in

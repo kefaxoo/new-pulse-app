@@ -34,6 +34,7 @@ enum Constants {
         case libraryNonSelected
         case librarySelected
         case tracks
+        case nextTrack
         
         var image: UIImage? {
             let type: System
@@ -84,6 +85,8 @@ enum Constants {
                     type = .heart
                 case .tracks:
                     type = .musicNote
+                case .nextTrack:
+                    type = .forwardFill
                 default:
                     return self.customImage
             }
@@ -158,9 +161,10 @@ extension Constants.Images {
         case eye                     = "eye"
         case eyeSlash                = "eye.slash"
         case gear                    = "gear"
-        case magnifyingGlass         = "magnifyingGlass"
+        case magnifyingGlass         = "magnifyingglass"
         case heart                   = "heart"
         case musicNote               = "music.note"
+        case forwardFill             = "forward.fill"
         
         var image: UIImage? {
             return UIImage(systemName: self.rawValue)
@@ -171,7 +175,7 @@ extension Constants.Images {
         case soundcloudLogo = "SoundcloudLogo"
         
         var image: UIImage? {
-            return UIImage(systemName: self.rawValue)
+            return UIImage(named: self.rawValue)
         }
     }
 }

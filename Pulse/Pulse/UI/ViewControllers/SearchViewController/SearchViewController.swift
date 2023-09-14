@@ -155,4 +155,8 @@ extension SearchViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         self.presenter.didSelectRow(at: indexPath)
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.presenter.scrollViewDidScroll(scrollView)
+    }
 }

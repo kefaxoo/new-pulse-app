@@ -33,6 +33,8 @@ extension UIViewController {
     }
     
     func presentSpinner() {
+        guard !self.isSpinnerPresented else { return }
+        
         spinnerAlert?.dismiss()
         spinnerAlert = AlertAppleMusic16View(title: "", subtitle: "", icon: .spinnerLarge)
         spinnerAlert?.dismissByTap = false
