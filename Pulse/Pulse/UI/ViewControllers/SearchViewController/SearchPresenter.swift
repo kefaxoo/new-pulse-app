@@ -151,7 +151,12 @@ final class SearchPresenter: BasePresenter {
             MainCoordinator.shared.currentViewController?.presentSpinner()
             switch currentSource {
                 case .muffon:
-                    MuffonProvider.shared.search(query: self.query, in: self.currentService, type: self.currentType, page: searchResponse.page + 1) { [weak self] searchResponse in
+                    MuffonProvider.shared.search(
+                        query: self.query,
+                        in: self.currentService,
+                        type: self.currentType, 
+                        page: searchResponse.page + 1
+                    ) { [weak self] searchResponse in
                         MainCoordinator.shared.currentViewController?.dismissSpinner()
                         self?.searchResponse?.addResults(searchResponse)
                         self?.delegate?.reloadData()

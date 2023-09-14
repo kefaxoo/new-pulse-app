@@ -8,7 +8,6 @@
 import UIKit
 
 class SettingsViewController: BaseUIViewController {
-
     private lazy var settingsTableView: UITableView = {
         let tableView = UITableView()
         tableView.dataSource = self
@@ -40,7 +39,6 @@ extension SettingsViewController {
     override func setupInterface() {
         super.setupInterface()
         self.setupNavigationController()
-        
     }
     
     override func setupLayout() {

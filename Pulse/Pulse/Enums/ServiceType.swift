@@ -8,9 +8,7 @@
 import UIKit
 
 enum ServiceType: String {
-    // swiftlint:disable identifier_name
     case vk          = "vk"
-    // swiftlint:enable identifier_name
     case yandexMusic = "yandexMusic"
     case spotify     = "spotify"
     case deezer      = "deezer"

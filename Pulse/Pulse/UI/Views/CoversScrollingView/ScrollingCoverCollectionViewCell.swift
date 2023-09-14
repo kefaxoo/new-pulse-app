@@ -9,7 +9,7 @@ import UIKit
 import SDWebImage
 
 class ScrollingCoverCollectionViewCell: BaseUICollectionViewCell {
-    private lazy var mainView: UIView = UIView(with: .clear)
+    private lazy var mainView = UIView(with: .clear)
     private lazy var coverImageView: UIImageView = {
         let imageView = UIImageView.default
         imageView.layer.cornerRadius = 20

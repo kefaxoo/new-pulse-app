@@ -31,7 +31,7 @@ final class SettingsManager {
     
     // MARK: Realm configuration
     var realmConfiguration: Realm.Configuration {
-        let configuration = Realm.Configuration(schemaVersion: 5) { migration, oldSchemaVersion in
+        let configuration = Realm.Configuration(schemaVersion: 6) { migration, oldSchemaVersion in
             if oldSchemaVersion < 2 {
                 migration.enumerateObjects(ofType: LibraryTrackModel.className()) { _, newObject in
                     newObject?["shareLink"] = ""
@@ -53,6 +53,12 @@ final class SettingsManager {
             if oldSchemaVersion < 5 {
                 migration.enumerateObjects(ofType: LibraryTrackModel.className()) { _, newObject in
                     newObject?["trackFilename"] = ""
+                }
+            }
+            
+            if oldSchemaVersion < 6 {
+                migration.enumerateObjects(ofType: LibraryTrackModel.className()) { _, newObject in
+                    newObject?["isSynced"] = false
                 }
             }
         }

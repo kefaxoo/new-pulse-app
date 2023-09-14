@@ -98,8 +98,9 @@ final class TrackTableViewCell: BaseUITableViewCell {
         if (track.libraryState == .added && !isLibraryController) || track.libraryState == .downloaded {
             self.libraryImageView.image = track.libraryState.image
             self.libraryImageView.isHidden = false
-            self.setupConstraints()
         }
+        
+        self.setupConstraints()
         
         self.unavailableView.isHidden = track.isAvailable
     }
@@ -122,6 +123,10 @@ extension TrackTableViewCell {
 // MARK: -
 // MARK: Setup interface methods
 extension TrackTableViewCell {
+    override func setupInterface() {
+        self.setupLayout()
+    }
+    
     override func setupLayout() {
         self.contentView.addSubview(coverImageView)
         self.contentView.addSubview(trackInfoStackView)
@@ -131,8 +136,8 @@ extension TrackTableViewCell {
         explicitAndArtistStackView.addArrangedSubview(explicitImageView)
         explicitAndArtistStackView.addArrangedSubview(artistLabel)
         
-        self.contentView.addSubview(libraryImageView)
         self.contentView.addSubview(actionsButton)
+        self.contentView.addSubview(libraryImageView)
         self.contentView.addSubview(unavailableView)
     }
     
@@ -146,13 +151,13 @@ extension TrackTableViewCell {
         
         actionsButton.snp.makeConstraints { make in
             make.top.trailing.bottom.equalToSuperview()
-            make.width.equalTo(self.contentView.snp.height)
+            make.width.equalTo(30)
         }
         
         libraryImageView.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
-            make.trailing.equalTo(self.actionsButton.snp.leading).offset(12)
-            make.width.equalTo(30)
+            make.width.equalTo(20)
+            make.trailing.equalTo(self.actionsButton.snp.leading).offset(-12)
         }
         
         trackInfoStackView.snp.makeConstraints { make in

@@ -39,6 +39,7 @@ final class NowPlayingViewController: BaseUIViewController {
 // MARK: Lifecycle
 extension NowPlayingViewController {
     override func viewDidLoad() {
+        super.viewDidLoad()
         self.presenter.viewDidLoad()
     }
 }

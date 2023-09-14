@@ -41,27 +41,36 @@ final class MainCoordinator {
     
     fileprivate init() {}
     
-    func firstLaunch() {
+    func firstLaunch(completion: @escaping(() -> ())) {
         if let pulseAccessToken = SettingsManager.shared.pulse.accessToken,
            !pulseAccessToken.isEmpty {
-            let emptyVC = UIViewController()
-            emptyVC.modalPresentationStyle = .overFullScreen
-            emptyVC.view.backgroundColor = .systemBackground
-            self.makeRootVC(vc: emptyVC)
-            emptyVC.presentSpinner()
-            PulseProvider.shared.accessToken { [weak self] loginUser in
-                emptyVC.dismissSpinner()
-                SettingsManager.shared.pulse.updateAccessToken(loginUser.accessToken)
-                self?.makeTabBarAsRoot()
-            } failure: { [weak self] error in
-                self?.makeAuthViewControllerAsRoot()
-                AlertView.shared.present(title: "Error", message: error?.errorDescription, alertType: .error, system: .iOS16AppleMusic)
-                guard !SettingsManager.shared.pulse.username.isEmpty else { return }
-                
-                self?.pushSignInViewController()
+            if NetworkManager.shared.isReachable {
+                let emptyVC = UIViewController.empty
+                self.makeRootVC(vc: emptyVC)
+                emptyVC.presentSpinner()
+                PulseProvider.shared.accessToken { [weak self] loginUser in
+                    emptyVC.dismissSpinner()
+                    SettingsManager.shared.pulse.updateAccessToken(loginUser.accessToken)
+                    completion()
+                    self?.makeTabBarAsRoot()
+                } failure: { [weak self] error in
+                    self?.makeAuthViewControllerAsRoot()
+                    completion()
+                    guard !SettingsManager.shared.pulse.username.isEmpty else {
+                        AlertView.shared.present(title: "Error", message: error?.errorDescription, alertType: .error, system: .iOS16AppleMusic)
+                        return
+                    }
+                    
+                    self?.pushSignInViewController()
+                    AlertView.shared.present(title: "Error", message: error?.errorDescription, alertType: .error, system: .iOS16AppleMusic)
+                }
+            } else {
+                completion()
+                self.makeTabBarAsRoot()
             }
         } else {
             self.makeAuthViewControllerAsRoot()
+            completion()
             guard !SettingsManager.shared.pulse.username.isEmpty else { return }
             
             self.pushSignInViewController()

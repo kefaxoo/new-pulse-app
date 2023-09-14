@@ -26,7 +26,8 @@ final class NetworkManager {
     private lazy var monitor = NWPathMonitor()
     private var status: NWPath.Status = .requiresConnection
     private(set) var isReachableOnCellurar = false
-    private var isReachable: Bool {
+    
+    var isReachable: Bool {
         return self.status == .satisfied
     }
     
@@ -46,6 +47,8 @@ final class NetworkManager {
             }
         }
     }
+    
+    func checkNetwork() {}
     
     deinit {
         self.stopMonitoring()
@@ -120,7 +123,7 @@ extension NetworkManager {
     private func startMonitoring() {
         monitor.pathUpdateHandler = { [weak self] path in
             guard let self,
-                  self.isReachable != (path.status == .satisfied && path.isExpensive)
+                  self.isReachable != (path.status == .satisfied || path.isExpensive)
             else { return }
             
             self.status = path.status

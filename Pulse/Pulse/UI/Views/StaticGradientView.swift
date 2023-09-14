@@ -8,7 +8,6 @@
 import UIKit
 
 class StaticGradientView: UIView {
-
     private var startColor: UIColor = .white
     private var endColor: UIColor = .black
     private var startLocation: Double = 0

@@ -62,3 +62,12 @@ extension UIViewController {
         return navigationController
     }
 }
+
+extension UIViewController {
+    static var empty: UIViewController {
+        let vc = UIViewController()
+        vc.modalPresentationStyle = .overFullScreen
+        vc.view.backgroundColor = .systemBackground
+        return vc
+    }
+}

@@ -62,15 +62,11 @@ extension CoverImageView {
         substrateView.addSubview(activityIndicatorView)
     }
     
-    private func setupConstraints() {
-        
-    }
+    private func setupConstraints() {}
 }
 
 // MARK: -
 // MARK: State methods
 extension CoverImageView {
-    func changeState() {
-        
-    }
+    func changeState() {}
 }

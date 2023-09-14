@@ -45,7 +45,8 @@ final class DownloadManager {
             DispatchQueue.main.async {
                 completion?(image)
             }
-        }.resume()
+        }
+        .resume()
     }
     
     func downloadTempTrack(_ track: TrackModel, completion: @escaping((URL?) -> ())) {
@@ -97,7 +98,8 @@ final class DownloadManager {
                     completion(nil)
                 }
             }
-        }).resume()
+        })
+        .resume()
     }
     
     func cacheTracksIfNeeded() {}

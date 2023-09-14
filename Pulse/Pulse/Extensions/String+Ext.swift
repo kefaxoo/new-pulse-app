@@ -17,7 +17,6 @@ extension String {
     }
 }
 
-// swiftlint:disable identifier_name
 extension String {
     var encode: String {
         var result = ""
@@ -41,7 +40,6 @@ extension String {
         return result
     }
 }
-// swiftlint:enable identifier_name
 
 extension String {
     init(length: Int, symbols: String) {

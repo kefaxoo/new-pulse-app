@@ -20,6 +20,7 @@ class LibraryTrackModel: Object {
     @Persisted dynamic var `extension`   = ""
     @Persisted dynamic var source        = ""
     @Persisted dynamic var trackFilename = ""
+    @Persisted dynamic var isSynced      = false
     
     convenience init(_ track: TrackModel) {
         self.init()
@@ -32,6 +33,7 @@ class LibraryTrackModel: Object {
         self.shareLink  = track.shareLink
         self.extension  = track.extension
         self.source     = track.source.rawValue
+        self.isSynced   = track.isSynced
         
         ImageManager.shared.saveCover(track) { [weak self] filename in
             guard let filename else { return }

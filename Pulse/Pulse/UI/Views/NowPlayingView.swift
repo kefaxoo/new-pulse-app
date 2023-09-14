@@ -102,10 +102,6 @@ final class NowPlayingView: BaseUIView {
     private func setupDelegate() {
         AudioPlayer.shared.nowPlayingViewDelegate = self
     }
-    
-    func setupTrackInfo() {
-        // TODO: setup track info
-    }
 }
 
 // MARK: -
@@ -181,9 +177,7 @@ extension NowPlayingView {
         _ = AudioPlayer.shared.nextTrack()
     }
     
-    @objc private func presentNowPlayingVC() {
-        
-    }
+    @objc private func presentNowPlayingVC() {}
 }
 
 // MARK: -

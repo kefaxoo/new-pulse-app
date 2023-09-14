@@ -248,13 +248,25 @@ extension AudioPlayer {
 extension AudioPlayer {
     func playNext(_ track: TrackModel) {
         self.playlist.insert(track, at: self.nextPosition)
-        let type: AlertIcon = Constants.Images.playNext.image != nil ? .custom(Constants.Images.playNext.image!) : .done
+        let type: AlertIcon
+        if let image = Constants.Images.playNext.image {
+            type = .custom(image)
+        } else {
+            type = .done
+        }
+        
         AlertView.shared.present(title: "Playing next", alertType: type, system: .iOS17AppleMusic)
     }
     
     func playLast(_ track: TrackModel) {
         self.playlist.append(track)
-        let type: AlertIcon = Constants.Images.playNext.image != nil ? .custom(Constants.Images.playLast.image!) : .done
+        let type: AlertIcon
+        if let image = Constants.Images.playLast.image {
+            type = .custom(image)
+        } else {
+            type = .done
+        }
+        
         AlertView.shared.present(title: "Playing last", alertType: type, system: .iOS17AppleMusic)
     }
 }

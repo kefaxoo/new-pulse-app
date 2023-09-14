@@ -42,6 +42,7 @@ final class TrackModel {
     var image          : ImageModel?
     var playableLinks  : PlayableLinkModel?
     var cachedFilename = ""
+    var isSynced       = false
     var trackFilename  : String {
         return "Tracks/\(self.service.rawValue)-\(self.id).\(self.extension)"
     }
@@ -73,8 +74,8 @@ final class TrackModel {
             self.artist = ArtistModel(track.artist)
         }
         
-        self.artists = track.artists.map({ ArtistModel($0) })
-        self.artistText    = self.artists.names
+        self.artists    = track.artists.map({ ArtistModel($0) })
+        self.artistText = self.artists.names
     }
     
     init(_ track: LibraryTrackModel) {
@@ -88,6 +89,7 @@ final class TrackModel {
         self.source         = SourceType(rawValue: track.source) ?? .none
         self.cachedFilename = track.trackFilename
         self.isAvailable    = true
+        self.isSynced       = track.isSynced
         var artists = [ArtistModel]()
         track.artistIds.forEach { id in
             guard let artist = LibraryManager.shared.findLibraryArtist(id: id) else { return }
@@ -105,16 +107,16 @@ final class TrackModel {
             "title": self.title
         ]
         
-        if let artist = self.artist {
+        if let artist {
             dict["artist"] = artist.json(service: self.service)
         }
         
-        if self.artists.count > 0 {
-            dict["artists"] = self.artists.map({ $0.json(service: self.service) })
+        if !artists.isEmpty {
+            dict["artists"] = artists.map({ $0.json(service: self.service) })
         }
         
-        dict["service"] = self.service.rawValue
-        dict["source"]  = self.source.rawValue
+        dict["service"]   = self.service.rawValue
+        dict["source"]    = self.source.rawValue
         
         return dict
     }

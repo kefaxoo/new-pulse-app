@@ -21,9 +21,8 @@ final class Device {
         let modelCode = withUnsafePointer(
             to: &systemInfo.machine, {
                 $0.withMemoryRebound(
-                    to: CChar.self,
-                    capacity: 1, {
-                        String(validatingUTF8: $0)    
+                    to: CChar.self, capacity: 1, {
+                        String(validatingUTF8: $0)
                     }
                 )
             }

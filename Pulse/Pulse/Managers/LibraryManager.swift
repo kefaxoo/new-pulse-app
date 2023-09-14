@@ -21,6 +21,8 @@ final class LibraryManager {
         loadCoversIfNeeded()
         
         DownloadManager.shared.cacheTracksIfNeeded()
+        
+        syncTracksIfNeeded()
     }
     
     private func createDirectoryIfNeeded(directory: String) {
@@ -126,5 +128,21 @@ final class LibraryManager {
         else { return nil }
         
         return libraryTrack.trackFilename
+    }
+    
+    fileprivate func syncTracksIfNeeded() {
+        RealmManager<LibraryTrackModel>().read().forEach { libraryTrack in
+            guard !libraryTrack.isSynced else { return }
+            
+            PulseProvider.shared.syncTrack(TrackModel(libraryTrack)) { _ in
+                RealmManager<LibraryTrackModel>().update { realm in
+                    try? realm.write {
+                        libraryTrack.isSynced = true
+                    }
+                }
+            } failure: { error in
+                debugLog(error?.errorDescription)
+            }
+        }
     }
 }

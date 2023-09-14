@@ -11,7 +11,7 @@ struct SearchResponse {
     var page: Int
     let totalPages: Int
     var results: [Decodable]
-    var canLoadMore: Bool = true
+    var canLoadMore = true
     
     mutating func addResults(_ searchResponse: SearchResponse) {
         self.page = searchResponse.page

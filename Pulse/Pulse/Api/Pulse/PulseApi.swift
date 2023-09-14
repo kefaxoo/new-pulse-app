@@ -22,7 +22,7 @@ enum PulseApi {
     case log(log: [String: Any])
     
     // Library
-    case addTrackToLibrary(_ track: TrackModel)
+    case syncTrack(_ track: TrackModel)
 }
 
 extension PulseApi: BaseRestApiEnum {
@@ -42,15 +42,14 @@ extension PulseApi: BaseRestApiEnum {
                 return "/topCovers"
             case .log:
                 return "/log"
-            case .addTrackToLibrary:
+            case .syncTrack:
                 return "/library/track"
-                
         }
     }
     
     var method: FriendlyURLSession.HTTPMethod {
         switch self {
-            case .createUser, .log, .addTrackToLibrary:
+            case .createUser, .log, .syncTrack:
                 return .post
             default:
                 return .get
@@ -61,10 +60,10 @@ extension PulseApi: BaseRestApiEnum {
         var headers = Headers()
         headers["User-Agent"] = NetworkManager.shared.userAgent
         switch self {
-            case .log, .addTrackToLibrary:
+            case .log, .syncTrack:
                 guard let accessToken = SettingsManager.shared.pulse.accessToken else { break }
                 
-                headers["Authorization"] = accessToken
+                headers["Authorization"] = "Bearer \(accessToken)"
             default:
                 break
         }
@@ -94,8 +93,8 @@ extension PulseApi: BaseRestApiEnum {
         switch self {
             case .log(let log):
                 return log
-            case .addTrackToLibrary(let track):
-                return nil
+            case .syncTrack(let track):
+                return track.json
             default:
                 return nil
         }
