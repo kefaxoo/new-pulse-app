@@ -72,12 +72,6 @@ final class TrackTableViewCell: BaseUITableViewCell {
         return button
     }()
     
-    private lazy var unavailableView = {
-        let view = UIView(with: .label.withAlphaComponent(0.5))
-        view.isHidden = true
-        return view
-    }()
-    
     private lazy var actionsManager: ActionsManager = {
         return ActionsManager(self)
     }()
@@ -101,8 +95,6 @@ final class TrackTableViewCell: BaseUITableViewCell {
         }
         
         self.setupConstraints()
-        
-        self.unavailableView.isHidden = track.isAvailable
     }
 }
 
@@ -117,6 +109,7 @@ extension TrackTableViewCell {
         self.artistLabel.text = nil
         self.actionsButton.menu = nil
         self.libraryImageView.image = nil
+        self.libraryImageView.isHidden = true
     }
 }
 
@@ -138,7 +131,6 @@ extension TrackTableViewCell {
         
         self.contentView.addSubview(actionsButton)
         self.contentView.addSubview(libraryImageView)
-        self.contentView.addSubview(unavailableView)
     }
     
     override func setupConstraints() {
@@ -160,6 +152,8 @@ extension TrackTableViewCell {
             make.trailing.equalTo(self.actionsButton.snp.leading).offset(-12)
         }
         
+        self.layoutIfNeeded()
+        
         trackInfoStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(12)
             make.bottom.equalToSuperview().inset(12)
@@ -168,7 +162,6 @@ extension TrackTableViewCell {
         }
         
         serviceImageView.snp.makeConstraints({ $0.height.width.equalTo(self.explicitAndArtistStackView.snp.height) })
-        unavailableView.snp.makeConstraints({ $0.edges.equalToSuperview() })
     }
 }
 

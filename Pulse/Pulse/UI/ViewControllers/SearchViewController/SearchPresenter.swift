@@ -10,7 +10,13 @@ import UIKit
 protocol SearchPresenterDelegate: AnyObject {
     func setupServiceSegmentedControl(items: [String])
     func setupTypeSegmentedControl(items: [String])
-    func reloadData()
+    func reloadData(scrollToTop: Bool)
+}
+
+extension SearchPresenterDelegate {
+    func reloadData(scrollToTop: Bool = true) {
+        self.reloadData(scrollToTop: scrollToTop)
+    }
 }
 
 final class SearchPresenter: BasePresenter {
@@ -159,10 +165,12 @@ final class SearchPresenter: BasePresenter {
                     ) { [weak self] searchResponse in
                         MainCoordinator.shared.currentViewController?.dismissSpinner()
                         self?.searchResponse?.addResults(searchResponse)
-                        self?.delegate?.reloadData()
-                    } failure: {
+                        self?.delegate?.reloadData(scrollToTop: false)
+                        self?.isResultsLoading = false
+                    } failure: { [weak self] in
                         MainCoordinator.shared.currentViewController?.dismissSpinner()
-                        self.searchResponse?.cannotLoadMore()
+                        self?.searchResponse?.cannotLoadMore()
+                        self?.isResultsLoading = false
                     }
                 case .none:
                     MainCoordinator.shared.currentViewController?.dismissSpinner()
