@@ -12,7 +12,7 @@ enum SettingType {
     case `import`
     case canvasEnabled
     case autoDownload
-//    case accentColor
+    case accentColor
     case about
     
     var cellType: CellType {
@@ -23,6 +23,8 @@ enum SettingType {
                 return .text
             case .about:
                 return .chevronText
+            case .accentColor:
+                return .colorButton
         }
     }
     
@@ -38,6 +40,8 @@ enum SettingType {
                 return "Auto-download tracks"
             case .about:
                 return "About"
+            case .accentColor:
+                return "Color of the application"
         }
     }
     
@@ -51,6 +55,8 @@ enum SettingType {
                 return "Canvases are shown in the player where artists' photos, cover art and videos come to life"
             case .autoDownload:
                 return "Tracks you liked are immediately downloaded so you can listen offline"
+            case .accentColor:
+                return "Choose the color of the application based on your mood"
             default:
                 return nil
         }
@@ -58,7 +64,7 @@ enum SettingType {
     
     var selectionStyle: UITableViewCell.SelectionStyle {
         switch self {
-            case .adultContent, .canvasEnabled, .autoDownload:
+            case .adultContent, .canvasEnabled, .autoDownload, .accentColor:
                 return .none
             case .import, .about:
                 return .gray
@@ -73,6 +79,8 @@ enum SettingType {
                 return TextTableViewCell.id
             case .about:
                 return ChevronTableViewCell.id
+            case .accentColor:
+                return ColorSettingTableViewCell.id
         }
     }
     

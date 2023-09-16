@@ -136,10 +136,7 @@ enum Constants {
     }
     
     static var isDebug: Bool {
-#if DEBUG
-        return true
-#endif
-        return false
+        return AppEnvironment.current != .releaseProd
     }
 }
 

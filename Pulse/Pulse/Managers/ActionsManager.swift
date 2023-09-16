@@ -50,19 +50,27 @@ final class ActionsManager {
     
     private func addTrackToLibrary(_ track: TrackModel) -> UIAction {
         let action = UIAction(title: "Add to library", image: Constants.Images.inLibrary.image) { [weak self] _ in
-            let libraryTrack = LibraryTrackModel(track)
-            RealmManager<LibraryTrackModel>().write(object: libraryTrack)
-            AlertView.shared.present(title: "Added to library", alertType: .done, system: .iOS17AppleMusic)
-            track.image = ImageModel(coverFilename: libraryTrack.coverFilename)
-            self?.delegate?.updatedTrack(track)
-            self?.delegate?.updateButtonMenu()
-            
-            LibraryManager.shared.syncTrack(track)
-            
-            guard SettingsManager.shared.autoDownload else { return }
-            
-            DownloadManager.shared.addTrackToQueue(track) {
+            AudioManager.shared.updatePlayableLink(for: track) { updatedTrack in
+                let track = updatedTrack.track
+                guard track.isAvailable else {
+                    AlertView.shared.presentError(error: "Unavailable to add", system: .iOS16AppleMusic)
+                    return
+                }
+                
+                let libraryTrack = LibraryTrackModel(track)
+                RealmManager<LibraryTrackModel>().write(object: libraryTrack)
+                AlertView.shared.present(title: "Added to library", alertType: .done, system: .iOS17AppleMusic)
+                track.image = ImageModel(coverFilename: libraryTrack.coverFilename)
+                self?.delegate?.updatedTrack(track)
                 self?.delegate?.updateButtonMenu()
+                
+                LibraryManager.shared.syncTrack(track)
+                
+                guard SettingsManager.shared.autoDownload else { return }
+                
+                DownloadManager.shared.addTrackToQueue(track) {
+                    self?.delegate?.updateButtonMenu()
+                }
             }
         }
         
@@ -86,6 +94,12 @@ final class ActionsManager {
             
             if !libraryTrack.trackFilename.isEmpty {
                 _ = LibraryManager.shared.removeFile(URL(filename: libraryTrack.trackFilename, path: .documentDirectory))
+                
+                RealmManager<LibraryTrackModel>().update { realm in
+                    try? realm.write {
+                        libraryTrack.trackFilename = ""
+                    }
+                }
             }
             
             let tracks = RealmManager<LibraryTrackModel>().read().filter({
@@ -101,6 +115,8 @@ final class ActionsManager {
             self.delegate?.updateButtonMenu()
             self.delegate?.reloadData()
             AlertView.shared.present(title: "Removed to library", alertType: .done, system: .iOS17AppleMusic)
+            
+            LibraryManager.shared.removeTrack(track)
         }
         
         return action

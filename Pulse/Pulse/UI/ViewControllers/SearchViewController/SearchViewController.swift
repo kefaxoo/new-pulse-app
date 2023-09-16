@@ -56,6 +56,12 @@ extension SearchViewController {
         super.viewDidLoad()
         self.presenter.viewDidLoad()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.searchController.searchBar.tintColor = SettingsManager.shared.color.color
+        self.resultsTableView.reloadData()
+    }
 }
 
 // MARK: -

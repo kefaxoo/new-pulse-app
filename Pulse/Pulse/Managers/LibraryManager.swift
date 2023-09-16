@@ -146,6 +146,12 @@ final class LibraryManager {
                 }
             } failure: { error in
                 debugLog(error?.errorDescription)
+            } trackInLibraryClosure: {
+                RealmManager<LibraryTrackModel>().update { realm in
+                    try? realm.write {
+                        libraryTrack.isSynced = true
+                    }
+                }
             }
         }
     }
@@ -196,5 +202,9 @@ final class LibraryManager {
     
     func syncTrack(_ track: TrackModel) {
         PulseProvider.shared.syncTrack(track)
+    }
+    
+    func removeTrack(_ track: TrackModel) {
+        PulseProvider.shared.removeTrack(track)
     }
 }

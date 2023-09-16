@@ -12,10 +12,7 @@ final class MainCoordinator {
     
     var window: UIWindow?
     
-    private lazy var mainTabBarController: MainTabBarController = {
-        let mainTabBarController = MainTabBarController()
-        return mainTabBarController
-    }()
+    private(set) var mainTabBarController: MainTabBarController
     
     var currentTabBarIndex: Int {
         return mainTabBarController.selectedIndex
@@ -39,7 +36,9 @@ final class MainCoordinator {
         return currentVC
     }
     
-    fileprivate init() {}
+    fileprivate init() {
+        self.mainTabBarController = MainTabBarController()
+    }
     
     func firstLaunch(completion: @escaping(() -> ())) {
         if let pulseAccessToken = SettingsManager.shared.pulse.accessToken,
@@ -108,6 +107,8 @@ final class MainCoordinator {
     }
     
     func makeTabBarAsRoot() {
+        self.mainTabBarController = MainTabBarController()
+        LibraryManager.shared.fetchLibrary()
         self.makeRootVC(vc: self.mainTabBarController)
     }
     

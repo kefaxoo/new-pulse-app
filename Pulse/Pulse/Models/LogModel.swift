@@ -10,10 +10,10 @@ import Foundation
 struct LogModel {
     let log: [String: Any]
     
-    init(callStack: [String], errorMessage: String) {
+    init(callStack: [String], error: String?) {
         self.log = [
             "callStack": callStack.joined(separator: ""),
-            "error": errorMessage
+            "error": error ?? ""
         ]
     }
     

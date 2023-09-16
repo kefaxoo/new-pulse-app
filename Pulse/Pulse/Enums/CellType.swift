@@ -11,4 +11,5 @@ enum CellType {
     case `switch`
     case text
     case chevronText
+    case colorButton
 }

@@ -25,7 +25,8 @@ final class IpApiProvider: BaseRestApiProvider {
                     }
                     
                     success(ipModel)
-                case .failure:
+                case .failure(let response):
+                    response.sendLog()
                     failure?()
             }
         }

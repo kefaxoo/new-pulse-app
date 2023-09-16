@@ -25,7 +25,8 @@ final class IpifyProvider: BaseRestApiProvider {
                     }
                     
                     success(ip)
-                case .failure:
+                case .failure(let response):
+                    response.sendLog()
                     failure()
                     return
             }

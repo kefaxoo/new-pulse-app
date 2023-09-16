@@ -20,7 +20,7 @@ final class AudioManager {
     func updatePlayableLink(for track: TrackModel, success: @escaping((UpdatedTrack) -> ()), failure: (() -> ())? = nil) {
         switch track.service.source {
             case .muffon:
-                MuffonProvider.shared.trackInfo(track) { muffonTrack in
+                MuffonProvider.shared.trackInfo(track, shouldCancelTask: false) { muffonTrack in
                     let track = TrackModel(muffonTrack)
                     success(UpdatedTrack(track: track, response: muffonTrack))
                 } failure: {
@@ -43,7 +43,7 @@ final class AudioManager {
     }
     
     func getLocalLink(for track: TrackModel) -> String? {
-        guard !track.trackFilename.isEmpty else { return nil }
+        guard !track.cachedFilename.isEmpty else { return nil }
         
         return URL(filename: track.cachedFilename, path: .documentDirectory)?.absoluteString
     }

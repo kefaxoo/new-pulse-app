@@ -32,7 +32,7 @@ final class TracksPresenter: BasePresenter {
         self.tracks.removeAll()
         switch type {
             case .library:
-                self.tracks = RealmManager<LibraryTrackModel>().read().map({ TrackModel($0) })
+                self.tracks = RealmManager<LibraryTrackModel>().read().map({ TrackModel($0) }).sorted
             default:
                 MainCoordinator.shared.popViewController()
                 return
@@ -42,7 +42,12 @@ final class TracksPresenter: BasePresenter {
     }
     
     func textDidChange(_ text: String) {
-        self.showedTracks = self.tracks.filter({ $0.title.lowercased().contains(text) || $0.artistText.lowercased().contains(text) })
+        if text.isEmpty {
+            self.showedTracks = self.tracks
+        } else {
+            self.showedTracks = self.tracks.filter({ $0.title.lowercased().contains(text) || $0.artistText.lowercased().contains(text) })
+        }
+        
         self.delegate?.reloadData()
     }
 }

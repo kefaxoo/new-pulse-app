@@ -178,9 +178,9 @@ extension NowPlayingView {
     }
     
     @objc private func presentNowPlayingVC() {
-#if DEBUG
+        guard AppEnvironment.current != .releaseProd else { return }
+        
         MainCoordinator.shared.presentNowPlayingController()
-#endif
     }
 }
 

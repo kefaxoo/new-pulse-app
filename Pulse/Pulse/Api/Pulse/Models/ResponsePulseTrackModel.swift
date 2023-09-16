@@ -8,10 +8,8 @@
 import Foundation
 
 final class ResponsePulseTrackModel: Decodable {
-    let id: String
-    let title: String
-    let artist: PulseArtist?
-    let artists: [PulseArtist]?
+    let id       : String
+    let dateAdded: Int
     
     fileprivate let serviceRawValue: String
     fileprivate let sourceRawValue : String
@@ -26,9 +24,7 @@ final class ResponsePulseTrackModel: Decodable {
     
     enum CodingKeys: String, CodingKey {
         case id
-        case title
-        case artist
-        case artists
+        case dateAdded
         case serviceRawValue = "service"
         case sourceRawValue  = "source"
     }
@@ -37,10 +33,8 @@ final class ResponsePulseTrackModel: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.id = try container.decode(String.self, forKey: .id)
-        self.title = try container.decode(String.self, forKey: .title)
-        self.artist = try container.decodeIfPresent(PulseArtist.self, forKey: .artist)
-        self.artists = try container.decodeIfPresent([PulseArtist].self, forKey: .artists)
         self.serviceRawValue = try container.decode(String.self, forKey: .serviceRawValue)
         self.sourceRawValue = try container.decode(String.self, forKey: .sourceRawValue)
+        self.dateAdded = try container.decode(Int.self, forKey: .dateAdded)
     }
 }

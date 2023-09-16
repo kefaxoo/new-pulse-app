@@ -58,8 +58,8 @@ final class MuffonProvider: BaseRestApiProvider {
         )
     }
     
-    func trackInfo(_ track: TrackModel, success: @escaping((MuffonTrack) -> ()), failure: @escaping(() -> ())) {
-        if self.shouldCancelTask {
+    func trackInfo(_ track: TrackModel, shouldCancelTask: Bool = true, success: @escaping((MuffonTrack) -> ()), failure: @escaping(() -> ())) {
+        if shouldCancelTask {
             task?.cancel()
         }
         
@@ -78,6 +78,7 @@ final class MuffonProvider: BaseRestApiProvider {
                         
                         success(track.trackInfo)
                     case .failure(let response):
+                        response.sendLog()
                         guard response.statusCode != -1 else { return }
                         
                         failure()
@@ -112,6 +113,7 @@ final class MuffonProvider: BaseRestApiProvider {
                         
                         success(track.trackInfo)
                     case .failure(let response):
+                        response.sendLog()
                         guard response.statusCode != -1 else { return }
                         
                         failure?()

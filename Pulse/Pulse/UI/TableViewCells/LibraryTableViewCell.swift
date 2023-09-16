@@ -36,6 +36,15 @@ final class LibraryTableViewCell: BaseUITableViewCell {
 }
 
 // MARK: -
+// MARK: Lifecycle
+extension LibraryTableViewCell {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.iconImageView.tintColor = SettingsManager.shared.color.color
+    }
+}
+
+// MARK: -
 // MARK: Setup interface methods
 extension LibraryTableViewCell {
     override func setupLayout() {

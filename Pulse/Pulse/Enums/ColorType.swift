@@ -73,4 +73,8 @@ enum ColorType: String, CaseIterable {
                 return "Yellow"
         }
     }
+    
+    func isEqual(to color: ColorType) -> UIMenuElement.State {
+        return color == self ? .on : .off
+    }
 }

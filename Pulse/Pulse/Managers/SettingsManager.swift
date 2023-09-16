@@ -5,7 +5,7 @@
 //  Created by Bahdan Piatrouski on 29.08.23.
 //
 
-import Foundation
+import UIKit
 import RealmSwift
 
 final class SettingsManager {
@@ -26,6 +26,10 @@ final class SettingsManager {
         }
         set {
             UserDefaults.standard.setValue(newValue.rawValue, forKey: Constants.UserDefaultsKeys.colorType.rawValue)
+            
+            MainCoordinator.shared.mainTabBarController.viewControllers?.forEach({
+                ($0 as? UINavigationController)?.navigationBar.tintColor = newValue.color
+            })
         }
     }
     
@@ -97,6 +101,10 @@ final class SettingsManager {
         }
         set {
             UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.autoDownload.rawValue)
+            
+            guard newValue else { return }
+            
+            RealmManager<LibraryTrackModel>().read().map({ TrackModel($0) }).forEach({ DownloadManager.shared.addTrackToQueue($0) })
         }
     }
     

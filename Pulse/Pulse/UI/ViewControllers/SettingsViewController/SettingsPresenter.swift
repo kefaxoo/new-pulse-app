@@ -7,8 +7,20 @@
 
 import UIKit
 
+protocol SettingsPresenterDelegate: AnyObject {
+    func reloadData()
+}
+
 final class SettingsPresenter: BasePresenter {
     private let sections = SettingSectionType.allCases
+    private var closure  : (() -> ())
+    
+    weak var delegate: SettingsPresenterDelegate?
+    
+    
+    init(closure: @escaping(() -> ())) {
+        self.closure = closure
+    }
     
     var numberOfSections: Int {
         return sections.count
@@ -37,6 +49,9 @@ final class SettingsPresenter: BasePresenter {
                 (cell as? TextTableViewCell)?.setupCell(type: setting)
             case .chevronText:
                 (cell as? ChevronTableViewCell)?.setupCell(type: setting)
+            case .colorButton:
+                (cell as? ColorSettingTableViewCell)?.setupCell(type: setting)
+                (cell as? ColorSettingTableViewCell)?.delegate = self
         }
         
         return cell
@@ -47,7 +62,13 @@ final class SettingsPresenter: BasePresenter {
               LibraryManager.shared.cleanLibrary()
         else { return }
         
-        LibraryManager.shared.cleanLibrary()
         MainCoordinator.shared.makeAuthViewControllerAsRoot()
+    }
+}
+
+extension SettingsPresenter: TableViewCellDelegate {
+    func reloadData() {
+        self.closure()
+        self.delegate?.reloadData()
     }
 }

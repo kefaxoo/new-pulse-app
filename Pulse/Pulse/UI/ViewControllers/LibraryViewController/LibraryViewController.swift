@@ -23,6 +23,15 @@ final class LibraryViewController: BaseUIViewController {
 }
 
 // MARK: -
+// MARK: Lifecycle
+extension LibraryViewController {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.libraryTableView.reloadData()
+    }
+}
+
+// MARK: -
 // MARK: Setup interface methods
 extension LibraryViewController {
     override func setupLayout() {

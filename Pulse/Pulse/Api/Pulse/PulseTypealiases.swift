@@ -17,7 +17,6 @@ typealias PulseCreateUser       = ResponsePulseCreateUserModel
 typealias PulseLoginUser        = ResponsePulseLoginUserModel
 typealias PulseLoginWithCode    = ResponsePulseLoginWithCodeModel
 typealias PulseVerificationCode = ResponsePulseVerificationCodeModel
-typealias PulseArtist           = ResponsePulseArtistModel
 typealias PulseTrack            = ResponsePulseTrackModel
 typealias PulseResults          = ResponsePulseResultsModel
 

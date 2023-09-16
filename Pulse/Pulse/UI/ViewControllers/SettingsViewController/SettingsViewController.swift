@@ -11,14 +11,15 @@ class SettingsViewController: BaseUIViewController {
     private lazy var settingsTableView: UITableView = {
         let tableView = UITableView()
         tableView.dataSource = self
-        tableView.register(SwitchTableViewCell.self, TextTableViewCell.self, ChevronTableViewCell.self)
+        tableView.register(SwitchTableViewCell.self, TextTableViewCell.self, ChevronTableViewCell.self, ColorSettingTableViewCell.self)
         tableView.delegate = self
         return tableView
     }()
     
     private var closure: (() -> ())
     private lazy var presenter: SettingsPresenter = {
-        let presenter = SettingsPresenter()
+        let presenter = SettingsPresenter(closure: self.closure)
+        presenter.delegate = self
         return presenter
     }()
     
@@ -88,5 +89,13 @@ extension SettingsViewController: UITableViewDataSource {
 extension SettingsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+// MARK: -
+// MARK: SettingsPresenterDelegate
+extension SettingsViewController: SettingsPresenterDelegate {
+    func reloadData() {
+        self.settingsTableView.reloadData()
     }
 }

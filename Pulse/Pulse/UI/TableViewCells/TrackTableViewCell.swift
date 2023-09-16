@@ -72,6 +72,12 @@ final class TrackTableViewCell: BaseUITableViewCell {
         return button
     }()
     
+    private lazy var unavailableView: UIView = {
+        let view = UIView(with: .label.withAlphaComponent(0.5))
+        view.isHidden = true
+        return view
+    }()
+    
     private lazy var actionsManager: ActionsManager = {
         return ActionsManager(self)
     }()
@@ -89,11 +95,10 @@ final class TrackTableViewCell: BaseUITableViewCell {
         self.explicitImageView.isHidden = true
         self.actionsButton.menu = actionsManager.trackActions(track)
         
-        if (track.libraryState == .added && !isLibraryController) || track.libraryState == .downloaded {
-            self.libraryImageView.image = track.libraryState.image
-            self.libraryImageView.isHidden = false
-        }
+        self.libraryImageView.image = track.libraryState.image
+        self.libraryImageView.isHidden = !((track.libraryState == .added && !isLibraryController) || track.libraryState == .downloaded)
         
+        self.unavailableView.isHidden = track.isAvailable
         self.setupConstraints()
     }
 }
@@ -103,6 +108,7 @@ final class TrackTableViewCell: BaseUITableViewCell {
 extension TrackTableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
+        
         self.coverImageView.image = nil
         self.titleLabel.text = nil
         self.serviceImageView.image = nil
@@ -110,6 +116,11 @@ extension TrackTableViewCell {
         self.actionsButton.menu = nil
         self.libraryImageView.image = nil
         self.libraryImageView.isHidden = true
+        self.unavailableView.isHidden = true
+        
+        let color = SettingsManager.shared.color.color
+        self.actionsButton.tintColor = color
+        self.libraryImageView.tintColor = color
     }
 }
 
@@ -131,6 +142,8 @@ extension TrackTableViewCell {
         
         self.contentView.addSubview(actionsButton)
         self.contentView.addSubview(libraryImageView)
+        
+        self.contentView.addSubview(unavailableView)
     }
     
     override func setupConstraints() {
@@ -162,6 +175,7 @@ extension TrackTableViewCell {
         }
         
         serviceImageView.snp.makeConstraints({ $0.height.width.equalTo(self.explicitAndArtistStackView.snp.height) })
+        unavailableView.snp.makeConstraints({ $0.edges.equalToSuperview() })
     }
 }
 

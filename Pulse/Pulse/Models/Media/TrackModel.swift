@@ -44,8 +44,12 @@ final class TrackModel {
     var playableLinks  : PlayableLinkModel?
     var cachedFilename = ""
     var isSynced       = false
+    var libraryTrackFilename: String {
+        return "Tracks/\(self.trackFilename)"
+    }
+    
     var trackFilename  : String {
-        return "Tracks/\(self.service.rawValue)-\(self.id).\(self.extension)"
+        return "\(self.service.rawValue)-\(self.id).\(self.extension)"
     }
     
     var libraryState: TrackLibraryState {
@@ -102,6 +106,10 @@ final class TrackModel {
         
         self.artists    = artists
         self.artistText = artists.names
+        
+        if !track.trackFilename.isEmpty {
+            self.playableLinks = PlayableLinkModel(URL(filename: track.trackFilename, path: .documentDirectory)?.absoluteString ?? "")
+        }
     }
     
     var json: [String: Any] {
@@ -123,5 +131,21 @@ final class TrackModel {
         dict["dateAdded"] = self.dateAdded
         
         return dict
+    }
+}
+
+// MARK: -
+// MARK: Override methods
+extension TrackModel: Equatable {
+    static func == (lhs: TrackModel, rhs: TrackModel) -> Bool {
+        return lhs.id == rhs.id && lhs.source == rhs.source && lhs.service == rhs.service
+    }
+}
+
+extension [TrackModel] {
+    var sorted: [TrackModel] {
+        return self.sorted { firstObj, secondObj in
+            return firstObj.dateAdded > secondObj.dateAdded
+        }
     }
 }

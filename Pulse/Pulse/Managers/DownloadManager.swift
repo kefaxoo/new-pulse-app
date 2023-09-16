@@ -52,8 +52,7 @@ final class DownloadManager {
     func downloadTempTrack(_ track: TrackModel, completion: @escaping((URL?) -> ())) {
         var track = track
         let url = URL(filename: track.trackFilename, path: .documentDirectory)
-        if let streamingLinkNeedsToRefresh = track.playableLinks?.streamingLinkNeedsToRefresh,
-            streamingLinkNeedsToRefresh {
+        if track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
             AudioManager.shared.updatePlayableLink(for: track) { updatedTrack in
                 track = updatedTrack.track
                 self.downloadTrack(from: track.playableLinks?.streaming, to: url, completion: completion)
@@ -102,11 +101,15 @@ final class DownloadManager {
         .resume()
     }
     
-    func cacheTracksIfNeeded() {}
+    func cacheTracksIfNeeded() {
+        guard SettingsManager.shared.autoDownload else { return }
+        
+        RealmManager<LibraryTrackModel>().read().filter({ $0.trackFilename.isEmpty }).forEach({ self.addTrackToQueue(TrackModel($0)) })
+    }
 }
 
 extension DownloadManager {
-    func addTrackToQueue(_ track: TrackModel, closure: @escaping(() -> ())) {
+    func addTrackToQueue(_ track: TrackModel, closure: (() -> ())? = nil) {
         guard !self.downloadQueue.contains(where: { $0.id == track.id && $0.service == track.service.rawValue }) else { return }
         
         let queueObj = DownloadQueueTrackModel(track)
@@ -117,7 +120,7 @@ extension DownloadManager {
         RealmManager<LibraryTrackModel>().update { realm in
             try? realm.write {
                 libraryTrack?.trackFilename = "downloading"
-                closure()
+                closure?()
             }
         }
     }
@@ -166,8 +169,8 @@ fileprivate extension DownloadManager {
         
         switch source {
             case .muffon:
-                MuffonProvider.shared.trackInfo(id: obj.id, service: service) { [weak self] muffonTrack in
-                    let filename = TrackModel(muffonTrack).trackFilename
+                MuffonProvider.shared.trackInfo(id: obj.id, service: service, shouldCancelTask: false) { [weak self] muffonTrack in
+                    let filename = TrackModel(muffonTrack).libraryTrackFilename
                     self?.downloadTrack(from: muffonTrack.audio.link, to: URL(filename: filename, path: .documentDirectory), completion: { url in
                         guard url != nil else {
                             completion(nil)

@@ -24,11 +24,19 @@ enum PulseApi {
     // Library
     case syncTrack(_ track: TrackModel)
     case fetchTracks
+    case removeTrack(_ track: TrackModel)
 }
 
 extension PulseApi: BaseRestApiEnum {
     var baseUrl: String {
-        return "https://test-pulse-api.fly.dev/api"
+        switch AppEnvironment.current {
+            case .local:
+                return "http://localhost:8000/api"
+            case .test:
+                return "https://test-pulse-api.fly.dev/api"
+            default:
+                return "https://prod-pulse-api.fly.dev/api"
+        }
     }
     
     var path: String {
@@ -43,7 +51,7 @@ extension PulseApi: BaseRestApiEnum {
                 return "/topCovers"
             case .log:
                 return "/log"
-            case .syncTrack:
+            case .syncTrack, .removeTrack:
                 return "/library/track"
             case .fetchTracks:
                 return "/library/tracks"
@@ -54,6 +62,8 @@ extension PulseApi: BaseRestApiEnum {
         switch self {
             case .createUser, .log, .syncTrack:
                 return .post
+            case .removeTrack:
+                return .delete
             default:
                 return .get
         }
@@ -63,7 +73,7 @@ extension PulseApi: BaseRestApiEnum {
         var headers = Headers()
         headers["User-Agent"] = NetworkManager.shared.userAgent
         switch self {
-            case .log, .syncTrack, .fetchTracks:
+            case .log, .syncTrack, .fetchTracks, .removeTrack:
                 guard let accessToken = SettingsManager.shared.pulse.accessToken else { break }
                 
                 headers["Authorization"] = "Bearer \(accessToken)"
@@ -85,6 +95,10 @@ extension PulseApi: BaseRestApiEnum {
                 parameters["password"] = SettingsManager.shared.pulse.password ?? ""
             case .topCovers(let country):
                 parameters["country"] = country
+            case .removeTrack(let track):
+                parameters["track_id"] = String(track.id)
+                parameters["service"]  = track.service.rawValue
+                parameters["source"]   = track.source.rawValue
             default:
                 return nil
         }
