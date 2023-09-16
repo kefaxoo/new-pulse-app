@@ -21,6 +21,7 @@ class LibraryTrackModel: Object {
     @Persisted dynamic var source        = ""
     @Persisted dynamic var trackFilename = ""
     @Persisted dynamic var isSynced      = false
+    @Persisted dynamic var dateAdded     = 0
     
     convenience init(_ track: TrackModel) {
         self.init()
@@ -34,6 +35,7 @@ class LibraryTrackModel: Object {
         self.extension  = track.extension
         self.source     = track.source.rawValue
         self.isSynced   = track.isSynced
+        self.dateAdded  = Int(Date().timeIntervalSince1970)
         
         ImageManager.shared.saveCover(track) { [weak self] filename in
             guard let filename else { return }

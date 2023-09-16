@@ -9,6 +9,7 @@ import UIKit
 
 protocol NowPlayingPresenterDelegate: AnyObject {
     func setCover(_ cover: UIImage?)
+    func setTrack(_ track: TrackModel)
 }
 
 final class NowPlayingPresenter: BasePresenter {
@@ -19,6 +20,10 @@ final class NowPlayingPresenter: BasePresenter {
     func viewDidLoad() {
         if let cover = AudioPlayer.shared.cover {
             self.delegate?.setCover(cover)
+        }
+        
+        if let track = AudioPlayer.shared.track {
+            self.delegate?.setTrack(track)
         }
     }
 }

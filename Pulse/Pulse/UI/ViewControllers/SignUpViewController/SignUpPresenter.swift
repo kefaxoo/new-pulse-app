@@ -14,7 +14,7 @@ final class SignUpPresenter: CoversPresenter<SignUpViewController> {
         guard let text,
               !text.isEmpty
         else {
-            AlertView.shared.present(title: "Error", message: "Text in \(textFieldKind) is empty", alertType: .error, system: .iOS16AppleMusic)
+            AlertView.shared.presentError(error: "Text in \(textFieldKind) is empty", system: .iOS16AppleMusic)
             return nil
         }
         
@@ -25,7 +25,7 @@ final class SignUpPresenter: CoversPresenter<SignUpViewController> {
         guard let password = self.checkTextFrom(text: password, textFieldKind: "password") else { return nil }
         
         guard NSRegularExpression(Constants.RegularExpressions.pulsePassword.rawValue).isMatch(password) else {
-            AlertView.shared.present(title: "Error", message: "Password doesn't meet requirements", alertType: .error, system: .iOS16AppleMusic)
+            AlertView.shared.presentError(error: "Password doesn't meet requirements", system: .iOS16AppleMusic)
             return nil
         }
         
@@ -46,12 +46,7 @@ final class SignUpPresenter: CoversPresenter<SignUpViewController> {
             VerifyPulseAccountPopUpViewController(verificationCode: createUser.model).present()
         } failure: { error in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
-            AlertView.shared.present(
-                title: "Error",
-                message: error?.errorDescription ?? "Unknown Pulse error",
-                alertType: .error,
-                system: .iOS16AppleMusic
-            )
+            AlertView.shared.presentError(error: error?.errorDescription ?? "Unknown Pulse error", system: .iOS16AppleMusic)
         }
     }
 }

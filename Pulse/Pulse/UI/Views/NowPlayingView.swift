@@ -177,7 +177,11 @@ extension NowPlayingView {
         _ = AudioPlayer.shared.nextTrack()
     }
     
-    @objc private func presentNowPlayingVC() {}
+    @objc private func presentNowPlayingVC() {
+#if DEBUG
+        MainCoordinator.shared.presentNowPlayingController()
+#endif
+    }
 }
 
 // MARK: -

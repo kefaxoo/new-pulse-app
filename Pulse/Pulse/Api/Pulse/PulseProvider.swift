@@ -163,6 +163,22 @@ final class PulseProvider: BaseRestApiProvider {
             }
         }
     }
+    
+    func fetchTracks(success: @escaping(([PulseTrack]) -> ()), failure: PulseDefaultErrorClosure? = nil) {
+        urlSession.dataTask(with: URLRequest(type: PulseApi.fetchTracks, shouldPrintLog: self.shouldPrintLog)) { [weak self] response in
+            switch response {
+                case .success(let response):
+                    guard let results = response.data?.map(to: PulseResults<PulseTrack>.self) else {
+                        failure?(nil)
+                        return
+                    }
+                    
+                    success(results.results)
+                case .failure(let response):
+                    self?.parseError(response: response, closure: failure)
+            }
+        }
+    }
 }
 
 extension PulseProvider {

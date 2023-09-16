@@ -23,6 +23,7 @@ enum PulseApi {
     
     // Library
     case syncTrack(_ track: TrackModel)
+    case fetchTracks
 }
 
 extension PulseApi: BaseRestApiEnum {
@@ -44,6 +45,8 @@ extension PulseApi: BaseRestApiEnum {
                 return "/log"
             case .syncTrack:
                 return "/library/track"
+            case .fetchTracks:
+                return "/library/tracks"
         }
     }
     
@@ -60,7 +63,7 @@ extension PulseApi: BaseRestApiEnum {
         var headers = Headers()
         headers["User-Agent"] = NetworkManager.shared.userAgent
         switch self {
-            case .log, .syncTrack:
+            case .log, .syncTrack, .fetchTracks:
                 guard let accessToken = SettingsManager.shared.pulse.accessToken else { break }
                 
                 headers["Authorization"] = "Bearer \(accessToken)"

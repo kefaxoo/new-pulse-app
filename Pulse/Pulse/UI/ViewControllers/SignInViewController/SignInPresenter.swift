@@ -16,7 +16,7 @@ final class SignInPresenter: CoversPresenter<SignInViewController> {
         guard let text,
               !text.isEmpty
         else {
-            AlertView.shared.present(title: "Error", message: "Text in \(textFieldKind) is empty", alertType: .error, system: .iOS16AppleMusic)
+            AlertView.shared.presentError(error: "Text in \(textFieldKind) is empty", system: .iOS16AppleMusic)
             return nil
         }
         
@@ -47,15 +47,11 @@ final class SignInPresenter: CoversPresenter<SignInViewController> {
             SettingsManager.shared.pulse.expireAt = loginUser.expireAt ?? 0
             SettingsManager.shared.pulse.saveCredentials(pulseAccount)
             SettingsManager.shared.pulse.saveAcceessToken(Credentials(email: email, accessToken: loginUser.accessToken))
+            LibraryManager.shared.fetchLibrary()
             MainCoordinator.shared.makeTabBarAsRoot()
         } failure: { error in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
-            AlertView.shared.present(
-                title: "Error",
-                message: error?.errorDescription ?? "Unknown Pulse error",
-                alertType: .error,
-                system: .iOS16AppleMusic
-            )
+            AlertView.shared.presentError(error: error?.errorDescription ?? "Unknown Pulse error", system: .iOS16AppleMusic)
         } verifyClosure: { verificationCode in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
             SettingsManager.shared.pulse.username = email
@@ -77,12 +73,7 @@ final class SignInPresenter: CoversPresenter<SignInViewController> {
             VerifyPulseAccountPopUpViewController(verificationCode: verificationCode.model).present()
         } failure: { error in
             MainCoordinator.shared.currentViewController?.dismissSpinner()
-            AlertView.shared.present(
-                title: "Error",
-                message: error?.errorDescription ?? "Unknown Pulse error",
-                alertType: .error,
-                system: .iOS16AppleMusic
-            )
+            AlertView.shared.presentError(error: error?.errorDescription ?? "Unknown Pulse error", system: .iOS16AppleMusic)
         }
     }
 }

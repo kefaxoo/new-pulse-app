@@ -16,13 +16,17 @@ final class LibraryManager {
     func initialSetup() {
         debugLog(URL(filename: "", path: .documentDirectory)?.absoluteString)
         
-        createDirectoryIfNeeded(directory: "Covers")
-        createDirectoryIfNeeded(directory: "Tracks")
+        createDirectoriesIfNeeded()
         loadCoversIfNeeded()
         
         DownloadManager.shared.cacheTracksIfNeeded()
         
         syncTracksIfNeeded()
+    }
+    
+    private func createDirectoriesIfNeeded() {
+        createDirectoryIfNeeded(directory: "Covers")
+        createDirectoryIfNeeded(directory: "Tracks")
     }
     
     private func createDirectoryIfNeeded(directory: String) {
@@ -142,6 +146,50 @@ final class LibraryManager {
                 }
             } failure: { error in
                 debugLog(error?.errorDescription)
+            }
+        }
+    }
+    
+    func cleanLibrary() -> Bool {
+        guard LibraryManager.shared.removeFile(URL(filename: "Covers", path: .documentDirectory)),
+              LibraryManager.shared.removeFile(URL(filename: "Tracks", path: .documentDirectory))
+        else { return false }
+        
+        RealmManager<LibraryTrackModel>().removeAll()
+        RealmManager<LibraryArtistModel>().removeAll()
+        RealmManager<DownloadQueueTrackModel>().removeAll()
+        
+        return true
+    }
+    
+    func fetchLibrary() {
+        createDirectoriesIfNeeded()
+        
+        PulseProvider.shared.fetchTracks { tracks in
+            tracks.forEach { track in
+                switch track.source {
+                    case .muffon:
+                        guard let id = Int(track.id) else { return }
+                        
+                        MuffonProvider.shared.trackInfo(id: id, service: track.service, shouldCancelTask: false) { muffonTrack in
+                            guard !RealmManager<LibraryTrackModel>().read().contains(where: {
+                                $0.id == muffonTrack.source.id && $0.service == muffonTrack.source.service.rawValue
+                            }) else { return }
+                            
+                            let trackObj = TrackModel(muffonTrack)
+                            ImageManager.shared.saveCover(trackObj) { filename in
+                                let libraryTrack = LibraryTrackModel(trackObj)
+                                libraryTrack.isSynced = true
+                                if let filename {
+                                    libraryTrack.coverFilename = filename
+                                }
+                                
+                                RealmManager<LibraryTrackModel>().write(object: libraryTrack)
+                            }
+                        }
+                    case .none:
+                        break
+                }
             }
         }
     }

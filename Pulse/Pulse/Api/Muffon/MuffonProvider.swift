@@ -86,8 +86,14 @@ final class MuffonProvider: BaseRestApiProvider {
         )
     }
     
-    func trackInfo(id: Int, service: ServiceType, success: @escaping((MuffonTrack) -> ()), failure: @escaping(() -> ())) {
-        if self.shouldCancelTask {
+    func trackInfo(
+        id: Int,
+        service: ServiceType,
+        shouldCancelTask: Bool = true,
+        success: @escaping((MuffonTrack) -> ()),
+        failure: (() -> ())? = nil
+    ) {
+        if shouldCancelTask {
             task?.cancel()
         }
         
@@ -100,7 +106,7 @@ final class MuffonProvider: BaseRestApiProvider {
                 switch response {
                     case .success(let response):
                         guard let track = response.data?.map(to: MuffonTrackInfo.self) else {
-                            failure()
+                            failure?()
                             return
                         }
                         
@@ -108,7 +114,7 @@ final class MuffonProvider: BaseRestApiProvider {
                     case .failure(let response):
                         guard response.statusCode != -1 else { return }
                         
-                        failure()
+                        failure?()
                 }
             }
         )

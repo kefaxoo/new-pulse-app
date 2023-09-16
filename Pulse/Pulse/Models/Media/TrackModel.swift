@@ -38,6 +38,7 @@ final class TrackModel {
     let `extension`: String
     let source     : SourceType
     let isAvailable: Bool
+    let dateAdded  : Int
     
     var image          : ImageModel?
     var playableLinks  : PlayableLinkModel?

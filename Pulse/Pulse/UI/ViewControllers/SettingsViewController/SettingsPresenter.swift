@@ -41,4 +41,13 @@ final class SettingsPresenter: BasePresenter {
         
         return cell
     }
+    
+    func signOut() {
+        guard SettingsManager.shared.signOut(),
+              LibraryManager.shared.cleanLibrary()
+        else { return }
+        
+        LibraryManager.shared.cleanLibrary()
+        MainCoordinator.shared.makeAuthViewControllerAsRoot()
+    }
 }

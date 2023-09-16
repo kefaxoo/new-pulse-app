@@ -40,13 +40,13 @@ final class AudioPlayer: NSObject {
         }
         return player
     }()
-    
-    private var track          : TrackModel?
+
     private var playlist       = [TrackModel]()
     private var position       = 0
     private var observer       : Any?
     private var nowPlayingInfo = [String: Any]()
     
+    private(set) var track: TrackModel?
     private(set) var cover: UIImage?
     
     private let commandCenter = MPRemoteCommandCenter.shared()

@@ -35,3 +35,13 @@ final class RealmManager<T> where T: Object {
         }
     }
 }
+
+extension RealmManager {
+    func removeAll() {
+        self.read().forEach({ self.delete(object: $0) })
+    }
+    
+    var count: Int {
+        return self.read().count
+    }
+}

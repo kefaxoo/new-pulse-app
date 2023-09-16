@@ -55,6 +55,9 @@
 		707FAF872A9E8E0B008929FC /* UICollectionViewCell+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707FAF862A9E8E0B008929FC /* UICollectionViewCell+Ext.swift */; };
 		707FAF892A9E8E56008929FC /* ScrollingCoverCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707FAF882A9E8E56008929FC /* ScrollingCoverCollectionViewCell.swift */; };
 		707FAF8B2A9E8F05008929FC /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707FAF8A2A9E8F05008929FC /* UIView+Ext.swift */; };
+		70839CDB2AB4A3180030BB06 /* ResponsePulseResultsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70839CDA2AB4A3180030BB06 /* ResponsePulseResultsModel.swift */; };
+		70839CDD2AB4A3550030BB06 /* ResponsePulseTrackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70839CDC2AB4A3550030BB06 /* ResponsePulseTrackModel.swift */; };
+		70839CDF2AB4A3BC0030BB06 /* ResponsePulseArtistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70839CDE2AB4A3BC0030BB06 /* ResponsePulseArtistModel.swift */; };
 		7092BA8D2AADC75B007FE3C3 /* TracksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7092BA8C2AADC75B007FE3C3 /* TracksViewController.swift */; };
 		7092BA8F2AADC75F007FE3C3 /* TracksPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7092BA8E2AADC75F007FE3C3 /* TracksPresenter.swift */; };
 		7092BA932AADC852007FE3C3 /* LibraryControllerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7092BA922AADC852007FE3C3 /* LibraryControllerType.swift */; };
@@ -194,6 +197,9 @@
 		707FAF862A9E8E0B008929FC /* UICollectionViewCell+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Ext.swift"; sourceTree = "<group>"; };
 		707FAF882A9E8E56008929FC /* ScrollingCoverCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollingCoverCollectionViewCell.swift; sourceTree = "<group>"; };
 		707FAF8A2A9E8F05008929FC /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
+		70839CDA2AB4A3180030BB06 /* ResponsePulseResultsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseResultsModel.swift; sourceTree = "<group>"; };
+		70839CDC2AB4A3550030BB06 /* ResponsePulseTrackModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseTrackModel.swift; sourceTree = "<group>"; };
+		70839CDE2AB4A3BC0030BB06 /* ResponsePulseArtistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseArtistModel.swift; sourceTree = "<group>"; };
 		7092BA8C2AADC75B007FE3C3 /* TracksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksViewController.swift; sourceTree = "<group>"; };
 		7092BA8E2AADC75F007FE3C3 /* TracksPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksPresenter.swift; sourceTree = "<group>"; };
 		7092BA922AADC852007FE3C3 /* LibraryControllerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryControllerType.swift; sourceTree = "<group>"; };
@@ -437,6 +443,9 @@
 				70E3D5832AA13A8E0040E46A /* ResponsePulseLoginUserModel.swift */,
 				7069F73D2AA3194700255854 /* ResponsePulseLoginWithCodeModel.swift */,
 				7069F7412AA31F2B00255854 /* ResponsePulseVerificationCodeModel.swift */,
+				70839CDA2AB4A3180030BB06 /* ResponsePulseResultsModel.swift */,
+				70839CDC2AB4A3550030BB06 /* ResponsePulseTrackModel.swift */,
+				70839CDE2AB4A3BC0030BB06 /* ResponsePulseArtistModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -931,6 +940,7 @@
 				7068BEA42AA8E50E004B0E03 /* LogManager.swift in Sources */,
 				70996A282A9D3F1100905847 /* Constants.swift in Sources */,
 				700A9C322A9E774500E11DEB /* UIViewController+Ext.swift in Sources */,
+				70839CDF2AB4A3BC0030BB06 /* ResponsePulseArtistModel.swift in Sources */,
 				70996A1D2A9D3AEB00905847 /* ResponsePulseCoverInfoModel.swift in Sources */,
 				70B3C0412AA8A1C000EBBFD4 /* ServiceType.swift in Sources */,
 				70E09FC72AA7D2D80094EEA0 /* MuffonProvider.swift in Sources */,
@@ -975,6 +985,7 @@
 				70E09FC92AA7D2DE0094EEA0 /* MuffonTypealias.swift in Sources */,
 				70996A142A9D396400905847 /* PulseProvider.swift in Sources */,
 				707FAF892A9E8E56008929FC /* ScrollingCoverCollectionViewCell.swift in Sources */,
+				70839CDD2AB4A3550030BB06 /* ResponsePulseTrackModel.swift in Sources */,
 				70399C642A9FE58200976098 /* NSRegularExpression+Ext.swift in Sources */,
 				7092BA982AADEC08007FE3C3 /* CoverImageView.swift in Sources */,
 				70CDCE992A9FCC7800FBB125 /* UIImageView+Ext.swift in Sources */,
@@ -1020,6 +1031,7 @@
 				7092BA8F2AADC75F007FE3C3 /* TracksPresenter.swift in Sources */,
 				706CE2962AAD1FC300748322 /* DownloadManager.swift in Sources */,
 				81B8EE3C2AA0E17F00C7F53E /* VerifyPulseAccountPopUpViewController.swift in Sources */,
+				70839CDB2AB4A3180030BB06 /* ResponsePulseResultsModel.swift in Sources */,
 				70E09FA62AA768880094EEA0 /* TextTableViewCell.swift in Sources */,
 				7068BE982AA8CE35004B0E03 /* ResponseMuffonTrackModel.swift in Sources */,
 				70996A352A9D443400905847 /* ApiTypealiases.swift in Sources */,

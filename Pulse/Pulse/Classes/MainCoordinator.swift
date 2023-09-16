@@ -44,27 +44,27 @@ final class MainCoordinator {
     func firstLaunch(completion: @escaping(() -> ())) {
         if let pulseAccessToken = SettingsManager.shared.pulse.accessToken,
            !pulseAccessToken.isEmpty {
-            if NetworkManager.shared.isReachable,
-               SettingsManager.shared.pulse.expireAt <= Int(Date().timeIntervalSince1970) {
+            if NetworkManager.shared.isReachable {
                 let emptyVC = UIViewController.empty
                 self.makeRootVC(vc: emptyVC)
                 emptyVC.presentSpinner()
                 PulseProvider.shared.accessToken { [weak self] loginUser in
-                    emptyVC.dismissSpinner()
                     SettingsManager.shared.pulse.expireAt = loginUser.expireAt ?? 0
                     SettingsManager.shared.pulse.updateAccessToken(loginUser.accessToken)
+                    LibraryManager.shared.fetchLibrary()
+                    emptyVC.dismissSpinner()
                     completion()
                     self?.makeTabBarAsRoot()
                 } failure: { [weak self] error in
                     self?.makeAuthViewControllerAsRoot()
                     completion()
                     guard !SettingsManager.shared.pulse.username.isEmpty else {
-                        AlertView.shared.present(title: "Error", message: error?.errorDescription, alertType: .error, system: .iOS16AppleMusic)
+                        AlertView.shared.presentError(error: error?.errorDescription, system: .iOS16AppleMusic)
                         return
                     }
                     
                     self?.pushSignInViewController()
-                    AlertView.shared.present(title: "Error", message: error?.errorDescription, alertType: .error, system: .iOS16AppleMusic)
+                    AlertView.shared.presentError(error: error?.errorDescription, system: .iOS16AppleMusic)
                 }
             } else {
                 completion()
@@ -124,5 +124,12 @@ final class MainCoordinator {
     func pushTracksViewController(type: LibraryControllerType) {
         let tracksVC = TracksViewController(type: type)
         self.pushViewController(vc: tracksVC)
+    }
+    
+    func presentNowPlayingController() {
+        guard AudioPlayer.shared.track != nil else { return }
+        
+        let nowPlayingVC = NowPlayingViewController()
+        self.present(nowPlayingVC)
     }
 }

@@ -58,9 +58,7 @@ extension SettingsViewController {
 // MARK: Actions
 extension SettingsViewController {
     @objc private func signOutAction(_ sender: UIBarButtonItem) {
-        guard SettingsManager.shared.signOut() else { return }
-        
-        MainCoordinator.shared.makeAuthViewControllerAsRoot()
+        self.presenter.signOut()
     }
 }
 

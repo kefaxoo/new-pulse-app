@@ -29,6 +29,10 @@ final class AlertView {
         }
     }
     
+    func presentError(error: String? = nil, system: AlertViewStyle) {
+        self.present(title: "Error", message: error, alertType: .error, system: system)
+    }
+    
     func dismiss() {
         lastAlert16?.dismiss()
         lastAlert17?.dismiss()

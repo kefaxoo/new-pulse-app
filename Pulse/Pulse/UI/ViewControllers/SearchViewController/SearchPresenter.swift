@@ -90,7 +90,7 @@ final class SearchPresenter: BasePresenter {
             self?.delegate?.reloadData()
         } failure: {
             MainCoordinator.shared.currentViewController?.dismissSpinner()
-            AlertView.shared.present(title: "Error", message: "Unknown Muffon Error", alertType: .error, system: .iOS16AppleMusic)
+            AlertView.shared.presentError(error: "Unknown Muffon Error", system: .iOS16AppleMusic)
         }
     }
     
