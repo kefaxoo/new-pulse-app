@@ -68,6 +68,7 @@ final class TrackModel {
         self.extension     = track.extension
         self.source        = .muffon
         self.isAvailable   = track.audio.isAvailable
+        self.dateAdded     = Int(Date().timeIntervalSince1970)
         if track.artist.id == -1,
            let artist = track.artists.first(where: { $0.name == track.artist.name }) {
             self.artist = ArtistModel(artist)
@@ -91,6 +92,7 @@ final class TrackModel {
         self.cachedFilename = track.trackFilename
         self.isAvailable    = true
         self.isSynced       = track.isSynced
+        self.dateAdded      = track.dateAdded
         var artists = [ArtistModel]()
         track.artistIds.forEach { id in
             guard let artist = LibraryManager.shared.findLibraryArtist(id: id) else { return }
@@ -118,6 +120,7 @@ final class TrackModel {
         
         dict["service"]   = self.service.rawValue
         dict["source"]    = self.source.rawValue
+        dict["dateAdded"] = self.dateAdded
         
         return dict
     }

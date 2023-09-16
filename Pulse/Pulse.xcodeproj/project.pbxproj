@@ -14,6 +14,7 @@
 		70399C622A9FE33200976098 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70399C612A9FE33200976098 /* AlertView.swift */; };
 		70399C642A9FE58200976098 /* NSRegularExpression+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70399C632A9FE58200976098 /* NSRegularExpression+Ext.swift */; };
 		70439F412AA369E8007B0A98 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70439F402AA369E8007B0A98 /* SettingsViewController.swift */; };
+		704FE51A2AB58FCA00E22DF0 /* CachingPlayerItem in Frameworks */ = {isa = PBXBuildFile; productRef = 704FE5192AB58FCA00E22DF0 /* CachingPlayerItem */; };
 		7054EF4C2AA0B04200F55B92 /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7054EF4B2AA0B04200F55B92 /* PopUpViewController.swift */; };
 		7054EF4F2AA0B24F00F55B92 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7054EF4E2AA0B24F00F55B92 /* PaddingLabel.swift */; };
 		705AA9D32AABA440007F0260 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705AA9D22AABA440007F0260 /* RealmManager.swift */; };
@@ -295,6 +296,7 @@
 				70AC1CA82A9B57240095A793 /* SDWebImage in Frameworks */,
 				709F1B662A9E95BD00C0FB73 /* InfiniteScrolling-SPM in Frameworks */,
 				70AC1CB22A9B57AB0095A793 /* RealmSwift in Frameworks */,
+				704FE51A2AB58FCA00E22DF0 /* CachingPlayerItem in Frameworks */,
 				70AC1CAA2A9B57240095A793 /* SDWebImageMapKit in Frameworks */,
 				70AC1CAD2A9B57410095A793 /* FriendlyURLSession in Frameworks */,
 				810E3D1A2A9F8875009891FC /* SnapKit in Frameworks */,
@@ -846,6 +848,7 @@
 				70AC1CBA2A9B58360095A793 /* Slyderin */,
 				709F1B652A9E95BD00C0FB73 /* InfiniteScrolling-SPM */,
 				810E3D192A9F8875009891FC /* SnapKit */,
+				704FE5192AB58FCA00E22DF0 /* CachingPlayerItem */,
 			);
 			productName = Pulse;
 			productReference = 70BDBA7C2A9B56C000401359 /* Pulse.app */;
@@ -884,6 +887,7 @@
 				70AC1CB32A9B57EC0095A793 /* XCRemoteSwiftPackageReference "SPAlert" */,
 				70AC1CB92A9B58360095A793 /* XCRemoteSwiftPackageReference "Slyderin" */,
 				709F1B642A9E95BD00C0FB73 /* XCRemoteSwiftPackageReference "InfiniteScrolling-SPM" */,
+				704FE5182AB58FCA00E22DF0 /* XCRemoteSwiftPackageReference "CachingPlayerItem" */,
 			);
 			productRefGroup = 70BDBA7D2A9B56C000401359 /* Products */;
 			projectDirPath = "";
@@ -1292,6 +1296,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		704FE5182AB58FCA00E22DF0 /* XCRemoteSwiftPackageReference "CachingPlayerItem" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sukov/CachingPlayerItem";
+			requirement = {
+				kind = exactVersion;
+				version = 1.0.8;
+			};
+		};
 		709F1B642A9E95BD00C0FB73 /* XCRemoteSwiftPackageReference "InfiniteScrolling-SPM" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kefaxoo/InfiniteScrolling-SPM.git";
@@ -1351,6 +1363,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		704FE5192AB58FCA00E22DF0 /* CachingPlayerItem */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 704FE5182AB58FCA00E22DF0 /* XCRemoteSwiftPackageReference "CachingPlayerItem" */;
+			productName = CachingPlayerItem;
+		};
 		709F1B652A9E95BD00C0FB73 /* InfiniteScrolling-SPM */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 709F1B642A9E95BD00C0FB73 /* XCRemoteSwiftPackageReference "InfiniteScrolling-SPM" */;

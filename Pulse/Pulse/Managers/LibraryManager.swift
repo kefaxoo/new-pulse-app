@@ -193,4 +193,8 @@ final class LibraryManager {
             }
         }
     }
+    
+    func syncTrack(_ track: TrackModel) {
+        PulseProvider.shared.syncTrack(track)
+    }
 }

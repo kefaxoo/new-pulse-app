@@ -148,7 +148,7 @@ final class PulseProvider: BaseRestApiProvider {
         }
     }
     
-    func syncTrack(_ track: TrackModel, success: @escaping((PulseSuccess) -> ()), failure: PulseDefaultErrorClosure? = nil) {
+    func syncTrack(_ track: TrackModel, success: ((PulseSuccess) -> ())? = nil, failure: PulseDefaultErrorClosure? = nil) {
         urlSession.dataTask(with: URLRequest(type: PulseApi.syncTrack(track), shouldPrintLog: self.shouldPrintLog)) { [weak self] response in
             switch response {
                 case .success(let response):
@@ -157,7 +157,7 @@ final class PulseProvider: BaseRestApiProvider {
                         return
                     }
                     
-                    success(successModel)
+                    success?(successModel)
                 case .failure(let response):
                     self?.parseError(response: response, closure: failure)
             }

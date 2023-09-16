@@ -32,12 +32,14 @@ final class AudioPlayer: NSObject {
     private let player: AVPlayer = {
         let player = AVPlayer()
         player.volume = 1
+        player.automaticallyWaitsToMinimizeStalling = false
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback)
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
             print(error)
         }
+        
         return player
     }()
 

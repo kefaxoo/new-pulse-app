@@ -57,6 +57,8 @@ final class ActionsManager {
             self?.delegate?.updatedTrack(track)
             self?.delegate?.updateButtonMenu()
             
+            LibraryManager.shared.syncTrack(track)
+            
             guard SettingsManager.shared.autoDownload else { return }
             
             DownloadManager.shared.addTrackToQueue(track) {
