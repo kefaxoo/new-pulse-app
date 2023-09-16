@@ -110,9 +110,11 @@ extension SearchViewController: SearchPresenterDelegate {
         self.typeSegmentedControl.selectedSegmentIndex = 0
     }
     
-    func reloadData() {
-        self.resultsTableView.setContentOffset(.zero, animated: true)
+    func reloadData(scrollToTop: Bool) {
         self.resultsTableView.reloadData()
+        guard scrollToTop else { return }
+        
+        self.resultsTableView.setContentOffset(.zero, animated: true)
     }
 }
 
