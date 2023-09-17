@@ -10,6 +10,7 @@ import Foundation
 enum SettingSectionType: CaseIterable {
     case general
     case appearance
+    case soundcloud
     case help
     
     var title: String {
@@ -18,6 +19,8 @@ enum SettingSectionType: CaseIterable {
                 return "General"
             case .appearance:
                 return "Appearance"
+            case .soundcloud:
+                return "Soundcloud"
             case .help:
                 return "Help"
         }
@@ -29,6 +32,8 @@ enum SettingSectionType: CaseIterable {
                 return [.autoDownload]
             case .appearance:
                 return [.accentColor]
+            case .soundcloud:
+                return [.soundcloudSign]
             case .help:
                 return [.about]
         }

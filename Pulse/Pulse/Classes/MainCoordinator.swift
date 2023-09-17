@@ -133,4 +133,12 @@ final class MainCoordinator {
         let nowPlayingVC = NowPlayingViewController()
         self.present(nowPlayingVC)
     }
+    
+    func presentWebViewController(type: WebViewType = .none, delegate: WebViewControllerDelegate? = nil) {
+        guard type != .none else { return }
+        
+        let webVC = WebViewController(type: type)
+        webVC.delegate = delegate
+        self.present(webVC)
+    }
 }

@@ -52,6 +52,11 @@ final class SettingsPresenter: BasePresenter {
             case .colorButton:
                 (cell as? ColorSettingTableViewCell)?.setupCell(type: setting)
                 (cell as? ColorSettingTableViewCell)?.delegate = self
+            case .service:
+                (cell as? ServiceSignTableViewCell)?.setupCell(type: setting)
+                (cell as? ServiceSignTableViewCell)?.delegate = self
+            default:
+                break
         }
         
         return cell

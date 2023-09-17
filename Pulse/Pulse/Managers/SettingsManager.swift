@@ -16,6 +16,8 @@ final class SettingsManager {
     }
     
     var pulse = PulseModel()
+    var soundcloud = SoundcloudModel()
+    
     var color: ColorType {
         get {
             return ColorType(
@@ -79,7 +81,7 @@ final class SettingsManager {
     // MARK: General settings
     var isAdultContentEnabled: Bool {
         get {
-            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.isAdultContentEnabled.rawValue) as? Bool ?? true
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.isAdultContentEnabled.rawValue) as? Bool ?? false
         }
         set {
             UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.isAdultContentEnabled.rawValue)
@@ -88,7 +90,7 @@ final class SettingsManager {
     
     var isCanvasesEnabled: Bool {
         get {
-            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.isCanvasesEnabled.rawValue) as? Bool ?? true
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.isCanvasesEnabled.rawValue) as? Bool ?? false
         }
         set {
             UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.isCanvasesEnabled.rawValue)
@@ -109,6 +111,14 @@ final class SettingsManager {
     }
     
     func signOut() -> Bool {
-        return pulse.signOut()
+        autoDownload = false
+        isAdultContentEnabled = false
+        isCanvasesEnabled = false
+        
+        guard pulse.signOut(),
+              soundcloud.signOut()
+        else { return false }
+        
+        return true
     }
 }

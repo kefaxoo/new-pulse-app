@@ -114,11 +114,18 @@ enum Constants {
     enum KeychainService: String {
         case pulseCredentials = "pulseCredentials"
         case pulseToken       = "pulseToken"
+        
+        case soundcloudAccessToken  = "soundcloudAccessToken"
+        case soundcloudRefreshToken = "soundcloudRefreshToken"
+        case soundcloudUser         = "soundcloudUser"
     }
     
     enum UserDefaultsKeys: String {
         case pulseUsername = "pulseUsername"
         case pulseExpireAt = "pulseExpireAt"
+        
+        case soundcloudUserId = "soundcloudUserId"
+        case soundcloudUser   = "soundcloudUser"
         
         case autoDownload          = "general.autoDownload"
         case isAdultContentEnabled = "general.isAdultContentEnabled"
@@ -135,6 +142,12 @@ enum Constants {
         case pulsePassword = "(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}"
     }
     
+    enum Soundcloud: String {
+        case clientId     = "5acc74891941cfc73ec8ee2504be6617"
+        case clientSecret = "ca2b69301bd1f73985a9b47224a2a239"
+        case redirectLink = "https://quodlibet.github.io/callbacks/soundcloud.html"
+    }
+    
     static var isDebug: Bool {
         return AppEnvironment.current != .releaseProd
     }
@@ -142,31 +155,31 @@ enum Constants {
 
 extension Constants.Images {
     fileprivate enum System: String {
-        case exclamationMarkTriangle = "exclamationmark.triangle"
-        case heartFill               = "heart.fill"
-        case arrowDownHeartFill      = "arrow.down.heart.fill"
-        case trashFill               = "trash.fill"
-        case textInsert              = "text.insert"
-        case textAppend              = "text.append"
-        case minus                   = "minus"
-        case heartSlashFill          = "heart.slash.fill"
-        case chevronRight            = "chevron.right"
-        case eSquareFill             = "e.square.fill"
-        case ellipsis                = "ellipsis"
-        case playFill                = "play.fill"
-        case pauseFill               = "pause.fill"
-        case squareAndArrowDown      = "square.and.arrow.down"
-        case squareAndArrowUp        = "square.and.arrow.up"
-        case appleLogo               = "apple.logo"
-        case xCircleFill             = "x.circle.fill"
-        case eye                     = "eye"
-        case eyeSlash                = "eye.slash"
-        case gear                    = "gear"
-        case magnifyingGlass         = "magnifyingglass"
-        case heart                   = "heart"
-        case musicNote               = "music.note"
-        case forwardFill             = "forward.fill"
-        case ellipsisCircleFill      = "ellipsis.circle.fill"
+        case exclamationMarkTriangle  = "exclamationmark.triangle"
+        case heartFill                = "heart.fill"
+        case arrowDownHeartFill       = "arrow.down.heart.fill"
+        case trashFill                = "trash.fill"
+        case textInsert               = "text.insert"
+        case textAppend               = "text.append"
+        case minus                    = "minus"
+        case heartSlashFill           = "heart.slash.fill"
+        case chevronRight             = "chevron.right"
+        case eSquareFill              = "e.square.fill"
+        case ellipsis                 = "ellipsis"
+        case playFill                 = "play.fill"
+        case pauseFill                = "pause.fill"
+        case squareAndArrowDown       = "square.and.arrow.down"
+        case squareAndArrowUp         = "square.and.arrow.up"
+        case appleLogo                = "apple.logo"
+        case xCircleFill              = "x.circle.fill"
+        case eye                      = "eye"
+        case eyeSlash                 = "eye.slash"
+        case gear                     = "gear"
+        case magnifyingGlass          = "magnifyingglass"
+        case heart                    = "heart"
+        case musicNote                = "music.note"
+        case forwardFill              = "forward.fill"
+        case ellipsisCircleFill       = "ellipsis.circle.fill"
         
         var image: UIImage? {
             return UIImage(systemName: self.rawValue)

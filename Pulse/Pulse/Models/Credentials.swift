@@ -21,12 +21,14 @@ struct Credentials {
     }
     
     init(email: String, password: String?) {
-        self.username = email
-        self.password = password
+        self.init(username: email, password: password)
     }
     
     init(email: String, accessToken: String?) {
-        self.username = email
-        self.password = accessToken
+        self.init(email: email, password: accessToken)
+    }
+    
+    init(userId: Int, accessToken: String?) {
+        self.init(email: String(userId), password: accessToken)
     }
 }

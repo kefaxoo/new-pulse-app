@@ -79,4 +79,13 @@ enum ServiceType: String {
                 return .none
         }
     }
+    
+    var webType: WebViewType {
+        switch self {
+            case .soundcloud:
+                return .soundcloud
+            default:
+                return .none
+        }
+    }
 }

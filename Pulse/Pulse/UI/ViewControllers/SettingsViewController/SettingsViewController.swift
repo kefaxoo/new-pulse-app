@@ -11,7 +11,14 @@ class SettingsViewController: BaseUIViewController {
     private lazy var settingsTableView: UITableView = {
         let tableView = UITableView()
         tableView.dataSource = self
-        tableView.register(SwitchTableViewCell.self, TextTableViewCell.self, ChevronTableViewCell.self, ColorSettingTableViewCell.self)
+        tableView.register(
+            SwitchTableViewCell.self,
+            TextTableViewCell.self,
+            ChevronTableViewCell.self,
+            ColorSettingTableViewCell.self,
+            ServiceSignTableViewCell.self
+        )
+        
         tableView.delegate = self
         return tableView
     }()

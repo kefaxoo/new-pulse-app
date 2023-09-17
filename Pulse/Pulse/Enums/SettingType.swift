@@ -13,7 +13,9 @@ enum SettingType {
     case canvasEnabled
     case autoDownload
     case accentColor
+    case soundcloudSign
     case about
+    case none
     
     var cellType: CellType {
         switch self {
@@ -25,6 +27,10 @@ enum SettingType {
                 return .chevronText
             case .accentColor:
                 return .colorButton
+            case .soundcloudSign:
+                return .service
+            case .none:
+                return .none
         }
     }
     
@@ -42,6 +48,14 @@ enum SettingType {
                 return "About"
             case .accentColor:
                 return "Color of the application"
+            case .soundcloudSign:
+                if SettingsManager.shared.soundcloud.accessToken != nil {
+                    return "User: \(SettingsManager.shared.soundcloud.username)"
+                } else {
+                    return "Sign in soundcloud"
+                }
+            case .none:
+                return ""
         }
     }
     
@@ -64,10 +78,10 @@ enum SettingType {
     
     var selectionStyle: UITableViewCell.SelectionStyle {
         switch self {
-            case .adultContent, .canvasEnabled, .autoDownload, .accentColor:
-                return .none
             case .import, .about:
                 return .gray
+            default:
+                return .none
         }
     }
     
@@ -81,6 +95,10 @@ enum SettingType {
                 return ChevronTableViewCell.id
             case .accentColor:
                 return ColorSettingTableViewCell.id
+            case .soundcloudSign:
+                return ServiceSignTableViewCell.id
+            case .none:
+                return ""
         }
     }
     
@@ -107,6 +125,15 @@ enum SettingType {
                 SettingsManager.shared.autoDownload = state
             default:
                 return
+        }
+    }
+    
+    var service: ServiceType {
+        switch self {
+            case .soundcloudSign:
+                return .soundcloud
+            default:
+                return .none
         }
     }
 }

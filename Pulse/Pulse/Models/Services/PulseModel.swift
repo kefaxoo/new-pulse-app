@@ -64,7 +64,9 @@ final class PulseModel {
               accessTokenKeychainModel.deleteAccount(username: username)
         else { return false }
         
-        username = ""
+        username    = ""
+        password    = nil
+        accessToken = nil
         return true
     }
 }

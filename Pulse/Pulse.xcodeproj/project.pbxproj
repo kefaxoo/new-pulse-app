@@ -112,6 +112,18 @@
 		70BDBA872A9B56C000401359 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 70BDBA852A9B56C000401359 /* Main.storyboard */; };
 		70BDBA892A9B56C100401359 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 70BDBA882A9B56C100401359 /* Assets.xcassets */; };
 		70BDBA8C2A9B56C100401359 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 70BDBA8A2A9B56C100401359 /* LaunchScreen.storyboard */; };
+		70C857D52AB6FF98004B5EC5 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C857D42AB6FF98004B5EC5 /* WebViewController.swift */; };
+		70C857D72AB6FF9D004B5EC5 /* WebPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C857D62AB6FF9D004B5EC5 /* WebPresenter.swift */; };
+		70C857D92AB702E1004B5EC5 /* WebViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C857D82AB702E1004B5EC5 /* WebViewType.swift */; };
+		70C857DB2AB7070A004B5EC5 /* ServiceSignTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C857DA2AB7070A004B5EC5 /* ServiceSignTableViewCell.swift */; };
+		70C857DD2AB70C3B004B5EC5 /* SoundcloudModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C857DC2AB70C3B004B5EC5 /* SoundcloudModel.swift */; };
+		70C857E02AB70CE0004B5EC5 /* SoundcloudApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C857DF2AB70CE0004B5EC5 /* SoundcloudApi.swift */; };
+		70C857E32AB70E0F004B5EC5 /* ResponseSoundcloudTokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C857E22AB70E0F004B5EC5 /* ResponseSoundcloudTokenModel.swift */; };
+		70C857E52AB70E41004B5EC5 /* SoundcloudProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C857E42AB70E41004B5EC5 /* SoundcloudProvider.swift */; };
+		70C857E72AB70E7C004B5EC5 /* SoundcloudTypealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C857E62AB70E7C004B5EC5 /* SoundcloudTypealiases.swift */; };
+		70C857E92AB70EAF004B5EC5 /* ResponseSoundcloudErrorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C857E82AB70EAF004B5EC5 /* ResponseSoundcloudErrorModel.swift */; };
+		70C857ED2AB712C3004B5EC5 /* ResponseSoundcloudUserInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C857EC2AB712C3004B5EC5 /* ResponseSoundcloudUserInfoModel.swift */; };
+		70C857EF2AB7191C004B5EC5 /* ServicesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C857EE2AB7191C004B5EC5 /* ServicesManager.swift */; };
 		70CDCE8A2A9FC25B00FBB125 /* CoversViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CDCE892A9FC25B00FBB125 /* CoversViewController.swift */; };
 		70CDCE8C2A9FC2C900FBB125 /* CoversPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CDCE8B2A9FC2C900FBB125 /* CoversPresenter.swift */; };
 		70CDCE8F2A9FC9AC00FBB125 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CDCE8E2A9FC9AC00FBB125 /* SignUpViewController.swift */; };
@@ -254,6 +266,18 @@
 		70BDBA882A9B56C100401359 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		70BDBA8B2A9B56C100401359 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		70BDBA8D2A9B56C100401359 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		70C857D42AB6FF98004B5EC5 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		70C857D62AB6FF9D004B5EC5 /* WebPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebPresenter.swift; sourceTree = "<group>"; };
+		70C857D82AB702E1004B5EC5 /* WebViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewType.swift; sourceTree = "<group>"; };
+		70C857DA2AB7070A004B5EC5 /* ServiceSignTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceSignTableViewCell.swift; sourceTree = "<group>"; };
+		70C857DC2AB70C3B004B5EC5 /* SoundcloudModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundcloudModel.swift; sourceTree = "<group>"; };
+		70C857DF2AB70CE0004B5EC5 /* SoundcloudApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundcloudApi.swift; sourceTree = "<group>"; };
+		70C857E22AB70E0F004B5EC5 /* ResponseSoundcloudTokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseSoundcloudTokenModel.swift; sourceTree = "<group>"; };
+		70C857E42AB70E41004B5EC5 /* SoundcloudProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundcloudProvider.swift; sourceTree = "<group>"; };
+		70C857E62AB70E7C004B5EC5 /* SoundcloudTypealiases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundcloudTypealiases.swift; sourceTree = "<group>"; };
+		70C857E82AB70EAF004B5EC5 /* ResponseSoundcloudErrorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseSoundcloudErrorModel.swift; sourceTree = "<group>"; };
+		70C857EC2AB712C3004B5EC5 /* ResponseSoundcloudUserInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseSoundcloudUserInfoModel.swift; sourceTree = "<group>"; };
+		70C857EE2AB7191C004B5EC5 /* ServicesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesManager.swift; sourceTree = "<group>"; };
 		70CDCE892A9FC25B00FBB125 /* CoversViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoversViewController.swift; sourceTree = "<group>"; };
 		70CDCE8B2A9FC2C900FBB125 /* CoversPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoversPresenter.swift; sourceTree = "<group>"; };
 		70CDCE8E2A9FC9AC00FBB125 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -425,6 +449,7 @@
 		70996A0F2A9D395400905847 /* Api */ = {
 			isa = PBXGroup;
 			children = (
+				70C857DE2AB70CD9004B5EC5 /* Soundcloud */,
 				70E09FC32AA7D29B0094EEA0 /* Muffon */,
 				70996A222A9D3E7300905847 /* NetworkApi */,
 				70996A102A9D395900905847 /* Pulse */,
@@ -473,6 +498,7 @@
 				70EC05502AAC572D00AF0019 /* ActionsManager.swift */,
 				706CE2952AAD1FC300748322 /* DownloadManager.swift */,
 				702F15492AB62D5200626932 /* AudioTagManager.swift */,
+				70C857EE2AB7191C004B5EC5 /* ServicesManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -550,6 +576,7 @@
 			isa = PBXGroup;
 			children = (
 				70996A3F2A9D46F300905847 /* PulseModel.swift */,
+				70C857DC2AB70C3B004B5EC5 /* SoundcloudModel.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -572,6 +599,7 @@
 		70996A482A9D4D6C00905847 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				70C857D32AB6FF8D004B5EC5 /* WebViewController */,
 				70E77F7F2AB1DEAF005648A8 /* NowPlayingViewController */,
 				7092BA8B2AADC74C007FE3C3 /* TracksViewController */,
 				706CE2972AAD28B500748322 /* LibraryViewController */,
@@ -655,6 +683,7 @@
 				706CE29E2AAD2A9B00748322 /* LibraryType.swift */,
 				7092BA922AADC852007FE3C3 /* LibraryControllerType.swift */,
 				700915A22AB609AC0006239A /* AppEnvironment.swift */,
+				70C857D82AB702E1004B5EC5 /* WebViewType.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -714,6 +743,36 @@
 				70BDBA8D2A9B56C100401359 /* Info.plist */,
 			);
 			path = Pulse;
+			sourceTree = "<group>";
+		};
+		70C857D32AB6FF8D004B5EC5 /* WebViewController */ = {
+			isa = PBXGroup;
+			children = (
+				70C857D42AB6FF98004B5EC5 /* WebViewController.swift */,
+				70C857D62AB6FF9D004B5EC5 /* WebPresenter.swift */,
+			);
+			path = WebViewController;
+			sourceTree = "<group>";
+		};
+		70C857DE2AB70CD9004B5EC5 /* Soundcloud */ = {
+			isa = PBXGroup;
+			children = (
+				70C857E12AB70E07004B5EC5 /* Models */,
+				70C857DF2AB70CE0004B5EC5 /* SoundcloudApi.swift */,
+				70C857E42AB70E41004B5EC5 /* SoundcloudProvider.swift */,
+				70C857E62AB70E7C004B5EC5 /* SoundcloudTypealiases.swift */,
+			);
+			path = Soundcloud;
+			sourceTree = "<group>";
+		};
+		70C857E12AB70E07004B5EC5 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				70C857E22AB70E0F004B5EC5 /* ResponseSoundcloudTokenModel.swift */,
+				70C857E82AB70EAF004B5EC5 /* ResponseSoundcloudErrorModel.swift */,
+				70C857EC2AB712C3004B5EC5 /* ResponseSoundcloudUserInfoModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		70CDCE882A9FC24F00FBB125 /* CoversViewController */ = {
@@ -796,6 +855,7 @@
 				7068BEA72AA9219E004B0E03 /* TrackTableViewCell.swift */,
 				706CE29C2AAD292500748322 /* LibraryTableViewCell.swift */,
 				70DBA0292AB65D330078E409 /* ColorSettingTableViewCell.swift */,
+				70C857DA2AB7070A004B5EC5 /* ServiceSignTableViewCell.swift */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -958,6 +1018,7 @@
 				7068BEAF2AAA597F004B0E03 /* ArtistModel.swift in Sources */,
 				7068BEA62AA91936004B0E03 /* LogModel.swift in Sources */,
 				70996A212A9D3D2E00905847 /* NetworkManager.swift in Sources */,
+				70C857D92AB702E1004B5EC5 /* WebViewType.swift in Sources */,
 				7068BEA42AA8E50E004B0E03 /* LogManager.swift in Sources */,
 				700915A72AB615490006239A /* Failure+Ext.swift in Sources */,
 				702F154A2AB62D5200626932 /* AudioTagManager.swift in Sources */,
@@ -980,6 +1041,7 @@
 				70B3C0432AA8A73800EBBFD4 /* SearchType.swift in Sources */,
 				70996A302A9D439900905847 /* IpifyApi.swift in Sources */,
 				7054EF4F2AA0B24F00F55B92 /* PaddingLabel.swift in Sources */,
+				70C857E92AB70EAF004B5EC5 /* ResponseSoundcloudErrorModel.swift in Sources */,
 				70996A2A2A9D3FA000905847 /* IpApiProvider.swift in Sources */,
 				70E6E81C2AA604AD00DA686B /* CellType.swift in Sources */,
 				70E6E8182AA600FA00DA686B /* SettingType.swift in Sources */,
@@ -994,6 +1056,7 @@
 				700915A32AB609AC0006239A /* AppEnvironment.swift in Sources */,
 				70AD04BE2A9EA42100DC4517 /* ResponsePulseCreateUserModel.swift in Sources */,
 				70996A562A9D4FEE00905847 /* UILabel+Ext.swift in Sources */,
+				70C857E72AB70E7C004B5EC5 /* SoundcloudTypealiases.swift in Sources */,
 				70E6E8202AA6076E00DA686B /* UITableView+Ext.swift in Sources */,
 				70996A3C2A9D46D100905847 /* SettingsManager.swift in Sources */,
 				70996A402A9D46F300905847 /* PulseModel.swift in Sources */,
@@ -1009,6 +1072,7 @@
 				70996A142A9D396400905847 /* PulseProvider.swift in Sources */,
 				707FAF892A9E8E56008929FC /* ScrollingCoverCollectionViewCell.swift in Sources */,
 				70839CDD2AB4A3550030BB06 /* ResponsePulseTrackModel.swift in Sources */,
+				70C857ED2AB712C3004B5EC5 /* ResponseSoundcloudUserInfoModel.swift in Sources */,
 				70399C642A9FE58200976098 /* NSRegularExpression+Ext.swift in Sources */,
 				7092BA982AADEC08007FE3C3 /* CoverImageView.swift in Sources */,
 				70CDCE992A9FCC7800FBB125 /* UIImageView+Ext.swift in Sources */,
@@ -1017,12 +1081,16 @@
 				70996A442A9D48B700905847 /* Credentials.swift in Sources */,
 				70996A192A9D397900905847 /* PulseTypealiases.swift in Sources */,
 				7068BEA22AA8D249004B0E03 /* SearchResponse.swift in Sources */,
+				70C857D72AB6FF9D004B5EC5 /* WebPresenter.swift in Sources */,
 				70CDCE9C2A9FD8A200FBB125 /* UITextField+Ext.swift in Sources */,
 				70AD04BC2A9E9D4D00DC4517 /* StaticGradientView.swift in Sources */,
 				7068BEAB2AAA5913004B0E03 /* TrackModel.swift in Sources */,
+				70C857E02AB70CE0004B5EC5 /* SoundcloudApi.swift in Sources */,
+				70C857D52AB6FF98004B5EC5 /* WebViewController.swift in Sources */,
 				70E6E8122AA5FCD700DA686B /* SwitchTableViewCell.swift in Sources */,
 				7068BEB82AAA64F8004B0E03 /* AudioManager.swift in Sources */,
 				70E6E81E2AA6060700DA686B /* UITableViewCell+Ext.swift in Sources */,
+				70C857DD2AB70C3B004B5EC5 /* SoundcloudModel.swift in Sources */,
 				70996A4A2A9D4D7200905847 /* AuthViewController.swift in Sources */,
 				705AA9D52AABAF9B007F0260 /* LibaryTrackModel.swift in Sources */,
 				81A9DBF22AB03A45002CC5CD /* InformationView.swift in Sources */,
@@ -1038,6 +1106,8 @@
 				705AA9D32AABA440007F0260 /* RealmManager.swift in Sources */,
 				70E3D5822AA13A3C0040E46A /* ResponsePulseSuccessModel.swift in Sources */,
 				707FAF872A9E8E0B008929FC /* UICollectionViewCell+Ext.swift in Sources */,
+				70C857EF2AB7191C004B5EC5 /* ServicesManager.swift in Sources */,
+				70C857E32AB70E0F004B5EC5 /* ResponseSoundcloudTokenModel.swift in Sources */,
 				70E77F812AB1DEB9005648A8 /* NowPlayingViewController.swift in Sources */,
 				7069F73E2AA3194700255854 /* ResponsePulseLoginWithCodeModel.swift in Sources */,
 				70E09FC22AA7D0AB0094EEA0 /* SettingsPresenter.swift in Sources */,
@@ -1076,9 +1146,11 @@
 				70DBA02C2AB666D00078E409 /* UIButton+Ext.swift in Sources */,
 				81B8EE422AA0E72400C7F53E /* String+Ext.swift in Sources */,
 				7068BE942AA8BFFF004B0E03 /* SearchPresenter.swift in Sources */,
+				70C857E52AB70E41004B5EC5 /* SoundcloudProvider.swift in Sources */,
 				70996A422A9D47E500905847 /* BaseKeychainModel.swift in Sources */,
 				707FAF8B2A9E8F05008929FC /* UIView+Ext.swift in Sources */,
 				70B3C04A2AA8B1F400EBBFD4 /* SearchViewController.swift in Sources */,
+				70C857DB2AB7070A004B5EC5 /* ServiceSignTableViewCell.swift in Sources */,
 				70399C602A9FDED500976098 /* UIEdgeInsets+Ext.swift in Sources */,
 				705AA9D72AABB01F007F0260 /* LibraryArtistModel.swift in Sources */,
 				70E6E8142AA5FCEA00DA686B /* BaseUITableViewCell.swift in Sources */,

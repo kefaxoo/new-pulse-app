@@ -12,4 +12,6 @@ enum CellType {
     case text
     case chevronText
     case colorButton
+    case service
+    case none
 }
