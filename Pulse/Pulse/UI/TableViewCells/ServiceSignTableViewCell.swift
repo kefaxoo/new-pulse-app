@@ -28,7 +28,7 @@ class ServiceSignTableViewCell: BaseUITableViewCell {
     private var type: SettingType = .none
     
     func setupCell(type: SettingType) {
-        if SettingsManager.shared.soundcloud.accessToken != nil {
+        if SettingsManager.shared.soundcloud.isSigned {
             SoundcloudProvider.shared.userInfo { [weak self] userInfo in
                 self?.serviceImageView.setImage(from: userInfo.avatarLink)
             }
@@ -91,7 +91,7 @@ extension ServiceSignTableViewCell {
     private func setupSignButton() {
         switch self.type.service {
             case .soundcloud:
-                if SettingsManager.shared.soundcloud.accessToken != nil {
+                if SettingsManager.shared.soundcloud.isSigned {
                     self.signButton.showsMenuAsPrimaryAction = true
                     self.signButton.setTitle("Menu", for: .normal)
                     let refreshAction = UIAction(title: "Refresh token") { _ in
@@ -134,7 +134,7 @@ extension ServiceSignTableViewCell {
 fileprivate extension ServiceSignTableViewCell {
     @objc func signAction(_ sender: UIButton) {
         if SettingsManager.shared.soundcloud.accessToken == nil {
-            MainCoordinator.shared.presentWebViewController(type: self.webViewType, delegate: self)
+            MainCoordinator.shared.presentWebController(type: self.webViewType, delegate: self)
         }
     }
 }

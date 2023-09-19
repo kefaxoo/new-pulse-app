@@ -9,5 +9,17 @@ import Foundation
 
 enum LibraryControllerType {
     case library
+    case soundcloud
     case none
+    
+    var title: String {
+        switch self {
+            case .library:
+                return "Library"
+            case .soundcloud:
+                return "Soundcloud"
+            case .none:
+                return ""
+        }
+    }
 }

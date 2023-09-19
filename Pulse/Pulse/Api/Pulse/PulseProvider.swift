@@ -134,7 +134,14 @@ final class PulseProvider: BaseRestApiProvider {
     }
     
     func sendLog(_ model: LogModel, success: ((PulseSuccess) -> ())? = nil, failure: PulseDefaultErrorClosure? = nil) {
-        urlSession.dataTask(with: URLRequest(type: PulseApi.log(log: model.log), shouldPrintLog: self.shouldPrintLog)) { [weak self] response in
+        urlSession.dataTask(
+            with: URLRequest(
+                type: PulseApi.log(
+                    log: model.getFullLog
+                ),
+                shouldPrintLog: self.shouldPrintLog
+            )
+        ) { [weak self] response in
             switch response {
                 case .success(let response):
                     guard let model = response.data?.map(to: PulseSuccess.self) else {

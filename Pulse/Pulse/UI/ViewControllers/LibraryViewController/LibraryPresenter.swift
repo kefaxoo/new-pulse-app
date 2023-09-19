@@ -9,19 +9,32 @@ import UIKit
 
 protocol LibraryPresenterDelegate: AnyObject {
     func reloadData()
+    func setupNavigationTitle(_ title: String)
 }
 
 final class LibraryPresenter: BasePresenter {
-    private var libraryTypes = LibraryType.allCases
+    private var libraryTypes: [LibraryType]
+    private var service: ServiceType
+    private let libraryControllerType: LibraryControllerType
     
     weak var delegate: LibraryPresenterDelegate?
+    
+    init(service: ServiceType, libraryControllerType: LibraryControllerType) {
+        self.libraryTypes = LibraryType.allCases(by: service)
+        self.service = service
+        self.libraryControllerType = libraryControllerType
+    }
     
     var libraryTypesCount: Int {
         return libraryTypes.count
     }
     
+    func viewDidLoad() {
+        self.delegate?.setupNavigationTitle(self.libraryControllerType.title)
+    }
+    
     func viewWillAppear() {
-        self.libraryTypes = LibraryType.allCases
+        self.libraryTypes = LibraryType.allCases(by: service)
         self.delegate?.reloadData()
     }
     
@@ -35,6 +48,13 @@ final class LibraryPresenter: BasePresenter {
     }
     
     func didSelectRow(at indexPath: IndexPath) {
-        MainCoordinator.shared.pushTracksViewController(type: libraryTypes[indexPath.item].controllerType)
+        let libraryType = libraryTypes[indexPath.item]
+        let controllerType = libraryType.controllerType(service: self.service)
+        switch libraryType {
+            case .tracks:
+                MainCoordinator.shared.pushTracksViewController(type: controllerType)
+            case .soundcloud:
+                MainCoordinator.shared.pushLibraryController(type: controllerType, service: libraryType.service)
+        }
     }
 }

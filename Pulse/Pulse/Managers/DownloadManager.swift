@@ -184,6 +184,34 @@ fileprivate extension DownloadManager {
                     completion(nil)
                     return
                 }
+            case .soundcloud:
+                SoundcloudProvider.shared.trackInfo(id: obj.id) { [weak self] soundcloudTrack in
+                    SoundcloudProvider.shared.fetchPlayableLinks(id: obj.id) { [weak self] playableLinks in
+                        let filename = TrackModel(soundcloudTrack).libraryTrackFilename
+                        self?.downloadTrack(
+                            from: playableLinks.streamingLink,
+                            to: URL(
+                                filename: filename,
+                                path: .documentDirectory
+                            ),
+                            completion: { url in
+                                guard url != nil else {
+                                    completion(nil)
+                                    return
+                                }
+                                
+                                obj.filename = filename
+                                completion(obj)
+                            }
+                        )
+                    } failure: { _ in
+                        completion(nil)
+                        return
+                    }
+                } failure: { _ in
+                    completion(nil)
+                    return
+                }
             case .none:
                 completion(nil)
         }

@@ -83,7 +83,7 @@ final class MainTabBarController: UITabBarController {
         let searchVC = SearchViewController(nibName: nil, bundle: nil)
         searchVC.tabBarItem = UITabBarItem(title: "Search", image: Constants.Images.search.image, tag: 1001)
         
-        let libraryVC = LibraryViewController(nibName: nil, bundle: nil)
+        let libraryVC = LibraryViewController(type: .library, service: .none)
         libraryVC.tabBarItem = UITabBarItem(
             title: "Library",
             image: Constants.Images.libraryNonSelected.image,

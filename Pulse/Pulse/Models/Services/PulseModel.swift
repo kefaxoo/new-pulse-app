@@ -26,7 +26,11 @@ final class PulseModel {
     }
     
     var password   : String?
-    var accessToken: String?
+    var accessToken: String? {
+        didSet {
+            debugLog("Pulse access token:", accessToken ?? "")
+        }
+    }
     
     fileprivate var credentialsKeychainModel = BaseKeychainModel(service: Constants.KeychainService.pulseCredentials.rawValue)
     fileprivate var accessTokenKeychainModel = BaseKeychainModel(service: Constants.KeychainService.pulseToken.rawValue)

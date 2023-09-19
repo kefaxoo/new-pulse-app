@@ -62,9 +62,19 @@ final class ActionsManager {
                 AlertView.shared.present(title: "Added to library", alertType: .done, system: .iOS17AppleMusic)
                 track.image = ImageModel(coverFilename: libraryTrack.coverFilename)
                 self?.delegate?.updatedTrack(track)
-                self?.delegate?.updateButtonMenu()
+                self?.delegate?.reloadData()
                 
                 LibraryManager.shared.syncTrack(track)
+                
+                switch track.service {
+                    case .soundcloud:
+                        if SettingsManager.shared.soundcloudLike,
+                           SettingsManager.shared.soundcloud.isSigned {
+                            SoundcloudProvider.shared.likeTrack(id: track.id)
+                        }
+                    default:
+                        break
+                }
                 
                 guard SettingsManager.shared.autoDownload else { return }
                 

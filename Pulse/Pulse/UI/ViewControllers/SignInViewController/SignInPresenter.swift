@@ -47,7 +47,6 @@ final class SignInPresenter: CoversPresenter<SignInViewController> {
             SettingsManager.shared.pulse.expireAt = loginUser.expireAt ?? 0
             SettingsManager.shared.pulse.saveCredentials(pulseAccount)
             SettingsManager.shared.pulse.saveAcceessToken(Credentials(email: email, accessToken: loginUser.accessToken))
-            LibraryManager.shared.fetchLibrary()
             MainCoordinator.shared.makeTabBarAsRoot()
         } failure: { error in
             MainCoordinator.shared.currentViewController?.dismissSpinner()

@@ -13,7 +13,7 @@ final class ServicesManager {
     fileprivate init() {}
     
     func refreshTokens() {
-        if SettingsManager.shared.soundcloud.accessToken != nil {   
+        if SettingsManager.shared.soundcloud.isSigned {   
             SoundcloudProvider.shared.refreshToken { tokens in
                 SettingsManager.shared.soundcloud.updateTokens(tokens)
             } failure: { _ in

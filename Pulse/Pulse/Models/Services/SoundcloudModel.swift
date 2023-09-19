@@ -10,7 +10,12 @@ import Foundation
 final class SoundcloudModel {
     var signToken: String = ""
     
-    var accessToken: String?
+    var accessToken: String? {
+        didSet {
+            debugLog("Soundcloud access token:", accessToken ?? "")
+        }
+    }
+    
     var refreshToken: String?
     
     var userId: Int {
@@ -29,6 +34,10 @@ final class SoundcloudModel {
         set {
             UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.soundcloudUser.rawValue)
         }
+    }
+    
+    var isSigned: Bool {
+        return self.accessToken != nil
     }
     
     fileprivate var accessTokenKeychainModel = BaseKeychainModel(service: Constants.KeychainService.soundcloudAccessToken.rawValue)

@@ -74,7 +74,7 @@ enum ServiceType: String {
     var source: SourceType {
         switch self {
             case .soundcloud:
-                return .muffon
+                return SettingsManager.shared.soundcloud.isSigned ? .soundcloud : .muffon
             default:
                 return .none
         }

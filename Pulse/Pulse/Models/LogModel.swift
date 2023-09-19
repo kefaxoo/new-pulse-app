@@ -13,7 +13,7 @@ struct LogModel {
     init(callStack: [String], error: String?) {
         self.log = [
             "callStack": callStack.joined(separator: ""),
-            "error": error ?? ""
+            "error"    : error ?? ""
         ]
     }
     
@@ -25,15 +25,16 @@ struct LogModel {
         
         let networkInfo: [String: Any] = [
             "countryCode": NetworkManager.shared.country,
-            "city": NetworkManager.shared.city ?? "",
-            "provider": NetworkManager.shared.provider ?? ""
+            "city"       : NetworkManager.shared.city ?? "",
+            "provider"   : NetworkManager.shared.provider ?? ""
         ]
         
         return [
-            "device": deviceInfo,
-            "network": networkInfo,
-            "isDebug": Constants.isDebug,
-            "log": log
+            "dateTime": Date.currentDate(inFormat: "YYYY-MM-DD HH.mm.SS.sss"),
+            "device"  : deviceInfo,
+            "network" : networkInfo,
+            "isDebug" : Constants.isDebug,
+            "log"     : log
         ]
     }
 }

@@ -22,6 +22,11 @@ final class ArtistModel {
         self.id   = artist.id
     }
     
+    init(_ artist: SoundcloudUser) {
+        self.name = artist.username
+        self.id   = artist.id
+    }
+    
     var json: [String: Any] {
         return [
             "id"  : self.id,

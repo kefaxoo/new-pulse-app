@@ -15,6 +15,17 @@ enum SoundcloudApi {
     
     // MARK: User
     case userInfoWith(accessToken: String)
+    
+    // MARK: Library
+    case likedTracks
+    
+    // MARK: Track
+    case trackInfo(id: Int)
+    case playableLink(id: Int)
+    case likeTrack(id: Int)
+    
+    // MARK: Search
+    case search(type: SearchType, query: String)
 }
 
 extension SoundcloudApi: BaseRestApiEnum {
@@ -28,12 +39,22 @@ extension SoundcloudApi: BaseRestApiEnum {
                 return "/oauth2/token"
             case .userInfoWith:
                 return "/me"
+            case .likedTracks:
+                return "/me/likes/tracks"
+            case .trackInfo(let id):
+                return "/tracks/\(id)"
+            case .playableLink(let id):
+                return "/tracks/\(id)/streams"
+            case .likeTrack(let id):
+                return "/likes/tracks/\(id)"
+            case .search(let type, _):
+                return "/\(type.soundcloudApi)"
         }
     }
     
     var method: FriendlyURLSession.HTTPMethod {
         switch self {
-            case .signIn, .refreshToken:
+            case .signIn, .refreshToken, .likeTrack:
                 return .post
             default:
                 return .get
@@ -43,10 +64,12 @@ extension SoundcloudApi: BaseRestApiEnum {
     var headers: FriendlyURLSession.Headers? {
         var headers = Headers()
         switch self {
+            case .signIn, .refreshToken:
+                break
             case .userInfoWith(let accessToken):
                 headers["Authorization"] = "Bearer \(accessToken)"
             default:
-                break
+                headers["Authorization"] = "Bearer \(SettingsManager.shared.soundcloud.accessToken ?? "")"
         }
         return headers
     }
@@ -66,6 +89,15 @@ extension SoundcloudApi: BaseRestApiEnum {
                 parameters["client_secret"] = Constants.Soundcloud.clientSecret.rawValue
                 parameters["redirect_uri"]  = Constants.Soundcloud.redirectLink.rawValue
                 parameters["refresh_token"] = SettingsManager.shared.soundcloud.refreshToken ?? ""
+            case .likedTracks:
+                parameters["limit"]               = 20
+                parameters["access"]              = "playable"
+                parameters["linked_partitioning"] = true
+            case .search(_, let query):
+                parameters["q"]                   = query
+                parameters["access"]              = "playable"
+                parameters["limit"]               = 20
+                parameters["linked_partitioning"] = true
             default:
                 break
         }

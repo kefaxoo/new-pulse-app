@@ -21,8 +21,13 @@ final class ImageModel {
               let url = URL(filename: coverFilename, path: .documentDirectory)
         else { return nil }
         
-        self.small = url.absoluteString
+        self.small    = url.absoluteString
         self.original = url.absoluteString
+    }
+    
+    init(_ link: String) {
+        self.small    = link
+        self.original = link
     }
     
     func contains(_ link: String) -> Bool {

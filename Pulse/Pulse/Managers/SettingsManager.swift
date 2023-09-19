@@ -110,14 +110,22 @@ final class SettingsManager {
         }
     }
     
+    // MARK: Soundcloud settings
+    var soundcloudLike: Bool {
+        get {
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.soundcloudLike.rawValue) as? Bool ?? false
+        } set {
+            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.soundcloudLike.rawValue)
+        }
+    }
+    
     func signOut() -> Bool {
         autoDownload = false
         isAdultContentEnabled = false
         isCanvasesEnabled = false
         
-        guard pulse.signOut(),
-              soundcloud.signOut()
-        else { return false }
+        _ = pulse.signOut()
+        _ = soundcloud.signOut()
         
         return true
     }

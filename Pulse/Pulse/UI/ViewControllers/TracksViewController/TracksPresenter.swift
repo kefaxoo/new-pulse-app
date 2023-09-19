@@ -33,6 +33,19 @@ final class TracksPresenter: BasePresenter {
         switch type {
             case .library:
                 self.tracks = RealmManager<LibraryTrackModel>().read().map({ TrackModel($0) }).sorted
+            case .soundcloud:
+                MainCoordinator.shared.currentViewController?.presentSpinner()
+                SoundcloudProvider.shared.libraryTracks { [weak self] soundcloudTracks in
+                    MainCoordinator.shared.currentViewController?.dismissSpinner()
+                    let tracks = soundcloudTracks.map({ TrackModel($0) })
+                    self?.tracks = tracks
+                    self?.showedTracks = tracks
+                    self?.delegate?.reloadData()
+                } failure: { error in
+                    MainCoordinator.shared.currentViewController?.dismissSpinner()
+                    MainCoordinator.shared.popViewController()
+                    AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
+                }
             default:
                 MainCoordinator.shared.popViewController()
                 return

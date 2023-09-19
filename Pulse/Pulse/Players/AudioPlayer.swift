@@ -21,6 +21,8 @@ protocol AudioPlayerNowPlayingViewDelegate: AnyObject {
 
 protocol AudioPlayerNowPlayingControllerDelegate: AnyObject {
     func setupCover(_ cover: UIImage?)
+    func setupTrackInfo(_ track: TrackModel)
+    func updateDuration(_ duration: Float, currentTime: Float)
 }
 
 final class AudioPlayer: NSObject {
@@ -55,6 +57,8 @@ final class AudioPlayer: NSObject {
     private(set) var cover: UIImage?
     
     private let commandCenter = MPRemoteCommandCenter.shared()
+    
+    var isDurationChanging = false
     
     weak var nowPlayingViewDelegate          : AudioPlayerNowPlayingViewDelegate?
     weak var nowPlayingViewControllerDelegate: AudioPlayerNowPlayingControllerDelegate?
@@ -99,7 +103,7 @@ final class AudioPlayer: NSObject {
             }
         }
         
-        self.nowPlayingViewDelegate?.setupTrackInfo(track)
+        self.setupTrackInfoInDelegates()
         self.setupCover()
         self.setupObserver()
         self.updatePlayableLink(at: self.nextPosition)
@@ -140,7 +144,10 @@ fileprivate extension AudioPlayer {
         
         let playerItem = CachingPlayerItem(url: url)
         playerItem.delegate = self
-        playerItem.download()
+        DispatchQueue.global(qos: .background).async {
+            playerItem.download()
+        }
+        
         return playerItem
     }
     
@@ -157,7 +164,7 @@ fileprivate extension AudioPlayer {
                     self.nowPlayingViewDelegate?.changeState(isPlaying: self.player.rate != 0)
                 }
                 
-                self.nowPlayingViewDelegate?.updateDuration(self.nowPlayingViewDuration)
+                self.setupDurationInDelegates()
                 self.setupNowPlaying()
             }
         )
@@ -277,6 +284,12 @@ extension AudioPlayer {
         self.play(from: self.playlist[self.previousPosition], position: self.previousPosition)
         return .success
     }
+    
+    func updateTimePosition(_ position: Float) {
+        guard let duration = self.player.currentItem?.duration.seconds else { return }
+        
+        self.player.seek(to: CMTime(seconds: duration * Double(position), preferredTimescale: 600))
+    }
 }
 
 // MARK: -
@@ -313,6 +326,21 @@ extension AudioPlayer {
     private func setupCoverInDelegates() {
         self.nowPlayingViewDelegate?.setupCover(self.cover)
         self.nowPlayingViewControllerDelegate?.setupCover(self.cover)
+    }
+    
+    private func setupTrackInfoInDelegates() {
+        guard let track else { return }
+        
+        self.nowPlayingViewDelegate?.setupTrackInfo(track)
+        self.nowPlayingViewControllerDelegate?.setupTrackInfo(track)
+    }
+    
+    private func setupDurationInDelegates() {
+        self.nowPlayingViewDelegate?.updateDuration(self.nowPlayingViewDuration)
+        guard !self.isDurationChanging,
+              let duration = self.player.currentItem?.duration.seconds else { return }
+        
+        self.nowPlayingViewControllerDelegate?.updateDuration(Float(duration), currentTime: Float(self.player.currentTime().seconds))
     }
 }
 

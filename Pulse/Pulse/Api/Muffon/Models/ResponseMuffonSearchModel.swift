@@ -11,7 +11,7 @@ final class ResponseMuffonSearchModel: Decodable {
     let search: MuffonSearchInfo
     
     var searchResponse: SearchResponse {
-        return SearchResponse(page: search.page, totalPages: search.totalPages ?? 0, results: search.results)
+        return SearchResponse(page: search.page, results: search.results)
     }
     
     enum CodingKeys: CodingKey {
@@ -29,7 +29,6 @@ typealias MuffonSearchInfo = ResponseMuffonSearchInfoModel
 
 final class ResponseMuffonSearchInfoModel: Decodable {
     let page: Int
-    let totalPages: Int?
     fileprivate let tracks: [MuffonTrack]
     
     var results: [Decodable] {
@@ -38,7 +37,6 @@ final class ResponseMuffonSearchInfoModel: Decodable {
     
     enum CodingKeys: String, CodingKey {
         case page
-        case totalPages = "total_pages"
         case tracks
     }
     
@@ -46,7 +44,6 @@ final class ResponseMuffonSearchInfoModel: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.page = try container.decode(Int.self, forKey: .page)
-        self.totalPages = try container.decodeIfPresent(Int.self, forKey: .totalPages)
         self.tracks = try container.decode([MuffonTrack].self, forKey: .tracks)
     }
 }

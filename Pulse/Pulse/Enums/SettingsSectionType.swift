@@ -33,7 +33,12 @@ enum SettingSectionType: CaseIterable {
             case .appearance:
                 return [.accentColor]
             case .soundcloud:
-                return [.soundcloudSign]
+                var array: [SettingType] = [.soundcloudSign]
+                if SettingsManager.shared.soundcloud.isSigned {
+                    array.append(.soundcloudLike)
+                }
+                
+                return array
             case .help:
                 return [.about]
         }

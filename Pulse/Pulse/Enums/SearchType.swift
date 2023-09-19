@@ -26,6 +26,19 @@ enum SearchType {
         }
     }
     
+    var soundcloudApi: String {
+        switch self {
+            case .tracks:
+                return "tracks"
+            case .albums:
+                return ""
+            case .artists:
+                return "users"
+            case .none:
+                return ""
+        }
+    }
+    
     static func types(for service: ServiceType) -> [SearchType] {
         switch service {
             case .vk:

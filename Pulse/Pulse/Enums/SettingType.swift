@@ -16,6 +16,7 @@ enum SettingType {
     case soundcloudSign
     case about
     case none
+    case soundcloudLike
     
     var cellType: CellType {
         switch self {
@@ -29,6 +30,8 @@ enum SettingType {
                 return .colorButton
             case .soundcloudSign:
                 return .service
+            case .soundcloudLike:
+                return .switch
             case .none:
                 return .none
         }
@@ -49,13 +52,15 @@ enum SettingType {
             case .accentColor:
                 return "Color of the application"
             case .soundcloudSign:
-                if SettingsManager.shared.soundcloud.accessToken != nil {
+                if SettingsManager.shared.soundcloud.isSigned {
                     return "User: \(SettingsManager.shared.soundcloud.username)"
                 } else {
                     return "Sign in soundcloud"
                 }
             case .none:
                 return ""
+            case .soundcloudLike:
+                return "Like track in Soundcloud"
         }
     }
     
@@ -71,6 +76,8 @@ enum SettingType {
                 return "Tracks you liked are immediately downloaded so you can listen offline"
             case .accentColor:
                 return "Choose the color of the application based on your mood"
+            case .soundcloudLike:
+                return "All tracks that have been added to the library will be added to the Soundcloud library"
             default:
                 return nil
         }
@@ -87,7 +94,7 @@ enum SettingType {
     
     var id: String {
         switch self {
-            case .adultContent, .canvasEnabled, .autoDownload:
+            case .adultContent, .canvasEnabled, .autoDownload, .soundcloudLike:
                 return SwitchTableViewCell.id
             case .import:
                 return TextTableViewCell.id
@@ -110,6 +117,8 @@ enum SettingType {
                 return SettingsManager.shared.isCanvasesEnabled
             case .autoDownload:
                 return SettingsManager.shared.autoDownload
+            case .soundcloudLike:
+                return SettingsManager.shared.soundcloudLike
             default:
                 return nil
         }
@@ -123,6 +132,8 @@ enum SettingType {
                 SettingsManager.shared.isCanvasesEnabled = state
             case .autoDownload:
                 SettingsManager.shared.autoDownload = state
+            case .soundcloudLike:
+                SettingsManager.shared.soundcloudLike = state
             default:
                 return
         }

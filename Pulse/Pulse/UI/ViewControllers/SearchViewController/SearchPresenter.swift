@@ -90,13 +90,28 @@ final class SearchPresenter: BasePresenter {
         }
         
         MainCoordinator.shared.currentViewController?.presentSpinner()
-        MuffonProvider.shared.search(query: query, in: self.currentService, type: self.currentType) { [weak self] response in
-            MainCoordinator.shared.currentViewController?.dismissSpinner()
-            self?.searchResponse = response
-            self?.delegate?.reloadData()
-        } failure: {
-            MainCoordinator.shared.currentViewController?.dismissSpinner()
-            AlertView.shared.presentError(error: "Unknown Muffon Error", system: .iOS16AppleMusic)
+        switch self.currentService.source {
+            case .muffon:
+                MuffonProvider.shared.search(query: query, in: self.currentService, type: self.currentType) { [weak self] response in
+                    MainCoordinator.shared.currentViewController?.dismissSpinner()
+                    self?.searchResponse = response
+                    self?.delegate?.reloadData()
+                } failure: {
+                    MainCoordinator.shared.currentViewController?.dismissSpinner()
+                    AlertView.shared.presentError(error: "Unknown Muffon Error", system: .iOS16AppleMusic)
+                }
+            case .soundcloud:
+                SoundcloudProvider.shared.search(query: query, searchType: self.currentType) { [weak self] response in
+                    MainCoordinator.shared.currentViewController?.dismissSpinner()
+                    self?.searchResponse = response
+                    self?.delegate?.reloadData()
+                } failure: { error in
+                    MainCoordinator.shared.currentViewController?.dismissSpinner()
+                    AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
+                }
+
+            case .none:
+                MainCoordinator.shared.currentViewController?.dismissSpinner()
         }
     }
     
@@ -115,7 +130,11 @@ final class SearchPresenter: BasePresenter {
                         guard let muffonTrack = self.searchResponse?.results[indexPath.item] as? MuffonTrack else { return UITableViewCell() }
                         
                         track = TrackModel(muffonTrack)
-                    case .none:
+                    case .soundcloud:
+                        guard let soundcloudTrack = self.searchResponse?.results[indexPath.item] as? SoundcloudTrack else { return UITableViewCell() }
+                        
+                        track = TrackModel(soundcloudTrack)
+                    default:
                         return UITableViewCell()
                 }
                 
@@ -136,7 +155,11 @@ final class SearchPresenter: BasePresenter {
                 let track = playlist[indexPath.item]
                 if track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
                     AudioManager.shared.updatePlayableLink(for: track) { [weak self] updatedTrack in
-                        self?.searchResponse?.results[indexPath.item] = updatedTrack.response
+                        if updatedTrack.track.source != .soundcloud,
+                           let response = updatedTrack.response {
+                            self?.searchResponse?.results[indexPath.item] = response
+                        }
+                        
                         AudioPlayer.shared.play(from: updatedTrack.track, playlist: playlist, position: indexPath.item)
                     }
                 } else {
@@ -172,8 +195,9 @@ final class SearchPresenter: BasePresenter {
                         self?.searchResponse?.cannotLoadMore()
                         self?.isResultsLoading = false
                     }
-                case .none:
+                default:
                     MainCoordinator.shared.currentViewController?.dismissSpinner()
+                    self.isResultsLoading = false
                     self.searchResponse?.cannotLoadMore()
             }
         }

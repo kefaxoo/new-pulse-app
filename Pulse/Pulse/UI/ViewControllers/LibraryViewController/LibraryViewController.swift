@@ -16,10 +16,17 @@ final class LibraryViewController: BaseUIViewController {
         return tableView
     }()
     
-    private lazy var presenter: LibraryPresenter = {
-        let presenter = LibraryPresenter()
-        return presenter
-    }()
+    private let presenter: LibraryPresenter
+    
+    init(type: LibraryControllerType = .none, service: ServiceType = .none) {
+        self.presenter = LibraryPresenter(service: service, libraryControllerType: type)
+        super.init(nibName: nil, bundle: nil)
+        self.presenter.delegate = self
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 // MARK: -
@@ -28,6 +35,11 @@ extension LibraryViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.libraryTableView.reloadData()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.presenter.viewDidLoad()
     }
 }
 
@@ -65,5 +77,17 @@ extension LibraryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         self.presenter.didSelectRow(at: indexPath)
+    }
+}
+
+// MARK: -
+// MARK: LibraryPresenterDelegate
+extension LibraryViewController: LibraryPresenterDelegate {
+    func reloadData() {
+        self.libraryTableView.reloadData()
+    }
+    
+    func setupNavigationTitle(_ title: String) {
+        self.navigationItem.title = title
     }
 }

@@ -18,6 +18,7 @@ final class LibraryTableViewCell: BaseUITableViewCell {
     private lazy var iconImageView: UIImageView = {
         let imageView = UIImageView.default
         imageView.tintColor = SettingsManager.shared.color.color
+        imageView.layer.cornerRadius = 10
         return imageView
     }()
     

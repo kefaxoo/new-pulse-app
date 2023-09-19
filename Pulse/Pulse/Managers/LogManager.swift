@@ -13,8 +13,9 @@ final class LogManager {
     fileprivate init() {}
     
     func sendLog(_ model: LogModel) {
-#if RELEASE
+        let appEnvironments: [AppEnvironment] = [.local, .releaseDebug]
+        guard appEnvironments.contains(AppEnvironment.current) else { return }
+        
         PulseProvider.shared.sendLog(model)
-#endif
     }
 }

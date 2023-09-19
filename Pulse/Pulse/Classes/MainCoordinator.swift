@@ -36,6 +36,10 @@ final class MainCoordinator {
         return currentVC
     }
     
+    var isDarkMode: Bool {
+        return self.mainTabBarController.traitCollection.userInterfaceStyle == .dark
+    }
+    
     fileprivate init() {
         self.mainTabBarController = MainTabBarController()
     }
@@ -50,7 +54,6 @@ final class MainCoordinator {
                 PulseProvider.shared.accessToken { [weak self] loginUser in
                     SettingsManager.shared.pulse.expireAt = loginUser.expireAt ?? 0
                     SettingsManager.shared.pulse.updateAccessToken(loginUser.accessToken)
-                    LibraryManager.shared.fetchLibrary()
                     emptyVC.dismissSpinner()
                     completion()
                     self?.makeTabBarAsRoot()
@@ -134,11 +137,16 @@ final class MainCoordinator {
         self.present(nowPlayingVC)
     }
     
-    func presentWebViewController(type: WebViewType = .none, delegate: WebViewControllerDelegate? = nil) {
+    func presentWebController(type: WebViewType = .none, delegate: WebViewControllerDelegate? = nil) {
         guard type != .none else { return }
         
         let webVC = WebViewController(type: type)
         webVC.delegate = delegate
         self.present(webVC)
+    }
+    
+    func pushLibraryController(type: LibraryControllerType = .none, service: ServiceType = .none) {
+        let libraryVC = LibraryViewController(type: type, service: service)
+        self.pushViewController(vc: libraryVC)
     }
 }

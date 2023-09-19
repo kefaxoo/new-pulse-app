@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Slyderin
 
 final class NowPlayingViewController: BaseUIViewController {
     private lazy var dismissButton: UIButton = {
@@ -65,6 +66,19 @@ final class NowPlayingViewController: BaseUIViewController {
         return button
     }()
     
+    private lazy var durationSlyder: Slyder = {
+        let slyder = Slyder(slider: ThumblessSlider.default)
+        slyder.viewModel.minimumValue = 0
+        slyder.viewModel.maximumValue = 1
+        slyder.valueChangeHandler = { newValue in
+            AudioPlayer.shared.isDurationChanging = slyder.viewModel.interacting
+            guard slyder.viewModel.interacting else { return }
+            
+            AudioPlayer.shared.updateTimePosition(Float(newValue))
+        }
+        return slyder
+    }()
+    
     private lazy var presenter: NowPlayingPresenter = {
         let presenter = NowPlayingPresenter()
         presenter.delegate = self
@@ -74,10 +88,16 @@ final class NowPlayingViewController: BaseUIViewController {
     init() {
         super.init(nibName: nil, bundle: nil)
         self.modalPresentationStyle = .overFullScreen
+        
+        AudioPlayer.shared.nowPlayingViewControllerDelegate = self
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        AudioPlayer.shared.nowPlayingViewControllerDelegate = nil
     }
 }
 
@@ -103,6 +123,8 @@ extension NowPlayingViewController {
         trackInfoStackView.addArrangedSubview(artistButton)
         
         trackInfoHorizontalStackView.addArrangedSubview(actionsButton)
+        
+        mainStackView.addArrangedSubview(durationSlyder)
     }
     
     override func setupConstraints() {
@@ -120,6 +142,13 @@ extension NowPlayingViewController {
         
         coverImageView.snp.makeConstraints({ $0.height.width.equalTo(mainStackView.snp.width) })
         actionsButton.snp.makeConstraints({ $0.height.width.equalTo(50) })
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        (self.durationSlyder.slider as? ThumblessSlider)?
+            .visualEffect = UIBlurEffect(
+                style: self.traitCollection.userInterfaceStyle == .dark ? .systemMaterialDark : .systemMaterialLight
+            )
     }
 }
 
@@ -141,5 +170,22 @@ extension NowPlayingViewController: NowPlayingPresenterDelegate {
 extension NowPlayingViewController {
     @objc private func dismissAction(_ sender: UIButton) {
         self.dismiss(animated: true)
+    }
+}
+
+// MARK: -
+// MARK: AudioPlayerNowPlayingViewControllerDelegate
+extension NowPlayingViewController: AudioPlayerNowPlayingControllerDelegate {
+    func setupCover(_ cover: UIImage?) {
+        self.coverImageView.image = cover
+    }
+    
+    func setupTrackInfo(_ track: TrackModel) {
+        self.titleLabel.text = track.title
+        self.artistButton.setTitle(track.artistText, for: .normal)
+    }
+    
+    func updateDuration(_ duration: Float, currentTime: Float) {
+        self.durationSlyder.viewModel.value = Double(currentTime / duration)
     }
 }

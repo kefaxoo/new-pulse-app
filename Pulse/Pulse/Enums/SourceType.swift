@@ -8,6 +8,7 @@
 import Foundation
 
 enum SourceType: String {
-    case muffon = "muffon"
-    case none   = ""
+    case muffon     = "muffon"
+    case soundcloud = "soundcloud"
+    case none       = ""
 }

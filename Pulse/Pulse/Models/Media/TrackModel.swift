@@ -112,6 +112,21 @@ final class TrackModel {
         }
     }
     
+    init(_ track: SoundcloudTrack) {
+        self.id            = track.id
+        self.title         = track.title
+        self.image         = ImageModel(track.coverLink ?? "")
+        self.service       = .soundcloud
+        self.shareLink     = "https://song.link/sc/\(track.id)"
+        self.source        = .soundcloud
+        self.extension     = "mp3"
+        self.isAvailable   = true
+        self.dateAdded     = Int(Date().timeIntervalSince1970)
+        self.artist        = ArtistModel(track.user)
+        self.artists       = [ArtistModel(track.user)]
+        self.artistText    = self.artists.names
+    }
+    
     var json: [String: Any] {
         var dict: [String: Any] = [
             "id"   : self.id,

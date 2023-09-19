@@ -9,7 +9,7 @@ import Foundation
 
 struct UpdatedTrack {
     let track   : TrackModel
-    let response: Decodable
+    let response: Decodable?
 }
 
 final class AudioManager {
@@ -18,12 +18,19 @@ final class AudioManager {
     fileprivate init() {}
     
     func updatePlayableLink(for track: TrackModel, success: @escaping((UpdatedTrack) -> ()), failure: (() -> ())? = nil) {
-        switch track.service.source {
+        switch track.source {
             case .muffon:
                 MuffonProvider.shared.trackInfo(track, shouldCancelTask: false) { muffonTrack in
                     let track = TrackModel(muffonTrack)
                     success(UpdatedTrack(track: track, response: muffonTrack))
                 } failure: {
+                    failure?()
+                }
+            case .soundcloud:
+                SoundcloudProvider.shared.fetchPlayableLinks(id: track.id, shouldCancelTask: false) { playableLinks in
+                    track.playableLinks = PlayableLinkModel(playableLinks.streamingLink)
+                    success(UpdatedTrack(track: track, response: playableLinks))
+                } failure: { _ in
                     failure?()
                 }
             case .none:
@@ -37,7 +44,11 @@ final class AudioManager {
                 guard let playlist = playlist as? [MuffonTrack] else { return nil }
                 
                 return playlist.map({ TrackModel($0) })
-            case .none:
+            case .soundcloud:
+                guard let playlist = playlist as? [SoundcloudTrack] else { return nil }
+                
+                return playlist.map({ TrackModel($0) })
+            default:
                 return nil
         }
     }

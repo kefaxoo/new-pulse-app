@@ -8,8 +8,7 @@
 import Foundation
 
 struct SearchResponse {
-    var page: Int
-    let totalPages: Int
+    var page: Int = 0
     var results: [Decodable]
     var canLoadMore = true
     
