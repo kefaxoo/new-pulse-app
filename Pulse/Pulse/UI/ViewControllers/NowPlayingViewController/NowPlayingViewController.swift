@@ -21,6 +21,7 @@ final class NowPlayingViewController: BaseUIViewController {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.spacing = 20
+        stackView.distribution = .equalSpacing
         return stackView
     }()
     
@@ -40,22 +41,25 @@ final class NowPlayingViewController: BaseUIViewController {
     private lazy var trackInfoStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 20
+        stackView.spacing = 8
+        stackView.distribution = .fill
         return stackView
     }()
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        label.text = "Title"
+        label.numberOfLines = 0
         return label
     }()
     
     private lazy var artistButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.label.withAlphaComponent(0.7), for: .normal)
-        var configuration = UIButton.Configuration.plain()
-        configuration.titleAlignment = .leading
-        button.configuration = configuration
+        button.contentHorizontalAlignment = .left
+        button.setTitle("Artist", for: .normal)
+        button.titleLabel?.numberOfLines = 0
         return button
     }()
     
@@ -68,7 +72,32 @@ final class NowPlayingViewController: BaseUIViewController {
     
     private lazy var durationSlider: SliderControl = {
         let slider = SliderControl()
+        slider.delegate = self
+        slider.defaultProgressColor = SettingsManager.shared.color.color
+        slider.enlargedProgressColor = SettingsManager.shared.color.color
         return slider
+    }()
+    
+    private lazy var durationStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        return stackView
+    }()
+    
+    private lazy var currentTimeLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 13)
+        label.text = "--:--"
+        return label
+    }()
+    
+    private lazy var durationSpacer = UIView.spacer
+    
+    private lazy var leftTimeLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 13)
+        label.text = "--:--"
+        return label
     }()
     
     private lazy var presenter: NowPlayingPresenter = {
@@ -106,8 +135,8 @@ extension NowPlayingViewController {
 // MARK: Setup interface methods
 extension NowPlayingViewController {
     override func setupLayout() {
-        self.view.addSubview(dismissButton)
         self.view.addSubview(mainStackView)
+        mainStackView.addArrangedSubview(dismissButton)
         mainStackView.addArrangedSubview(coverImageView)
         mainStackView.addArrangedSubview(trackInfoHorizontalStackView)
         trackInfoHorizontalStackView.addArrangedSubview(trackInfoStackView)
@@ -117,25 +146,35 @@ extension NowPlayingViewController {
         trackInfoHorizontalStackView.addArrangedSubview(actionsButton)
         
         mainStackView.addArrangedSubview(durationSlider)
+        mainStackView.addArrangedSubview(durationStackView)
+        durationStackView.addArrangedSubview(currentTimeLabel)
+        durationStackView.addArrangedSubview(durationSpacer)
+        durationStackView.addArrangedSubview(leftTimeLabel)
         
         mainStackView.addArrangedSubview(UIView.spacer)
     }
     
     override func setupConstraints() {
-        dismissButton.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(10)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(30)
-        }
-        
         mainStackView.snp.makeConstraints { make in
-            make.top.equalTo(dismissButton.snp.bottom).offset(20)
-            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(20)
+            make.top.leading.equalTo(self.view.safeAreaLayoutGuide).offset(20)
             make.bottom.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
         }
         
+        dismissButton.snp.makeConstraints({ $0.height.equalTo(30) })
         coverImageView.snp.makeConstraints({ $0.height.width.equalTo(mainStackView.snp.width) })
-        actionsButton.snp.makeConstraints({ $0.height.width.equalTo(50) })
+        let trackInfoHeight = self.titleLabel.textSize.height + (self.artistButton.titleLabel?.textSize.height ?? 0) + 8
+        trackInfoStackView.snp.makeConstraints({ $0.height.equalTo(trackInfoHeight) })
+        titleLabel.snp.makeConstraints({ $0.height.equalTo(titleLabel.textSize.height).priority(.high) })
+        actionsButton.snp.makeConstraints({ $0.height.width.equalTo(self.trackInfoStackView.snp.height) })
+        durationSlider.snp.makeConstraints({ $0.height.equalTo(durationSlider.intrinsicContentSize.height) })
+        durationStackView.snp.makeConstraints({ $0.height.equalTo(currentTimeLabel.textSize.height) })
+        currentTimeLabel.snp.makeConstraints({ $0.width.equalTo(currentTimeLabel.textSize.width) })
+        leftTimeLabel.snp.makeConstraints({ $0.width.equalTo(leftTimeLabel.textSize.width) })
+    }
+    
+    private func setupDuration(_ duration: Float, currentTime: Float) {
+        currentTimeLabel.text = currentTime.toMinuteAndSeconds
+        leftTimeLabel.text = "-\((duration - currentTime).toMinuteAndSeconds)"
     }
 }
 
@@ -174,18 +213,28 @@ extension NowPlayingViewController: AudioPlayerNowPlayingControllerDelegate {
     
     func updateDuration(_ duration: Float, currentTime: Float) {
         durationSlider.value = currentTime / duration
+        self.setupDuration(duration, currentTime: currentTime)
     }
 }
 
 // MARK: -
 // MARK: SliderControlDelegate
 extension NowPlayingViewController: SliderControlDelegate {
-    func valueStartedChange(_ value: Float) {
+    func valueBeganChange(_ value: Float) {
         AudioPlayer.shared.isDurationChanging = true
+    }
+    
+    func valueChanging(_ value: Float) {
+        guard let doubleDuration = AudioPlayer.shared.duration else { return }
+        
+        let duration = Float(doubleDuration)
+        self.setupDuration(duration, currentTime: value * duration)
     }
     
     func valueDidChange(_ value: Float) {
         AudioPlayer.shared.isDurationChanging = false
         AudioPlayer.shared.updateTimePosition(value)
     }
+    
+    func valueDidNotChange() {}
 }

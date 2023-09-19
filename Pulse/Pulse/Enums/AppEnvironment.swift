@@ -24,4 +24,12 @@ enum AppEnvironment: String {
         return .releaseProd
 #endif
     }
+    
+    var isDebug: Bool {
+        return self != .releaseProd
+    }
+    
+    var isRelease: Bool {
+        return !self.isDebug
+    }
 }

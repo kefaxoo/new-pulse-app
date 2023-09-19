@@ -17,7 +17,7 @@ enum SoundcloudApi {
     case userInfoWith(accessToken: String)
     
     // MARK: Library
-    case likedTracks
+    case likedTracks(cursor: String?)
     
     // MARK: Track
     case trackInfo(id: Int)
@@ -25,7 +25,7 @@ enum SoundcloudApi {
     case likeTrack(id: Int)
     
     // MARK: Search
-    case search(type: SearchType, query: String)
+    case search(type: SearchType, query: String, offset: Int)
 }
 
 extension SoundcloudApi: BaseRestApiEnum {
@@ -47,7 +47,7 @@ extension SoundcloudApi: BaseRestApiEnum {
                 return "/tracks/\(id)/streams"
             case .likeTrack(let id):
                 return "/likes/tracks/\(id)"
-            case .search(let type, _):
+            case .search(let type, _, _):
                 return "/\(type.soundcloudApi)"
         }
     }
@@ -89,15 +89,19 @@ extension SoundcloudApi: BaseRestApiEnum {
                 parameters["client_secret"] = Constants.Soundcloud.clientSecret.rawValue
                 parameters["redirect_uri"]  = Constants.Soundcloud.redirectLink.rawValue
                 parameters["refresh_token"] = SettingsManager.shared.soundcloud.refreshToken ?? ""
-            case .likedTracks:
+            case .likedTracks(let cursor):
                 parameters["limit"]               = 20
                 parameters["access"]              = "playable"
                 parameters["linked_partitioning"] = true
-            case .search(_, let query):
+                guard let cursor else { break }
+                
+                parameters["cursor"] = cursor
+            case .search(_, let query, let offset):
                 parameters["q"]                   = query
                 parameters["access"]              = "playable"
                 parameters["limit"]               = 20
                 parameters["linked_partitioning"] = true
+                parameters["offset"]              = offset
             default:
                 break
         }

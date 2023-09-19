@@ -170,15 +170,25 @@ extension NowPlayingView {
 // MARK: Actions
 extension NowPlayingView {
     @objc private func playPauseAction() {
-         _ = AudioPlayer.shared.playPause()
+        if AudioPlayer.shared.track == nil {
+            let playlist = RealmManager<LibraryTrackModel>().read().map({ TrackModel($0) }).sorted
+            guard !playlist.isEmpty else { return }
+            
+            AudioPlayer.shared.play(from: playlist[0], playlist: playlist, position: 0, isNewPlaylist: true)
+            return
+        }
+        
+        _ = AudioPlayer.shared.playPause()
     }
     
     @objc private func nextTrackAction(_ sender: UIButton) {
+        guard AudioPlayer.shared.track != nil else { return }
+        
         _ = AudioPlayer.shared.nextTrack()
     }
     
     @objc private func presentNowPlayingVC() {
-        guard AppEnvironment.current != .releaseProd else { return }
+        guard AppEnvironment.current.isDebug else { return }
         
         MainCoordinator.shared.presentNowPlayingController()
     }

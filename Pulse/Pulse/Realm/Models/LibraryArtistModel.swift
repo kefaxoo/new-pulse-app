@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-final class LibraryArtistModel: Object {
+class LibraryArtistModel: Object {
     @Persisted dynamic var name = ""
     @Persisted dynamic var id   = -1
     

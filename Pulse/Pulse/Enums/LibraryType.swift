@@ -8,11 +8,14 @@
 import UIKit
 
 enum LibraryType {
+    case playlists
     case tracks
     case soundcloud
     
     var title: String {
         switch self {
+            case .playlists:
+                return "Playlists"
             case .tracks:
                 return "Tracks"
             case .soundcloud:
@@ -22,6 +25,8 @@ enum LibraryType {
     
     var image: UIImage? {
         switch self {
+            case .playlists:
+                return Constants.Images.playlists.image
             case .tracks:
                 return Constants.Images.tracks.image
             case .soundcloud:
@@ -35,6 +40,7 @@ enum LibraryType {
             case .soundcloud:
                 types.append(.tracks)
             case .none:
+                types.append(.playlists)
                 types.append(.tracks)
                 if SettingsManager.shared.soundcloud.isSigned {
                     types.append(.soundcloud)
@@ -57,6 +63,13 @@ enum LibraryType {
                     default:
                         return .none
                 }
+            case .playlists:
+                switch service {
+                    case .none:
+                        return .library
+                    default:
+                        return .none
+                }
             case .soundcloud:
                 return .soundcloud
         }
@@ -64,6 +77,8 @@ enum LibraryType {
     
     var service: ServiceType {
         switch self {
+            case .playlists:
+                return .none
             case .tracks:
                 return .none
             case .soundcloud:

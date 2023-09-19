@@ -51,6 +51,8 @@ final class LibraryPresenter: BasePresenter {
         let libraryType = libraryTypes[indexPath.item]
         let controllerType = libraryType.controllerType(service: self.service)
         switch libraryType {
+            case .playlists:
+                MainCoordinator.shared.pushPlaylistsViewController(type: controllerType)
             case .tracks:
                 MainCoordinator.shared.pushTracksViewController(type: controllerType)
             case .soundcloud:

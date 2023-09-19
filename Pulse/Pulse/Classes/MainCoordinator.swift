@@ -149,4 +149,9 @@ final class MainCoordinator {
         let libraryVC = LibraryViewController(type: type, service: service)
         self.pushViewController(vc: libraryVC)
     }
+    
+    func pushPlaylistsViewController(type: LibraryControllerType) {
+        let playlistsVC = PlaylistsViewController(type: type)
+        self.pushViewController(vc: playlistsVC)
+    }
 }

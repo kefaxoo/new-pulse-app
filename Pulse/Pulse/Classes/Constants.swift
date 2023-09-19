@@ -36,6 +36,7 @@ enum Constants {
         case tracks
         case nextTrack
         case actionsNowPlaying
+        case playlists
         
         var image: UIImage? {
             let type: System
@@ -90,6 +91,8 @@ enum Constants {
                     type = .forwardFill
                 case .actionsNowPlaying:
                     type = .ellipsisCircleFill
+                case .playlists:
+                    type = .musicNoteList
                 default:
                     return self.customImage
             }
@@ -182,6 +185,7 @@ extension Constants.Images {
         case musicNote                = "music.note"
         case forwardFill              = "forward.fill"
         case ellipsisCircleFill       = "ellipsis.circle.fill"
+        case musicNoteList            = "music.note.list"
         
         var image: UIImage? {
             return UIImage(systemName: self.rawValue)

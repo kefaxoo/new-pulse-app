@@ -195,6 +195,20 @@ final class SearchPresenter: BasePresenter {
                         self?.searchResponse?.cannotLoadMore()
                         self?.isResultsLoading = false
                     }
+                case .soundcloud:
+                    SoundcloudProvider.shared.search(
+                        query: self.query,
+                        searchType: self.currentType,
+                        offset: self.resultsCount
+                    ) { searchResponse in
+                        MainCoordinator.shared.currentViewController?.dismissSpinner()
+                        self.searchResponse?.addResults(searchResponse)
+                        self.delegate?.reloadData(scrollToTop: false)
+                        self.isResultsLoading = false
+                    } failure: { [weak self] _ in
+                        self?.searchResponse?.cannotLoadMore()
+                        self?.isResultsLoading = false
+                    }
                 default:
                     MainCoordinator.shared.currentViewController?.dismissSpinner()
                     self.isResultsLoading = false

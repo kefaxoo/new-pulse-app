@@ -44,9 +44,10 @@ final class AudioPlayer: NSObject {
             print(error)
         }
         
+        UIApplication.shared.beginReceivingRemoteControlEvents()
         return player
     }()
-
+    
     private var playlist       = [TrackModel]()
     private var position       = 0
     private var observer       : Any?
@@ -59,6 +60,9 @@ final class AudioPlayer: NSObject {
     private let commandCenter = MPRemoteCommandCenter.shared()
     
     var isDurationChanging = false
+    var duration: Double? {
+        return self.player.currentItem?.duration.seconds
+    }
     
     weak var nowPlayingViewDelegate          : AudioPlayerNowPlayingViewDelegate?
     weak var nowPlayingViewControllerDelegate: AudioPlayerNowPlayingControllerDelegate?
@@ -241,6 +245,15 @@ fileprivate extension AudioPlayer {
             self?.nextPlayerItem = nextPlayerItem
         }
     }
+    
+    func setupNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleInterruptions),
+            name: AVAudioSession.interruptionNotification,
+            object: AVAudioSession.sharedInstance()
+        )
+    }
 }
 
 // MARK: -
@@ -357,5 +370,25 @@ extension AudioPlayer: CachingPlayerItemDelegate {
 fileprivate extension AudioPlayer {
     @objc func playerDidFinishPlaying() {
         _ = self.nextTrack()
+    }
+    
+    @objc private func handleInterruptions(_ notification: NSNotification) {
+        guard let info = notification.userInfo,
+              let typeValue = info[AVAudioSessionInterruptionTypeKey] as? UInt,
+              let type = AVAudioSession.InterruptionType(rawValue: typeValue)
+        else { return }
+        
+        if type == .began {
+            _ = self.playPause()
+            self.nowPlayingViewDelegate?.changeState(isPlaying: false)
+        } else if type == .ended {
+            guard let optionsValue = info[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
+            
+            let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
+            if options.contains(.shouldResume) {
+                _ = self.playPause()
+                self.nowPlayingViewDelegate?.changeState(isPlaying: true)
+            }
+        }
     }
 }
