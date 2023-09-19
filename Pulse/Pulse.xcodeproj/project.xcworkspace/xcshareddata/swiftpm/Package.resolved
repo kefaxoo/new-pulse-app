@@ -55,12 +55,12 @@
       }
     },
     {
-      "identity" : "slyderin",
+      "identity" : "slidercontrol",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/EdgarDegas/Slyderin",
+      "location" : "https://github.com/AlexChekel1337/SliderControl",
       "state" : {
         "branch" : "main",
-        "revision" : "51717e3ea0291eae4e660dffb5971e0d86773be6"
+        "revision" : "1ca815f9582766c0fbc6a949326a74f47c3b7e62"
       }
     },
     {

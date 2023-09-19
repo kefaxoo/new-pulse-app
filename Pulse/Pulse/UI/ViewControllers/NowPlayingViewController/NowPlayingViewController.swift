@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import Slyderin
+import SliderControl
 
 final class NowPlayingViewController: BaseUIViewController {
     private lazy var dismissButton: UIButton = {
@@ -66,17 +66,9 @@ final class NowPlayingViewController: BaseUIViewController {
         return button
     }()
     
-    private lazy var durationSlyder: Slyder = {
-        let slyder = Slyder(slider: ThumblessSlider.default)
-        slyder.viewModel.minimumValue = 0
-        slyder.viewModel.maximumValue = 1
-        slyder.valueChangeHandler = { newValue in
-            AudioPlayer.shared.isDurationChanging = slyder.viewModel.interacting
-            guard slyder.viewModel.interacting else { return }
-            
-            AudioPlayer.shared.updateTimePosition(Float(newValue))
-        }
-        return slyder
+    private lazy var durationSlider: SliderControl = {
+        let slider = SliderControl()
+        return slider
     }()
     
     private lazy var presenter: NowPlayingPresenter = {
@@ -124,7 +116,9 @@ extension NowPlayingViewController {
         
         trackInfoHorizontalStackView.addArrangedSubview(actionsButton)
         
-        mainStackView.addArrangedSubview(durationSlyder)
+        mainStackView.addArrangedSubview(durationSlider)
+        
+        mainStackView.addArrangedSubview(UIView.spacer)
     }
     
     override func setupConstraints() {
@@ -142,13 +136,6 @@ extension NowPlayingViewController {
         
         coverImageView.snp.makeConstraints({ $0.height.width.equalTo(mainStackView.snp.width) })
         actionsButton.snp.makeConstraints({ $0.height.width.equalTo(50) })
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        (self.durationSlyder.slider as? ThumblessSlider)?
-            .visualEffect = UIBlurEffect(
-                style: self.traitCollection.userInterfaceStyle == .dark ? .systemMaterialDark : .systemMaterialLight
-            )
     }
 }
 
@@ -186,6 +173,19 @@ extension NowPlayingViewController: AudioPlayerNowPlayingControllerDelegate {
     }
     
     func updateDuration(_ duration: Float, currentTime: Float) {
-        self.durationSlyder.viewModel.value = Double(currentTime / duration)
+        durationSlider.value = currentTime / duration
+    }
+}
+
+// MARK: -
+// MARK: SliderControlDelegate
+extension NowPlayingViewController: SliderControlDelegate {
+    func valueStartedChange(_ value: Float) {
+        AudioPlayer.shared.isDurationChanging = true
+    }
+    
+    func valueDidChange(_ value: Float) {
+        AudioPlayer.shared.isDurationChanging = false
+        AudioPlayer.shared.updateTimePosition(value)
     }
 }

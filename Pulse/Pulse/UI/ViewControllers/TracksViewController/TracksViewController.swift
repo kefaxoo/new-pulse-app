@@ -62,7 +62,8 @@ extension TracksViewController {
     
     override func setupConstraints() {
         tracksTableView.snp.makeConstraints { make in
-            make.top.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            make.top.equalTo(self.view.safeAreaLayoutGuide)
+            make.bottom.equalToSuperview()
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(20)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
         }

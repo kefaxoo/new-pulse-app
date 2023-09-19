@@ -21,7 +21,6 @@
 		705AA9D32AABA440007F0260 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705AA9D22AABA440007F0260 /* RealmManager.swift */; };
 		705AA9D52AABAF9B007F0260 /* LibaryTrackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705AA9D42AABAF9B007F0260 /* LibaryTrackModel.swift */; };
 		705AA9D72AABB01F007F0260 /* LibraryArtistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705AA9D62AABB01F007F0260 /* LibraryArtistModel.swift */; };
-		705C5FEC2AB8F9FA00D9C48F /* ThumblessSlider+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705C5FEB2AB8F9FA00D9C48F /* ThumblessSlider+Ext.swift */; };
 		7068BE942AA8BFFF004B0E03 /* SearchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7068BE932AA8BFFF004B0E03 /* SearchPresenter.swift */; };
 		7068BE962AA8CDC0004B0E03 /* ResponseMuffonSearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7068BE952AA8CDC0004B0E03 /* ResponseMuffonSearchModel.swift */; };
 		7068BE982AA8CE35004B0E03 /* ResponseMuffonTrackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7068BE972AA8CE35004B0E03 /* ResponseMuffonTrackModel.swift */; };
@@ -98,7 +97,6 @@
 		70AC1CB02A9B57AB0095A793 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 70AC1CAF2A9B57AB0095A793 /* Realm */; };
 		70AC1CB22A9B57AB0095A793 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 70AC1CB12A9B57AB0095A793 /* RealmSwift */; };
 		70AC1CB52A9B57EC0095A793 /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = 70AC1CB42A9B57EC0095A793 /* AlertKit */; };
-		70AC1CBB2A9B58360095A793 /* Slyderin in Frameworks */ = {isa = PBXBuildFile; productRef = 70AC1CBA2A9B58360095A793 /* Slyderin */; };
 		70AD04BC2A9E9D4D00DC4517 /* StaticGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AD04BB2A9E9D4D00DC4517 /* StaticGradientView.swift */; };
 		70AD04BE2A9EA42100DC4517 /* ResponsePulseCreateUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AD04BD2A9EA42100DC4517 /* ResponsePulseCreateUserModel.swift */; };
 		70AD04C22A9EA62800DC4517 /* BaseUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AD04C12A9EA62800DC4517 /* BaseUIView.swift */; };
@@ -165,6 +163,9 @@
 		70F156A42AB7A65200871AC7 /* CachingPlayerItem in Frameworks */ = {isa = PBXBuildFile; productRef = 70F156A32AB7A65200871AC7 /* CachingPlayerItem */; };
 		810E3D1A2A9F8875009891FC /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 810E3D192A9F8875009891FC /* SnapKit */; };
 		81A9DBF22AB03A45002CC5CD /* InformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A9DBF12AB03A45002CC5CD /* InformationView.swift */; };
+		81B7435D2AB98F78000813F9 /* Float+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7435C2AB98F78000813F9 /* Float+Ext.swift */; };
+		81B743602AB99D4C000813F9 /* SliderControl in Frameworks */ = {isa = PBXBuildFile; productRef = 81B7435F2AB99D4C000813F9 /* SliderControl */; };
+		81B743632AB99E45000813F9 /* SliderControlDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B743622AB99E45000813F9 /* SliderControlDelegate.swift */; };
 		81B8EE3C2AA0E17F00C7F53E /* VerifyPulseAccountPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B8EE3B2AA0E17F00C7F53E /* VerifyPulseAccountPopUpViewController.swift */; };
 		81B8EE3E2AA0E1E600C7F53E /* VerifyPulseAccountPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B8EE3D2AA0E1E600C7F53E /* VerifyPulseAccountPresenter.swift */; };
 		81B8EE422AA0E72400C7F53E /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B8EE412AA0E72400C7F53E /* String+Ext.swift */; };
@@ -185,7 +186,6 @@
 		705AA9D22AABA440007F0260 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		705AA9D42AABAF9B007F0260 /* LibaryTrackModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibaryTrackModel.swift; sourceTree = "<group>"; };
 		705AA9D62AABB01F007F0260 /* LibraryArtistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryArtistModel.swift; sourceTree = "<group>"; };
-		705C5FEB2AB8F9FA00D9C48F /* ThumblessSlider+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ThumblessSlider+Ext.swift"; path = "../../../../../../.Trash/ThumblessSlider+Ext.swift"; sourceTree = "<group>"; };
 		7068BE932AA8BFFF004B0E03 /* SearchPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPresenter.swift; sourceTree = "<group>"; };
 		7068BE952AA8CDC0004B0E03 /* ResponseMuffonSearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseMuffonSearchModel.swift; sourceTree = "<group>"; };
 		7068BE972AA8CE35004B0E03 /* ResponseMuffonTrackModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseMuffonTrackModel.swift; sourceTree = "<group>"; };
@@ -322,6 +322,8 @@
 		70F1569C2AB7989800871AC7 /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
 		70F1569E2AB79AC900871AC7 /* ResponseSoundcloudPlayableLinksModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseSoundcloudPlayableLinksModel.swift; sourceTree = "<group>"; };
 		81A9DBF12AB03A45002CC5CD /* InformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationView.swift; sourceTree = "<group>"; };
+		81B7435C2AB98F78000813F9 /* Float+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Float+Ext.swift"; sourceTree = "<group>"; };
+		81B743622AB99E45000813F9 /* SliderControlDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderControlDelegate.swift; sourceTree = "<group>"; };
 		81B8EE3B2AA0E17F00C7F53E /* VerifyPulseAccountPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyPulseAccountPopUpViewController.swift; sourceTree = "<group>"; };
 		81B8EE3D2AA0E1E600C7F53E /* VerifyPulseAccountPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyPulseAccountPresenter.swift; sourceTree = "<group>"; };
 		81B8EE412AA0E72400C7F53E /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
@@ -334,13 +336,13 @@
 			files = (
 				70AC1CB52A9B57EC0095A793 /* AlertKit in Frameworks */,
 				70AC1CB02A9B57AB0095A793 /* Realm in Frameworks */,
-				70AC1CBB2A9B58360095A793 /* Slyderin in Frameworks */,
 				70AC1CA82A9B57240095A793 /* SDWebImage in Frameworks */,
 				709F1B662A9E95BD00C0FB73 /* InfiniteScrolling-SPM in Frameworks */,
 				70AC1CB22A9B57AB0095A793 /* RealmSwift in Frameworks */,
 				70F156A42AB7A65200871AC7 /* CachingPlayerItem in Frameworks */,
 				70AC1CAA2A9B57240095A793 /* SDWebImageMapKit in Frameworks */,
 				70AC1CAD2A9B57410095A793 /* FriendlyURLSession in Frameworks */,
+				81B743602AB99D4C000813F9 /* SliderControl in Frameworks */,
 				810E3D1A2A9F8875009891FC /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -674,7 +676,7 @@
 				700915A62AB615490006239A /* Failure+Ext.swift */,
 				70DBA02B2AB666D00078E409 /* UIButton+Ext.swift */,
 				70F1569C2AB7989800871AC7 /* Date+Ext.swift */,
-				705C5FEB2AB8F9FA00D9C48F /* ThumblessSlider+Ext.swift */,
+				81B7435C2AB98F78000813F9 /* Float+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -734,6 +736,7 @@
 		70BDBA7E2A9B56C000401359 /* Pulse */ = {
 			isa = PBXGroup;
 			children = (
+				81B743612AB99E3F000813F9 /* Delegates */,
 				705AA9D02AABA434007F0260 /* Realm */,
 				7068BEB42AAA6265004B0E03 /* Players */,
 				70996A0F2A9D395400905847 /* Api */,
@@ -890,6 +893,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		81B743612AB99E3F000813F9 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				81B743622AB99E45000813F9 /* SliderControlDelegate.swift */,
+			);
+			path = Delegates;
+			sourceTree = "<group>";
+		};
 		81B8EE392AA0E12A00C7F53E /* PopUpViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -932,10 +943,10 @@
 				70AC1CAF2A9B57AB0095A793 /* Realm */,
 				70AC1CB12A9B57AB0095A793 /* RealmSwift */,
 				70AC1CB42A9B57EC0095A793 /* AlertKit */,
-				70AC1CBA2A9B58360095A793 /* Slyderin */,
 				709F1B652A9E95BD00C0FB73 /* InfiniteScrolling-SPM */,
 				810E3D192A9F8875009891FC /* SnapKit */,
 				70F156A32AB7A65200871AC7 /* CachingPlayerItem */,
+				81B7435F2AB99D4C000813F9 /* SliderControl */,
 			);
 			productName = Pulse;
 			productReference = 70BDBA7C2A9B56C000401359 /* Pulse.app */;
@@ -973,9 +984,9 @@
 				70AC1CAB2A9B57410095A793 /* XCRemoteSwiftPackageReference "friendly-urlsession" */,
 				70AC1CAE2A9B57AA0095A793 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				70AC1CB32A9B57EC0095A793 /* XCRemoteSwiftPackageReference "SPAlert" */,
-				70AC1CB92A9B58360095A793 /* XCRemoteSwiftPackageReference "Slyderin" */,
 				709F1B642A9E95BD00C0FB73 /* XCRemoteSwiftPackageReference "InfiniteScrolling-SPM" */,
 				70F156A22AB7A65200871AC7 /* XCRemoteSwiftPackageReference "CachingPlayerItem" */,
+				81B7435E2AB99D4C000813F9 /* XCRemoteSwiftPackageReference "SliderControl" */,
 			);
 			productRefGroup = 70BDBA7D2A9B56C000401359 /* Products */;
 			projectDirPath = "";
@@ -1122,7 +1133,6 @@
 				70E3D5822AA13A3C0040E46A /* ResponsePulseSuccessModel.swift in Sources */,
 				707FAF872A9E8E0B008929FC /* UICollectionViewCell+Ext.swift in Sources */,
 				70C857EF2AB7191C004B5EC5 /* ServicesManager.swift in Sources */,
-				705C5FEC2AB8F9FA00D9C48F /* ThumblessSlider+Ext.swift in Sources */,
 				70C857E32AB70E0F004B5EC5 /* ResponseSoundcloudTokenModel.swift in Sources */,
 				70E77F812AB1DEB9005648A8 /* NowPlayingViewController.swift in Sources */,
 				7069F73E2AA3194700255854 /* ResponsePulseLoginWithCodeModel.swift in Sources */,
@@ -1138,6 +1148,7 @@
 				7069F7492AA326F300255854 /* NowPlayingView.swift in Sources */,
 				7069F7402AA31B8500255854 /* VerificationCode.swift in Sources */,
 				7092BA8F2AADC75F007FE3C3 /* TracksPresenter.swift in Sources */,
+				81B7435D2AB98F78000813F9 /* Float+Ext.swift in Sources */,
 				706CE2962AAD1FC300748322 /* DownloadManager.swift in Sources */,
 				81B8EE3C2AA0E17F00C7F53E /* VerifyPulseAccountPopUpViewController.swift in Sources */,
 				70839CDB2AB4A3180030BB06 /* ResponsePulseResultsModel.swift in Sources */,
@@ -1149,6 +1160,7 @@
 				70CDCEA02A9FDD7100FBB125 /* Device.swift in Sources */,
 				7068BE9E2AA8CF71004B0E03 /* ResponseMuffonSourceModel.swift in Sources */,
 				7068BE9A2AA8CEF9004B0E03 /* ResponseMuffonImageModel.swift in Sources */,
+				81B743632AB99E45000813F9 /* SliderControlDelegate.swift in Sources */,
 				7068BEBC2AAA7D4E004B0E03 /* Data+Ext.swift in Sources */,
 				70996A252A9D3E8700905847 /* IpApi.swift in Sources */,
 				70399C622A9FE33200976098 /* AlertView.swift in Sources */,
@@ -1662,20 +1674,20 @@
 				version = 5.0.1;
 			};
 		};
-		70AC1CB92A9B58360095A793 /* XCRemoteSwiftPackageReference "Slyderin" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/EdgarDegas/Slyderin";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		70F156A22AB7A65200871AC7 /* XCRemoteSwiftPackageReference "CachingPlayerItem" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sukov/CachingPlayerItem";
 			requirement = {
 				kind = exactVersion;
 				version = 1.0.8;
+			};
+		};
+		81B7435E2AB99D4C000813F9 /* XCRemoteSwiftPackageReference "SliderControl" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AlexChekel1337/SliderControl";
+			requirement = {
+				branch = main;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1716,11 +1728,6 @@
 			package = 70AC1CB32A9B57EC0095A793 /* XCRemoteSwiftPackageReference "SPAlert" */;
 			productName = AlertKit;
 		};
-		70AC1CBA2A9B58360095A793 /* Slyderin */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 70AC1CB92A9B58360095A793 /* XCRemoteSwiftPackageReference "Slyderin" */;
-			productName = Slyderin;
-		};
 		70F156A32AB7A65200871AC7 /* CachingPlayerItem */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 70F156A22AB7A65200871AC7 /* XCRemoteSwiftPackageReference "CachingPlayerItem" */;
@@ -1730,6 +1737,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 70AC1CA12A9B570E0095A793 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		81B7435F2AB99D4C000813F9 /* SliderControl */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 81B7435E2AB99D4C000813F9 /* XCRemoteSwiftPackageReference "SliderControl" */;
+			productName = SliderControl;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
