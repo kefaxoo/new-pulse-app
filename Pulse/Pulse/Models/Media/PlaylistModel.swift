@@ -12,6 +12,7 @@ final class PlaylistModel {
     let title      : String
     let dateCreated: Int
     
+    var imageLink  : String? = nil
     var dateUpdated: Int
     var trackIds   : [Int]
 
@@ -21,5 +22,14 @@ final class PlaylistModel {
         self.dateCreated = playlist.dateCreated
         self.dateUpdated = playlist.dateUpdated
         self.trackIds    = playlist.trackIds.map({ $0 })
+    }
+    
+    init(_ playlist: SoundcloudPlaylist) {
+        self.id          = String(playlist.id)
+        self.title       = playlist.title
+        self.imageLink   = playlist.artworkLink
+        self.dateCreated = -1
+        self.dateUpdated = -1
+        self.trackIds    = []
     }
 }

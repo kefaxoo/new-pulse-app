@@ -22,6 +22,7 @@
 		705AA9D32AABA440007F0260 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705AA9D22AABA440007F0260 /* RealmManager.swift */; };
 		705AA9D52AABAF9B007F0260 /* LibaryTrackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705AA9D42AABAF9B007F0260 /* LibaryTrackModel.swift */; };
 		705AA9D72AABB01F007F0260 /* LibraryArtistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705AA9D62AABB01F007F0260 /* LibraryArtistModel.swift */; };
+		705AF4E62ABCF420009B55CE /* ResponseSoundcloudPlaylistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705AF4E52ABCF420009B55CE /* ResponseSoundcloudPlaylistModel.swift */; };
 		7068BE942AA8BFFF004B0E03 /* SearchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7068BE932AA8BFFF004B0E03 /* SearchPresenter.swift */; };
 		7068BE962AA8CDC0004B0E03 /* ResponseMuffonSearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7068BE952AA8CDC0004B0E03 /* ResponseMuffonSearchModel.swift */; };
 		7068BE982AA8CE35004B0E03 /* ResponseMuffonTrackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7068BE972AA8CE35004B0E03 /* ResponseMuffonTrackModel.swift */; };
@@ -192,6 +193,7 @@
 		705AA9D22AABA440007F0260 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		705AA9D42AABAF9B007F0260 /* LibaryTrackModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibaryTrackModel.swift; sourceTree = "<group>"; };
 		705AA9D62AABB01F007F0260 /* LibraryArtistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryArtistModel.swift; sourceTree = "<group>"; };
+		705AF4E52ABCF420009B55CE /* ResponseSoundcloudPlaylistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseSoundcloudPlaylistModel.swift; sourceTree = "<group>"; };
 		7068BE932AA8BFFF004B0E03 /* SearchPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPresenter.swift; sourceTree = "<group>"; };
 		7068BE952AA8CDC0004B0E03 /* ResponseMuffonSearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseMuffonSearchModel.swift; sourceTree = "<group>"; };
 		7068BE972AA8CE35004B0E03 /* ResponseMuffonTrackModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseMuffonTrackModel.swift; sourceTree = "<group>"; };
@@ -820,6 +822,7 @@
 				70F156982AB7973300871AC7 /* ResponseSoundcloudTrackModel.swift */,
 				70F1569A2AB797B700871AC7 /* ResponseSoundcloudUserModel.swift */,
 				70F1569E2AB79AC900871AC7 /* ResponseSoundcloudPlayableLinksModel.swift */,
+				705AF4E52ABCF420009B55CE /* ResponseSoundcloudPlaylistModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1167,6 +1170,7 @@
 				70C857E32AB70E0F004B5EC5 /* ResponseSoundcloudTokenModel.swift in Sources */,
 				70E77F812AB1DEB9005648A8 /* NowPlayingViewController.swift in Sources */,
 				7069F73E2AA3194700255854 /* ResponsePulseLoginWithCodeModel.swift in Sources */,
+				705AF4E62ABCF420009B55CE /* ResponseSoundcloudPlaylistModel.swift in Sources */,
 				70E09FC22AA7D0AB0094EEA0 /* SettingsPresenter.swift in Sources */,
 				7068BE9C2AA8CF57004B0E03 /* ResponseMuffonArtistModel.swift in Sources */,
 				706CE2992AAD28C000748322 /* LibraryViewController.swift in Sources */,

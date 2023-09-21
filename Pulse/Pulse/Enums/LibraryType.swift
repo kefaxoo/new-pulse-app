@@ -38,9 +38,9 @@ enum LibraryType {
         var types = [LibraryType]()
         switch service {
             case .soundcloud:
+                types.append(.playlists)
                 types.append(.tracks)
             case .none:
-                types.append(.playlists)
                 types.append(.tracks)
                 if SettingsManager.shared.soundcloud.isSigned {
                     types.append(.soundcloud)
@@ -65,8 +65,8 @@ enum LibraryType {
                 }
             case .playlists:
                 switch service {
-                    case .none:
-                        return .library
+                    case .soundcloud:
+                        return .soundcloud
                     default:
                         return .none
                 }

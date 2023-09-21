@@ -17,6 +17,8 @@ final class PlaylistsPresenter: BasePresenter {
     
     private let type: LibraryControllerType
     
+    private var soundcloudCursor: String?
+    
     var playlistsCount: Int {
         return playlists.count
     }
@@ -34,6 +36,20 @@ final class PlaylistsPresenter: BasePresenter {
         switch type {
             case .library:
                 self.playlists = RealmManager<LibraryPlaylistModel>().read().map({ PlaylistModel($0) })
+            case .soundcloud:
+                MainCoordinator.shared.currentViewController?.presentSpinner()
+                SoundcloudProvider.shared.libraryPlaylists { [weak self] soundcloudPlaylists, cursor in
+                    MainCoordinator.shared.currentViewController?.dismissSpinner()
+                    let playlists = soundcloudPlaylists.map({ PlaylistModel($0) })
+                    self?.playlists = playlists
+                    self?.showedPlaylists = playlists
+                    self?.soundcloudCursor = cursor
+                    self?.delegate?.reloadData()
+                } failure: { error in
+                    MainCoordinator.shared.currentViewController?.dismissSpinner()
+                    MainCoordinator.shared.popViewController()
+                    AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
+                }
             default:
                 MainCoordinator.shared.popViewController()
                 return

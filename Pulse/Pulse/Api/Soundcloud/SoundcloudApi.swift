@@ -18,6 +18,7 @@ enum SoundcloudApi {
     
     // MARK: Library
     case likedTracks(cursor: String?)
+    case likedPlaylists(cursor: String?)
     
     // MARK: Track
     case trackInfo(id: Int)
@@ -41,6 +42,8 @@ extension SoundcloudApi: BaseRestApiEnum {
                 return "/me"
             case .likedTracks:
                 return "/me/likes/tracks"
+            case .likedPlaylists:
+                return "/me/likes/playlists"
             case .trackInfo(let id):
                 return "/tracks/\(id)"
             case .playableLink(let id):
@@ -102,6 +105,12 @@ extension SoundcloudApi: BaseRestApiEnum {
                 parameters["limit"]               = 20
                 parameters["linked_partitioning"] = true
                 parameters["offset"]              = offset
+            case .likedPlaylists(let cursor):
+                parameters["limit"]               = 10
+                parameters["linked_partitioning"] = true
+                guard let cursor else { break }
+                
+                parameters["cursor"] = cursor
             default:
                 break
         }

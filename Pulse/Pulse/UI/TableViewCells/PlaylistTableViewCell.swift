@@ -11,6 +11,7 @@ final class PlaylistTableViewCell: BaseUITableViewCell {
     private lazy var playlistImageView: UIImageView = {
         let imageView = UIImageView.default
         imageView.layer.cornerRadius = 10
+        imageView.tintColor = SettingsManager.shared.color.color
         return imageView
     }()
     
@@ -32,6 +33,7 @@ final class PlaylistTableViewCell: BaseUITableViewCell {
         self.playlist = playlist
         
         self.playlistTitleLabel.text = playlist.title
+        self.playlistImageView.setImage(from: playlist.imageLink)
     }
 }
 
