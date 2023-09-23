@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PulseUIComponents
 
 final class SignInViewController: CoversViewController {
     private lazy var bottomGradientView: StaticGradientView = {
@@ -44,7 +45,7 @@ final class SignInViewController: CoversViewController {
         return textField
     }()
     
-    private lazy var passwordTextField = PasswordTextField()
+    private lazy var passwordTextField = PasswordTextField(tintColor: SettingsManager.shared.color.color)
     
     private lazy var signInButton: UIButton = {
         let button = UIButton()

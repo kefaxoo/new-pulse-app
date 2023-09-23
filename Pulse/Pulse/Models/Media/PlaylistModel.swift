@@ -12,7 +12,7 @@ final class PlaylistModel {
     let title      : String
     let dateCreated: Int
     
-    var imageLink  : String? = nil
+    var imageLink  : String?
     var dateUpdated: Int
     var trackIds   : [Int]
 

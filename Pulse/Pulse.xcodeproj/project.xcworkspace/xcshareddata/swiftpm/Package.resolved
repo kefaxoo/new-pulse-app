@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "estmusicindicator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kefaxoo/ESTMusicIndicator",
+      "state" : {
+        "branch" : "main",
+        "revision" : "602bf25632b2aab346313bc91417fc89a505ba33"
+      }
+    },
+    {
       "identity" : "friendly-urlsession",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kefaxoo/friendly-urlsession",
