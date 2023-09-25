@@ -55,3 +55,12 @@ extension String {
         return newSelf
     }
 }
+
+extension String {
+    var emojiFlag: String {
+        let base: UInt32 = 127397
+        var line = ""
+        self.unicodeScalars.forEach({ line.unicodeScalars.append(UnicodeScalar(base + $0.value)!) })
+        return String(line)
+    }
+}

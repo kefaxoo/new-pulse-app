@@ -110,7 +110,7 @@ final class NowPlayingViewController: BaseUIViewController {
         super.init(nibName: nil, bundle: nil)
         self.modalPresentationStyle = .overFullScreen
         
-        AudioPlayer.shared.nowPlayingViewControllerDelegate = self
+        AudioPlayer.shared.controllerDelegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -118,7 +118,7 @@ final class NowPlayingViewController: BaseUIViewController {
     }
     
     deinit {
-        AudioPlayer.shared.nowPlayingViewControllerDelegate = nil
+        AudioPlayer.shared.controllerDelegate = nil
     }
 }
 
@@ -200,8 +200,8 @@ extension NowPlayingViewController {
 }
 
 // MARK: -
-// MARK: AudioPlayerNowPlayingViewControllerDelegate
-extension NowPlayingViewController: AudioPlayerNowPlayingControllerDelegate {
+// MARK: AudioPlayerControllerDelegate
+extension NowPlayingViewController: AudioPlayerControllerDelegate {
     func setupCover(_ cover: UIImage?) {
         self.coverImageView.image = cover
     }

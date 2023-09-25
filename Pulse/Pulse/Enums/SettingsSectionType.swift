@@ -38,6 +38,7 @@ enum SettingSectionType: CaseIterable {
                     array.append(.soundcloudLike)
                 }
                 
+                array.append(.soundcloudSource)
                 return array
             case .help:
                 return [.about]

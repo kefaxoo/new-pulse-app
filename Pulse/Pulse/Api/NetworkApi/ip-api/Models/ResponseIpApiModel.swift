@@ -14,12 +14,14 @@ final class ResponseIpApiModel: Decodable {
     let countryCode: String?
     let city       : String?
     let provider   : String?
+    let country    : String?
     
     enum CodingKeys: String, CodingKey {
         case status
         case countryCode
         case city
         case provider = "isp"
+        case country
     }
     
     init(from decoder: Decoder) throws {
@@ -29,5 +31,6 @@ final class ResponseIpApiModel: Decodable {
         self.countryCode = try container.decodeIfPresent(String.self, forKey: .countryCode)
         self.city = try container.decodeIfPresent(String.self, forKey: .city)
         self.provider = try container.decodeIfPresent(String.self, forKey: .provider)
+        self.country = try container.decodeIfPresent(String.self, forKey: .country)
     }
 }

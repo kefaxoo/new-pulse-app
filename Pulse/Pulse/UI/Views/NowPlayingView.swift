@@ -17,8 +17,8 @@ final class NowPlayingView: BaseUIView {
         return view
     }()
     
-    private lazy var coverImageView: CoverImageView = {
-        let coverImageView = CoverImageView(tintColor: SettingsManager.shared.color.color)
+    private lazy var coverImageView: UIImageView = {
+        let coverImageView = UIImageView.default
         coverImageView.layer.cornerRadius = 10
         return coverImageView
     }()
@@ -102,7 +102,7 @@ final class NowPlayingView: BaseUIView {
     }
     
     private func setupDelegate() {
-        AudioPlayer.shared.nowPlayingViewDelegate = self
+        AudioPlayer.shared.viewDelegate = self
     }
 }
 
@@ -197,8 +197,8 @@ extension NowPlayingView {
 }
 
 // MARK: -
-// MARK: AudioPlayerNowPlayingViewDelegate
-extension NowPlayingView: AudioPlayerNowPlayingViewDelegate {
+// MARK: AudioPlayerViewDelegate
+extension NowPlayingView: AudioPlayerViewDelegate {
     func setupTrackInfo(_ track: TrackModel) {
         self.titleLabel.text = track.title
         self.artistLabel.text = track.artistText
@@ -215,9 +215,5 @@ extension NowPlayingView: AudioPlayerNowPlayingViewDelegate {
     
     func changeState(isPlaying: Bool) {
         self.playPauseButton.changeState(isPlaying)
-    }
-    
-    func changeStateImageView(_ state: PulseUIComponents.CoverImageViewState) {
-        self.coverImageView.changeState(state)
     }
 }

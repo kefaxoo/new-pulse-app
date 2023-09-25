@@ -13,18 +13,22 @@ import AlertKit
 import CachingPlayerItem
 import PulseUIComponents
 
-protocol AudioPlayerNowPlayingViewDelegate: AnyObject {
-    func setupTrackInfo(_ track: TrackModel)
+protocol AudioPlayerCommonDelegate: AnyObject {
     func setupCover(_ cover: UIImage?)
-    func updateDuration(_ duration: Float)
-    func changeState(isPlaying: Bool)
-    func changeStateImageView(_ state: CoverImageViewState)
+    func setupTrackInfo(_ track: TrackModel)
 }
 
-protocol AudioPlayerNowPlayingControllerDelegate: AnyObject {
-    func setupCover(_ cover: UIImage?)
-    func setupTrackInfo(_ track: TrackModel)
+protocol AudioPlayerViewDelegate: AudioPlayerCommonDelegate {
+    func updateDuration(_ duration: Float)
+    func changeState(isPlaying: Bool)
+}
+
+protocol AudioPlayerControllerDelegate: AudioPlayerCommonDelegate {
     func updateDuration(_ duration: Float, currentTime: Float)
+}
+
+protocol AudioPlayerTableViewDelegate: AnyObject {
+    func changeStateImageView(_ state: CoverImageViewState, position: Int)
 }
 
 final class AudioPlayer: NSObject {
@@ -66,8 +70,9 @@ final class AudioPlayer: NSObject {
         return self.player.currentItem?.duration.seconds
     }
     
-    weak var nowPlayingViewDelegate          : AudioPlayerNowPlayingViewDelegate?
-    weak var nowPlayingViewControllerDelegate: AudioPlayerNowPlayingControllerDelegate?
+    weak var viewDelegate      : AudioPlayerViewDelegate?
+    weak var controllerDelegate: AudioPlayerControllerDelegate?
+    weak var tableViewDelegate : AudioPlayerTableViewDelegate?
     
     func play(from track: TrackModel, position: Int) {
         self.play(from: track, playlist: self.playlist, position: position, isNewPlaylist: false)
@@ -109,12 +114,22 @@ final class AudioPlayer: NSObject {
             }
         }
         
-        self.nowPlayingViewDelegate?.changeStateImageView(.loading)
+        self.tableViewDelegate?.changeStateImageView(.loading, position: self.position)
         self.setupTrackInfoInDelegates()
         self.setupCover()
         self.setupObserver()
         self.updatePlayableLink(at: self.nextPosition)
         self.setupNextPlayerItem()
+    }
+    
+    func state(for track: TrackModel) -> CoverImageViewState {
+        guard track == self.track else { return .stopped }
+        
+        if self.player.currentItem?.status == .readyToPlay {
+            return self.player.rate == 0 ? .paused : .playing
+        } else {
+            return .loading
+        }
     }
 }
 
@@ -125,7 +140,8 @@ fileprivate extension AudioPlayer {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: self.player.currentItem)
         self.player.replaceCurrentItem(with: nil)
         self.cover = nil
-        self.nowPlayingViewDelegate?.changeState(isPlaying: false)
+        self.viewDelegate?.changeState(isPlaying: false)
+        self.tableViewDelegate?.changeStateImageView(.stopped, position: self.position)
     }
     
     func setupPlayerItem(completion: @escaping((CachingPlayerItem?) -> ())) {
@@ -168,16 +184,16 @@ fileprivate extension AudioPlayer {
                 else { return }
                 
                 if self.track != nil {
-                    self.nowPlayingViewDelegate?.changeState(isPlaying: self.player.rate != 0)
+                    self.viewDelegate?.changeState(isPlaying: self.player.rate != 0)
                 }
                 
                 self.setupDurationInDelegates()
                 self.setupNowPlaying()
                 
                 if self.player.currentItem?.status == .readyToPlay {
-                    self.nowPlayingViewDelegate?.changeStateImageView(self.player.rate == 0 ? .paused : .playing)
+                    self.tableViewDelegate?.changeStateImageView(self.player.rate == 0 ? .paused : .playing, position: self.position)
                 } else {
-                    self.nowPlayingViewDelegate?.changeStateImageView(.loading)
+                    self.tableViewDelegate?.changeStateImageView(.loading, position: self.position)
                 }
             }
         )
@@ -268,7 +284,7 @@ fileprivate extension AudioPlayer {
 // MARK: -
 // MARK: Computed variables
 extension AudioPlayer {
-    private var nowPlayingViewDuration: Float {
+    private var viewDuration: Float {
         guard let duration = self.player.currentItem?.duration.seconds else { return 0 }
         
         return Float(self.player.currentTime().seconds / duration)
@@ -293,7 +309,11 @@ extension AudioPlayer {
             self.player.pause()
         }
         
-        self.nowPlayingViewDelegate?.changeState(isPlaying: self.player.rate != 0)
+        self.viewDelegate?.changeState(isPlaying: self.player.rate != 0)
+        if self.player.currentItem?.status == .readyToPlay {
+            self.tableViewDelegate?.changeStateImageView(self.player.rate == 0 ? .stopped : .playing, position: self.position)
+        }
+        
         return .success
     }
     
@@ -346,23 +366,23 @@ extension AudioPlayer {
 // MARK: Delegates methods
 extension AudioPlayer {
     private func setupCoverInDelegates() {
-        self.nowPlayingViewDelegate?.setupCover(self.cover)
-        self.nowPlayingViewControllerDelegate?.setupCover(self.cover)
+        self.viewDelegate?.setupCover(self.cover)
+        self.controllerDelegate?.setupCover(self.cover)
     }
     
     private func setupTrackInfoInDelegates() {
         guard let track else { return }
         
-        self.nowPlayingViewDelegate?.setupTrackInfo(track)
-        self.nowPlayingViewControllerDelegate?.setupTrackInfo(track)
+        self.viewDelegate?.setupTrackInfo(track)
+        self.controllerDelegate?.setupTrackInfo(track)
     }
     
     private func setupDurationInDelegates() {
-        self.nowPlayingViewDelegate?.updateDuration(self.nowPlayingViewDuration)
+        self.viewDelegate?.updateDuration(self.viewDuration)
         guard !self.isDurationChanging,
               let duration = self.player.currentItem?.duration.seconds else { return }
         
-        self.nowPlayingViewControllerDelegate?.updateDuration(Float(duration), currentTime: Float(self.player.currentTime().seconds))
+        self.controllerDelegate?.updateDuration(Float(duration), currentTime: Float(self.player.currentTime().seconds))
     }
 }
 
@@ -389,14 +409,14 @@ fileprivate extension AudioPlayer {
         
         if type == .began {
             _ = self.playPause()
-            self.nowPlayingViewDelegate?.changeState(isPlaying: false)
+            self.viewDelegate?.changeState(isPlaying: false)
         } else if type == .ended {
             guard let optionsValue = info[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
             
             let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
             if options.contains(.shouldResume) {
                 _ = self.playPause()
-                self.nowPlayingViewDelegate?.changeState(isPlaying: true)
+                self.viewDelegate?.changeState(isPlaying: true)
             }
         }
     }

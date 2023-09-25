@@ -86,7 +86,9 @@ extension PlaylistsPresenter: BaseTableViewPresenter {
         return cell
     }
     
-    func didSelectRow(at indexPath: IndexPath) {}
+    func didSelectRow(at indexPath: IndexPath) {
+        MainCoordinator.shared.pushPlaylistViewController(type: self.type, playlist: self.showedPlaylists[indexPath.item])
+    }
 }
 
 // MARK: -

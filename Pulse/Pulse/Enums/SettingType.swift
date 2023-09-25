@@ -17,6 +17,7 @@ enum SettingType {
     case about
     case none
     case soundcloudLike
+    case soundcloudSource
     
     var cellType: CellType {
         switch self {
@@ -26,8 +27,8 @@ enum SettingType {
                 return .text
             case .about:
                 return .chevronText
-            case .accentColor:
-                return .colorButton
+            case .accentColor, .soundcloudSource:
+                return .tintedButton
             case .soundcloudSign:
                 return .service
             case .soundcloudLike:
@@ -61,6 +62,8 @@ enum SettingType {
                 return ""
             case .soundcloudLike:
                 return "Like track in Soundcloud"
+            case .soundcloudSource:
+                return SettingsManager.shared.soundcloud.currentSource.title
         }
     }
     
@@ -78,6 +81,8 @@ enum SettingType {
                 return "Choose the color of the application based on your mood"
             case .soundcloudLike:
                 return "All tracks that have been added to the library will be added to the Soundcloud library"
+            case .soundcloudSource:
+                return SettingsManager.shared.soundcloud.currentSource.description
             default:
                 return nil
         }
@@ -93,17 +98,17 @@ enum SettingType {
     }
     
     var id: String {
-        switch self {
-            case .adultContent, .canvasEnabled, .autoDownload, .soundcloudLike:
+        switch self.cellType {
+            case .switch:
                 return SwitchTableViewCell.id
-            case .import:
+            case .text:
                 return TextTableViewCell.id
-            case .about:
+            case .chevronText:
                 return ChevronTableViewCell.id
-            case .accentColor:
-                return ColorSettingTableViewCell.id
-            case .soundcloudSign:
+            case .service:
                 return ServiceSignTableViewCell.id
+            case .tintedButton:
+                return ButtonTableViewCell.id
             case .none:
                 return ""
         }
@@ -145,6 +150,26 @@ enum SettingType {
                 return .soundcloud
             default:
                 return .none
+        }
+    }
+    
+    var isMenu: Bool {
+        switch self {
+            case .accentColor, .soundcloudSource:
+                return true
+            default:
+                return false
+        }
+    }
+    
+    var buttonName: String {
+        switch self {
+            case .accentColor:
+                return SettingsManager.shared.color.title
+            case .soundcloudSource:
+                return SettingsManager.shared.soundcloud.currentSource.buttonTitle
+            default:
+                return ""
         }
     }
 }

@@ -131,6 +131,7 @@ enum Constants {
         case soundcloudUser   = "soundcloudUser"
         
         case soundcloudLike = "soundcloud.like"
+        case soundcloudSource = "soundcloud.source"
         
         case autoDownload          = "general.autoDownload"
         case isAdultContentEnabled = "general.isAdultContentEnabled"

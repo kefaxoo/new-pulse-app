@@ -12,3 +12,7 @@ protocol BaseTableViewPresenter {
     func setupCell(_ cell: UITableViewCell, at indexPath: IndexPath) -> UITableViewCell
     func didSelectRow(at indexPath: IndexPath)
 }
+
+extension BaseTableViewPresenter {
+    func didSelectRow(at indexPath: IndexPath) {}
+}

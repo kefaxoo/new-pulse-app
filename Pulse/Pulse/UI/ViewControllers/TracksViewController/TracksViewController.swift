@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PulseUIComponents
 
 final class TracksViewController: BaseUIViewController {
     private lazy var searchController: UISearchController = {
@@ -89,6 +90,7 @@ extension TracksViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.presenter.viewWillAppear()
+        AudioPlayer.shared.tableViewDelegate = self
     }
 }
 
@@ -131,5 +133,14 @@ extension TracksViewController: TracksPresenterDelegate {
 extension TracksViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.presenter.textDidChange(searchText)
+    }
+}
+
+// MARK: -
+// MARK: AudioPlayerTableViewDelegate
+extension TracksViewController: AudioPlayerTableViewDelegate {
+    func changeStateImageView(_ state: PulseUIComponents.CoverImageViewState, position: Int) {
+        let indexPath = IndexPath(row: position, section: 0)
+        (tracksTableView.cellForRow(at: indexPath) as? TrackTableViewCell)?.changeState(state)
     }
 }

@@ -15,8 +15,8 @@ class SettingsViewController: BaseUIViewController {
             SwitchTableViewCell.self,
             TextTableViewCell.self,
             ChevronTableViewCell.self,
-            ColorSettingTableViewCell.self,
-            ServiceSignTableViewCell.self
+            ServiceSignTableViewCell.self,
+            ButtonTableViewCell.self
         )
         
         tableView.delegate = self
@@ -86,8 +86,7 @@ extension SettingsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: self.presenter.cellIdFor(indexPath: indexPath), for: indexPath)
-        return self.presenter.setupCell(cell, for: indexPath)
+        return self.presenter.setupCell(for: tableView, at: indexPath)
     }
 }
 

@@ -154,4 +154,9 @@ final class MainCoordinator {
         let playlistsVC = PlaylistsViewController(type: type)
         self.pushViewController(vc: playlistsVC)
     }
+    
+    func pushPlaylistViewController(type: LibraryControllerType, playlist: PlaylistModel) {
+        let playlistVC = PlaylistViewController(type: type, playlist: playlist)
+        self.pushViewController(vc: playlistVC)
+    }
 }

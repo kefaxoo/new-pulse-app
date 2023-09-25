@@ -14,6 +14,7 @@
 		700915A72AB615490006239A /* Failure+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700915A62AB615490006239A /* Failure+Ext.swift */; };
 		700A9C302A9E75BB00E11DEB /* BasePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700A9C2F2A9E75BB00E11DEB /* BasePresenter.swift */; };
 		700A9C322A9E774500E11DEB /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700A9C312A9E774500E11DEB /* UIViewController+Ext.swift */; };
+		7013A9A22AC07DE2005BABB6 /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7013A9A12AC07DE2005BABB6 /* ButtonTableViewCell.swift */; };
 		70399C602A9FDED500976098 /* UIEdgeInsets+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70399C5F2A9FDED500976098 /* UIEdgeInsets+Ext.swift */; };
 		70399C622A9FE33200976098 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70399C612A9FE33200976098 /* AlertView.swift */; };
 		70399C642A9FE58200976098 /* NSRegularExpression+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70399C632A9FE58200976098 /* NSRegularExpression+Ext.swift */; };
@@ -139,7 +140,7 @@
 		70CDCE992A9FCC7800FBB125 /* UIImageView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CDCE982A9FCC7800FBB125 /* UIImageView+Ext.swift */; };
 		70CDCE9C2A9FD8A200FBB125 /* UITextField+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CDCE9B2A9FD8A200FBB125 /* UITextField+Ext.swift */; };
 		70CDCEA02A9FDD7100FBB125 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CDCE9F2A9FDD7100FBB125 /* Device.swift */; };
-		70D110A32ABF707700EDD799 /* PlaylistHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D110A22ABF707700EDD799 /* PlaylistHeaderView.swift */; };
+		70D484AD2AC02202005784A0 /* PlaylistHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D484AC2AC02202005784A0 /* PlaylistHeaderTableViewCell.swift */; };
 		70DB84472A9E8A3900BA9C89 /* CoversScrollingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DB84462A9E8A3900BA9C89 /* CoversScrollingView.swift */; };
 		70DBA02A2AB65D330078E409 /* ColorSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DBA0292AB65D330078E409 /* ColorSettingTableViewCell.swift */; };
 		70DBA02C2AB666D00078E409 /* UIButton+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DBA02B2AB666D00078E409 /* UIButton+Ext.swift */; };
@@ -185,6 +186,7 @@
 		700915A62AB615490006239A /* Failure+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Failure+Ext.swift"; sourceTree = "<group>"; };
 		700A9C2F2A9E75BB00E11DEB /* BasePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePresenter.swift; sourceTree = "<group>"; };
 		700A9C312A9E774500E11DEB /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
+		7013A9A12AC07DE2005BABB6 /* ButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTableViewCell.swift; sourceTree = "<group>"; };
 		70399C5F2A9FDED500976098 /* UIEdgeInsets+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Ext.swift"; sourceTree = "<group>"; };
 		70399C612A9FE33200976098 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		70399C632A9FE58200976098 /* NSRegularExpression+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Ext.swift"; sourceTree = "<group>"; };
@@ -305,7 +307,7 @@
 		70CDCE982A9FCC7800FBB125 /* UIImageView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Ext.swift"; sourceTree = "<group>"; };
 		70CDCE9B2A9FD8A200FBB125 /* UITextField+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Ext.swift"; sourceTree = "<group>"; };
 		70CDCE9F2A9FDD7100FBB125 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
-		70D110A22ABF707700EDD799 /* PlaylistHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistHeaderView.swift; sourceTree = "<group>"; };
+		70D484AC2AC02202005784A0 /* PlaylistHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		70DB84462A9E8A3900BA9C89 /* CoversScrollingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoversScrollingView.swift; sourceTree = "<group>"; };
 		70DBA0292AB65D330078E409 /* ColorSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSettingTableViewCell.swift; sourceTree = "<group>"; };
 		70DBA02B2AB666D00078E409 /* UIButton+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Ext.swift"; sourceTree = "<group>"; };
@@ -838,18 +840,9 @@
 			path = SignUpViewController;
 			sourceTree = "<group>";
 		};
-		70D110A12ABF706800EDD799 /* TableViewHeaderViews */ = {
-			isa = PBXGroup;
-			children = (
-				70D110A22ABF707700EDD799 /* PlaylistHeaderView.swift */,
-			);
-			path = TableViewHeaderViews;
-			sourceTree = "<group>";
-		};
 		70DB84432A9E8A0400BA9C89 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				70D110A12ABF706800EDD799 /* TableViewHeaderViews */,
 				707FAF812A9E8D60008929FC /* CoversScrollingView */,
 				70399C612A9FE33200976098 /* AlertView.swift */,
 				7069F7482AA326F300255854 /* NowPlayingView.swift */,
@@ -902,6 +895,8 @@
 				70DBA0292AB65D330078E409 /* ColorSettingTableViewCell.swift */,
 				70C857DA2AB7070A004B5EC5 /* ServiceSignTableViewCell.swift */,
 				7069A0682ABA086D00E7A718 /* PlaylistTableViewCell.swift */,
+				70D484AC2AC02202005784A0 /* PlaylistHeaderTableViewCell.swift */,
+				7013A9A12AC07DE2005BABB6 /* ButtonTableViewCell.swift */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -1093,6 +1088,7 @@
 				70E6E8182AA600FA00DA686B /* SettingType.swift in Sources */,
 				7069A0622ABA021F00E7A718 /* LibraryPlaylistTrackModel.swift in Sources */,
 				70996A122A9D395F00905847 /* PulseApi.swift in Sources */,
+				70D484AD2AC02202005784A0 /* PlaylistHeaderTableViewCell.swift in Sources */,
 				70E3D5842AA13A8E0040E46A /* ResponsePulseLoginUserModel.swift in Sources */,
 				706CE29D2AAD292500748322 /* LibraryTableViewCell.swift in Sources */,
 				70F156972AB796DD00871AC7 /* ResponseSoundcloudMainModel.swift in Sources */,
@@ -1102,7 +1098,6 @@
 				7092BA8D2AADC75B007FE3C3 /* TracksViewController.swift in Sources */,
 				7069F7422AA31F2B00255854 /* ResponsePulseVerificationCodeModel.swift in Sources */,
 				706CE29B2AAD28C600748322 /* LibraryPresenter.swift in Sources */,
-				70D110A32ABF707700EDD799 /* PlaylistHeaderView.swift in Sources */,
 				700915A32AB609AC0006239A /* AppEnvironment.swift in Sources */,
 				70AD04BE2A9EA42100DC4517 /* ResponsePulseCreateUserModel.swift in Sources */,
 				70996A562A9D4FEE00905847 /* UILabel+Ext.swift in Sources */,
@@ -1123,6 +1118,7 @@
 				70E09FC92AA7D2DE0094EEA0 /* MuffonTypealias.swift in Sources */,
 				70996A142A9D396400905847 /* PulseProvider.swift in Sources */,
 				707FAF892A9E8E56008929FC /* ScrollingCoverCollectionViewCell.swift in Sources */,
+				7013A9A22AC07DE2005BABB6 /* ButtonTableViewCell.swift in Sources */,
 				70839CDD2AB4A3550030BB06 /* ResponsePulseTrackModel.swift in Sources */,
 				70C857ED2AB712C3004B5EC5 /* ResponseSoundcloudUserInfoModel.swift in Sources */,
 				70399C642A9FE58200976098 /* NSRegularExpression+Ext.swift in Sources */,
@@ -1307,7 +1303,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 3SYA5J8W7U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pulse/Info.plist;
@@ -1408,7 +1404,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 3SYA5J8W7U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pulse/Info.plist;
@@ -1503,7 +1499,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 3SYA5J8W7U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pulse/Info.plist;
@@ -1599,7 +1595,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 3SYA5J8W7U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pulse/Info.plist;

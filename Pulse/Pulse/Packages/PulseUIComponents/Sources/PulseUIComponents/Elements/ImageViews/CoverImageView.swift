@@ -47,9 +47,11 @@ public class CoverImageView: UIImageView {
         return musicIndicatorView
     }()
     
-    private var state: CoverImageViewState = .stopped {
+    public var state: CoverImageViewState = .stopped {
         didSet {
             self.substrateView.basicHideAnimation(isHidden: self.state == .stopped)
+            self.loadingActivityIndicatorView.basicHideAnimation(isHidden: self.state == .stopped)
+            self.musicIndicatorView.basicHideAnimation(isHidden: self.state == .stopped)
             
             self.musicIndicatorView.state = self.state.musicIndicatorState
             self.loadingActivityIndicatorView.stopAnimating()
@@ -130,14 +132,6 @@ private extension CoverImageView {
         substrateView.snp.makeConstraints({ $0.edges.equalToSuperview() })
         loadingActivityIndicatorView.snp.makeConstraints({ $0.edges.equalToSuperview() })
         musicIndicatorView.snp.makeConstraints({ $0.edges.equalToSuperview() })
-    }
-}
-
-// MARK: -
-// MARK: Actions
-extension CoverImageView {
-    public func changeState(_ state: CoverImageViewState) {
-        self.state = state
     }
 }
 
