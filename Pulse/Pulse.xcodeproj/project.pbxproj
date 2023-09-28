@@ -130,6 +130,8 @@
 		70CDCE9C2A9FD8A200FBB125 /* UITextField+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CDCE9B2A9FD8A200FBB125 /* UITextField+Ext.swift */; };
 		70CDCE9E2A9FD8EA00FBB125 /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CDCE9D2A9FD8EA00FBB125 /* PasswordTextField.swift */; };
 		70CDCEA02A9FDD7100FBB125 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CDCE9F2A9FDD7100FBB125 /* Device.swift */; };
+		70D484AD2AC02202005784A0 /* PlaylistHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D484AC2AC02202005784A0 /* PlaylistHeaderTableViewCell.swift */; };
+		70D921362AC1CCFF007FF109 /* Int+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D921352AC1CCFF007FF109 /* Int+Ext.swift */; };
 		70DB84472A9E8A3900BA9C89 /* CoversScrollingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DB84462A9E8A3900BA9C89 /* CoversScrollingView.swift */; };
 		70DBA02A2AB65D330078E409 /* ColorSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DBA0292AB65D330078E409 /* ColorSettingTableViewCell.swift */; };
 		70DBA02C2AB666D00078E409 /* UIButton+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DBA02B2AB666D00078E409 /* UIButton+Ext.swift */; };
@@ -291,6 +293,8 @@
 		70CDCE9B2A9FD8A200FBB125 /* UITextField+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Ext.swift"; sourceTree = "<group>"; };
 		70CDCE9D2A9FD8EA00FBB125 /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
 		70CDCE9F2A9FDD7100FBB125 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		70D484AC2AC02202005784A0 /* PlaylistHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistHeaderTableViewCell.swift; sourceTree = "<group>"; };
+		70D921352AC1CCFF007FF109 /* Int+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Ext.swift"; sourceTree = "<group>"; };
 		70DB84462A9E8A3900BA9C89 /* CoversScrollingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoversScrollingView.swift; sourceTree = "<group>"; };
 		70DBA0292AB65D330078E409 /* ColorSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSettingTableViewCell.swift; sourceTree = "<group>"; };
 		70DBA02B2AB666D00078E409 /* UIButton+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Ext.swift"; sourceTree = "<group>"; };
@@ -677,6 +681,7 @@
 				70DBA02B2AB666D00078E409 /* UIButton+Ext.swift */,
 				70F1569C2AB7989800871AC7 /* Date+Ext.swift */,
 				81B7435C2AB98F78000813F9 /* Float+Ext.swift */,
+				70D921352AC1CCFF007FF109 /* Int+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1069,6 +1074,7 @@
 				70996A122A9D395F00905847 /* PulseApi.swift in Sources */,
 				70E3D5842AA13A8E0040E46A /* ResponsePulseLoginUserModel.swift in Sources */,
 				706CE29D2AAD292500748322 /* LibraryTableViewCell.swift in Sources */,
+				70D921362AC1CCFF007FF109 /* Int+Ext.swift in Sources */,
 				70F156972AB796DD00871AC7 /* ResponseSoundcloudMainModel.swift in Sources */,
 				70996A3A2A9D467700905847 /* MainCoordinator.swift in Sources */,
 				7068BEBE2AAA7D88004B0E03 /* DebugLog.swift in Sources */,

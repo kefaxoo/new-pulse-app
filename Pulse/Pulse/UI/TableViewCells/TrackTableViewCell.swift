@@ -109,7 +109,7 @@ extension TrackTableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        self.coverImageView.image = nil
+        self.coverImageView.reset()
         self.titleLabel.text = nil
         self.serviceImageView.image = nil
         self.artistLabel.text = nil

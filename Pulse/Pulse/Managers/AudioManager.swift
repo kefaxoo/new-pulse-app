@@ -27,11 +27,20 @@ final class AudioManager {
                     failure?()
                 }
             case .soundcloud:
-                SoundcloudProvider.shared.fetchPlayableLinks(id: track.id, shouldCancelTask: false) { playableLinks in
-                    track.playableLinks = PlayableLinkModel(playableLinks.streamingLink)
-                    success(UpdatedTrack(track: track, response: playableLinks))
-                } failure: { _ in
-                    failure?()
+                if SettingsManager.shared.soundcloud.isSigned {
+                    SoundcloudProvider.shared.fetchPlayableLinks(id: track.id, shouldCancelTask: false) { playableLinks in
+                        track.playableLinks = PlayableLinkModel(playableLinks.streamingLink)
+                        success(UpdatedTrack(track: track, response: playableLinks))
+                    } failure: { _ in
+                        failure?()
+                    }
+                } else {
+                    MuffonProvider.shared.trackInfo(track, shouldCancelTask: false) { muffonTrack in
+                        let track = TrackModel(muffonTrack)
+                        success(UpdatedTrack(track: track, response: muffonTrack))
+                    } failure: {
+                        failure?()
+                    }
                 }
             case .none:
                 failure?()

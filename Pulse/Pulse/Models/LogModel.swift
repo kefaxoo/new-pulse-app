@@ -24,7 +24,7 @@ struct LogModel {
         ]
         
         let networkInfo: [String: Any] = [
-            "countryCode": NetworkManager.shared.country,
+            "countryCode": NetworkManager.shared.country ?? "",
             "city"       : NetworkManager.shared.city ?? "",
             "provider"   : NetworkManager.shared.provider ?? ""
         ]

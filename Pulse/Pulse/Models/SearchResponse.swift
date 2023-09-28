@@ -15,7 +15,7 @@ struct SearchResponse {
     mutating func addResults(_ searchResponse: SearchResponse) {
         self.page = searchResponse.page
         self.results.append(contentsOf: searchResponse.results)
-        self.canLoadMore = true
+        self.canLoadMore = !searchResponse.results.isEmpty
     }
     
     mutating func cannotLoadMore() {

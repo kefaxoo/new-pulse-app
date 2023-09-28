@@ -1,45 +1,46 @@
 //
-//  TracksPresenter.swift
+//  PlaylistPresenter.swift
 //  Pulse
 //
-//  Created by Bahdan Piatrouski on 10.09.23.
+//  Created by Bahdan Piatrouski on 22.09.23.
 //
 
 import UIKit
 
-protocol TracksPresenterDelegate: AnyObject {
+protocol PlaylistPresenterDelegate: AnyObject {
     func reloadData()
 }
 
-final class TracksPresenter: BasePresenter {
+final class PlaylistPresenter: BasePresenter {
+    private let playlist: PlaylistModel
+    private let type: LibraryControllerType
     private var tracks = [TrackModel]()
-    private var showedTracks = [TrackModel]()
-    private var type: LibraryControllerType = .none
     
-    private weak var delegate: TracksPresenterDelegate?
+    private var isResultsLoading = false
+    private var canLoadMore = true
+    
+    weak var delegate: PlaylistPresenterDelegate?
     
     var tracksCount: Int {
-        return showedTracks.count
+        return self.tracks.count
     }
     
-    init(type: LibraryControllerType, delegate: TracksPresenterDelegate?) {
+    init(_ playlist: PlaylistModel, type: LibraryControllerType) {
+        self.playlist = playlist
         self.type = type
-        self.delegate = delegate
         self.fetchTracks()
     }
     
     private func fetchTracks() {
         self.tracks.removeAll()
-        switch type {
-            case .library:
-                self.tracks = RealmManager<LibraryTrackModel>().read().map({ TrackModel($0) }).sorted
+        switch self.type {
             case .soundcloud:
+                guard let id = Int(self.playlist.id) else { break }
+                
                 MainCoordinator.shared.currentViewController?.presentSpinner()
-                SoundcloudProvider.shared.libraryTracks { [weak self] soundcloudTracks in
+                SoundcloudProvider.shared.playlistTracks(id: id) { [weak self] tracks in
                     MainCoordinator.shared.currentViewController?.dismissSpinner()
-                    let tracks = soundcloudTracks.map({ TrackModel($0) })
-                    self?.tracks = tracks
-                    self?.showedTracks = tracks
+                    self?.tracks = tracks.map({ TrackModel($0) })
                     self?.delegate?.reloadData()
                 } failure: { error in
                     MainCoordinator.shared.currentViewController?.dismissSpinner()
@@ -47,59 +48,49 @@ final class TracksPresenter: BasePresenter {
                     AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
                 }
             default:
-                MainCoordinator.shared.popViewController()
-                return
+                break
         }
-        
-        self.showedTracks = self.tracks
-    }
-    
-    func textDidChange(_ text: String) {
-        if text.isEmpty {
-            self.showedTracks = self.tracks
-        } else {
-            self.showedTracks = self.tracks.filter({ $0.title.lowercased().contains(text) || $0.artistText.lowercased().contains(text) })
-        }
-        
-        self.delegate?.reloadData()
     }
 }
 
 // MARK: -
-// MARK: Lifecycle
-extension TracksPresenter {
-    func viewWillAppear() {
-        self.reloadData()
-    }
-}
-
-// MARK: -
-// MARK: Table view methods
-extension TracksPresenter: BaseTableViewPresenter {
+// MARK: BaseTableViewPresenter
+extension PlaylistPresenter: BaseTableViewPresenter {
     func setupCell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
-        self.setupCell(tableView.dequeueReusableCell(withIdentifier: TrackTableViewCell.id, for: indexPath), at: indexPath)
+        let id = indexPath.item == 0 ? PlaylistHeaderTableViewCell.id : TrackTableViewCell.id
+        return self.setupCell(tableView.dequeueReusableCell(withIdentifier: id, for: indexPath), at: indexPath)
     }
     
     func setupCell(_ cell: UITableViewCell, at indexPath: IndexPath) -> UITableViewCell {
-        (cell as? TrackTableViewCell)?.setupCell(tracks[indexPath.item], isSearchController: false, isLibraryController: self.type == .library)
-        (cell as? TrackTableViewCell)?.delegate = self
+        if indexPath.item == 0 {
+            (cell as? PlaylistHeaderTableViewCell)?.setupCell(self.playlist)
+        } else {
+            let index = indexPath.item - 1
+            let track = self.tracks[index]
+            (cell as? TrackTableViewCell)?.setupCell(track, state: AudioPlayer.shared.state(for: track))
+            (cell as? TrackTableViewCell)?.delegate = self
+        }
+        
         return cell
     }
     
     func didSelectRow(at indexPath: IndexPath) {
-        var track = tracks[indexPath.item]
+        guard indexPath.item > 0 else { return }
+        
+        let index = indexPath.row - 1
+        var track = tracks[index]
         if !track.cachedFilename.isEmpty,
            let cachedLink = AudioManager.shared.getLocalLink(for: track) {
-            self.tracks[indexPath.item].playableLinks = PlayableLinkModel(cachedLink)
-            track = self.tracks[indexPath.item]
-            AudioPlayer.shared.play(from: track, playlist: self.tracks, position: indexPath.item)
+            self.tracks[index].playableLinks = PlayableLinkModel(cachedLink)
+            track = self.tracks[index]
+            AudioPlayer.shared.play(from: track, playlist: self.tracks, position: index)
         } else if track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
             AudioManager.shared.updatePlayableLink(for: track) { [weak self] updatedTrack in
                 self?.tracks[indexPath.item] = updatedTrack.track
-                AudioPlayer.shared.play(from: updatedTrack.track, playlist: self?.tracks ?? [], position: indexPath.item)
+                AudioPlayer.shared.play(from: updatedTrack.track, playlist: self?.tracks ?? [], position: index)
             }
         } else {
-            AudioPlayer.shared.play(from: track, playlist: tracks, position: indexPath.item)
+            AudioPlayer.shared.play(from: track, playlist: self.tracks, position: index)
         }
     }
     
@@ -116,11 +107,14 @@ extension TracksPresenter: BaseTableViewPresenter {
             MainCoordinator.shared.currentViewController?.presentSpinner()
             switch self.type {
                 case .soundcloud:
-                    SoundcloudProvider.shared.libraryTracks(cursor: self.soundcloudCursor) { [weak self] tracks, cursor in
+                    guard let id = Int(self.playlist.id) else {
                         MainCoordinator.shared.currentViewController?.dismissSpinner()
-                        self?.soundcloudCursor = cursor
+                        return
+                    }
+                    
+                    SoundcloudProvider.shared.playlistTracks(id: id, offset: self.tracksCount) { [weak self] tracks in
+                        MainCoordinator.shared.currentViewController?.dismissSpinner()
                         self?.tracks.append(contentsOf: tracks.map({ TrackModel($0) }))
-                        self?.showedTracks = self?.tracks ?? []
                         self?.isResultsLoading = false
                         self?.delegate?.reloadData()
                         self?.canLoadMore = !tracks.isEmpty
@@ -140,9 +134,8 @@ extension TracksPresenter: BaseTableViewPresenter {
 
 // MARK: -
 // MARK: TableViewCellDelegate
-extension TracksPresenter: TableViewCellDelegate {
+extension PlaylistPresenter: TableViewCellDelegate {
     func reloadData() {
-        self.fetchTracks()
         self.delegate?.reloadData()
     }
 }

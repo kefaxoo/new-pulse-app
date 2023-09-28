@@ -188,6 +188,32 @@ final class SoundcloudProvider: BaseRestApiProvider {
     func userInfo(success: @escaping((SoundcloudUserInfo) -> ()), failure: SoundcloudDefualtErrorClosure? = nil) {
         self.userInfo(accessToken: SettingsManager.shared.soundcloud.accessToken ?? "", success: success, failure: failure)
     }
+    
+    func playlistTracks(id: Int, offset: Int = 0, success: @escaping(([SoundcloudTrack]) -> ()), failure: @escaping SoundcloudDefualtErrorClosure) {
+        urlSession.dataTask(
+            with: URLRequest(
+                type: SoundcloudApi.playlistTracks(
+                    id: id,
+                    offset: offset
+                ),
+                shouldPrintLog: self.shouldPrintLog
+            )
+        ) { [weak self] response in
+            switch response {
+                case .success(let response):
+                    guard let tracks = response.data?.map(to: SoundcloudMain<SoundcloudTrack>.self) else {
+                        failure(nil)
+                        return
+                    }
+                    
+                    success(tracks.collection)
+                case .failure(let response):
+                    self?.parseError(response: response, closure: failure, reload: {
+                        self?.playlistTracks(id: id, offset: offset, success: success, failure: failure)
+                    })
+            }
+        }
+    }
 }
 
 fileprivate extension SoundcloudProvider {
