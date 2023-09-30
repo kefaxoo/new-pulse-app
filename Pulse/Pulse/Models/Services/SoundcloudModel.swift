@@ -5,7 +5,59 @@
 //  Created by Bahdan Piatrouski on 17.09.23.
 //
 
-import Foundation
+import UIKit
+
+enum SoundcloudSourceType: String {
+    case muffon = "muffon"
+    case soundcloud = "soundcloud"
+    case none = ""
+    
+    static var allCases: [SoundcloudSourceType] {
+        var allCases: [SoundcloudSourceType] = [.muffon]
+        if SettingsManager.shared.soundcloud.isSigned {
+            allCases.append(.soundcloud)
+        }
+        
+        return allCases
+    }
+    
+    var buttonTitle: String {
+        switch self {
+            case .muffon:
+                return "Muffon"
+            case .soundcloud:
+                return "Soundcloud"
+            case .none:
+                return ""
+        }
+    }
+    
+    var title: String {
+        switch self {
+            case .muffon:
+                return "Current source: Muffon"
+            case .soundcloud:
+                return "Current source: Soundcloud"
+            case .none:
+                return ""
+        }
+    }
+    
+    var description: String {
+        switch self {
+            case .muffon:
+                return "Current country: United Kingdom 🇬🇧"
+            case .soundcloud:
+                return "Current country: \(NetworkManager.shared.country ?? "United States") \(NetworkManager.shared.countryCode.emojiFlag)"
+            case .none:
+                return ""
+        }
+    }
+    
+    func isEqual(to source: SoundcloudSourceType) -> UIMenuElement.State {
+        return source == self ? .on : .off
+    }
+}
 
 final class SoundcloudModel {
     var signToken: String = ""
@@ -85,5 +137,16 @@ final class SoundcloudModel {
         accessToken  = nil
         refreshToken = nil
         return true
+    }
+    
+    var currentSource: SoundcloudSourceType {
+        get {
+            return SoundcloudSourceType(
+                rawValue: UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.soundcloudSource.rawValue) as? String ?? "empty"
+            ) ?? .muffon
+        }
+        set {
+            UserDefaults.standard.setValue(newValue.rawValue, forKey: Constants.UserDefaultsKeys.soundcloudSource.rawValue)
+        }
     }
 }

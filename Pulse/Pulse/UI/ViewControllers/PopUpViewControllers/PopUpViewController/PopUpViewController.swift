@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PulseUIComponents
 
 protocol PopUpViewControllerDelegate: AnyObject {
     func reloadData()

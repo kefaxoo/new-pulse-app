@@ -33,22 +33,25 @@ final class NowPlayingViewController: BaseUIViewController {
     private lazy var trackInfoStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 20
+        stackView.spacing = 8
+        stackView.distribution = .fill
         return stackView
     }()
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        label.text = "Title"
+        label.numberOfLines = 0
         return label
     }()
     
     private lazy var artistButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.label.withAlphaComponent(0.7), for: .normal)
-        var configuration = UIButton.Configuration.plain()
-        configuration.titleAlignment = .leading
-        button.configuration = configuration
+        button.contentHorizontalAlignment = .left
+        button.setTitle("Artist", for: .normal)
+        button.titleLabel?.numberOfLines = 0
         return button
     }()
     
@@ -65,6 +68,9 @@ final class NowPlayingViewController: BaseUIViewController {
     
     private lazy var durationSlider: SliderControl = {
         let slider = SliderControl()
+        slider.delegate = self
+        slider.defaultProgressColor = SettingsManager.shared.color.color
+        slider.enlargedProgressColor = SettingsManager.shared.color.color
         return slider
     }()
     
@@ -113,7 +119,7 @@ final class NowPlayingViewController: BaseUIViewController {
         super.init(nibName: nil, bundle: nil)
         self.modalPresentationStyle = .overCurrentContext
         
-        AudioPlayer.shared.nowPlayingViewControllerDelegate = self
+        AudioPlayer.shared.controllerDelegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -121,7 +127,7 @@ final class NowPlayingViewController: BaseUIViewController {
     }
     
     deinit {
-        AudioPlayer.shared.nowPlayingViewControllerDelegate = nil
+        AudioPlayer.shared.controllerDelegate = nil
     }
 }
 
@@ -263,8 +269,8 @@ extension NowPlayingViewController {
 }
 
 // MARK: -
-// MARK: AudioPlayerNowPlayingViewControllerDelegate
-extension NowPlayingViewController: AudioPlayerNowPlayingControllerDelegate {
+// MARK: AudioPlayerControllerDelegate
+extension NowPlayingViewController: AudioPlayerControllerDelegate {
     func setupCover(_ cover: UIImage?) {
         self.coverImageView.image = cover
     }
@@ -276,15 +282,23 @@ extension NowPlayingViewController: AudioPlayerNowPlayingControllerDelegate {
     
     func updateDuration(_ duration: Float, currentTime: Float) {
         durationSlider.value = currentTime / duration
+        self.setupDuration(duration, currentTime: currentTime)
     }
 }
 
 // MARK: -
 // MARK: SliderControlDelegate
 extension NowPlayingViewController: SliderControlDelegate {
-    func valueStartedChange(_ value: Float) {
+    func valueBeganChange(_ value: Float) {
         AudioPlayer.shared.isDurationChanging = true
         self.removeSwipe()
+    }
+    
+    func valueChanging(_ value: Float) {
+        guard let doubleDuration = AudioPlayer.shared.duration else { return }
+        
+        let duration = Float(doubleDuration)
+        self.setupDuration(duration, currentTime: value * duration)
     }
     
     func valueDidChange(_ value: Float) {

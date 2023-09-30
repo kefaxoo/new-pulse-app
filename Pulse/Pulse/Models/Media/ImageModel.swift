@@ -25,7 +25,9 @@ final class ImageModel {
         self.original = url.absoluteString
     }
     
-    init(_ link: String) {
+    init?(_ link: String?) {
+        guard let link else { return nil }
+        
         self.small    = link
         self.original = link
     }

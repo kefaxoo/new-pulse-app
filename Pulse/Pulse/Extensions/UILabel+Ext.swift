@@ -12,4 +12,12 @@ extension UILabel {
         self.init()
         self.text = text
     }
+    
+    var textSize: CGSize {
+        return self.size(with: self.text)
+    }
+    
+    func size(with text: String? = "0") -> CGSize {
+        return text?.size(withAttributes: [.font: self.font as Any]) ?? .zero
+    }
 }

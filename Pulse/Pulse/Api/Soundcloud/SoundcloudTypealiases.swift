@@ -14,5 +14,6 @@ typealias SoundcloudMain          = ResponseSoundcloudMainModel
 typealias SoundcloudUser          = ResponseSoundcloudUserModel
 typealias SoundcloudTrack         = ResponseSoundcloudTrackModel
 typealias SoundcloudPlayableLinks = ResponseSoundcloudPlayableLinksModel
+typealias SoundcloudPlaylist      = ResponseSoundcloudPlaylistModel
 
 typealias SoundcloudDefualtErrorClosure = ((SoundcloudError?) -> ())

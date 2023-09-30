@@ -34,11 +34,28 @@ final class SettingsPresenter: BasePresenter {
         return sections[section].title
     }
     
-    func cellIdFor(indexPath: IndexPath) -> String {
-        return sections[indexPath.section].settings[indexPath.row].id
+    func signOut() {
+        _ = SettingsManager.shared.signOut()
+        _ = LibraryManager.shared.cleanLibrary()
+        
+        MainCoordinator.shared.makeAuthViewControllerAsRoot()
+    }
+}
+
+// MARK: -
+// MARK: BaseTableViewPresenter
+extension SettingsPresenter: BaseTableViewPresenter {
+    func setupCell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
+        return self.setupCell(
+            tableView.dequeueReusableCell(
+                withIdentifier: self.sections[indexPath.section].settings[indexPath.row].id,
+                for: indexPath
+            ),
+            at: indexPath
+        )
     }
     
-    func setupCell(_ cell: UITableViewCell, for indexPath: IndexPath) -> UITableViewCell {
+    func setupCell(_ cell: UITableViewCell, at indexPath: IndexPath) -> UITableViewCell {
         let setting = self.sections[indexPath.section].settings[indexPath.row]
         switch setting.cellType {
             case .switch:
@@ -49,9 +66,9 @@ final class SettingsPresenter: BasePresenter {
                 (cell as? TextTableViewCell)?.setupCell(type: setting)
             case .chevronText:
                 (cell as? ChevronTableViewCell)?.setupCell(type: setting)
-            case .colorButton:
-                (cell as? ColorSettingTableViewCell)?.setupCell(type: setting)
-                (cell as? ColorSettingTableViewCell)?.delegate = self
+            case .tintedButton:
+                (cell as? ButtonTableViewCell)?.setupCell(type: setting)
+                (cell as? ButtonTableViewCell)?.delegate = self
             case .service:
                 (cell as? ServiceSignTableViewCell)?.setupCell(type: setting)
                 (cell as? ServiceSignTableViewCell)?.delegate = self
@@ -60,13 +77,6 @@ final class SettingsPresenter: BasePresenter {
         }
         
         return cell
-    }
-    
-    func signOut() {
-        _ = SettingsManager.shared.signOut()
-        _ = LibraryManager.shared.cleanLibrary()
-        
-        MainCoordinator.shared.makeAuthViewControllerAsRoot()
     }
 }
 

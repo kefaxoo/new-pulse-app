@@ -24,15 +24,13 @@ final class SearchPresenter: BasePresenter {
     private var query = ""
     private var timer: Timer?
     
-    private var currentService: ServiceType = .none {
-        didSet {
-            self.currentSource = currentService.source
-        }
+    private var currentService: ServiceType = .none
+    private var currentSource: SourceType {
+        return self.currentService.source
     }
     
-    private var currentType: SearchType = .none
+    private(set) var currentType: SearchType = .none
     private var searchResponse: SearchResponse?
-    private var currentSource: SourceType = .none
     
     private var isResultsLoading = false
     
@@ -80,7 +78,7 @@ final class SearchPresenter: BasePresenter {
         self.textDidChange(self.query)
     }
     
-    @objc private func search() {
+    @objc func search() {
         timer?.invalidate()
         
         guard !self.query.isEmpty else {
@@ -115,11 +113,62 @@ final class SearchPresenter: BasePresenter {
         }
     }
     
-    func setupCell(tableView: UITableView, for indexPath: IndexPath) -> UITableViewCell {
-        return self.setupCell(tableView.dequeueReusableCell(withIdentifier: self.currentType.id, for: indexPath), for: indexPath)
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (scrollView.contentOffset.y + scrollView.frame.size.height) > scrollView.contentSize.height,
+           !isResultsLoading,
+           resultsCount > 0,
+           let searchResponse,
+           searchResponse.canLoadMore {
+            self.isResultsLoading = true
+            MainCoordinator.shared.currentViewController?.presentSpinner()
+            switch currentSource {
+                case .muffon:
+                    MuffonProvider.shared.search(
+                        query: self.query,
+                        in: self.currentService,
+                        type: self.currentType, 
+                        page: searchResponse.page + 1
+                    ) { [weak self] searchResponse in
+                        MainCoordinator.shared.currentViewController?.dismissSpinner()
+                        self?.searchResponse?.addResults(searchResponse)
+                        self?.delegate?.reloadData(scrollToTop: false)
+                        self?.isResultsLoading = false
+                    } failure: { [weak self] in
+                        MainCoordinator.shared.currentViewController?.dismissSpinner()
+                        self?.searchResponse?.cannotLoadMore()
+                        self?.isResultsLoading = false
+                    }
+                case .soundcloud:
+                    SoundcloudProvider.shared.search(
+                        query: self.query,
+                        searchType: self.currentType,
+                        offset: self.resultsCount
+                    ) { searchResponse in
+                        MainCoordinator.shared.currentViewController?.dismissSpinner()
+                        self.searchResponse?.addResults(searchResponse)
+                        self.delegate?.reloadData(scrollToTop: false)
+                        self.isResultsLoading = false
+                    } failure: { [weak self] _ in
+                        self?.searchResponse?.cannotLoadMore()
+                        self?.isResultsLoading = false
+                    }
+                default:
+                    MainCoordinator.shared.currentViewController?.dismissSpinner()
+                    self.isResultsLoading = false
+                    self.searchResponse?.cannotLoadMore()
+            }
+        }
+    }
+}
+
+// MARK: -
+// MARK: BaseTableViewPresenter
+extension SearchPresenter: BaseTableViewPresenter {
+    func setupCell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
+        return self.setupCell(tableView.dequeueReusableCell(withIdentifier: self.currentType.id, for: indexPath), at: indexPath)
     }
     
-    func setupCell(_ cell: UITableViewCell, for indexPath: IndexPath) -> UITableViewCell {
+    func setupCell(_ cell: UITableViewCell, at indexPath: IndexPath) -> UITableViewCell {
         guard self.currentType != .none else { return UITableViewCell() }
         
         switch self.currentType {
@@ -138,7 +187,7 @@ final class SearchPresenter: BasePresenter {
                         return UITableViewCell()
                 }
                 
-                (cell as? TrackTableViewCell)?.setupCell(track, isSearchController: true)
+                (cell as? TrackTableViewCell)?.setupCell(track, state: AudioPlayer.shared.state(for: track), isSearchController: true)
                 return cell
             default:
                 return UITableViewCell()
@@ -167,39 +216,6 @@ final class SearchPresenter: BasePresenter {
                 }
             default:
                 return
-        }
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if (scrollView.contentOffset.y + scrollView.frame.size.height) > scrollView.contentSize.height,
-           !isResultsLoading,
-           resultsCount > 0,
-           let searchResponse,
-           searchResponse.canLoadMore {
-            self.isResultsLoading = true
-            MainCoordinator.shared.currentViewController?.presentSpinner()
-            switch currentSource {
-                case .muffon:
-                    MuffonProvider.shared.search(
-                        query: self.query,
-                        in: self.currentService,
-                        type: self.currentType, 
-                        page: searchResponse.page + 1
-                    ) { [weak self] searchResponse in
-                        MainCoordinator.shared.currentViewController?.dismissSpinner()
-                        self?.searchResponse?.addResults(searchResponse)
-                        self?.delegate?.reloadData(scrollToTop: false)
-                        self?.isResultsLoading = false
-                    } failure: { [weak self] in
-                        MainCoordinator.shared.currentViewController?.dismissSpinner()
-                        self?.searchResponse?.cannotLoadMore()
-                        self?.isResultsLoading = false
-                    }
-                default:
-                    MainCoordinator.shared.currentViewController?.dismissSpinner()
-                    self.isResultsLoading = false
-                    self.searchResponse?.cannotLoadMore()
-            }
         }
     }
 }

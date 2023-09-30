@@ -37,12 +37,16 @@ final class LibraryPresenter: BasePresenter {
         self.libraryTypes = LibraryType.allCases(by: service)
         self.delegate?.reloadData()
     }
-    
-    func setupCell(tableView: UITableView, for indexPath: IndexPath) -> UITableViewCell {
-        return self.setupCell(tableView.dequeueReusableCell(withIdentifier: LibraryTableViewCell.id, for: indexPath), for: indexPath)
+}
+
+// MARK: -
+// MARK: BaseTableViewPresenter
+extension LibraryPresenter: BaseTableViewPresenter {
+    func setupCell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
+        return self.setupCell(tableView.dequeueReusableCell(withIdentifier: LibraryTableViewCell.id, for: indexPath), at: indexPath)
     }
     
-    func setupCell(_ cell: UITableViewCell, for indexPath: IndexPath) -> UITableViewCell {
+    func setupCell(_ cell: UITableViewCell, at indexPath: IndexPath) -> UITableViewCell {
         (cell as? LibraryTableViewCell)?.setupCell(self.libraryTypes[indexPath.item])
         return cell
     }
@@ -51,6 +55,8 @@ final class LibraryPresenter: BasePresenter {
         let libraryType = libraryTypes[indexPath.item]
         let controllerType = libraryType.controllerType(service: self.service)
         switch libraryType {
+            case .playlists:
+                MainCoordinator.shared.pushPlaylistsViewController(type: controllerType)
             case .tracks:
                 MainCoordinator.shared.pushTracksViewController(type: controllerType)
             case .soundcloud:

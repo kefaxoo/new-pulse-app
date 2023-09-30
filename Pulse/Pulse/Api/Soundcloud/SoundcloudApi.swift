@@ -17,7 +17,8 @@ enum SoundcloudApi {
     case userInfoWith(accessToken: String)
     
     // MARK: Library
-    case likedTracks
+    case likedTracks(cursor: String?)
+    case likedPlaylists(cursor: String?)
     
     // MARK: Track
     case trackInfo(id: Int)
@@ -44,13 +45,15 @@ extension SoundcloudApi: BaseRestApiEnum {
                 return "/me"
             case .likedTracks:
                 return "/me/likes/tracks"
+            case .likedPlaylists:
+                return "/me/likes/playlists"
             case .trackInfo(let id):
                 return "/tracks/\(id)"
             case .playableLink(let id):
                 return "/tracks/\(id)/streams"
             case .likeTrack(let id):
                 return "/likes/tracks/\(id)"
-            case .search(let type, _):
+            case .search(let type, _, _):
                 return "/\(type.soundcloudApi)"
             case .playlistTracks(let id, _):
                 return "/playlists/\(id)/tracks"
@@ -94,11 +97,14 @@ extension SoundcloudApi: BaseRestApiEnum {
                 parameters["client_secret"] = Constants.Soundcloud.clientSecret.rawValue
                 parameters["redirect_uri"]  = Constants.Soundcloud.redirectLink.rawValue
                 parameters["refresh_token"] = SettingsManager.shared.soundcloud.refreshToken ?? ""
-            case .likedTracks:
+            case .likedTracks(let cursor):
                 parameters["limit"]               = 20
                 parameters["access"]              = "playable"
                 parameters["linked_partitioning"] = true
-            case .search(_, let query):
+                guard let cursor else { break }
+                
+                parameters["cursor"] = cursor
+            case .search(_, let query, let offset):
                 parameters["q"]                   = query
                 parameters["access"]              = "playable"
                 parameters["limit"]               = 20

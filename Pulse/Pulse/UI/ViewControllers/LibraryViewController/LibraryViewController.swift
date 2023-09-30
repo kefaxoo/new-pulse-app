@@ -34,7 +34,7 @@ final class LibraryViewController: BaseUIViewController {
 extension LibraryViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.libraryTableView.reloadData()
+        self.presenter.viewWillAppear()
     }
     
     override func viewDidLoad() {
@@ -67,7 +67,7 @@ extension LibraryViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return self.presenter.setupCell(tableView: tableView, for: indexPath)
+        return self.presenter.setupCell(for: tableView, at: indexPath)
     }
 }
 

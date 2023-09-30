@@ -11,7 +11,9 @@ extension Float {
     var toMinuteAndSeconds: String {
         let totalSeconds = Int(self)
         let minutes = totalSeconds / 60
+        let minutesString = minutes < 10 ? "0\(minutes)" : "\(minutes)"
         let seconds = totalSeconds % 60
-        return "\(minutes):\(seconds)"
+        let secondsString = seconds < 10 ? "0\(seconds)" : "\(seconds)"
+        return "\(minutesString):\(secondsString)"
     }
 }

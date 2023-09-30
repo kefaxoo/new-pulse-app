@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PulseUIComponents
 
 final class NowPlayingView: BaseUIView {
     static let height: CGFloat = 55
@@ -17,9 +18,9 @@ final class NowPlayingView: BaseUIView {
     }()
     
     private lazy var coverImageView: UIImageView = {
-        let imageView = UIImageView.default
-        imageView.layer.cornerRadius = 10
-        return imageView
+        let coverImageView = UIImageView.default
+        coverImageView.layer.cornerRadius = 10
+        return coverImageView
     }()
     
     private lazy var trackInfoStackView: UIStackView = {
@@ -84,6 +85,7 @@ final class NowPlayingView: BaseUIView {
             playPauseButton.tintColor = self.tintColor
             nextTrackButton.tintColor = self.tintColor
             durationProgressView.tintColor = self.tintColor
+            coverImageView.tintColor = self.tintColor
         }
     }
     
@@ -100,7 +102,7 @@ final class NowPlayingView: BaseUIView {
     }
     
     private func setupDelegate() {
-        AudioPlayer.shared.nowPlayingViewDelegate = self
+        AudioPlayer.shared.viewDelegate = self
     }
 }
 
@@ -170,23 +172,33 @@ extension NowPlayingView {
 // MARK: Actions
 extension NowPlayingView {
     @objc private func playPauseAction() {
-         _ = AudioPlayer.shared.playPause()
+        if AudioPlayer.shared.track == nil {
+            let playlist = RealmManager<LibraryTrackModel>().read().map({ TrackModel($0) }).sorted
+            guard !playlist.isEmpty else { return }
+            
+            AudioPlayer.shared.play(from: playlist[0], playlist: playlist, position: 0, isNewPlaylist: true)
+            return
+        }
+        
+        _ = AudioPlayer.shared.playPause()
     }
     
     @objc private func nextTrackAction(_ sender: UIButton) {
+        guard AudioPlayer.shared.track != nil else { return }
+        
         _ = AudioPlayer.shared.nextTrack()
     }
     
     @objc private func presentNowPlayingVC() {
-        guard AppEnvironment.current != .releaseProd else { return }
+        guard AppEnvironment.current.isDebug else { return }
         
         MainCoordinator.shared.presentNowPlayingController()
     }
 }
 
 // MARK: -
-// MARK: AudioPlayerNowPlayingViewDelegate
-extension NowPlayingView: AudioPlayerNowPlayingViewDelegate {
+// MARK: AudioPlayerViewDelegate
+extension NowPlayingView: AudioPlayerViewDelegate {
     func setupTrackInfo(_ track: TrackModel) {
         self.titleLabel.text = track.title
         self.artistLabel.text = track.artistText

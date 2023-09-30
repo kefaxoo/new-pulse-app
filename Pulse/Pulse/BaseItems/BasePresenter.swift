@@ -12,8 +12,6 @@ protocol BasePresenter {
     func viewDidLoad()
     func viewWillAppear()
     func viewDidDisappear()
-    func setupCell(tableView: UITableView, for indexPath: IndexPath) -> UITableViewCell
-    func setupCell(_ cell: UITableViewCell, for indexPath: IndexPath) -> UITableViewCell
 }
 
 extension BasePresenter {
@@ -21,11 +19,4 @@ extension BasePresenter {
     func viewDidLoad() {}
     func viewWillAppear() {}
     func viewDidDisappear() {}
-    func setupCell(tableView: UITableView, for indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
-    }
-    
-    func setupCell(_ cell: UITableViewCell, for indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
-    }
 }

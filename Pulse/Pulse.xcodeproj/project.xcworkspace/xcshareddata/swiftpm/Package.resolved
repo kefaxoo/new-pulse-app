@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "estmusicindicator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kefaxoo/ESTMusicIndicator",
+      "state" : {
+        "branch" : "main",
+        "revision" : "602bf25632b2aab346313bc91417fc89a505ba33"
+      }
+    },
+    {
       "identity" : "friendly-urlsession",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kefaxoo/friendly-urlsession",
@@ -57,10 +66,10 @@
     {
       "identity" : "slidercontrol",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/AlexChekel1337/SliderControl",
+      "location" : "https://github.com/kefaxoo/slidercontrol",
       "state" : {
         "branch" : "main",
-        "revision" : "1ca815f9582766c0fbc6a949326a74f47c3b7e62"
+        "revision" : "99b6cb2eeba11ca6a8642e304aeb712746d329a6"
       }
     },
     {

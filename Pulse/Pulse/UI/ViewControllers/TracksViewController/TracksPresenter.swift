@@ -16,6 +16,11 @@ final class TracksPresenter: BasePresenter {
     private var showedTracks = [TrackModel]()
     private var type: LibraryControllerType = .none
     
+    private var isResultsLoading = false
+    private var canLoadMore = true
+    
+    private var soundcloudCursor: String?
+    
     private weak var delegate: TracksPresenterDelegate?
     
     var tracksCount: Int {
@@ -35,11 +40,12 @@ final class TracksPresenter: BasePresenter {
                 self.tracks = RealmManager<LibraryTrackModel>().read().map({ TrackModel($0) }).sorted
             case .soundcloud:
                 MainCoordinator.shared.currentViewController?.presentSpinner()
-                SoundcloudProvider.shared.libraryTracks { [weak self] soundcloudTracks in
+                SoundcloudProvider.shared.libraryTracks { [weak self] soundcloudTracks, cursor in
                     MainCoordinator.shared.currentViewController?.dismissSpinner()
                     let tracks = soundcloudTracks.map({ TrackModel($0) })
                     self?.tracks = tracks
                     self?.showedTracks = tracks
+                    self?.soundcloudCursor = cursor
                     self?.delegate?.reloadData()
                 } failure: { error in
                     MainCoordinator.shared.currentViewController?.dismissSpinner()
@@ -81,7 +87,14 @@ extension TracksPresenter: BaseTableViewPresenter {
     }
     
     func setupCell(_ cell: UITableViewCell, at indexPath: IndexPath) -> UITableViewCell {
-        (cell as? TrackTableViewCell)?.setupCell(tracks[indexPath.item], isSearchController: false, isLibraryController: self.type == .library)
+        let track = showedTracks[indexPath.item]
+        (cell as? TrackTableViewCell)?.setupCell(
+            track,
+            state: AudioPlayer.shared.state(for: track),
+            isSearchController: false,
+            isLibraryController: self.type == .library
+        )
+        
         (cell as? TrackTableViewCell)?.delegate = self
         return cell
     }

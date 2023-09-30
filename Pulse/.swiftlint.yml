@@ -5,9 +5,9 @@ disabled_rules:
   - colon
   - private_over_fileprivate
   - identifier_name
+  - array_init
 
 opt_in_rules:
-  - missing_docs
   - array_init
   - closure_end_indentation
   - closure_spacing
