@@ -29,7 +29,7 @@ enum SoundcloudApi {
     case search(type: SearchType, query: String, offset: Int)
     
     // MARK: Playlist
-    case playlistTracks(id: Int, offset: Int)
+    case playlistTracks(id: Int, offset: String?)
 }
 
 extension SoundcloudApi: BaseRestApiEnum {
@@ -119,8 +119,10 @@ extension SoundcloudApi: BaseRestApiEnum {
             case .playlistTracks(_, let offset):
                 parameters["access"]              = "playable"
                 parameters["linked_partitioning"] = true
-                parameters["offset"]              = offset
                 parameters["limit"]               = 20
+                guard let offset else { break }
+                
+                parameters["offset"] = offset
             default:
                 break
         }

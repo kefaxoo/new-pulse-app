@@ -69,6 +69,7 @@ final class NowPlayingViewController: BaseUIViewController {
     private lazy var durationSlider: SliderControl = {
         let slider = SliderControl()
         slider.delegate = self
+        slider.tag = 1001
         slider.defaultProgressColor = SettingsManager.shared.color.color
         slider.enlargedProgressColor = SettingsManager.shared.color.color
         return slider
@@ -86,6 +87,29 @@ final class NowPlayingViewController: BaseUIViewController {
         label.font = .systemFont(ofSize: 13)
         label.text = "--:--"
         return label
+    }()
+    
+    private lazy var muteImageView: UIImageView = {
+        let imageView = UIImageView.default
+        imageView.image = Constants.Images.minVolume.image
+        imageView.tintColor = SettingsManager.shared.color.color
+        return imageView
+    }()
+    
+    private lazy var volumeSlider: SliderControl = {
+        let slider = SliderControl()
+        slider.delegate = self
+        slider.tag = 1002
+        slider.defaultProgressColor = SettingsManager.shared.color.color
+        slider.enlargedProgressColor = SettingsManager.shared.color.color
+        return slider
+    }()
+    
+    private lazy var maxVolumeImageView: UIImageView = {
+        let imageView = UIImageView.default
+        imageView.image = Constants.Images.maxVolume.image
+        imageView.tintColor = SettingsManager.shared.color.color
+        return imageView
     }()
     
     private lazy var bottomStackView: UIStackView = {
@@ -157,6 +181,10 @@ extension NowPlayingViewController {
         self.view.addSubview(currentTimeLabel)
         self.view.addSubview(leftTimeLabel)
         
+        self.view.addSubview(muteImageView)
+        self.view.addSubview(volumeSlider)
+        self.view.addSubview(maxVolumeImageView)
+        
         self.view.addSubview(bottomStackView)
         bottomStackView.addArrangedSubview(audioDestinationButton)
     }
@@ -207,6 +235,24 @@ extension NowPlayingViewController {
             make.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(20)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing).inset(20)
             make.height.equalTo(30)
+        }
+        
+        muteImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            make.bottom.equalTo(bottomStackView.snp.top).offset(-16)
+            make.height.width.equalTo(20)
+        }
+        
+        volumeSlider.snp.makeConstraints { make in
+            make.leading.equalTo(muteImageView.snp.trailing).offset(10)
+            make.trailing.equalTo(maxVolumeImageView.snp.leading).offset(-10)
+            make.centerY.equalTo(muteImageView.snp.centerY)
+        }
+        
+        maxVolumeImageView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(20)
+            make.bottom.equalTo(bottomStackView.snp.top).offset(-16)
+            make.height.width.equalTo(20)
         }
     }
     
@@ -289,25 +335,33 @@ extension NowPlayingViewController: AudioPlayerControllerDelegate {
 // MARK: -
 // MARK: SliderControlDelegate
 extension NowPlayingViewController: SliderControlDelegate {
-    func valueBeganChange(_ value: Float) {
-        AudioPlayer.shared.isDurationChanging = true
+    func valueBeganChange(_ value: Float, tag: Int) {
+        if tag == self.durationSlider.tag {
+            AudioPlayer.shared.isDurationChanging = true
+        }
+        
         self.removeSwipe()
     }
     
-    func valueChanging(_ value: Float) {
-        guard let doubleDuration = AudioPlayer.shared.duration else { return }
-        
-        let duration = Float(doubleDuration)
-        self.setupDuration(duration, currentTime: value * duration)
+    func valueChanging(_ value: Float, tag: Int) {
+        if tag == self.durationSlider.tag {
+            guard let doubleDuration = AudioPlayer.shared.duration else { return }
+            
+            let duration = Float(doubleDuration)
+            self.setupDuration(duration, currentTime: value * duration)
+        }
     }
     
-    func valueDidChange(_ value: Float) {
-        AudioPlayer.shared.isDurationChanging = false
-        AudioPlayer.shared.updateTimePosition(value)
+    func valueDidChange(_ value: Float, tag: Int) {
+        if tag == self.durationSlider.tag {
+            AudioPlayer.shared.isDurationChanging = false
+            AudioPlayer.shared.updateTimePosition(value)
+        }
+        
         self.configureSwipe()
     }
     
-    func valueDidNotChange() {
+    func valueDidNotChange(tag: Int) {
         self.configureSwipe()
     }
 }

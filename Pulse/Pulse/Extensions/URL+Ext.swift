@@ -18,4 +18,8 @@ extension URL {
             self = url.appendingPathComponent(filename)
         }
     }
+    
+    var isDirectory: Bool {
+        return (try? self.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
+    }
 }

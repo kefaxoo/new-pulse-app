@@ -104,6 +104,7 @@
 		70996A5B2A9D548E00905847 /* ColorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70996A5A2A9D548E00905847 /* ColorType.swift */; };
 		70996A5D2A9D55A300905847 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70996A5C2A9D55A300905847 /* UIColor+Ext.swift */; };
 		709F1B662A9E95BD00C0FB73 /* InfiniteScrolling-SPM in Frameworks */ = {isa = PBXBuildFile; productRef = 709F1B652A9E95BD00C0FB73 /* InfiniteScrolling-SPM */; };
+		70A60BFC2ACDFF600075D58C /* SessionCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A60BFB2ACDFF600075D58C /* SessionCacheManager.swift */; };
 		70AC1CA82A9B57240095A793 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 70AC1CA72A9B57240095A793 /* SDWebImage */; };
 		70AC1CAA2A9B57240095A793 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 70AC1CA92A9B57240095A793 /* SDWebImageMapKit */; };
 		70AC1CAD2A9B57410095A793 /* FriendlyURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = 70AC1CAC2A9B57410095A793 /* FriendlyURLSession */; };
@@ -275,6 +276,7 @@
 		70996A552A9D4FEE00905847 /* UILabel+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Ext.swift"; sourceTree = "<group>"; };
 		70996A5A2A9D548E00905847 /* ColorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorType.swift; sourceTree = "<group>"; };
 		70996A5C2A9D55A300905847 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
+		70A60BFB2ACDFF600075D58C /* SessionCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCacheManager.swift; sourceTree = "<group>"; };
 		70AD04BD2A9EA42100DC4517 /* ResponsePulseCreateUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseCreateUserModel.swift; sourceTree = "<group>"; };
 		70AD04C12A9EA62800DC4517 /* BaseUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUIView.swift; sourceTree = "<group>"; };
 		70B3C0402AA8A1C000EBBFD4 /* ServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceType.swift; sourceTree = "<group>"; };
@@ -550,6 +552,7 @@
 				70EC05502AAC572D00AF0019 /* ActionsManager.swift */,
 				706CE2952AAD1FC300748322 /* DownloadManager.swift */,
 				70C857EE2AB7191C004B5EC5 /* ServicesManager.swift */,
+				70A60BFB2ACDFF600075D58C /* SessionCacheManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1204,6 +1207,7 @@
 				70DBA02C2AB666D00078E409 /* UIButton+Ext.swift in Sources */,
 				81B8EE422AA0E72400C7F53E /* String+Ext.swift in Sources */,
 				7068BE942AA8BFFF004B0E03 /* SearchPresenter.swift in Sources */,
+				70A60BFC2ACDFF600075D58C /* SessionCacheManager.swift in Sources */,
 				7069A05C2ABA01A100E7A718 /* PlaylistsViewController.swift in Sources */,
 				70C857E52AB70E41004B5EC5 /* SoundcloudProvider.swift in Sources */,
 				70996A422A9D47E500905847 /* BaseKeychainModel.swift in Sources */,

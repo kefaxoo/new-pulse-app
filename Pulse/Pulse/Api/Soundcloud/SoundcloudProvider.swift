@@ -245,7 +245,12 @@ final class SoundcloudProvider: BaseRestApiProvider {
         self.userInfo(accessToken: SettingsManager.shared.soundcloud.accessToken ?? "", success: success, failure: failure)
     }
     
-    func playlistTracks(id: Int, offset: Int = 0, success: @escaping(([SoundcloudTrack]) -> ()), failure: @escaping SoundcloudDefualtErrorClosure) {
+    func playlistTracks(
+        id: Int,
+        offset: String? = nil,
+        success: @escaping(([SoundcloudTrack], String?) -> ()),
+        failure: @escaping SoundcloudDefualtErrorClosure
+    ) {
         urlSession.dataTask(
             with: URLRequest(
                 type: SoundcloudApi.playlistTracks(
@@ -262,7 +267,7 @@ final class SoundcloudProvider: BaseRestApiProvider {
                         return
                     }
                     
-                    success(tracks.collection)
+                    success(tracks.collection, tracks.offset)
                 case .failure(let response):
                     self?.parseError(response: response, closure: failure, reload: {
                         self?.playlistTracks(id: id, offset: offset, success: success, failure: failure)

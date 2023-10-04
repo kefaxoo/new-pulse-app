@@ -16,6 +16,8 @@ final class PlaylistPresenter: BasePresenter {
     private let type: LibraryControllerType
     private var tracks = [TrackModel]()
     
+    private var soundcloudOffset: String?
+    
     private var isResultsLoading = false
     private var canLoadMore = true
     
@@ -38,9 +40,10 @@ final class PlaylistPresenter: BasePresenter {
                 guard let id = Int(self.playlist.id) else { break }
                 
                 MainCoordinator.shared.currentViewController?.presentSpinner()
-                SoundcloudProvider.shared.playlistTracks(id: id) { [weak self] tracks in
+                SoundcloudProvider.shared.playlistTracks(id: id) { [weak self] tracks, offset in
                     MainCoordinator.shared.currentViewController?.dismissSpinner()
                     self?.tracks = tracks.map({ TrackModel($0) })
+                    self?.soundcloudOffset = offset
                     self?.delegate?.reloadData()
                 } failure: { error in
                     MainCoordinator.shared.currentViewController?.dismissSpinner()
@@ -77,7 +80,7 @@ extension PlaylistPresenter: BaseTableViewPresenter {
     func didSelectRow(at indexPath: IndexPath) {
         guard indexPath.item > 0 else { return }
         
-        let index = indexPath.row - 1
+        let index = indexPath.item - 1
         var track = tracks[index]
         if !track.cachedFilename.isEmpty,
            let cachedLink = AudioManager.shared.getLocalLink(for: track) {
@@ -86,7 +89,7 @@ extension PlaylistPresenter: BaseTableViewPresenter {
             AudioPlayer.shared.play(from: track, playlist: self.tracks, position: index)
         } else if track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
             AudioManager.shared.updatePlayableLink(for: track) { [weak self] updatedTrack in
-                self?.tracks[indexPath.item] = updatedTrack.track
+                self?.tracks[index] = updatedTrack.track
                 AudioPlayer.shared.play(from: updatedTrack.track, playlist: self?.tracks ?? [], position: index)
             }
         } else {
@@ -112,12 +115,13 @@ extension PlaylistPresenter: BaseTableViewPresenter {
                         return
                     }
                     
-                    SoundcloudProvider.shared.playlistTracks(id: id, offset: self.tracksCount) { [weak self] tracks in
+                    SoundcloudProvider.shared.playlistTracks(id: id, offset: self.soundcloudOffset) { [weak self] tracks, offset in
                         MainCoordinator.shared.currentViewController?.dismissSpinner()
                         self?.tracks.append(contentsOf: tracks.map({ TrackModel($0) }))
+                        self?.soundcloudOffset = offset
                         self?.isResultsLoading = false
                         self?.delegate?.reloadData()
-                        self?.canLoadMore = !tracks.isEmpty
+                        self?.canLoadMore = offset != nil
                     } failure: { [weak self] _ in
                         MainCoordinator.shared.currentViewController?.dismissSpinner()
                         self?.isResultsLoading = false
