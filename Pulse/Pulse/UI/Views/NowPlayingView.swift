@@ -85,7 +85,6 @@ final class NowPlayingView: BaseUIView {
             playPauseButton.tintColor = self.tintColor
             nextTrackButton.tintColor = self.tintColor
             durationProgressView.tintColor = self.tintColor
-            coverImageView.tintColor = self.tintColor
         }
     }
     

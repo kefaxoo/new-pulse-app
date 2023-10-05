@@ -130,7 +130,6 @@ extension TrackTableViewCell {
         self.libraryImageView.image = nil
         self.libraryImageView.isHidden = true
         self.unavailableView.isHidden = true
-        self.coverImageView.state = .stopped
         
         let color = SettingsManager.shared.color.color
         self.actionsButton.tintColor = color
