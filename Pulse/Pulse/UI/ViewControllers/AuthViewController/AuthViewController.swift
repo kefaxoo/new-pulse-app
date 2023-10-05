@@ -7,7 +7,6 @@
 
 import UIKit
 import SnapKit
-import PulseUIComponents
 
 final class AuthViewController: CoversViewController {
     private lazy var bottomGradientView: StaticGradientView = {

@@ -1,28 +1,23 @@
 //
 //  PasswordTextField.swift
+//  Pulse
 //
-//
-//  Created by Bahdan Piatrouski on 24.09.23.
+//  Created by Bahdan Piatrouski on 30.08.23.
 //
 
 import UIKit
 
-final public class PasswordTextField: UITextField {
+final class PasswordTextField: UITextField {
     private lazy var hideButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.plain()
-        configuration.image = UIImage(systemName: "eye")
+        configuration.image = Constants.Images.eye.image
         configuration.imagePadding = 5
         button.configuration = configuration
+        button.tintColor = .label.withAlphaComponent(0.7)
         button.addTarget(self, action: #selector(hidePasswordAction), for: .touchUpInside)
         return button
     }()
-    
-    override public var tintColor: UIColor! {
-        didSet {
-            hideButton.tintColor = tintColor
-        }
-    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,11 +29,9 @@ final public class PasswordTextField: UITextField {
         self.setupInterface()
     }
     
-    public init(tintColor: UIColor?, placeholder: String = "Password") {
+    init() {
         super.init(frame: .zero)
-        
-        self.placeholder = placeholder
-        self.tintColor = tintColor
+        self.placeholder = "Password"
         self.setupInterface()
     }
     
@@ -53,6 +46,9 @@ final public class PasswordTextField: UITextField {
     
     @objc private func hidePasswordAction(_ sender: UIButton) {
         self.isSecureTextEntry.toggle()
-        self.hideButton.setImage(UIImage(systemName: self.isSecureTextEntry ? "eye" : "eye.slash"), for: .normal)
+        self.hideButton.setImage(
+            self.isSecureTextEntry ? Constants.Images.eye.image : Constants.Images.crossedEye.image,
+            for: .normal
+        )
     }
 }

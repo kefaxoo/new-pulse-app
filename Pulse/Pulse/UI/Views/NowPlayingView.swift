@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import PulseUIComponents
 
 final class NowPlayingView: BaseUIView {
     static let height: CGFloat = 55
@@ -17,10 +16,10 @@ final class NowPlayingView: BaseUIView {
         return view
     }()
     
-    private lazy var coverImageView: CoverImageView = {
-        let coverImageView = CoverImageView(tintColor: SettingsManager.shared.color.color)
-        coverImageView.layer.cornerRadius = 10
-        return coverImageView
+    private lazy var coverImageView: UIImageView = {
+        let imageView = UIImageView.default
+        imageView.layer.cornerRadius = 10
+        return imageView
     }()
     
     private lazy var trackInfoStackView: UIStackView = {
@@ -85,7 +84,6 @@ final class NowPlayingView: BaseUIView {
             playPauseButton.tintColor = self.tintColor
             nextTrackButton.tintColor = self.tintColor
             durationProgressView.tintColor = self.tintColor
-            coverImageView.tintColor = self.tintColor
         }
     }
     
@@ -215,9 +213,5 @@ extension NowPlayingView: AudioPlayerNowPlayingViewDelegate {
     
     func changeState(isPlaying: Bool) {
         self.playPauseButton.changeState(isPlaying)
-    }
-    
-    func changeStateImageView(_ state: PulseUIComponents.CoverImageViewState) {
-        self.coverImageView.changeState(state)
     }
 }

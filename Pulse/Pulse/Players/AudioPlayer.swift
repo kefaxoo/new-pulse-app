@@ -11,14 +11,12 @@ import UIKit
 import MediaPlayer
 import AlertKit
 import CachingPlayerItem
-import PulseUIComponents
 
 protocol AudioPlayerNowPlayingViewDelegate: AnyObject {
     func setupTrackInfo(_ track: TrackModel)
     func setupCover(_ cover: UIImage?)
     func updateDuration(_ duration: Float)
     func changeState(isPlaying: Bool)
-    func changeStateImageView(_ state: CoverImageViewState)
 }
 
 protocol AudioPlayerNowPlayingControllerDelegate: AnyObject {
@@ -109,7 +107,6 @@ final class AudioPlayer: NSObject {
             }
         }
         
-        self.nowPlayingViewDelegate?.changeStateImageView(.loading)
         self.setupTrackInfoInDelegates()
         self.setupCover()
         self.setupObserver()
@@ -173,12 +170,6 @@ fileprivate extension AudioPlayer {
                 
                 self.setupDurationInDelegates()
                 self.setupNowPlaying()
-                
-                if self.player.currentItem?.status == .readyToPlay {
-                    self.nowPlayingViewDelegate?.changeStateImageView(self.player.rate == 0 ? .paused : .playing)
-                } else {
-                    self.nowPlayingViewDelegate?.changeStateImageView(.loading)
-                }
             }
         )
     }
