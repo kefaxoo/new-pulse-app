@@ -67,7 +67,7 @@ extension LibraryViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return self.presenter.setupCell(tableView: tableView, for: indexPath)
+        return self.presenter.setupCell(for: tableView, at: indexPath)
     }
 }
 

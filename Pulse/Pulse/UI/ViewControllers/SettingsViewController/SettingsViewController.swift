@@ -9,14 +9,14 @@ import UIKit
 
 class SettingsViewController: BaseUIViewController {
     private lazy var settingsTableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.dataSource = self
         tableView.register(
             SwitchTableViewCell.self,
             TextTableViewCell.self,
             ChevronTableViewCell.self,
-            ColorSettingTableViewCell.self,
-            ServiceSignTableViewCell.self
+            ServiceSignTableViewCell.self,
+            ButtonTableViewCell.self
         )
         
         tableView.delegate = self
@@ -86,8 +86,7 @@ extension SettingsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: self.presenter.cellIdFor(indexPath: indexPath), for: indexPath)
-        return self.presenter.setupCell(cell, for: indexPath)
+        return self.presenter.setupCell(for: tableView, at: indexPath)
     }
 }
 

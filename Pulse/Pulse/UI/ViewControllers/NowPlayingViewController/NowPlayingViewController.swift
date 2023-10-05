@@ -17,14 +17,6 @@ final class NowPlayingViewController: BaseUIViewController {
         return button
     }()
     
-    private lazy var mainStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 20
-        stackView.distribution = .equalSpacing
-        return stackView
-    }()
-    
     private lazy var coverImageView: UIImageView = {
         let imageView = UIImageView.default
         imageView.layer.cornerRadius = 20
@@ -67,21 +59,20 @@ final class NowPlayingViewController: BaseUIViewController {
         let button = UIButton()
         button.setImage(Constants.Images.actionsNowPlaying.image, for: .normal)
         button.tintColor = .label.withAlphaComponent(0.7)
+        var configuration = UIButton.Configuration.plain()
+        configuration.preferredSymbolConfigurationForImage = .init(font: .systemFont(ofSize: 17), scale: .large)
+        configuration.imagePlacement = .trailing
+        button.configuration = configuration
         return button
     }()
     
     private lazy var durationSlider: SliderControl = {
         let slider = SliderControl()
         slider.delegate = self
+        slider.tag = 1001
         slider.defaultProgressColor = SettingsManager.shared.color.color
         slider.enlargedProgressColor = SettingsManager.shared.color.color
         return slider
-    }()
-    
-    private lazy var durationStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        return stackView
     }()
     
     private lazy var currentTimeLabel: UILabel = {
@@ -91,13 +82,51 @@ final class NowPlayingViewController: BaseUIViewController {
         return label
     }()
     
-    private lazy var durationSpacer = UIView.spacer
-    
     private lazy var leftTimeLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 13)
         label.text = "--:--"
         return label
+    }()
+    
+    private lazy var muteImageView: UIImageView = {
+        let imageView = UIImageView.default
+        imageView.image = Constants.Images.minVolume.image
+        imageView.tintColor = SettingsManager.shared.color.color
+        return imageView
+    }()
+    
+    private lazy var volumeSlider: SliderControl = {
+        let slider = SliderControl()
+        slider.delegate = self
+        slider.tag = 1002
+        slider.defaultProgressColor = SettingsManager.shared.color.color
+        slider.enlargedProgressColor = SettingsManager.shared.color.color
+        return slider
+    }()
+    
+    private lazy var maxVolumeImageView: UIImageView = {
+        let imageView = UIImageView.default
+        imageView.image = Constants.Images.maxVolume.image
+        imageView.tintColor = SettingsManager.shared.color.color
+        return imageView
+    }()
+    
+    private lazy var bottomStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .equalCentering
+        return stackView
+    }()
+    
+    private lazy var audioDestinationButton: UIButton = {
+        let button = UIButton()
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = Constants.Images.audioDestination.image
+        configuration.preferredSymbolConfigurationForImage = .init(font: .systemFont(ofSize: 17), scale: .large)
+        button.configuration = configuration
+        button.tintColor = SettingsManager.shared.color.color
+        return button
     }()
     
     private lazy var presenter: NowPlayingPresenter = {
@@ -106,11 +135,15 @@ final class NowPlayingViewController: BaseUIViewController {
         return presenter
     }()
     
+    private lazy var swipeGesture: UIPanGestureRecognizer = {
+        return UIPanGestureRecognizer(target: self, action: #selector(swipeDismissAction))
+    }()
+    
     init() {
         super.init(nibName: nil, bundle: nil)
-        self.modalPresentationStyle = .overFullScreen
+        self.modalPresentationStyle = .overCurrentContext
         
-        AudioPlayer.shared.nowPlayingViewControllerDelegate = self
+        AudioPlayer.shared.controllerDelegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -118,7 +151,7 @@ final class NowPlayingViewController: BaseUIViewController {
     }
     
     deinit {
-        AudioPlayer.shared.nowPlayingViewControllerDelegate = nil
+        AudioPlayer.shared.controllerDelegate = nil
     }
 }
 
@@ -128,6 +161,7 @@ extension NowPlayingViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.presenter.viewDidLoad()
+        self.configureSwipe()
     }
 }
 
@@ -135,46 +169,104 @@ extension NowPlayingViewController {
 // MARK: Setup interface methods
 extension NowPlayingViewController {
     override func setupLayout() {
-        self.view.addSubview(mainStackView)
-        mainStackView.addArrangedSubview(dismissButton)
-        mainStackView.addArrangedSubview(coverImageView)
-        mainStackView.addArrangedSubview(trackInfoHorizontalStackView)
+        self.view.addSubview(dismissButton)
+        self.view.addSubview(coverImageView)
+        self.view.addSubview(trackInfoHorizontalStackView)
         trackInfoHorizontalStackView.addArrangedSubview(trackInfoStackView)
         trackInfoStackView.addArrangedSubview(titleLabel)
         trackInfoStackView.addArrangedSubview(artistButton)
-        
         trackInfoHorizontalStackView.addArrangedSubview(actionsButton)
         
-        mainStackView.addArrangedSubview(durationSlider)
-        mainStackView.addArrangedSubview(durationStackView)
-        durationStackView.addArrangedSubview(currentTimeLabel)
-        durationStackView.addArrangedSubview(durationSpacer)
-        durationStackView.addArrangedSubview(leftTimeLabel)
+        self.view.addSubview(durationSlider)
+        self.view.addSubview(currentTimeLabel)
+        self.view.addSubview(leftTimeLabel)
         
-        mainStackView.addArrangedSubview(UIView.spacer)
+        self.view.addSubview(muteImageView)
+        self.view.addSubview(volumeSlider)
+        self.view.addSubview(maxVolumeImageView)
+        
+        self.view.addSubview(bottomStackView)
+        bottomStackView.addArrangedSubview(audioDestinationButton)
     }
     
     override func setupConstraints() {
-        mainStackView.snp.makeConstraints { make in
-            make.top.leading.equalTo(self.view.safeAreaLayoutGuide).offset(20)
-            make.bottom.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
+        dismissButton.snp.makeConstraints { make in
+            make.height.equalTo(20)
+            make.top.equalTo(MainCoordinator.shared.safeAreaInsets.top + 10)
+            make.width.equalToSuperview()
         }
         
-        dismissButton.snp.makeConstraints({ $0.height.equalTo(30) })
-        coverImageView.snp.makeConstraints({ $0.height.width.equalTo(mainStackView.snp.width) })
-        let trackInfoHeight = self.titleLabel.textSize.height + (self.artistButton.titleLabel?.textSize.height ?? 0) + 8
-        trackInfoStackView.snp.makeConstraints({ $0.height.equalTo(trackInfoHeight) })
-        titleLabel.snp.makeConstraints({ $0.height.equalTo(titleLabel.textSize.height).priority(.high) })
-        actionsButton.snp.makeConstraints({ $0.height.width.equalTo(self.trackInfoStackView.snp.height) })
-        durationSlider.snp.makeConstraints({ $0.height.equalTo(durationSlider.intrinsicContentSize.height) })
-        durationStackView.snp.makeConstraints({ $0.height.equalTo(currentTimeLabel.textSize.height) })
-        currentTimeLabel.snp.makeConstraints({ $0.width.equalTo(currentTimeLabel.textSize.width) })
-        leftTimeLabel.snp.makeConstraints({ $0.width.equalTo(leftTimeLabel.textSize.width) })
+        coverImageView.snp.makeConstraints { make in
+            make.top.equalTo(self.dismissButton.snp.bottom).offset(20)
+            make.height.width.equalTo(self.view.frame.width - 40)
+            make.centerX.equalToSuperview()
+        }
+        
+        trackInfoHorizontalStackView.snp.makeConstraints { make in
+            make.top.equalTo(self.coverImageView.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(trackInfoStackView.spacing + titleLabel.textSize.height + (artistButton.titleLabel?.textSize.height ?? 0))
+        }
+        
+        titleLabel.snp.makeConstraints({ $0.height.equalTo(titleLabel.textSize.height) })
+        artistButton.snp.makeConstraints({ $0.height.equalTo(artistButton.titleLabel?.textSize.height ?? 0) })
+        
+        actionsButton.snp.makeConstraints({ $0.width.equalTo(trackInfoHorizontalStackView.snp.height) })
+        
+        durationSlider.snp.makeConstraints { make in
+            make.top.equalTo(trackInfoHorizontalStackView.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().inset(20)
+        }
+        
+        currentTimeLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.durationSlider.snp.bottom).offset(10)
+            make.leading.equalToSuperview().offset(20)
+        }
+        
+        leftTimeLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.durationSlider.snp.bottom).offset(10)
+            make.trailing.equalToSuperview().inset(20)
+        }
+        
+        bottomStackView.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().inset(MainCoordinator.shared.safeAreaInsets.bottom + 20)
+            make.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(20)
+            make.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing).inset(20)
+            make.height.equalTo(30)
+        }
+        
+        muteImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            make.bottom.equalTo(bottomStackView.snp.top).offset(-16)
+            make.height.width.equalTo(20)
+        }
+        
+        volumeSlider.snp.makeConstraints { make in
+            make.leading.equalTo(muteImageView.snp.trailing).offset(10)
+            make.trailing.equalTo(maxVolumeImageView.snp.leading).offset(-10)
+            make.centerY.equalTo(muteImageView.snp.centerY)
+        }
+        
+        maxVolumeImageView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(20)
+            make.bottom.equalTo(bottomStackView.snp.top).offset(-16)
+            make.height.width.equalTo(20)
+        }
     }
     
     private func setupDuration(_ duration: Float, currentTime: Float) {
         currentTimeLabel.text = currentTime.toMinuteAndSeconds
         leftTimeLabel.text = "-\((duration - currentTime).toMinuteAndSeconds)"
+    }
+    
+    private func configureSwipe() {
+        self.view.addGestureRecognizer(self.swipeGesture)
+    }
+    
+    private func removeSwipe() {
+        self.view.removeGestureRecognizer(self.swipeGesture)
     }
 }
 
@@ -197,11 +289,34 @@ extension NowPlayingViewController {
     @objc private func dismissAction(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
+    
+    @objc private func swipeDismissAction(_ sender: UIPanGestureRecognizer) {
+        let percentThreshold: CGFloat = 0.3
+        let translation = sender.translation(in: view)
+        
+        let newY = ensureRange(value: view.frame.minY + translation.y, minimum: 0, maximum: view.frame.maxY)
+        let progress = progressAlongAxis(newY, view.frame.height)
+        
+        view.frame.origin.y = newY // Move view to new position
+
+        if sender.state == .ended {
+            let velocity = sender.velocity(in: view)
+            if velocity.y >= self.view.frame.height / 2 || progress > percentThreshold {
+                self.dismiss(animated: true) // Perform dismiss
+            } else {
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.view.frame.origin.y = 0 // Revert animation
+                })
+            }
+        }
+        
+        sender.setTranslation(.zero, in: view)
+    }
 }
 
 // MARK: -
-// MARK: AudioPlayerNowPlayingViewControllerDelegate
-extension NowPlayingViewController: AudioPlayerNowPlayingControllerDelegate {
+// MARK: AudioPlayerControllerDelegate
+extension NowPlayingViewController: AudioPlayerControllerDelegate {
     func setupCover(_ cover: UIImage?) {
         self.coverImageView.image = cover
     }
@@ -220,21 +335,33 @@ extension NowPlayingViewController: AudioPlayerNowPlayingControllerDelegate {
 // MARK: -
 // MARK: SliderControlDelegate
 extension NowPlayingViewController: SliderControlDelegate {
-    func valueBeganChange(_ value: Float) {
-        AudioPlayer.shared.isDurationChanging = true
-    }
-    
-    func valueChanging(_ value: Float) {
-        guard let doubleDuration = AudioPlayer.shared.duration else { return }
+    func valueBeganChange(_ value: Float, tag: Int) {
+        if tag == self.durationSlider.tag {
+            AudioPlayer.shared.isDurationChanging = true
+        }
         
-        let duration = Float(doubleDuration)
-        self.setupDuration(duration, currentTime: value * duration)
+        self.removeSwipe()
     }
     
-    func valueDidChange(_ value: Float) {
-        AudioPlayer.shared.isDurationChanging = false
-        AudioPlayer.shared.updateTimePosition(value)
+    func valueChanging(_ value: Float, tag: Int) {
+        if tag == self.durationSlider.tag {
+            guard let doubleDuration = AudioPlayer.shared.duration else { return }
+            
+            let duration = Float(doubleDuration)
+            self.setupDuration(duration, currentTime: value * duration)
+        }
     }
     
-    func valueDidNotChange() {}
+    func valueDidChange(_ value: Float, tag: Int) {
+        if tag == self.durationSlider.tag {
+            AudioPlayer.shared.isDurationChanging = false
+            AudioPlayer.shared.updateTimePosition(value)
+        }
+        
+        self.configureSwipe()
+    }
+    
+    func valueDidNotChange(tag: Int) {
+        self.configureSwipe()
+    }
 }

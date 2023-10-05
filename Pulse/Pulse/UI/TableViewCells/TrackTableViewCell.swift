@@ -6,12 +6,13 @@
 //
 
 import UIKit
+import PulseUIComponents
 
 final class TrackTableViewCell: BaseUITableViewCell {
-    private lazy var coverImageView: UIImageView = {
-        let imageView = UIImageView.default
+    private lazy var coverImageView: CoverImageView = {
+        let imageView = CoverImageView(tintColor: SettingsManager.shared.color.color)
         imageView.layer.cornerRadius = 10
-        imageView.tintColor = SettingsManager.shared.color.color
+        imageView.state = .stopped
         return imageView
     }()
     
@@ -57,6 +58,13 @@ final class TrackTableViewCell: BaseUITableViewCell {
         return label
     }()
     
+    private lazy var rightStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 12
+        return stackView
+    }()
+    
     private lazy var libraryImageView: UIImageView = {
         let imageView = UIImageView.default
         imageView.tintColor = SettingsManager.shared.color.color
@@ -84,9 +92,10 @@ final class TrackTableViewCell: BaseUITableViewCell {
     
     private var track: TrackModel?
     
-    func setupCell(_ track: TrackModel, isSearchController: Bool = false, isLibraryController: Bool = false) {
+    func setupCell(_ track: TrackModel, state: CoverImageViewState, isSearchController: Bool = false, isLibraryController: Bool = false) {
         self.track = track
         self.coverImageView.setImage(from: track.image?.small)
+        self.coverImageView.state = state
         
         self.titleLabel.text  = track.title
         self.artistLabel.text = track.artistText
@@ -101,6 +110,10 @@ final class TrackTableViewCell: BaseUITableViewCell {
         self.unavailableView.isHidden = track.isAvailable
         self.setupConstraints()
     }
+    
+    func changeState(_ state: CoverImageViewState) {
+        self.coverImageView.state = state
+    }
 }
 
 // MARK: -
@@ -109,7 +122,7 @@ extension TrackTableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        self.coverImageView.image = nil
+        self.coverImageView.reset()
         self.titleLabel.text = nil
         self.serviceImageView.image = nil
         self.artistLabel.text = nil
@@ -117,6 +130,7 @@ extension TrackTableViewCell {
         self.libraryImageView.image = nil
         self.libraryImageView.isHidden = true
         self.unavailableView.isHidden = true
+        self.coverImageView.state = .stopped
         
         let color = SettingsManager.shared.color.color
         self.actionsButton.tintColor = color
@@ -139,9 +153,10 @@ extension TrackTableViewCell {
         explicitAndArtistStackView.addArrangedSubview(serviceImageView)
         explicitAndArtistStackView.addArrangedSubview(explicitImageView)
         explicitAndArtistStackView.addArrangedSubview(artistLabel)
-        
-        self.contentView.addSubview(actionsButton)
-        self.contentView.addSubview(libraryImageView)
+    
+        self.contentView.addSubview(rightStackView)
+        rightStackView.addArrangedSubview(libraryImageView)
+        rightStackView.addArrangedSubview(actionsButton)
         
         self.contentView.addSubview(unavailableView)
     }
@@ -154,16 +169,9 @@ extension TrackTableViewCell {
             make.height.width.equalTo(42)
         }
         
-        actionsButton.snp.makeConstraints { make in
-            make.top.trailing.bottom.equalToSuperview()
-            make.width.equalTo(30)
-        }
-        
-        libraryImageView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
-            make.width.equalTo(20)
-            make.trailing.equalTo(self.actionsButton.snp.leading).offset(-12)
-        }
+        rightStackView.snp.makeConstraints({ $0.top.trailing.bottom.equalToSuperview() })
+        actionsButton.snp.makeConstraints({ $0.width.equalTo(20) })
+        libraryImageView.snp.makeConstraints({ $0.width.equalTo(20) })
         
         self.layoutIfNeeded()
         
@@ -171,7 +179,7 @@ extension TrackTableViewCell {
             make.top.equalToSuperview().offset(12)
             make.bottom.equalToSuperview().inset(12)
             make.leading.equalTo(self.coverImageView.snp.trailing).offset(12)
-            make.trailing.equalTo((self.libraryImageView.isHidden ? self.actionsButton : self.libraryImageView).snp.leading).offset(-12)
+            make.trailing.equalTo(self.rightStackView.snp.leading).offset(-12)
         }
         
         serviceImageView.snp.makeConstraints({ $0.height.width.equalTo(self.explicitAndArtistStackView.snp.height) })

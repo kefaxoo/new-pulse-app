@@ -29,8 +29,8 @@ final class LibraryManager {
         createDirectoryIfNeeded(directory: "Tracks")
     }
     
-    private func createDirectoryIfNeeded(directory: String) {
-        guard let url = URL(filename: directory, path: .documentDirectory) else { return }
+    private func createDirectoryIfNeeded(directory: String, path: FileManager.SearchPathDirectory = .documentDirectory) {
+        guard let url = URL(filename: directory, path: path) else { return }
 
         let path: String
         if #available(iOS 16.0, *) {
@@ -159,6 +159,7 @@ final class LibraryManager {
     func cleanLibrary() -> Bool {
         _ = LibraryManager.shared.removeFile(URL(filename: "Covers", path: .documentDirectory))
         _ = LibraryManager.shared.removeFile(URL(filename: "Tracks", path: .documentDirectory))
+        _ = LibraryManager.shared.removeFile(URL(filename: "", path: .cachesDirectory))
         
         RealmManager<LibraryTrackModel>().removeAll()
         RealmManager<LibraryArtistModel>().removeAll()
@@ -224,5 +225,26 @@ final class LibraryManager {
     
     func removeTrack(_ track: TrackModel) {
         PulseProvider.shared.removeTrack(track)
+    }
+    
+    func removeTemporaryCache() {
+        guard let url = URL(filename: "", path: .cachesDirectory) else { return }
+        
+        let path: String
+        if #available(iOS 16.0, *) {
+            path = url.path()
+        } else {
+            path = url.path
+        }
+        
+        guard let items = try? FileManager.default.contentsOfDirectory(atPath: path) else { return }
+        
+        items.forEach { item in
+            guard let url = URL(filename: item, path: .cachesDirectory),
+                  !url.isDirectory || item.contains("SDImageCache")
+            else { return }
+            
+            _ = LibraryManager.shared.removeFile(url)
+        }
     }
 }

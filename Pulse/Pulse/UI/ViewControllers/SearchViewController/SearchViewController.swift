@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PulseUIComponents
 
 final class SearchViewController: BaseUIViewController {
     private lazy var searchController: UISearchController = {
@@ -60,7 +61,8 @@ extension SearchViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.searchController.searchBar.tintColor = SettingsManager.shared.color.color
-        self.resultsTableView.reloadData()
+        self.presenter.search()
+        AudioPlayer.shared.tableViewDelegate = self
     }
 }
 
@@ -152,7 +154,7 @@ extension SearchViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return self.presenter.setupCell(tableView: tableView, for: indexPath)
+        return self.presenter.setupCell(for: tableView, at: indexPath)
     }
 }
 
@@ -166,5 +168,16 @@ extension SearchViewController: UITableViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.presenter.scrollViewDidScroll(scrollView)
+    }
+}
+
+// MARK: -
+// MARK: AudioPlayerTableViewDelegate
+extension SearchViewController: AudioPlayerTableViewDelegate {
+    func changeStateImageView(_ state: CoverImageViewState, position: Int) {
+        guard self.presenter.currentType == .tracks else { return }
+        
+        let indexPath = IndexPath(row: position, section: 0)
+        (self.resultsTableView.cellForRow(at: indexPath) as? TrackTableViewCell)?.changeState(state)
     }
 }

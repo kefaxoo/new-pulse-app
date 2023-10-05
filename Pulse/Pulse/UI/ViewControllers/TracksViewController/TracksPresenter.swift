@@ -87,7 +87,14 @@ extension TracksPresenter: BaseTableViewPresenter {
     }
     
     func setupCell(_ cell: UITableViewCell, at indexPath: IndexPath) -> UITableViewCell {
-        (cell as? TrackTableViewCell)?.setupCell(showedTracks[indexPath.item], isSearchController: false, isLibraryController: self.type == .library)
+        let track = showedTracks[indexPath.item]
+        (cell as? TrackTableViewCell)?.setupCell(
+            track,
+            state: AudioPlayer.shared.state(for: track),
+            isSearchController: false,
+            isLibraryController: self.type == .library
+        )
+        
         (cell as? TrackTableViewCell)?.delegate = self
         return cell
     }
@@ -129,7 +136,9 @@ extension TracksPresenter: BaseTableViewPresenter {
                         self?.showedTracks = self?.tracks ?? []
                         self?.isResultsLoading = false
                         self?.delegate?.reloadData()
+                        self?.canLoadMore = !tracks.isEmpty
                     } failure: { [weak self] _ in
+                        MainCoordinator.shared.currentViewController?.dismissSpinner()
                         self?.isResultsLoading = false
                         self?.canLoadMore = false
                     }

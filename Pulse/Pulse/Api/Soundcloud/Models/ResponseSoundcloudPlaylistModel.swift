@@ -20,6 +20,14 @@ final class ResponseSoundcloudPlaylistModel: Decodable {
     let title              : String
     let artworkLink        : String?
     
+    var dateCreated: Int {
+        return Int(self.createdAt.toDate(format: "YYYY/MM/dd HH:mm:SS '+'0000")?.timeIntervalSince1970 ?? -1)
+    }
+    
+    var dateUpdated: Int {
+        return Int(self.updatedAt.toDate(format: "YYYY/MM/dd HH:mm:SS '+'0000")?.timeIntervalSince1970 ?? -1)
+    }
+    
     enum CodingKeys: String, CodingKey {
         case createdAt = "created_at"
         case updatedAt = "last_modified"

@@ -55,3 +55,20 @@ extension String {
         return newSelf
     }
 }
+
+extension String {
+    var emojiFlag: String {
+        let base: UInt32 = 127397
+        var line = ""
+        self.unicodeScalars.forEach({ line.unicodeScalars.append(UnicodeScalar(base + $0.value)!) })
+        return String(line)
+    }
+}
+
+extension String {
+    func toDate(format: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        return dateFormatter.date(from: self)
+    }
+}

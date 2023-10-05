@@ -17,9 +17,9 @@ final class NowPlayingView: BaseUIView {
     }()
     
     private lazy var coverImageView: UIImageView = {
-        let imageView = UIImageView.default
-        imageView.layer.cornerRadius = 10
-        return imageView
+        let coverImageView = UIImageView.default
+        coverImageView.layer.cornerRadius = 10
+        return coverImageView
     }()
     
     private lazy var trackInfoStackView: UIStackView = {
@@ -100,7 +100,7 @@ final class NowPlayingView: BaseUIView {
     }
     
     private func setupDelegate() {
-        AudioPlayer.shared.nowPlayingViewDelegate = self
+        AudioPlayer.shared.viewDelegate = self
     }
 }
 
@@ -195,8 +195,8 @@ extension NowPlayingView {
 }
 
 // MARK: -
-// MARK: AudioPlayerNowPlayingViewDelegate
-extension NowPlayingView: AudioPlayerNowPlayingViewDelegate {
+// MARK: AudioPlayerViewDelegate
+extension NowPlayingView: AudioPlayerViewDelegate {
     func setupTrackInfo(_ track: TrackModel) {
         self.titleLabel.text = track.title
         self.artistLabel.text = track.artistText

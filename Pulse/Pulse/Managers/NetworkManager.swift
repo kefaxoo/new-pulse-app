@@ -22,6 +22,7 @@ final class NetworkManager {
     
     private(set) var city    : String?
     private(set) var provider: String?
+    private(set) var country : String?
     
     private lazy var monitor = NWPathMonitor()
     private var status: NWPath.Status = .requiresConnection
@@ -67,7 +68,7 @@ extension NetworkManager {
         }
     }
     
-    var country: String {
+    var countryCode: String {
         get {
             return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.country.rawValue) as? String ?? "US"
         }
@@ -78,9 +79,10 @@ extension NetworkManager {
     
     func getCountryCode() {
         IpApiProvider.shared.getInfo { [weak self] model in
-            self?.country = model.countryCode ?? ""
+            self?.countryCode = model.countryCode ?? ""
             self?.city = model.city
             self?.provider = model.provider
+            self?.country = model.country
         }
     }
 }

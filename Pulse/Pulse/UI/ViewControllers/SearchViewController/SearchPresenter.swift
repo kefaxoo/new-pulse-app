@@ -24,15 +24,13 @@ final class SearchPresenter: BasePresenter {
     private var query = ""
     private var timer: Timer?
     
-    private var currentService: ServiceType = .none {
-        didSet {
-            self.currentSource = currentService.source
-        }
+    private var currentService: ServiceType = .none
+    private var currentSource: SourceType {
+        return self.currentService.source
     }
     
-    private var currentType: SearchType = .none
+    private(set) var currentType: SearchType = .none
     private var searchResponse: SearchResponse?
-    private var currentSource: SourceType = .none
     
     private var isResultsLoading = false
     
@@ -80,7 +78,7 @@ final class SearchPresenter: BasePresenter {
         self.textDidChange(self.query)
     }
     
-    @objc private func search() {
+    @objc func search() {
         timer?.invalidate()
         
         guard !self.query.isEmpty else {
@@ -112,61 +110,6 @@ final class SearchPresenter: BasePresenter {
 
             case .none:
                 MainCoordinator.shared.currentViewController?.dismissSpinner()
-        }
-    }
-    
-    func setupCell(tableView: UITableView, for indexPath: IndexPath) -> UITableViewCell {
-        return self.setupCell(tableView.dequeueReusableCell(withIdentifier: self.currentType.id, for: indexPath), for: indexPath)
-    }
-    
-    func setupCell(_ cell: UITableViewCell, for indexPath: IndexPath) -> UITableViewCell {
-        guard self.currentType != .none else { return UITableViewCell() }
-        
-        switch self.currentType {
-            case .tracks:
-                let track: TrackModel
-                switch self.currentSource {
-                    case .muffon:
-                        guard let muffonTrack = self.searchResponse?.results[indexPath.item] as? MuffonTrack else { return UITableViewCell() }
-                        
-                        track = TrackModel(muffonTrack)
-                    case .soundcloud:
-                        guard let soundcloudTrack = self.searchResponse?.results[indexPath.item] as? SoundcloudTrack else { return UITableViewCell() }
-                        
-                        track = TrackModel(soundcloudTrack)
-                    default:
-                        return UITableViewCell()
-                }
-                
-                (cell as? TrackTableViewCell)?.setupCell(track, isSearchController: true)
-                return cell
-            default:
-                return UITableViewCell()
-        }
-    }
-    
-    func didSelectRow(at indexPath: IndexPath) {
-        switch self.currentType {
-            case .tracks:
-                guard let playlist = AudioManager.shared.convertPlaylist(self.searchResponse?.results ?? [], source: self.currentSource),
-                      playlist.count == (self.searchResponse?.results.count ?? 0)
-                else { return }
-                
-                let track = playlist[indexPath.item]
-                if track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
-                    AudioManager.shared.updatePlayableLink(for: track) { [weak self] updatedTrack in
-                        if updatedTrack.track.source != .soundcloud,
-                           let response = updatedTrack.response {
-                            self?.searchResponse?.results[indexPath.item] = response
-                        }
-                        
-                        AudioPlayer.shared.play(from: updatedTrack.track, playlist: playlist, position: indexPath.item)
-                    }
-                } else {
-                    AudioPlayer.shared.play(from: track, playlist: playlist, position: indexPath.item)
-                }
-            default:
-                return
         }
     }
     
@@ -214,6 +157,65 @@ final class SearchPresenter: BasePresenter {
                     self.isResultsLoading = false
                     self.searchResponse?.cannotLoadMore()
             }
+        }
+    }
+}
+
+// MARK: -
+// MARK: BaseTableViewPresenter
+extension SearchPresenter: BaseTableViewPresenter {
+    func setupCell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
+        return self.setupCell(tableView.dequeueReusableCell(withIdentifier: self.currentType.id, for: indexPath), at: indexPath)
+    }
+    
+    func setupCell(_ cell: UITableViewCell, at indexPath: IndexPath) -> UITableViewCell {
+        guard self.currentType != .none else { return UITableViewCell() }
+        
+        switch self.currentType {
+            case .tracks:
+                let track: TrackModel
+                switch self.currentSource {
+                    case .muffon:
+                        guard let muffonTrack = self.searchResponse?.results[indexPath.item] as? MuffonTrack else { return UITableViewCell() }
+                        
+                        track = TrackModel(muffonTrack)
+                    case .soundcloud:
+                        guard let soundcloudTrack = self.searchResponse?.results[indexPath.item] as? SoundcloudTrack else { return UITableViewCell() }
+                        
+                        track = TrackModel(soundcloudTrack)
+                    default:
+                        return UITableViewCell()
+                }
+                
+                (cell as? TrackTableViewCell)?.setupCell(track, state: AudioPlayer.shared.state(for: track), isSearchController: true)
+                return cell
+            default:
+                return UITableViewCell()
+        }
+    }
+    
+    func didSelectRow(at indexPath: IndexPath) {
+        switch self.currentType {
+            case .tracks:
+                guard let playlist = AudioManager.shared.convertPlaylist(self.searchResponse?.results ?? [], source: self.currentSource),
+                      playlist.count == (self.searchResponse?.results.count ?? 0)
+                else { return }
+                
+                let track = playlist[indexPath.item]
+                if track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
+                    AudioManager.shared.updatePlayableLink(for: track) { [weak self] updatedTrack in
+                        if updatedTrack.track.source != .soundcloud,
+                           let response = updatedTrack.response {
+                            self?.searchResponse?.results[indexPath.item] = response
+                        }
+                        
+                        AudioPlayer.shared.play(from: updatedTrack.track, playlist: playlist, position: indexPath.item)
+                    }
+                } else {
+                    AudioPlayer.shared.play(from: track, playlist: playlist, position: indexPath.item)
+                }
+            default:
+                return
         }
     }
 }

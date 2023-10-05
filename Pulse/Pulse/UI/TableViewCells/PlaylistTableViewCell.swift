@@ -33,7 +33,7 @@ final class PlaylistTableViewCell: BaseUITableViewCell {
         self.playlist = playlist
         
         self.playlistTitleLabel.text = playlist.title
-        self.playlistImageView.setImage(from: playlist.imageLink)
+        self.playlistImageView.setImage(from: playlist.image?.small)
     }
 }
 

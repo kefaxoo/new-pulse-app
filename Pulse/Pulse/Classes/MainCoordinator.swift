@@ -13,6 +13,10 @@ final class MainCoordinator {
     var window: UIWindow?
     
     private(set) var mainTabBarController: MainTabBarController
+    var safeAreaInsets: UIEdgeInsets {
+        let window = UIApplication.shared.windows.first
+        return window?.safeAreaInsets ?? UIEdgeInsets(all: 0)
+    }
     
     var currentTabBarIndex: Int {
         return mainTabBarController.selectedIndex
@@ -134,7 +138,7 @@ final class MainCoordinator {
         guard AudioPlayer.shared.track != nil else { return }
         
         let nowPlayingVC = NowPlayingViewController()
-        self.present(nowPlayingVC)
+        self.mainTabBarController.present(nowPlayingVC, animated: true)
     }
     
     func presentWebController(type: WebViewType = .none, delegate: WebViewControllerDelegate? = nil) {
@@ -153,5 +157,10 @@ final class MainCoordinator {
     func pushPlaylistsViewController(type: LibraryControllerType) {
         let playlistsVC = PlaylistsViewController(type: type)
         self.pushViewController(vc: playlistsVC)
+    }
+    
+    func pushPlaylistViewController(type: LibraryControllerType, playlist: PlaylistModel) {
+        let playlistVC = PlaylistViewController(type: type, playlist: playlist)
+        self.pushViewController(vc: playlistVC)
     }
 }
