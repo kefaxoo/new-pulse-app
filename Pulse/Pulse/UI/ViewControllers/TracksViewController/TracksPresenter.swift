@@ -21,6 +21,8 @@ final class TracksPresenter: BasePresenter {
     
     private var soundcloudCursor: String?
     
+    private var didChangePlaylistInPlayer = false
+    
     private weak var delegate: TracksPresenterDelegate?
     
     var tracksCount: Int {
@@ -76,7 +78,6 @@ final class TracksPresenter: BasePresenter {
 extension TracksPresenter {
     func viewWillAppear() {
         self.reloadData()
-        AudioPlayer.shared.cleanPlayer(isNewPlaylist: true)
     }
 }
 
@@ -105,7 +106,10 @@ extension TracksPresenter: BaseTableViewPresenter {
         if SessionCacheManager.shared.isTrackInCache(track) || (track.playableLinks?.streamingLinkNeedsToRefresh ?? true) {
             AudioManager.shared.getPlayableLink(for: track) { [weak self] updatedTrack in
                 self?.tracks[indexPath.item] = updatedTrack.track
-                AudioPlayer.shared.play(from: updatedTrack.track, playlist: self?.tracks ?? [], position: indexPath.item, isNewPlaylist: false)
+                AudioPlayer.shared.play(from: updatedTrack.track, playlist: self?.tracks ?? [], position: indexPath.item, isNewPlaylist: !(self?.didChangePlaylistInPlayer ?? false))
+                if !(self?.didChangePlaylistInPlayer ?? false) {
+                    self?.didChangePlaylistInPlayer = true
+                }
             }
         } else {
             AudioPlayer.shared.play(from: track, playlist: tracks, position: indexPath.item)

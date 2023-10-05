@@ -21,6 +21,8 @@ final class PlaylistPresenter: BasePresenter {
     private var isResultsLoading = false
     private var canLoadMore = true
     
+    private var didChangePlaylistInPlayer = false
+    
     weak var delegate: PlaylistPresenterDelegate?
     
     var tracksCount: Int {
@@ -31,10 +33,6 @@ final class PlaylistPresenter: BasePresenter {
         self.playlist = playlist
         self.type = type
         self.fetchTracks()
-    }
-    
-    func viewWillAppear() {
-        AudioPlayer.shared.cleanPlayer(isNewPlaylist: true)
     }
     
     private func fetchTracks() {
@@ -89,7 +87,10 @@ extension PlaylistPresenter: BaseTableViewPresenter {
         if SessionCacheManager.shared.isTrackInCache(track) || track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
             AudioManager.shared.getPlayableLink(for: track) { [weak self] updatedTrack in
                 self?.tracks[index] = updatedTrack.track
-                AudioPlayer.shared.play(from: updatedTrack.track, playlist: self?.tracks ?? [], position: index, isNewPlaylist: false)
+                AudioPlayer.shared.play(from: updatedTrack.track, playlist: self?.tracks ?? [], position: index, isNewPlaylist: !(self?.didChangePlaylistInPlayer ?? false))
+                if !(self?.didChangePlaylistInPlayer ?? false) {
+                    self?.didChangePlaylistInPlayer = true
+                }
             }
         } else {
             AudioPlayer.shared.play(from: track, playlist: self.tracks, position: index)

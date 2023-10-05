@@ -35,7 +35,9 @@ fileprivate extension [CachedTrackModel] {
         if self.count == self.itemLimit - 1 {
             var minTrack = self[0]
             self.forEach({ minTrack = minTrack.listeningCount > $0.listeningCount ? $0 : minTrack })
-            _ = SessionCacheManager.shared.cleanTrack(minTrack)
+            DispatchQueue.main.async {
+                _ = SessionCacheManager.shared.cleanTrack(minTrack)
+            }
         }
         
         self.append(CachedTrackModel(track: track, url: url))
