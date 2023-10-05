@@ -277,12 +277,6 @@ fileprivate extension AudioPlayer {
                 for i in self.nextPosition..<self.playlist.count {
                     SessionCacheManager.shared.addTrackToQueue(self.playlist[i])
                 }
-                
-                if self.playlist.count - self.nextPosition > freeCountOfCache {
-                    for i in 0..<(freeCountOfCache - self.playlist.count - self.nextPosition) {
-                        SessionCacheManager.shared.addTrackToQueue(self.playlist[i])
-                    }
-                }
             }
         }
     }
