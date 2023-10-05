@@ -44,6 +44,7 @@ extension PlaylistViewController {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.prefersLargeTitles = false
         AudioPlayer.shared.tableViewDelegate = self
+        self.presenter.viewWillAppear()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

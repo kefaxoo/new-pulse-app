@@ -33,6 +33,10 @@ final class PlaylistPresenter: BasePresenter {
         self.fetchTracks()
     }
     
+    func viewWillAppear() {
+        AudioPlayer.shared.cleanPlayer(isNewPlaylist: true)
+    }
+    
     private func fetchTracks() {
         self.tracks.removeAll()
         switch self.type {
@@ -81,16 +85,11 @@ extension PlaylistPresenter: BaseTableViewPresenter {
         guard indexPath.item > 0 else { return }
         
         let index = indexPath.item - 1
-        var track = tracks[index]
-        if !track.cachedFilename.isEmpty,
-           let cachedLink = AudioManager.shared.getLocalLink(for: track) {
-            self.tracks[index].playableLinks = PlayableLinkModel(cachedLink)
-            track = self.tracks[index]
-            AudioPlayer.shared.play(from: track, playlist: self.tracks, position: index)
-        } else if track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
-            AudioManager.shared.updatePlayableLink(for: track) { [weak self] updatedTrack in
+        let track = tracks[index]
+        if SessionCacheManager.shared.isTrackInCache(track) || track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
+            AudioManager.shared.getPlayableLink(for: track) { [weak self] updatedTrack in
                 self?.tracks[index] = updatedTrack.track
-                AudioPlayer.shared.play(from: updatedTrack.track, playlist: self?.tracks ?? [], position: index)
+                AudioPlayer.shared.play(from: updatedTrack.track, playlist: self?.tracks ?? [], position: index, isNewPlaylist: false)
             }
         } else {
             AudioPlayer.shared.play(from: track, playlist: self.tracks, position: index)

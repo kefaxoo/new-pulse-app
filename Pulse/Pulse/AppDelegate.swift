@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NetworkManager.shared.checkNetwork()
         NetworkManager.shared.updateValues()
         ServicesManager.shared.refreshTokens()
+        LibraryManager.shared.removeTemporaryCache()
         MainCoordinator.shared.firstLaunch {
             LibraryManager.shared.initialSetup()
         }

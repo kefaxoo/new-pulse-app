@@ -17,6 +17,24 @@ final class AudioManager {
     
     fileprivate init() {}
     
+    func getPlayableLink(for track: TrackModel, success: @escaping((UpdatedTrack) -> ()), failure: (() -> ())? = nil) {
+        if !track.cachedFilename.isEmpty,
+           let link = self.getLocalLink(for: track) {
+            track.playableLinks = PlayableLinkModel(link)
+            success(UpdatedTrack(track: track, response: nil))
+            return
+        }
+        
+        if SessionCacheManager.shared.isTrackInCache(track),
+           let link = SessionCacheManager.shared.getCacheLink(for: track) {
+            track.playableLinks = PlayableLinkModel(link)
+            success(UpdatedTrack(track: track, response: nil))
+            return
+        }
+        
+        self.updatePlayableLink(for: track, success: success, failure: failure)
+    }
+    
     func updatePlayableLink(for track: TrackModel, success: @escaping((UpdatedTrack) -> ()), failure: (() -> ())? = nil) {
         switch track.source {
             case .muffon:

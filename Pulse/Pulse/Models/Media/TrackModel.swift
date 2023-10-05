@@ -147,6 +147,10 @@ final class TrackModel {
         
         return dict
     }
+    
+    var needFetchingPlayableLinks: Bool {
+        return SessionCacheManager.shared.isTrackInCache(self) || (self.playableLinks?.streamingLinkNeedsToRefresh ?? true)
+    }
 }
 
 // MARK: -

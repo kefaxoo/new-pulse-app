@@ -10,7 +10,6 @@ import AVKit
 import UIKit
 import MediaPlayer
 import AlertKit
-import CachingPlayerItem
 import PulseUIComponents
 
 protocol AudioPlayerCommonDelegate: AnyObject {
@@ -58,7 +57,6 @@ final class AudioPlayer: NSObject {
     private var position       = 0
     private var observer       : Any?
     private var nowPlayingInfo = [String: Any]()
-    private var nextPlayerItem : CachingPlayerItem?
     
     private(set) var track: TrackModel?
     private(set) var cover: UIImage?
@@ -79,39 +77,28 @@ final class AudioPlayer: NSObject {
     }
     
     func play(from track: TrackModel, playlist: [TrackModel], position: Int, isNewPlaylist: Bool = true) {
-        self.cleanPlayer()
-        
+        self.cleanPlayer(isNewPlaylist: isNewPlaylist)
+
         self.track = track
         self.playlist = playlist
         self.position = position
         
-        if let nextPlayerItem, !isNewPlaylist {
-            self.player.replaceCurrentItem(with: nextPlayerItem)
+        self.setupPlayerItem { [weak self] playerItem in
+            guard let playerItem,
+                  let self
+            else {
+                _ = self?.nextTrack()
+                return
+            }
+            
+            self.player.replaceCurrentItem(with: playerItem)
             self.player.play()
             NotificationCenter.default.addObserver(
                 self,
-                selector: #selector(playerDidFinishPlaying),
-                name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
+                selector: #selector(self.playerDidFinishPlaying),
+                name: AVPlayerItem.didPlayToEndTimeNotification,
                 object: self.player.currentItem
             )
-        } else {
-            self.setupPlayerItem { [weak self] playerItem in
-                guard let playerItem,
-                      let self
-                else {
-                    _ = self?.nextTrack()
-                    return
-                }
-                
-                self.player.replaceCurrentItem(with: playerItem)
-                self.player.play()
-                NotificationCenter.default.addObserver(
-                    self,
-                    selector: #selector(self.playerDidFinishPlaying),
-                    name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
-                    object: self.player.currentItem
-                )
-            }
         }
         
         self.tableViewDelegate?.changeStateImageView(.loading, position: self.position)
@@ -119,7 +106,9 @@ final class AudioPlayer: NSObject {
         self.setupCover()
         self.setupObserver()
         self.updatePlayableLink(at: self.nextPosition)
-        self.setupNextPlayerItem()
+        guard isNewPlaylist else { return }
+        
+        self.setupCache()
     }
     
     func state(for track: TrackModel) -> CoverImageViewState {
@@ -131,24 +120,27 @@ final class AudioPlayer: NSObject {
             return .loading
         }
     }
-}
-
-// MARK: -
-// MARK: Setup player methods
-fileprivate extension AudioPlayer {
-    func cleanPlayer() {
+    
+    func cleanPlayer(isNewPlaylist: Bool = true) {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: self.player.currentItem)
         self.player.replaceCurrentItem(with: nil)
         self.cover = nil
         self.viewDelegate?.changeState(isPlaying: false)
         self.tableViewDelegate?.changeStateImageView(.stopped, position: self.position)
+        guard isNewPlaylist else { return }
+        
+        SessionCacheManager.shared.cleanAllCache()
     }
-    
-    func setupPlayerItem(completion: @escaping((CachingPlayerItem?) -> ())) {
+}
+
+// MARK: -
+// MARK: Setup player methods
+fileprivate extension AudioPlayer {
+    func setupPlayerItem(completion: @escaping((AudioPlayerItem?) -> ())) {
         setupPlayerItem(forTrackAt: self.position, completion: completion)
     }
     
-    func setupPlayerItem(forTrackAt position: Int, completion: @escaping((CachingPlayerItem?) -> ())) {
+    func setupPlayerItem(forTrackAt position: Int, completion: @escaping((AudioPlayerItem?) -> ())) {
         if self.playlist[position].playableLinks?.streamingLinkNeedsToRefresh ?? true {
             self.updatePlayableLink(at: position) { [weak self] in
                 completion(self?.createPlayerItem(forTrackAt: position))
@@ -158,19 +150,13 @@ fileprivate extension AudioPlayer {
         }
     }
     
-    func createPlayerItem() -> CachingPlayerItem? {
+    func createPlayerItem() -> AudioPlayerItem? {
         return createPlayerItem(forTrackAt: self.position)
     }
     
-    func createPlayerItem(forTrackAt position: Int) -> CachingPlayerItem? {
-        guard let url = URL(string: self.playlist[position].playableLinks?.streaming ?? "") else { return nil }
-        
-        let playerItem = CachingPlayerItem(url: url)
-        playerItem.delegate = self
-        DispatchQueue.global(qos: .background).async {
-            playerItem.download()
-        }
-        
+    func createPlayerItem(forTrackAt position: Int) -> AudioPlayerItem? {
+        let playerItem = AudioPlayerItem(track: self.playlist[position])
+        playerItem?.prepare()
         return playerItem
     }
     
@@ -210,8 +196,8 @@ fileprivate extension AudioPlayer {
     }
     
     func updatePlayableLink(at position: Int, _ completion: (() -> ())? = nil) {
-        if self.playlist[position].playableLinks?.streamingLinkNeedsToRefresh ?? true {
-            AudioManager.shared.updatePlayableLink(for: self.playlist[position]) { [weak self] updatedTrack in
+        if self.playlist[position].needFetchingPlayableLinks {
+            AudioManager.shared.getPlayableLink(for: self.playlist[position]) { [weak self] updatedTrack in
                 self?.playlist[position] = updatedTrack.track
                 completion?()
             }
@@ -265,12 +251,6 @@ fileprivate extension AudioPlayer {
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
     
-    func setupNextPlayerItem() {
-        self.setupPlayerItem(forTrackAt: self.nextPosition) { [weak self] nextPlayerItem in
-            self?.nextPlayerItem = nextPlayerItem
-        }
-    }
-    
     func setupNotifications() {
         NotificationCenter.default.addObserver(
             self,
@@ -278,6 +258,33 @@ fileprivate extension AudioPlayer {
             name: AVAudioSession.interruptionNotification,
             object: AVAudioSession.sharedInstance()
         )
+    }
+    
+    func setupCache() {
+        let freeCountOfCache = SessionCacheManager.shared.freeCountOfCache
+        if self.playlist.count < freeCountOfCache {
+            self.playlist.forEach { [weak self] track in
+                guard track != self?.track else { return }
+                
+                SessionCacheManager.shared.addTrackToQueue(track)
+            }
+        } else {
+            if self.nextPosition == 0 {
+                for i in 0..<freeCountOfCache {
+                    SessionCacheManager.shared.addTrackToQueue(self.playlist[i])
+                }
+            } else {
+                for i in self.nextPosition..<self.playlist.count {
+                    SessionCacheManager.shared.addTrackToQueue(self.playlist[i])
+                }
+                
+                if self.playlist.count - self.nextPosition > freeCountOfCache {
+                    for i in 0..<(freeCountOfCache - self.playlist.count - self.nextPosition) {
+                        SessionCacheManager.shared.addTrackToQueue(self.playlist[i])
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -383,14 +390,6 @@ extension AudioPlayer {
               let duration = self.player.currentItem?.duration.seconds else { return }
         
         self.controllerDelegate?.updateDuration(Float(duration), currentTime: Float(self.player.currentTime().seconds))
-    }
-}
-
-// MARK: -
-// MARK: CachingPlayerItemDelegate
-extension AudioPlayer: CachingPlayerItemDelegate {
-    func playerItem(_ playerItem: CachingPlayerItem, didDownloadBytesSoFar bytesDownloaded: Int, outOf bytesExpected: Int) {
-        debugLog(bytesDownloaded, "/", bytesExpected)
     }
 }
 

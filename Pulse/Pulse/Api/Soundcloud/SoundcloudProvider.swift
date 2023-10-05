@@ -109,8 +109,17 @@ final class SoundcloudProvider: BaseRestApiProvider {
         }
     }
     
-    func libraryPlaylists(cursor: String? = nil, success: @escaping(([SoundcloudPlaylist], String?) -> ()), failure: @escaping SoundcloudDefualtErrorClosure) {
-        urlSession.dataTask(with: URLRequest(type: SoundcloudApi.likedPlaylists(cursor: cursor), shouldPrintLog: self.shouldPrintLog)) { [weak self] response in
+    func libraryPlaylists(
+        cursor: String? = nil,
+        success: @escaping(([SoundcloudPlaylist], String?) -> ()),
+        failure: @escaping SoundcloudDefualtErrorClosure
+    ) {
+        urlSession.dataTask(
+            with: URLRequest(
+                type: SoundcloudApi.likedPlaylists(cursor: cursor), 
+                shouldPrintLog: self.shouldPrintLog
+            )
+        ) { [weak self] response in
             switch response {
                 case .success(let response):
                     guard let response = response.data?.map(to: SoundcloudMain<SoundcloudPlaylist>.self) else {

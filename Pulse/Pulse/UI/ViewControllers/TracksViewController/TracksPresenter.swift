@@ -76,6 +76,7 @@ final class TracksPresenter: BasePresenter {
 extension TracksPresenter {
     func viewWillAppear() {
         self.reloadData()
+        AudioPlayer.shared.cleanPlayer(isNewPlaylist: true)
     }
 }
 
@@ -100,16 +101,11 @@ extension TracksPresenter: BaseTableViewPresenter {
     }
     
     func didSelectRow(at indexPath: IndexPath) {
-        var track = tracks[indexPath.item]
-        if !track.cachedFilename.isEmpty,
-           let cachedLink = AudioManager.shared.getLocalLink(for: track) {
-            self.tracks[indexPath.item].playableLinks = PlayableLinkModel(cachedLink)
-            track = self.tracks[indexPath.item]
-            AudioPlayer.shared.play(from: track, playlist: self.tracks, position: indexPath.item)
-        } else if track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
-            AudioManager.shared.updatePlayableLink(for: track) { [weak self] updatedTrack in
+        let track = tracks[indexPath.item]
+        if SessionCacheManager.shared.isTrackInCache(track) || (track.playableLinks?.streamingLinkNeedsToRefresh ?? true) {
+            AudioManager.shared.getPlayableLink(for: track) { [weak self] updatedTrack in
                 self?.tracks[indexPath.item] = updatedTrack.track
-                AudioPlayer.shared.play(from: updatedTrack.track, playlist: self?.tracks ?? [], position: indexPath.item)
+                AudioPlayer.shared.play(from: updatedTrack.track, playlist: self?.tracks ?? [], position: indexPath.item, isNewPlaylist: false)
             }
         } else {
             AudioPlayer.shared.play(from: track, playlist: tracks, position: indexPath.item)
