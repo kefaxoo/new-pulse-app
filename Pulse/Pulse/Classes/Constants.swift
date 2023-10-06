@@ -37,6 +37,9 @@ enum Constants {
         case nextTrack
         case actionsNowPlaying
         case playlists
+        case audioDestination
+        case minVolume
+        case maxVolume
         
         var image: UIImage? {
             let type: System
@@ -93,6 +96,12 @@ enum Constants {
                     type = .ellipsisCircleFill
                 case .playlists:
                     type = .musicNoteList
+                case .audioDestination:
+                    type = .airplayAudio
+                case .minVolume:
+                    type = .speakerFill
+                case .maxVolume:
+                    type = .speakerWave3Fill
                 default:
                     return self.customImage
             }
@@ -187,6 +196,9 @@ extension Constants.Images {
         case forwardFill              = "forward.fill"
         case ellipsisCircleFill       = "ellipsis.circle.fill"
         case musicNoteList            = "music.note.list"
+        case airplayAudio             = "airplayaudio"
+        case speakerFill              = "speaker.fill"
+        case speakerWave3Fill         = "speaker.wave.3.fill"
         
         var image: UIImage? {
             return UIImage(systemName: self.rawValue)

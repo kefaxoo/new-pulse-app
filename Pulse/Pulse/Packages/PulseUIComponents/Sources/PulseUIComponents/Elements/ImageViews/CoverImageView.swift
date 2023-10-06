@@ -29,7 +29,7 @@ public enum CoverImageViewState {
 
 public class CoverImageView: UIImageView {
     private lazy var substrateView: UIView = {
-        let view = UIView(color: .label.withAlphaComponent(0.5))
+        let view = UIView(color: .black.withAlphaComponent(0.5))
         view.isHidden = true
         return view
     }()
@@ -108,6 +108,15 @@ public class CoverImageView: UIImageView {
         self.init(frame: .zero)
         self.tintColor = tintColor
         self.setupInterface()
+    }
+    
+    public func reset() {
+        self.loadingActivityIndicatorView.stopAnimating()
+        self.loadingActivityIndicatorView.isHidden = true
+        self.musicIndicatorView.isHidden = true
+        self.musicIndicatorView.state = .stopped
+        self.substrateView.isHidden = true
+        self.image = nil
     }
 }
 

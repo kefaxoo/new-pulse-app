@@ -55,7 +55,7 @@ extension UIViewController {
         if let title {
             self.navigationItem.title = title
         }
-            
+        
         let navigationController = UINavigationController(rootViewController: self)
         navigationController.navigationBar.prefersLargeTitles = preferesLargeTitles
         navigationController.navigationBar.tintColor = SettingsManager.shared.color.color
@@ -69,5 +69,18 @@ extension UIViewController {
         vc.modalPresentationStyle = .overFullScreen
         vc.view.backgroundColor = .systemBackground
         return vc
+    }
+}
+
+extension UIViewController {
+    func ensureRange<T>(value: T, minimum: T, maximum: T) -> T where T : Comparable {
+        return min(max(value, minimum), maximum)
+    }
+    
+    func progressAlongAxis(_ pointOnAxis: CGFloat, _ axisLength: CGFloat) -> CGFloat {
+        let movementOnAxis = pointOnAxis / axisLength
+        let positiveMovementOnAxis = fmaxf(Float(movementOnAxis), 0.0)
+        let positiveMovementOnAxisPercent = fminf(positiveMovementOnAxis, 1.0)
+        return CGFloat(positiveMovementOnAxisPercent)
     }
 }

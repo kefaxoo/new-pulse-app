@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NetworkManager.shared.checkNetwork()
         NetworkManager.shared.updateValues()
         ServicesManager.shared.refreshTokens()
+        LibraryManager.shared.removeTemporaryCache()
         MainCoordinator.shared.firstLaunch {
             LibraryManager.shared.initialSetup()
         }
@@ -36,4 +37,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
     // swiftlint:enable line_length
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        LibraryManager.shared.removeTemporaryCache()
+    }
 }

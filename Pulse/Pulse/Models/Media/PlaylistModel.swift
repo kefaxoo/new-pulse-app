@@ -28,8 +28,8 @@ final class PlaylistModel {
         self.id          = String(playlist.id)
         self.title       = playlist.title
         self.image       = ImageModel(playlist.artworkLink)
-        self.dateCreated = -1
-        self.dateUpdated = -1
+        self.dateCreated = playlist.dateCreated
+        self.dateUpdated = playlist.dateUpdated
         self.trackIds    = []
     }
 }

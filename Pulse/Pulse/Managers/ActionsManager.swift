@@ -196,8 +196,8 @@ final class ActionsManager {
 fileprivate extension ActionsManager {
     func playNext(_ track: TrackModel) -> UIAction {
         let action = UIAction(title: "Play next", image: Constants.Images.playNext.image) { _ in
-            if track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
-                AudioManager.shared.updatePlayableLink(for: track) { updatedTrack in
+            if SessionCacheManager.shared.isTrackInCache(track) || track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
+                AudioManager.shared.getPlayableLink(for: track) { updatedTrack in
                     AudioPlayer.shared.playNext(updatedTrack.track)
                 }
                 
@@ -212,8 +212,8 @@ fileprivate extension ActionsManager {
     
     func playLast(_ track: TrackModel) -> UIAction {
         let action = UIAction(title: "Play last", image: Constants.Images.playLast.image) { _ in
-            if track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
-                AudioManager.shared.updatePlayableLink(for: track) { updatedTrack in
+            if SessionCacheManager.shared.isTrackInCache(track) || track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
+                AudioManager.shared.getPlayableLink(for: track) { updatedTrack in
                     AudioPlayer.shared.playLast(updatedTrack.track)
                 }
                 

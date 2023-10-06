@@ -21,6 +21,8 @@ final class TracksPresenter: BasePresenter {
     
     private var soundcloudCursor: String?
     
+    private var didChangePlaylistInPlayer = false
+    
     private weak var delegate: TracksPresenterDelegate?
     
     var tracksCount: Int {
@@ -100,19 +102,20 @@ extension TracksPresenter: BaseTableViewPresenter {
     }
     
     func didSelectRow(at indexPath: IndexPath) {
-        var track = tracks[indexPath.item]
-        if !track.cachedFilename.isEmpty,
-           let cachedLink = AudioManager.shared.getLocalLink(for: track) {
-            self.tracks[indexPath.item].playableLinks = PlayableLinkModel(cachedLink)
-            track = self.tracks[indexPath.item]
-            AudioPlayer.shared.play(from: track, playlist: self.tracks, position: indexPath.item)
-        } else if track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
-            AudioManager.shared.updatePlayableLink(for: track) { [weak self] updatedTrack in
+        let track = tracks[indexPath.item]
+        if track.needFetchingPlayableLinks {
+            AudioManager.shared.getPlayableLink(for: track) { [weak self] updatedTrack in
                 self?.tracks[indexPath.item] = updatedTrack.track
-                AudioPlayer.shared.play(from: updatedTrack.track, playlist: self?.tracks ?? [], position: indexPath.item)
+                AudioPlayer.shared.play(from: updatedTrack.track, playlist: self?.tracks ?? [], position: indexPath.item, isNewPlaylist: !(self?.didChangePlaylistInPlayer ?? false))
+                if !(self?.didChangePlaylistInPlayer ?? false) {
+                    self?.didChangePlaylistInPlayer = true
+                }
             }
         } else {
-            AudioPlayer.shared.play(from: track, playlist: tracks, position: indexPath.item)
+            AudioPlayer.shared.play(from: track, playlist: tracks, position: indexPath.item, isNewPlaylist: !self.didChangePlaylistInPlayer)
+            if !self.didChangePlaylistInPlayer {
+                self.didChangePlaylistInPlayer = true
+            }
         }
     }
     
@@ -136,7 +139,9 @@ extension TracksPresenter: BaseTableViewPresenter {
                         self?.showedTracks = self?.tracks ?? []
                         self?.isResultsLoading = false
                         self?.delegate?.reloadData()
+                        self?.canLoadMore = !tracks.isEmpty
                     } failure: { [weak self] _ in
+                        MainCoordinator.shared.currentViewController?.dismissSpinner()
                         self?.isResultsLoading = false
                         self?.canLoadMore = false
                     }

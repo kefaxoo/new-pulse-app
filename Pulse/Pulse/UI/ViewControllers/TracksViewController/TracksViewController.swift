@@ -81,6 +81,7 @@ extension TracksViewController {
         guard self.type == .library else { return }
         
         self.navigationItem.searchController = self.searchController
+        self.navigationItem.hidesSearchBarWhenScrolling = false
     }
 }
 

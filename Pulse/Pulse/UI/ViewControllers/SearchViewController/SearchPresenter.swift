@@ -33,6 +33,7 @@ final class SearchPresenter: BasePresenter {
     private var searchResponse: SearchResponse?
     
     private var isResultsLoading = false
+    private var didChangePlaylistInPlayer = false
     
     weak var delegate: SearchPresenterDelegate?
     
@@ -87,6 +88,7 @@ final class SearchPresenter: BasePresenter {
             return
         }
         
+        self.didChangePlaylistInPlayer = false
         MainCoordinator.shared.currentViewController?.presentSpinner()
         switch self.currentService.source {
             case .muffon:
@@ -202,17 +204,22 @@ extension SearchPresenter: BaseTableViewPresenter {
                 else { return }
                 
                 let track = playlist[indexPath.item]
-                if track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
-                    AudioManager.shared.updatePlayableLink(for: track) { [weak self] updatedTrack in
-                        if updatedTrack.track.source != .soundcloud,
-                           let response = updatedTrack.response {
+                if track.needFetchingPlayableLinks {
+                    AudioManager.shared.getPlayableLink(for: track) { [weak self] updatedTrack in
+                        if let response = updatedTrack.response {
                             self?.searchResponse?.results[indexPath.item] = response
                         }
                         
-                        AudioPlayer.shared.play(from: updatedTrack.track, playlist: playlist, position: indexPath.item)
+                        AudioPlayer.shared.play(from: updatedTrack.track, playlist: playlist, position: indexPath.item, isNewPlaylist: !(self?.didChangePlaylistInPlayer ?? false))
+                        if !(self?.didChangePlaylistInPlayer ?? false) {
+                            self?.didChangePlaylistInPlayer = true
+                        }
                     }
                 } else {
-                    AudioPlayer.shared.play(from: track, playlist: playlist, position: indexPath.item)
+                    AudioPlayer.shared.play(from: track, playlist: playlist, position: indexPath.item, isNewPlaylist: !self.didChangePlaylistInPlayer)
+                    if !self.didChangePlaylistInPlayer {
+                        self.didChangePlaylistInPlayer = true
+                    }
                 }
             default:
                 return

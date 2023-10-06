@@ -122,7 +122,7 @@ extension TrackTableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        self.coverImageView.image = nil
+        self.coverImageView.reset()
         self.titleLabel.text = nil
         self.serviceImageView.image = nil
         self.artistLabel.text = nil
@@ -130,7 +130,6 @@ extension TrackTableViewCell {
         self.libraryImageView.image = nil
         self.libraryImageView.isHidden = true
         self.unavailableView.isHidden = true
-        self.coverImageView.state = .stopped
         
         let color = SettingsManager.shared.color.color
         self.actionsButton.tintColor = color

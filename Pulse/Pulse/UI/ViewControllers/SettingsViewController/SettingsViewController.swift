@@ -9,7 +9,7 @@ import UIKit
 
 class SettingsViewController: BaseUIViewController {
     private lazy var settingsTableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.dataSource = self
         tableView.register(
             SwitchTableViewCell.self,

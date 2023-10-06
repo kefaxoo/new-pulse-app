@@ -38,7 +38,7 @@ final class ImageManager {
         SDWebImageManager.shared.loadImage(with: URL(string: link), progress: nil) { [weak self] image, _, error, _, _, _ in
             if error == nil {
                 self?.downloadImage(from: link) { image in
-                    guard error == nil else {
+                    guard image != nil else {
                         if let errorClosure {
                             errorClosure()
                         } else {

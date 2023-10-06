@@ -45,7 +45,7 @@ final class SignInViewController: CoversViewController {
         return textField
     }()
     
-    private lazy var passwordTextField = PasswordTextField(tintColor: SettingsManager.shared.color.color)
+    private lazy var passwordTextField = PasswordTextField()
     
     private lazy var signInButton: UIButton = {
         let button = UIButton()

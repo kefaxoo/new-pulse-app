@@ -64,3 +64,11 @@ extension String {
         return String(line)
     }
 }
+
+extension String {
+    func toDate(format: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        return dateFormatter.date(from: self)
+    }
+}
