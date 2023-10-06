@@ -16,13 +16,6 @@ final class SearchViewController: BaseUIViewController {
         return searchController
     }()
     
-    private lazy var mainStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 10
-        return stackView
-    }()
-    
     private lazy var serviceSegmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl()
         segmentedControl.addTarget(self, action: #selector(serviceDidChange), for: .valueChanged)
@@ -75,17 +68,25 @@ extension SearchViewController {
     }
     
     override func setupLayout() {
-        self.view.addSubview(mainStackView)
-        mainStackView.addArrangedSubview(serviceSegmentedControl)
-        mainStackView.addArrangedSubview(typeSegmentedControl)
-        mainStackView.addArrangedSubview(resultsTableView)
+        self.view.addSubview(serviceSegmentedControl)
+        self.view.addSubview(typeSegmentedControl)
+        self.view.addSubview(resultsTableView)
     }
     
     override func setupConstraints() {
-        mainStackView.snp.makeConstraints { make in
+        serviceSegmentedControl.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(10)
-            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(20)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
+            make.leading.trailing.equalToSuperview().inset(UIEdgeInsets(horizontal: 20))
+        }
+        
+        typeSegmentedControl.snp.makeConstraints { make in
+            make.top.equalTo(serviceSegmentedControl.snp.bottom).offset(10)
+            make.leading.trailing.equalToSuperview().inset(UIEdgeInsets(horizontal: 20))
+        }
+        
+        resultsTableView.snp.makeConstraints { make in
+            make.top.equalTo(typeSegmentedControl.snp.bottom).offset(10)
+            make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
     }

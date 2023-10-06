@@ -7,6 +7,7 @@
 
 import UIKit
 import SliderControl
+import AVKit
 
 final class NowPlayingViewController: BaseUIViewController {
     private lazy var dismissButton: UIButton = {
@@ -119,14 +120,11 @@ final class NowPlayingViewController: BaseUIViewController {
         return stackView
     }()
     
-    private lazy var audioDestinationButton: UIButton = {
-        let button = UIButton()
-        var configuration = UIButton.Configuration.plain()
-        configuration.image = Constants.Images.audioDestination.image
-        configuration.preferredSymbolConfigurationForImage = .init(font: .systemFont(ofSize: 17), scale: .large)
-        button.configuration = configuration
-        button.tintColor = SettingsManager.shared.color.color
-        return button
+    private lazy var routePickerView: AVRoutePickerView = {
+        let avRoutePickerView = AVRoutePickerView()
+        avRoutePickerView.tintColor = SettingsManager.shared.color.color
+        avRoutePickerView.activeTintColor = SettingsManager.shared.color.color
+        return avRoutePickerView
     }()
     
     private lazy var presenter: NowPlayingPresenter = {
@@ -186,7 +184,7 @@ extension NowPlayingViewController {
         self.view.addSubview(maxVolumeImageView)
         
         self.view.addSubview(bottomStackView)
-        bottomStackView.addArrangedSubview(audioDestinationButton)
+        bottomStackView.addArrangedSubview(routePickerView)
     }
     
     override func setupConstraints() {

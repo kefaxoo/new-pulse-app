@@ -60,11 +60,7 @@ extension PlaylistViewController {
     }
     
     override func setupConstraints() {
-        playlistTableView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().inset(20)
-        }
+        playlistTableView.snp.makeConstraints({ $0.edges.equalToSuperview() })
     }
 }
 

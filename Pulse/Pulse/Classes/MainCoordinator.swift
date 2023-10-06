@@ -14,7 +14,7 @@ final class MainCoordinator {
     
     private(set) var mainTabBarController: MainTabBarController
     var safeAreaInsets: UIEdgeInsets {
-        let window = UIApplication.shared.windows.first
+        let window = UIApplication.shared.keyWindow
         return window?.safeAreaInsets ?? UIEdgeInsets(all: 0)
     }
     

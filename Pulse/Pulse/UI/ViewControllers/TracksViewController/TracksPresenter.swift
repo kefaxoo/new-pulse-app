@@ -106,7 +106,13 @@ extension TracksPresenter: BaseTableViewPresenter {
         if track.needFetchingPlayableLinks {
             AudioManager.shared.getPlayableLink(for: track) { [weak self] updatedTrack in
                 self?.tracks[indexPath.item] = updatedTrack.track
-                AudioPlayer.shared.play(from: updatedTrack.track, playlist: self?.tracks ?? [], position: indexPath.item, isNewPlaylist: !(self?.didChangePlaylistInPlayer ?? false))
+                AudioPlayer.shared.play(
+                    from: updatedTrack.track,
+                    playlist: self?.tracks ?? [],
+                    position: indexPath.item,
+                    isNewPlaylist: !(self?.didChangePlaylistInPlayer ?? false)
+                )
+                
                 if !(self?.didChangePlaylistInPlayer ?? false) {
                     self?.didChangePlaylistInPlayer = true
                 }

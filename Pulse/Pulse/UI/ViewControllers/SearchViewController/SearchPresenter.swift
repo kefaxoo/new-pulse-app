@@ -210,7 +210,13 @@ extension SearchPresenter: BaseTableViewPresenter {
                             self?.searchResponse?.results[indexPath.item] = response
                         }
                         
-                        AudioPlayer.shared.play(from: updatedTrack.track, playlist: playlist, position: indexPath.item, isNewPlaylist: !(self?.didChangePlaylistInPlayer ?? false))
+                        AudioPlayer.shared.play(
+                            from: updatedTrack.track, 
+                            playlist: playlist,
+                            position: indexPath.item,
+                            isNewPlaylist: !(self?.didChangePlaylistInPlayer ?? false)
+                        )
+                        
                         if !(self?.didChangePlaylistInPlayer ?? false) {
                             self?.didChangePlaylistInPlayer = true
                         }

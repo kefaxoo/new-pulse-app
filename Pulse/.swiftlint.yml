@@ -8,7 +8,6 @@ disabled_rules:
   - array_init
 
 opt_in_rules:
-  - missing_docs
   - array_init
   - closure_end_indentation
   - closure_spacing
@@ -19,7 +18,6 @@ opt_in_rules:
   - empty_string
   - enum_case_associated_values_count
   - fatal_error_message
-  - first_where
   - last_where
   - legacy_random
   - literal_expression_end_indentation

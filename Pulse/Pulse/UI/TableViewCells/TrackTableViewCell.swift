@@ -163,12 +163,16 @@ extension TrackTableViewCell {
     override func setupConstraints() {
         coverImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)
-            make.leading.equalToSuperview()
+            make.leading.equalToSuperview().offset(20)
             make.bottom.equalToSuperview().inset(10)
             make.height.width.equalTo(42)
         }
         
-        rightStackView.snp.makeConstraints({ $0.top.trailing.bottom.equalToSuperview() })
+        rightStackView.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.trailing.equalToSuperview().inset(20)
+        }
+        
         actionsButton.snp.makeConstraints({ $0.width.equalTo(20) })
         libraryImageView.snp.makeConstraints({ $0.width.equalTo(20) })
         

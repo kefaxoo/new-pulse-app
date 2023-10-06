@@ -99,7 +99,7 @@ extension PlaylistHeaderTableViewCell {
     }
     
     override func setupConstraints() {
-        mainStackView.snp.makeConstraints({ $0.edges.equalToSuperview() })                                  
+        mainStackView.snp.makeConstraints({ $0.edges.equalToSuperview().inset(UIEdgeInsets(horizontal: 20)) })                                  
         playlistImageView.snp.makeConstraints({ $0.width.height.equalTo(300) })
     }
 }
