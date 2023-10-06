@@ -61,7 +61,7 @@ final class SessionCacheManager {
     private let dispatchQueue = DispatchQueue(label: "Pulse-SessionCacheManager-Queue", qos: .background)
     
     fileprivate init() {
-        cachedTracks.itemLimit = 3
+        cachedTracks.itemLimit = 20
         debugPrint(URL(filename: "", path: .cachesDirectory)?.absoluteString ?? "")
     }
     

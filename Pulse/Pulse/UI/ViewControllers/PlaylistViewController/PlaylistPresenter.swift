@@ -93,7 +93,10 @@ extension PlaylistPresenter: BaseTableViewPresenter {
                 }
             }
         } else {
-            AudioPlayer.shared.play(from: track, playlist: self.tracks, position: index)
+            AudioPlayer.shared.play(from: track, playlist: self.tracks, position: index, isNewPlaylist: !self.didChangePlaylistInPlayer)
+            if !self.didChangePlaylistInPlayer {
+                self.didChangePlaylistInPlayer = true
+            }
         }
     }
     
