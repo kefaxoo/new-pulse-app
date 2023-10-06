@@ -17,17 +17,17 @@ fileprivate struct CachedTrackModel {
     }
 }
 
-fileprivate struct ArrayCachedTrackModelStoredVariables {
-    static var itemLimit = 0
-}
-
 fileprivate extension [CachedTrackModel] {
+    struct NewVariables {
+        static var itemLimit = 0
+    }
+    
     var itemLimit: Int {
         get {
-            return ArrayCachedTrackModelStoredVariables.itemLimit
+            return NewVariables.itemLimit
         }
         set {
-            ArrayCachedTrackModelStoredVariables.itemLimit = newValue
+            NewVariables.itemLimit = newValue
         }
     }
     
@@ -58,8 +58,10 @@ final class SessionCacheManager {
     
     private var cachedTracks = [CachedTrackModel]()
     
+    private let dispatchQueue = DispatchQueue(label: "Pulse-SessionCacheManager-Queue", qos: .background)
+    
     fileprivate init() {
-        cachedTracks.itemLimit = 20
+        cachedTracks.itemLimit = 3
         debugPrint(URL(filename: "", path: .cachesDirectory)?.absoluteString ?? "")
     }
     
@@ -67,6 +69,8 @@ final class SessionCacheManager {
         guard !self.isTrackInCache(track) else { return }
         
         self.queue.append(track)
+        guard !self.isDownloading else { return }
+        
         self.startCaching()
     }
     
@@ -101,25 +105,37 @@ final class SessionCacheManager {
     }
     
     private func startCaching() {
-        guard !self.queue.isEmpty else { return }
+        guard !self.queue.isEmpty,
+              !self.isDownloading
+        else { return }
         
+        self.isDownloading = true
         let track = self.queue.removeFirst()
-        AudioManager.shared.updatePlayableLink(for: track) { [weak self] updatedTrack in
-            guard let downloadLink = updatedTrack.track.playableLinks?.streaming else {
-                self?.startCaching()
-                return
-            }
-            
-            DownloadManager.shared.downloadTrack(from: downloadLink, to: self?.getCacheUrl(for: track)) { url in
-                guard let url else {
+        debugLog(self.queue.count)
+        self.dispatchQueue.async { [weak self] in
+            AudioManager.shared.updatePlayableLink(for: track) { updatedTrack in
+                guard let downloadLink = updatedTrack.track.playableLinks?.streaming else {
+                    self?.isDownloading = false
                     self?.startCaching()
                     return
                 }
                 
-                self?.cachedTracks.append(track: updatedTrack.track, url: url)
+                self?.dispatchQueue.async {
+                    DownloadManager.shared.downloadTrack(from: downloadLink, to: self?.getCacheUrl(for: track)) { url in
+                        self?.isDownloading = false
+                        self?.startCaching()
+                        guard let url else { return }
+                        
+                        DispatchQueue.main.async {
+                            debugLog("Track", track.title, "was cached")
+                            self?.cachedTracks.append(track: updatedTrack.track, url: url)
+                        }
+                    }
+                }
+            } failure: {
+                self?.isDownloading = false
+                self?.startCaching()
             }
-        } failure: { [weak self] in
-            self?.startCaching()
         }
     }
     
@@ -132,6 +148,7 @@ final class SessionCacheManager {
     
     func cleanAllCache() {
         self.cachedTracks.forEach({ _ = self.cleanTrack($0) })
+        self.isDownloading = false
     }
     
     var freeCountOfCache: Int {

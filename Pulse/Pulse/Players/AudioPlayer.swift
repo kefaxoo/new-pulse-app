@@ -96,7 +96,7 @@ final class AudioPlayer: NSObject {
             NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(self.playerDidFinishPlaying),
-                name: AVPlayerItem.didPlayToEndTimeNotification,
+                name: .AVPlayerItemDidPlayToEndTime,
                 object: self.player.currentItem
             )
         }
@@ -143,21 +143,19 @@ fileprivate extension AudioPlayer {
     func setupPlayerItem(forTrackAt position: Int, completion: @escaping((AudioPlayerItem?) -> ())) {
         if self.playlist[position].playableLinks?.streamingLinkNeedsToRefresh ?? true {
             self.updatePlayableLink(at: position) { [weak self] in
-                completion(self?.createPlayerItem(forTrackAt: position))
+                self?.createPlayerItem(forTrackAt: position, completion: completion)
             }
         } else {
-            completion(self.createPlayerItem(forTrackAt: position))
+            self.createPlayerItem(forTrackAt: position, completion: completion)
         }
     }
     
-    func createPlayerItem() -> AudioPlayerItem? {
-        return createPlayerItem(forTrackAt: self.position)
+    func createPlayerItem(completion: @escaping((AudioPlayerItem?) -> ())) {
+        self.createPlayerItem(forTrackAt: self.position, completion: completion)
     }
     
-    func createPlayerItem(forTrackAt position: Int) -> AudioPlayerItem? {
-        let playerItem = AudioPlayerItem(track: self.playlist[position])
-        playerItem?.prepare()
-        return playerItem
+    func createPlayerItem(forTrackAt position: Int, completion: @escaping((AudioPlayerItem?) -> ())) {
+        AudioPlayerItem.initialize(with: self.playlist[position], completion: completion)
     }
     
     func setupObserver() {

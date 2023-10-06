@@ -84,7 +84,7 @@ extension PlaylistPresenter: BaseTableViewPresenter {
         
         let index = indexPath.item - 1
         let track = tracks[index]
-        if SessionCacheManager.shared.isTrackInCache(track) || track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
+        if track.needFetchingPlayableLinks {
             AudioManager.shared.getPlayableLink(for: track) { [weak self] updatedTrack in
                 self?.tracks[index] = updatedTrack.track
                 AudioPlayer.shared.play(from: updatedTrack.track, playlist: self?.tracks ?? [], position: index, isNewPlaylist: !(self?.didChangePlaylistInPlayer ?? false))

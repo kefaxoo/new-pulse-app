@@ -202,7 +202,7 @@ extension SearchPresenter: BaseTableViewPresenter {
                 else { return }
                 
                 let track = playlist[indexPath.item]
-                if SessionCacheManager.shared.isTrackInCache(track) || (track.playableLinks?.streamingLinkNeedsToRefresh ?? true) {
+                if track.needFetchingPlayableLinks {
                     AudioManager.shared.getPlayableLink(for: track) { [weak self] updatedTrack in
                         if let response = updatedTrack.response {
                             self?.searchResponse?.results[indexPath.item] = response

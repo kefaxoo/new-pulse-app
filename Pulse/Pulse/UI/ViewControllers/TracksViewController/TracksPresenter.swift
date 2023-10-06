@@ -103,7 +103,7 @@ extension TracksPresenter: BaseTableViewPresenter {
     
     func didSelectRow(at indexPath: IndexPath) {
         let track = tracks[indexPath.item]
-        if SessionCacheManager.shared.isTrackInCache(track) || (track.playableLinks?.streamingLinkNeedsToRefresh ?? true) {
+        if track.needFetchingPlayableLinks {
             AudioManager.shared.getPlayableLink(for: track) { [weak self] updatedTrack in
                 self?.tracks[indexPath.item] = updatedTrack.track
                 AudioPlayer.shared.play(from: updatedTrack.track, playlist: self?.tracks ?? [], position: indexPath.item, isNewPlaylist: !(self?.didChangePlaylistInPlayer ?? false))
@@ -112,7 +112,10 @@ extension TracksPresenter: BaseTableViewPresenter {
                 }
             }
         } else {
-            AudioPlayer.shared.play(from: track, playlist: tracks, position: indexPath.item)
+            AudioPlayer.shared.play(from: track, playlist: tracks, position: indexPath.item, isNewPlaylist: !self.didChangePlaylistInPlayer)
+            if !self.didChangePlaylistInPlayer {
+                self.didChangePlaylistInPlayer = true
+            }
         }
     }
     

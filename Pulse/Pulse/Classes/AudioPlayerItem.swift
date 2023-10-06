@@ -20,9 +20,11 @@ class AudioPlayerItem: AVPlayerItem {
     }
     
     static func initialize(with track: TrackModel, prepare: Bool = false, completion: @escaping((AudioPlayerItem?) -> ())) {
-        AudioManager.shared.updatePlayableLink(for: track) { updatedTrack in
+        AudioManager.shared.getPlayableLink(for: track) { updatedTrack in
             let playerItem = AudioPlayerItem(track: updatedTrack.track)
             completion(playerItem)
+            guard prepare else { return }
+            
             playerItem?.prepare()
         } failure: {
             completion(nil)
