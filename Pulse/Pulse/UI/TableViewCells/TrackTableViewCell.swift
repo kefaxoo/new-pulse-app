@@ -12,7 +12,6 @@ final class TrackTableViewCell: BaseUITableViewCell {
     private lazy var coverImageView: CoverImageView = {
         let imageView = CoverImageView(tintColor: SettingsManager.shared.color.color)
         imageView.layer.cornerRadius = 10
-        imageView.state = .stopped
         return imageView
     }()
     
@@ -91,9 +90,12 @@ final class TrackTableViewCell: BaseUITableViewCell {
     }()
     
     private var track: TrackModel?
+    private var isLibraryController = false
     
     func setupCell(_ track: TrackModel, state: CoverImageViewState, isSearchController: Bool = false, isLibraryController: Bool = false) {
         self.track = track
+        self.isLibraryController = isLibraryController
+        
         self.coverImageView.setImage(from: track.image?.small)
         self.coverImageView.state = state
         
@@ -205,5 +207,10 @@ extension TrackTableViewCell: ActionsManagerDelegate {
     
     func reloadData() {
         self.delegate?.reloadData()
+    }
+    
+    func updateTrackState(_ state: TrackLibraryState) {
+        self.libraryImageView.image = state.image
+        self.libraryImageView.isHidden = !((state == .added && !self.isLibraryController) || state == .downloaded)
     }
 }

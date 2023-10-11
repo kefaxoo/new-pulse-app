@@ -11,6 +11,7 @@ protocol ActionsManagerDelegate: AnyObject {
     func updateButtonMenu()
     func updatedTrack(_ track: TrackModel)
     func reloadData()
+    func updateTrackState(_ state: TrackLibraryState)
 }
 
 extension ActionsManagerDelegate {
@@ -61,8 +62,9 @@ final class ActionsManager {
                 RealmManager<LibraryTrackModel>().write(object: libraryTrack)
                 AlertView.shared.present(title: "Added to library", alertType: .done, system: .iOS17AppleMusic)
                 track.image = ImageModel(coverFilename: libraryTrack.coverFilename)
+                self?.delegate?.updateButtonMenu()
                 self?.delegate?.updatedTrack(track)
-                self?.delegate?.reloadData()
+                self?.delegate?.updateTrackState(.added)
                 
                 LibraryManager.shared.syncTrack(track)
                 
@@ -123,6 +125,7 @@ final class ActionsManager {
             
             RealmManager<LibraryTrackModel>().delete(object: libraryTrack)
             self.delegate?.updateButtonMenu()
+            self.delegate?.updateTrackState(.none)
             self.delegate?.reloadData()
             AlertView.shared.present(title: "Removed to library", alertType: .done, system: .iOS17AppleMusic)
             
@@ -155,6 +158,7 @@ final class ActionsManager {
                 AlertView.shared.present(title: "Removed cache", alertType: .done, system: .iOS16AppleMusic)
                 self.delegate?.reloadData()
                 self.delegate?.updateButtonMenu()
+                self.delegate?.updateTrackState(.added)
             }
         }
         
