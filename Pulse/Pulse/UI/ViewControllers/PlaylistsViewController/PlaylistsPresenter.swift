@@ -23,6 +23,14 @@ final class PlaylistsPresenter: BasePresenter {
         return playlists.count
     }
     
+    var isSegmentedControlHidden: Bool {
+        return self.type == .library || self.type == .none
+    }
+    
+    var segmentsForControl: [LibraryPlaylistType] {
+        return self.type.service.playlistsSegments
+    }
+    
     private weak var delegate: PlaylistsPresenterDelegate?
     
     init(type: LibraryControllerType, delegate: PlaylistsPresenterDelegate?) {

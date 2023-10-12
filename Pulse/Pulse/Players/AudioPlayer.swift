@@ -106,9 +106,11 @@ final class AudioPlayer: NSObject {
         self.setupCover()
         self.setupObserver()
         self.updatePlayableLink(at: self.nextPosition)
-        guard isNewPlaylist else { return }
-        
-        self.setupCache()
+        if isNewPlaylist {
+            self.setupCache()
+        } else {
+            SessionCacheManager.shared.addTrackToQueue(track)
+        }
     }
     
     func state(for track: TrackModel) -> CoverImageViewState {
@@ -141,7 +143,7 @@ fileprivate extension AudioPlayer {
     }
     
     func setupPlayerItem(forTrackAt position: Int, completion: @escaping((AudioPlayerItem?) -> ())) {
-        if self.playlist[position].playableLinks?.streamingLinkNeedsToRefresh ?? true {
+        if self.playlist[position].needFetchingPlayableLinks {
             self.updatePlayableLink(at: position) { [weak self] in
                 self?.createPlayerItem(forTrackAt: position, completion: completion)
             }

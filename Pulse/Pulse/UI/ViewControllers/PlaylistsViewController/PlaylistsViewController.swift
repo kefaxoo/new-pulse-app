@@ -15,6 +15,13 @@ final class PlaylistsViewController: BaseUIViewController {
         return searchController
     }()
     
+    private lazy var playlistsTypeSegmentedControl: UISegmentedControl = {
+        let segmentedControl = UISegmentedControl()
+        segmentedControl.isHidden = true
+        segmentedControl.addTarget(self, action: #selector(playlistsTypeDidChange), for: .valueChanged)
+        return segmentedControl
+    }()
+    
     private lazy var playlistsTableView: BaseUITableView = {
         let tableView = BaseUITableView()
         tableView.dataSource = self
@@ -52,14 +59,22 @@ extension PlaylistsViewController {
     override func setupInterface() {
         super.setupInterface()
         self.setupNavigationController()
+        self.setupSegmentedControl()
     }
     
     override func setupLayout() {
         self.view.addSubview(playlistsTableView)
+        playlistsTableView.tableHeaderView = self.playlistsTypeSegmentedControl
+        
         self.view.addSubview(emptyView)
     }
     
     override func setupConstraints() {
+        playlistsTypeSegmentedControl.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.height.equalTo(self.playlistsTypeSegmentedControl.defaultHeight)
+        }
+        
         playlistsTableView.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide)
             make.bottom.equalToSuperview()
@@ -80,14 +95,38 @@ extension PlaylistsViewController {
         
         self.navigationItem.searchController = self.searchController
     }
+    
+    private func setupSegmentedControl() {
+        self.playlistsTypeSegmentedControl.removeAllSegments()
+        self.presenter.segmentsForControl.enumerated().forEach { [weak self] index, segmentType in
+            self?.playlistsTypeSegmentedControl.insertSegment(withTitle: segmentType.title, at: index, animated: true)
+        }
+        
+        guard !self.presenter.segmentsForControl.isEmpty else { return }
+        
+        self.playlistsTypeSegmentedControl.selectedSegmentIndex = 0
+    }
 }
 
 // MARK: -
 // MARK: Lifecycle
 extension PlaylistsViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.playlistsTypeSegmentedControl.isHidden = self.presenter.isSegmentedControlHidden
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.presenter.viewWillAppear()
+    }
+}
+
+// MARK: -
+// MARK: Actions
+fileprivate extension PlaylistsViewController {
+    @objc func playlistsTypeDidChange(_ sender: UISegmentedControl) {
+        
     }
 }
 

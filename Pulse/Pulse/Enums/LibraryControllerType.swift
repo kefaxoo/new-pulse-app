@@ -22,4 +22,13 @@ enum LibraryControllerType {
                 return ""
         }
     }
+    
+    var service: ServiceType {
+        switch self {
+            case .soundcloud:
+                return .soundcloud
+            default:
+                return .none
+        }
+    }
 }

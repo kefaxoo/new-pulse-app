@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PulseUIComponents
 
 enum InformationStyles {
     case empty(title: String, description: String? = nil)
