@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -114,7 +114,6 @@
 		70AC1CB22A9B57AB0095A793 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 70AC1CB12A9B57AB0095A793 /* RealmSwift */; };
 		70AC1CB52A9B57EC0095A793 /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = 70AC1CB42A9B57EC0095A793 /* AlertKit */; };
 		70AD04BE2A9EA42100DC4517 /* ResponsePulseCreateUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AD04BD2A9EA42100DC4517 /* ResponsePulseCreateUserModel.swift */; };
-		70AD04C22A9EA62800DC4517 /* BaseUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AD04C12A9EA62800DC4517 /* BaseUIView.swift */; };
 		70B3C0412AA8A1C000EBBFD4 /* ServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B3C0402AA8A1C000EBBFD4 /* ServiceType.swift */; };
 		70B3C0432AA8A73800EBBFD4 /* SearchType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B3C0422AA8A73800EBBFD4 /* SearchType.swift */; };
 		70B3C04A2AA8B1F400EBBFD4 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B3C0492AA8B1F400EBBFD4 /* SearchViewController.swift */; };
@@ -182,6 +181,8 @@
 		81B8EE3C2AA0E17F00C7F53E /* VerifyPulseAccountPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B8EE3B2AA0E17F00C7F53E /* VerifyPulseAccountPopUpViewController.swift */; };
 		81B8EE3E2AA0E1E600C7F53E /* VerifyPulseAccountPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B8EE3D2AA0E1E600C7F53E /* VerifyPulseAccountPresenter.swift */; };
 		81B8EE422AA0E72400C7F53E /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B8EE412AA0E72400C7F53E /* String+Ext.swift */; };
+		81CCDC392AD8446E003B52F8 /* LibraryPlaylistType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CCDC382AD8446E003B52F8 /* LibraryPlaylistType.swift */; };
+		81CCDC3B2AD846B5003B52F8 /* UISegmentedControl+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CCDC3A2AD846B5003B52F8 /* UISegmentedControl+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -282,7 +283,6 @@
 		70996A5C2A9D55A300905847 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		70A60BFB2ACDFF600075D58C /* SessionCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCacheManager.swift; sourceTree = "<group>"; };
 		70AD04BD2A9EA42100DC4517 /* ResponsePulseCreateUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseCreateUserModel.swift; sourceTree = "<group>"; };
-		70AD04C12A9EA62800DC4517 /* BaseUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUIView.swift; sourceTree = "<group>"; };
 		70B3C0402AA8A1C000EBBFD4 /* ServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceType.swift; sourceTree = "<group>"; };
 		70B3C0422AA8A73800EBBFD4 /* SearchType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchType.swift; sourceTree = "<group>"; };
 		70B3C0442AA8B19200EBBFD4 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = "../../PinterestSegment-SPM/Package.swift"; sourceTree = "<group>"; };
@@ -351,6 +351,8 @@
 		81B8EE3B2AA0E17F00C7F53E /* VerifyPulseAccountPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyPulseAccountPopUpViewController.swift; sourceTree = "<group>"; };
 		81B8EE3D2AA0E1E600C7F53E /* VerifyPulseAccountPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyPulseAccountPresenter.swift; sourceTree = "<group>"; };
 		81B8EE412AA0E72400C7F53E /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
+		81CCDC382AD8446E003B52F8 /* LibraryPlaylistType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryPlaylistType.swift; sourceTree = "<group>"; };
+		81CCDC3A2AD846B5003B52F8 /* UISegmentedControl+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -392,6 +394,7 @@
 				70E6E81F2AA6076E00DA686B /* UITableView+Ext.swift */,
 				70DBA02B2AB666D00078E409 /* UIButton+Ext.swift */,
 				7030A0592AD0AD3900900A8B /* UIApplication+Ext.swift */,
+				81CCDC3A2AD846B5003B52F8 /* UISegmentedControl+Ext.swift */,
 			);
 			path = "UIKit+Ext";
 			sourceTree = "<group>";
@@ -714,7 +717,6 @@
 		70996A4F2A9D4D9600905847 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				70AD04C12A9EA62800DC4517 /* BaseUIView.swift */,
 				70996A522A9D4DED00905847 /* BaseUIViewController.swift */,
 				7069F7462AA3225B00255854 /* BaseUICollectionViewCell.swift */,
 				70E6E8132AA5FCEA00DA686B /* BaseUITableViewCell.swift */,
@@ -753,6 +755,7 @@
 				7092BA922AADC852007FE3C3 /* LibraryControllerType.swift */,
 				700915A22AB609AC0006239A /* AppEnvironment.swift */,
 				70C857D82AB702E1004B5EC5 /* WebViewType.swift */,
+				81CCDC382AD8446E003B52F8 /* LibraryPlaylistType.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -1026,7 +1029,7 @@
 				709F1B642A9E95BD00C0FB73 /* XCRemoteSwiftPackageReference "InfiniteScrolling-SPM" */,
 				70F156A22AB7A65200871AC7 /* XCRemoteSwiftPackageReference "CachingPlayerItem" */,
 				70027BFD2AB9BF54001C538B /* XCRemoteSwiftPackageReference "slidercontrol" */,
-				7003B7882ABE21320098CD6D /* XCLocalSwiftPackageReference "Pulse/Packages/PulseUIComponents" */,
+				7003B7882ABE21320098CD6D /* XCLocalSwiftPackageReference "(null)" */,
 			);
 			productRefGroup = 70BDBA7D2A9B56C000401359 /* Products */;
 			projectDirPath = "";
@@ -1091,7 +1094,6 @@
 				70E09FC72AA7D2D80094EEA0 /* MuffonProvider.swift in Sources */,
 				700A9C302A9E75BB00E11DEB /* BasePresenter.swift in Sources */,
 				70E09FC52AA7D2D40094EEA0 /* MuffonApi.swift in Sources */,
-				70AD04C22A9EA62800DC4517 /* BaseUIView.swift in Sources */,
 				7092BA932AADC852007FE3C3 /* LibraryControllerType.swift in Sources */,
 				7054EF4C2AA0B04200F55B92 /* PopUpViewController.swift in Sources */,
 				70996A1B2A9D3AA400905847 /* ResponsePulseCoverModel.swift in Sources */,
@@ -1140,6 +1142,7 @@
 				70996A142A9D396400905847 /* PulseProvider.swift in Sources */,
 				707FAF892A9E8E56008929FC /* ScrollingCoverCollectionViewCell.swift in Sources */,
 				7013A9A22AC07DE2005BABB6 /* ButtonTableViewCell.swift in Sources */,
+				81CCDC3B2AD846B5003B52F8 /* UISegmentedControl+Ext.swift in Sources */,
 				70839CDD2AB4A3550030BB06 /* ResponsePulseTrackModel.swift in Sources */,
 				70C857ED2AB712C3004B5EC5 /* ResponseSoundcloudUserInfoModel.swift in Sources */,
 				70399C642A9FE58200976098 /* NSRegularExpression+Ext.swift in Sources */,
@@ -1173,6 +1176,7 @@
 				70DB84472A9E8A3900BA9C89 /* CoversScrollingView.swift in Sources */,
 				70EC054F2AAC53FC00AF0019 /* LibraryManager.swift in Sources */,
 				7068BEB12AAA5A1D004B0E03 /* PlayableLinkModel.swift in Sources */,
+				81CCDC392AD8446E003B52F8 /* LibraryPlaylistType.swift in Sources */,
 				7007EE432AAF498E00ECA65B /* DownloadQueueTrackModel.swift in Sources */,
 				70CDCE912A9FC9E700FBB125 /* SignUpPresenter.swift in Sources */,
 				705AA9D32AABA440007F0260 /* RealmManager.swift in Sources */,
@@ -1677,9 +1681,8 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		7003B7882ABE21320098CD6D /* XCLocalSwiftPackageReference "Pulse/Packages/PulseUIComponents" */ = {
+		7003B7882ABE21320098CD6D /* XCLocalSwiftPackageReference "(null)" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = Pulse/Packages/PulseUIComponents;
 		};
 /* End XCLocalSwiftPackageReference section */
 

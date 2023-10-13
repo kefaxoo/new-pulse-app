@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PulseUIComponents
 import InfiniteScrolling_SPM
 
 class CoversScrollingView: BaseUIView {

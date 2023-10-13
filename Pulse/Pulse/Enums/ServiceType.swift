@@ -88,4 +88,13 @@ enum ServiceType: String {
                 return .none
         }
     }
+    
+    var playlistsSegments: [LibraryPlaylistType] {
+        switch self {
+            case .soundcloud:
+                return [.user, .liked]
+            default:
+                return []
+        }
+    }
 }
