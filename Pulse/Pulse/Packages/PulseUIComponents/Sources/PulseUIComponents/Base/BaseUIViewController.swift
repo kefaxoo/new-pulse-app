@@ -15,6 +15,7 @@ class BaseUIViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        self.removeKeyboardObserversIfNeeded()
     }
 }
 
@@ -87,11 +88,32 @@ extension BaseUIViewController {
     }
     
     fileprivate func moveViewWithKeyboard(notification: NSNotification, willShow: Bool) {
-        // Keyboard's size
-        guard let keyboardHeight = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height
+        // Keyboard's size, animation duration, animation cure
+        guard let keyboardHeight = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height,
+              let keyboardDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double,
+              let keyboardCurveRawValue = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int,
+              let keyboardCurve = UIView.AnimationCurve(rawValue: keyboardCurveRawValue)
         else { return }
         
-        // Keyboard's animation duration
+        // Change the constant
+        let showedOffset = (defaultOffset ?? 0) + keyboardHeight
+        let hidingOffset = defaultOffset ?? 0
+        self.movingView?.snp.updateConstraints({ $0.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(willShow ? showedOffset : hidingOffset) })
         
+        // Animate the view the same way the keyboard animates
+        UIViewPropertyAnimator(duration: keyboardDuration, curve: keyboardCurve, animations: { [weak self] in
+            self?.view.layoutIfNeeded()
+        }).startAnimation()
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
+    }
+    
+    fileprivate func removeKeyboardObserversIfNeeded() {
+        guard self.movingView != nil else { return }
+        
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 }
