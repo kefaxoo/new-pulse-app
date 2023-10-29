@@ -1,0 +1,76 @@
+included:
+  - Pulse
+
+disabled_rules:
+  - trailing_whitespace
+  - void_return
+  - switch_case_alignment
+  - colon
+  - private_over_fileprivate
+  - identifier_name
+  - array_init
+
+opt_in_rules:
+  - array_init
+  - closure_end_indentation
+  - closure_spacing
+  - collection_alignment
+  - discouraged_object_literal
+  - empty_collection_literal
+  - empty_count
+  - empty_string
+  - enum_case_associated_values_count
+  - fatal_error_message
+  - last_where
+  - legacy_random
+  - literal_expression_end_indentation
+  - multiline_arguments
+  - multiline_function_chains
+  - multiline_literal_brackets
+  - multiline_parameters
+  - multiline_parameters_brackets
+  - operator_usage_whitespace
+  - overridden_super_call
+  - prefer_self_type_over_type_of_self
+  - redundant_nil_coalescing
+  - redundant_type_annotation
+  - toggle_bool
+  - unneeded_parentheses_in_closure_argument
+  - vertical_whitespace_closing_braces
+  - vertical_whitespace_opening_braces
+  - yoda_condition
+
+analyzer_rules:
+  - unused_import
+  - unused_declaration
+
+line_length:
+  ignores_urls: true
+  ignores_comments: true
+  warning: 150
+
+function_parameter_count:
+  warning: 10
+  error: 15
+
+file_length:
+  warning: 500
+
+type_body_length:
+  warning: 400
+  error: 450
+
+type_name:
+  max_length:
+    warning: 40
+    error: 50
+
+multiline_arguments:
+  first_argument_location: next_line
+  only_enforce_after_first_closure_on_first_line: true
+
+vertical_whitespace:
+  max_empty_lines: 2
+
+function_body_length:
+    warning: 60
