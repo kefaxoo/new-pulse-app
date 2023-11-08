@@ -13,12 +13,12 @@ final class ImageManager {
     
     fileprivate init() {}
     
-    func image(from link: String?, imageClosure: @escaping((UIImage?) -> ()), errorClosure: (() -> ())? = nil) {
+    func image(from link: String?, imageClosure: @escaping((_ image: UIImage?, _ shouldAnimate: Bool) -> ()), errorClosure: (() -> ())? = nil) {
         guard let link else {
             if let errorClosure {
                 errorClosure()
             } else {
-                imageClosure(Constants.Images.warning.image)
+                imageClosure(Constants.Images.warning.image, false)
             }
             
             return
@@ -26,12 +26,12 @@ final class ImageManager {
         
         if link.contains("file://"),
            let image = self.localImage(from: URL(string: link)) {
-            imageClosure(image)
+            imageClosure(image, false)
             return
         }
         
         if let image = SDImageCache.shared.imageFromCache(forKey: link) {
-            imageClosure(image)
+            imageClosure(image, false)
             return
         }
         
@@ -42,19 +42,19 @@ final class ImageManager {
                         if let errorClosure {
                             errorClosure()
                         } else {
-                            imageClosure(Constants.Images.warning.image)
+                            imageClosure(Constants.Images.warning.image, false)
                         }
                         
                         return
                     }
                     
-                    imageClosure(image)
+                    imageClosure(image, true)
                 }
                 
                 return
             }
             
-            imageClosure(image)
+            imageClosure(image, true)
         }
     }
     
@@ -87,7 +87,7 @@ final class ImageManager {
                 case .muffon:
                     MuffonProvider.shared.trackInfo(track) { updatedTrack in
                         track = TrackModel(updatedTrack)
-                        self.image(from: track.image?.original) { [weak self] image in
+                        self.image(from: track.image?.original) { [weak self] image, _ in
                             self?.saveImage(image, filename: filename, completion: completion)
                         }
                     } failure: {
@@ -101,7 +101,7 @@ final class ImageManager {
             }
         }
         
-        self.image(from: track.image?.original) { [weak self] image in
+        self.image(from: track.image?.original) { [weak self] image, _ in
             self?.saveImage(image, filename: filename, completion: completion)
         } errorClosure: {
             completion(nil)

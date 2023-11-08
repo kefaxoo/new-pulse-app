@@ -15,9 +15,18 @@ enum PulseApi {
     case resetPassword(credentials: Credentials)
     case accessToken
     
+    // User V2
     case createUserV2(credentials: Credentials)
     case loginUserV2(credentials: Credentials)
+    case resetPasswordV2(credentials: Credentials)
     case accessTokenV2
+    
+    // User V3
+    case createUserV3(credentials: Credentials, signMethod: SignMethodType)
+    case externalSign(email: String, signMethod: SignMethodType)
+    case loginUserV3(credentials: Credentials, signMethod: SignMethodType)
+    case resetPasswordV3(credentials: Credentials)
+    case accessTokenV3
     
     // Covers
     case topCovers(country: String? = nil)
@@ -33,6 +42,8 @@ enum PulseApi {
     // Soundcloud
     case soundcloudArtwork(link: String)
     case soundcloudPlaylistArtwork(id: String)
+    
+    case features
 }
 
 extension PulseApi: BaseRestApiEnum {
@@ -71,15 +82,29 @@ extension PulseApi: BaseRestApiEnum {
                 return "/v2/user"
             case .accessTokenV2:
                 return "/v2/user/accessToken"
+            case .features:
+                return "/features"
+            case .resetPasswordV2:
+                return "/v2/user/resetPassword"
+            case .createUserV3, .loginUserV3:
+                return "/v3/user"
+            case .externalSign:
+                return "/v3/user/external"
+            case .resetPasswordV3:
+                return "/v3/user/resetPassword"
+            case .accessTokenV3:
+                return "/v3/user/accessToken"
         }
     }
     
     var method: FriendlyURLSession.HTTPMethod {
         switch self {
-            case .createUser, .log, .syncTrack, .createUserV2:
+            case .createUser, .log, .syncTrack, .createUserV2, .features, .createUserV3, .externalSign:
                 return .post
             case .removeTrack:
                 return .delete
+            case .resetPasswordV3:
+                return .patch
             default:
                 return .get
         }
@@ -101,7 +126,7 @@ extension PulseApi: BaseRestApiEnum {
                 if let soundcloudToken = SettingsManager.shared.soundcloud.accessToken {
                     headers["X-Soundcloud-Token"] = soundcloudToken
                 }
-            case .accessTokenV2:
+            case .accessTokenV2, .accessTokenV3:
                 if let refreshToken = SettingsManager.shared.pulse.refreshToken {
                     headers["X-Pulse-Refresh-Token"] = refreshToken
                 }
@@ -116,7 +141,7 @@ extension PulseApi: BaseRestApiEnum {
         var parameters = Parameters()
         switch self {
             case .createUser(let credentials), .loginUser(let credentials), .resetPassword(let credentials), .createUserV2(let credentials), 
-                    .loginUserV2(let credentials):
+                    .loginUserV2(let credentials), .resetPasswordV2(let credentials), .resetPasswordV3(let credentials):
                 parameters["email"]    = credentials.username
                 parameters["password"] = credentials.password
             case .accessToken:
@@ -132,6 +157,13 @@ extension PulseApi: BaseRestApiEnum {
                 parameters["artwork_link"] = link
             case .soundcloudPlaylistArtwork(let id):
                 parameters["playlist_id"] = id
+            case .createUserV3(let credentials, let signMethod), .loginUserV3(let credentials, let signMethod):
+                parameters["email"]        = credentials.username
+                parameters["account_type"] = signMethod.rawValue
+                parameters["password"]     = credentials.password
+            case .externalSign(let email, let signMethod):
+                parameters["email"]        = email
+                parameters["account_type"] = signMethod.rawValue
             default:
                 return nil
         }
@@ -145,6 +177,8 @@ extension PulseApi: BaseRestApiEnum {
                 return log
             case .syncTrack(let track):
                 return track.json
+            case .features:
+                return ["features": SettingsManager.shared.featuresKeys]
             default:
                 return nil
         }

@@ -6,18 +6,23 @@
 //
 
 import UIKit
+import GoogleSignIn
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         debugLog(AppEnvironment.current)
         
+        SettingsManager.shared.initRealmVariables()
         NetworkManager.shared.checkNetwork()
         NetworkManager.shared.updateValues()
         ServicesManager.shared.refreshTokens()
         LibraryManager.shared.removeTemporaryCache()
-        MainCoordinator.shared.firstLaunch {
-            LibraryManager.shared.initialSetup()
+        Task {
+            try await SettingsManager.shared.updateFeatures()
+            MainCoordinator.shared.firstLaunch {
+                LibraryManager.shared.initialSetup()
+            }
         }
         
         return true

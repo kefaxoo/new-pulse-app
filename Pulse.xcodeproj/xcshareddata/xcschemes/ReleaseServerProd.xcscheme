@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1500"
+   LastUpgradeVersion = "1430"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "70D094692AEE5CE9000C315D"
+               BlueprintIdentifier = "70017DF42AEEDABA001E1C02"
                BuildableName = "Pulse.app"
                BlueprintName = "Pulse"
                ReferencedContainer = "container:Pulse.xcodeproj">
@@ -43,7 +43,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "70D094692AEE5CE9000C315D"
+            BlueprintIdentifier = "70017DF42AEEDABA001E1C02"
             BuildableName = "Pulse.app"
             BlueprintName = "Pulse"
             ReferencedContainer = "container:Pulse.xcodeproj">
@@ -60,7 +60,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "70D094692AEE5CE9000C315D"
+            BlueprintIdentifier = "70017DF42AEEDABA001E1C02"
             BuildableName = "Pulse.app"
             BlueprintName = "Pulse"
             ReferencedContainer = "container:Pulse.xcodeproj">

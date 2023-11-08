@@ -8,6 +8,8 @@
 import UIKit
 import SnapKit
 import PulseUIComponents
+import GoogleSignIn
+import AuthenticationServices
 
 final class AuthViewController: CoversViewController {
     private lazy var bottomGradientView: StaticGradientView = {
@@ -46,7 +48,7 @@ final class AuthViewController: CoversViewController {
     private lazy var signInButton: UIButton = {
         let button = UIButton()
         button.configuration = UIButton.Configuration.filled()
-        button.setTitle("Sign in", for: .normal)
+        button.setTitle(Localization.Words.signIn.localization, for: .normal)
         button.tintColor = SettingsManager.shared.color.color
         button.tag = 1001
         button.addTarget(self, action: #selector(authAction), for: .touchUpInside)
@@ -56,7 +58,7 @@ final class AuthViewController: CoversViewController {
     private lazy var signUpButton: UIButton = {
         let button = UIButton()
         button.configuration = UIButton.Configuration.tinted()
-        button.setTitle("Sign up", for: .normal)
+        button.setTitle(Localization.Words.signUp.localization, for: .normal)
         button.tintColor = SettingsManager.shared.color.color
         button.tag = 1002
         button.addTarget(self, action: #selector(authAction), for: .touchUpInside)
@@ -70,17 +72,19 @@ final class AuthViewController: CoversViewController {
         configuartion.imagePlacement = .leading
         configuartion.imagePadding = 8
         button.configuration = configuartion
-        button.setTitle("Continue with Apple", for: .normal)
+        button.setTitle(Localization.Controllers.Auth.Buttons.continueWithApple.localization, for: .normal)
         button.tintColor = .black
         button.setTitleColor(.white, for: .normal)
+        button.addTarget(self, action: #selector(appleSignAction), for: .touchUpInside)
         return button
     }()
     
     private lazy var continueWithGoogleButton: UIButton = {
         let button = UIButton()
         button.configuration = UIButton.Configuration.filled()
-        button.setTitle("Continue with Google", for: .normal)
+        button.setTitle(Localization.Controllers.Auth.Buttons.continueWithGoogle.localization, for: .normal)
         button.tintColor = UIColor(hex: "#DC342A") ?? .systemRed
+        button.addTarget(self, action: #selector(googleSignAction), for: .touchUpInside)
         return button
     }()
     
@@ -132,6 +136,43 @@ extension AuthViewController {
                 self.presenter.pushSignUpVC()
             default:
                 break
+        }
+    }
+    
+    @objc private func googleSignAction(_ sender: UIButton) {
+        guard AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSign?.prod ?? false else { return }
+        
+        GIDSignIn.sharedInstance.signIn(withPresenting: self) { [weak self] signInResult, error in
+            guard let email = signInResult?.user.profile?.email else {
+                AlertView.shared.presentError(
+                    error: error?.localizedDescription ?? Localization.Lines.unknownError.localization(with: "Google"),
+                    system: .iOS16AppleMusic
+                )
+                
+                return
+            }
+            
+            self?.presenter.signWithExternalMethod(email: email, signMethod: .google)
+        }
+    }
+    
+    @objc private func appleSignAction(_ sender: UIButton) {
+        guard AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSign?.prod ?? false else { return }
+        
+        self.presenter.appleSign()
+    }
+}
+
+// MARK: -
+// MARK: ASAuthorizationControllerDelegate
+extension AuthViewController: ASAuthorizationControllerDelegate {
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        guard let appleIdCredentials = authorization.credential as? ASAuthorizationAppleIDCredential else { return }
+        
+        if let email = appleIdCredentials.email {
+            self.presenter.signWithExternalMethod(email: email, signMethod: .apple)
+        } else if let email = appleIdCredentials.identityToken?.decodeJWT?["email"] as? String {
+            self.presenter.signWithExternalMethod(email: email, signMethod: .apple)
         }
     }
 }

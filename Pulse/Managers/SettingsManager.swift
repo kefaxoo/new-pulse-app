@@ -15,6 +15,18 @@ final class SettingsManager {
         debugLog("Realm DB Location:", Realm.Configuration.defaultConfiguration.fileURL?.absoluteString ?? "")
     }
     
+    func initRealmVariables() {
+        DispatchQueue.main.async { [weak self] in
+            if let model = RealmManager<LocalFeaturesModel>().read().first {
+                self?.localFeatures = model
+            } else {
+                let model = LocalFeaturesModel()
+                self?.localFeatures = model
+                RealmManager<LocalFeaturesModel>().write(object: model)
+            }
+        }
+    }
+    
     var pulse = PulseModel()
     var soundcloud = SoundcloudModel()
     
@@ -119,10 +131,46 @@ final class SettingsManager {
         }
     }
     
+    let featuresKeys = ["newSign"]
+    var localFeatures = LocalFeaturesModel()
+    var featuresLastUpdate: Int {
+        get {
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.featuresLastUpdate.rawValue) as? Int ?? 0
+        } set {
+            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.featuresLastUpdate.rawValue)
+        }
+    }
+    
+    var shouldUpdateFeatures: Bool {
+        return Int(Date().timeIntervalSince1970) - self.featuresLastUpdate >= 86400
+    }
+    
+    func updateFeatures() async throws {
+        guard let features = try await PulseProvider.shared.features else { return }
+        
+        self.updateFeatures(features: features)
+    }
+    
+    private func updateFeatures(features: PulseFeatures) {
+        self.featuresLastUpdate = Int(Date().timeIntervalSince1970)
+        DispatchQueue.main.async {
+            RealmManager<LocalFeaturesModel>().update { realm in
+                try? realm.write {
+                    self.localFeatures.newSign = features.newSign.toRealmModel
+                }
+            }
+        }
+    }
+}
+
+// MARK: -
+// MARK: Sign out
+extension SettingsManager {
     func signOut() -> Bool {
         autoDownload = false
         isAdultContentEnabled = false
         isCanvasesEnabled = false
+        soundcloudLike = false
         
         _ = pulse.signOut()
         _ = soundcloud.signOut()

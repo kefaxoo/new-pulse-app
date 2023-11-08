@@ -72,3 +72,19 @@ extension String {
         return dateFormatter.date(from: self)
     }
 }
+
+extension String {
+    var localized: String {
+        return NSLocalizedString(
+            self,
+            tableName: "Localizable",
+            bundle: Bundle.localizedBundle,
+            value: self,
+            comment: self
+        )
+    }
+    
+    func localized(parameters: [String]) -> String {
+        return String(format: self.localized, parameters)
+    }
+}

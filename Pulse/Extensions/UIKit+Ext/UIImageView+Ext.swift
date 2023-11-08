@@ -10,9 +10,15 @@ import UIKit
 extension UIImageView {
     func setImage(from link: String?) {
         DispatchQueue.global(qos: .background).async { [weak self] in
-            ImageManager.shared.image(from: link) { [weak self] image in
+            ImageManager.shared.image(from: link) { [weak self] image, shouldAnimate in
                 DispatchQueue.main.async { [weak self] in
                     self?.image = image
+                    guard shouldAnimate else { return }
+                    
+                    self?.alpha = 0
+                    UIView.animate(withDuration: 0.2, delay: 0, options: .allowUserInteraction) {
+                        self?.alpha = 1
+                    }
                 }
             }
         }

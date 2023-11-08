@@ -9,6 +9,7 @@ disabled_rules:
   - private_over_fileprivate
   - identifier_name
   - array_init
+  - nesting
 
 opt_in_rules:
   - array_init
@@ -29,7 +30,6 @@ opt_in_rules:
   - multiline_literal_brackets
   - multiline_parameters
   - multiline_parameters_brackets
-  - operator_usage_whitespace
   - overridden_super_call
   - prefer_self_type_over_type_of_self
   - redundant_nil_coalescing

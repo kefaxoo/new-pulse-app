@@ -39,7 +39,7 @@ final class PulseModel {
     }
     
     var isSignedIn: Bool {
-        return (self.accessToken?.count ?? 0) != 0
+        return !(self.accessToken?.isEmpty ?? true)
     }
     
     var shouldUpdateToken: Bool {
@@ -92,6 +92,24 @@ final class PulseModel {
         guard self.refreshTokenKeychainModel.updatePassword(credentials: Credentials(email: self.username, accessToken: refreshToken)) else { return }
         
         self.refreshToken = refreshToken
+    }
+    
+    func updateTokens(_ tokens: PulseAuthTokens) {
+        self.expireAt = tokens.expireAt
+        self.updateAccessToken(tokens.accessToken)
+        self.updateRefreshToken(tokens.refreshToken)
+    }
+    
+    func updateTokens(_ tokens: PulseAuthorizationInfo) {
+        self.expireAt = tokens.expireAt
+        self.updateAccessToken(tokens.accessToken)
+        self.updateRefreshToken(tokens.refreshToken)
+    }
+    
+    func saveTokens(_ tokens: PulseAuthorizationInfo) {
+        self.expireAt = tokens.expireAt
+        self.saveAcceessToken(Credentials(email: self.username, accessToken: tokens.accessToken))
+        self.saveRefreshToken(Credentials(email: self.username, accessToken: tokens.refreshToken))
     }
     
     func signOut() -> Bool {

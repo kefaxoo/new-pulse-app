@@ -38,19 +38,22 @@ final class SignUpViewController: CoversViewController {
     }()
     
     private lazy var emailTextField: UITextField = {
-        let textField = UITextField(withPlaceholder: "Email")
+        let textField = UITextField(withPlaceholder: Localization.Words.email.localization)
         textField.borderStyle = .roundedRect
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
         return textField
     }()
     
-    private lazy var passwordTextField = PasswordTextField(tintColor: SettingsManager.shared.color.color)
+    private lazy var passwordTextField = PasswordTextField(
+        tintColor: SettingsManager.shared.color.color,
+        placeholder: Localization.Words.password.localization
+    )
     
     private lazy var signUpButton: UIButton = {
         let button = UIButton()
         button.configuration = UIButton.Configuration.tinted()
-        button.setTitle("Sign up", for: .normal)
+        button.setTitle(Localization.Words.signUp.localization, for: .normal)
         button.tintColor = SettingsManager.shared.color.color
         button.addTarget(self, action: #selector(signUpAction), for: .touchUpInside)
         return button

@@ -51,36 +51,65 @@ final class MainCoordinator {
     func firstLaunch(completion: @escaping(() -> ())) {
         if SettingsManager.shared.pulse.isSignedIn {
             if NetworkManager.shared.isReachable {
-                guard SettingsManager.shared.pulse.shouldUpdateToken else {
-                    self.makeTabBarAsRoot()
-                    return
-                }
-                
-                let emptyVC = UIViewController.empty
-                self.makeRootVC(vc: emptyVC)
-                emptyVC.presentSpinner()
-                PulseProvider.shared.accessTokenV2 { [weak self] tokens in
-                    SettingsManager.shared.pulse.expireAt = tokens.tokens.expireAt
-                    SettingsManager.shared.pulse.updateAccessToken(tokens.tokens.accessToken)
-                    SettingsManager.shared.pulse.updateRefreshToken(tokens.tokens.refreshToken)
-                    emptyVC.dismissSpinner()
-                    completion()
-                    self?.makeTabBarAsRoot()
-                } failure: { [weak self] error in
-                    self?.makeAuthViewControllerAsRoot()
-                    completion()
-                    guard !SettingsManager.shared.pulse.username.isEmpty else {
-                        // TODO: Replace with localization from server
-                        AlertView.shared.presentError(error: error?.message, system: .iOS16AppleMusic)
+                if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSign?.prod ?? false {
+                    guard SettingsManager.shared.pulse.shouldUpdateToken else {
+                        self.makeTabBarAsRoot()
                         return
                     }
                     
-                    self?.pushSignInViewController()
-                    AlertView.shared.presentError(error: error?.message, system: .iOS16AppleMusic)
+                    let emptyVC = UIViewController.empty
+                    self.makeRootVC(vc: emptyVC)
+                    emptyVC.presentSpinner()
+                    PulseProvider.shared.accessTokenV3 { [weak self] tokens in
+                        SettingsManager.shared.pulse.updateTokens(tokens.tokens)
+                        emptyVC.dismissSpinner()
+                        completion()
+                        self?.makeTabBarAsRoot()
+                    } failure: { [weak self] serverError, internalError in
+                        emptyVC.dismissSpinner()
+                        self?.makeAuthViewControllerAsRoot()
+                        completion()
+                        let localizedError = LocalizationManager.shared.localizeError(
+                            server: serverError,
+                            internal: internalError,
+                            default: Localization.Lines.unknownError.localization(with: "Pulse")
+                        )
+                        
+                        guard !SettingsManager.shared.pulse.username.isEmpty else {
+                            AlertView.shared.presentError(error: localizedError, system: .iOS16AppleMusic)
+                            return
+                        }
+                        
+                        self?.pushSignInViewController()
+                        AlertView.shared.presentError(error: localizedError, system: .iOS16AppleMusic)
+                    }
+                } else {
+                    let emptyVC = UIViewController.empty
+                    self.makeRootVC(vc: emptyVC)
+                    emptyVC.presentSpinner()
+                    PulseProvider.shared.accessToken { [weak self] loginUser in
+                        SettingsManager.shared.pulse.expireAt = loginUser.expireAt ?? 0
+                        SettingsManager.shared.pulse.updateAccessToken(loginUser.accessToken)
+                        LibraryManager.shared.fetchLibrary()
+                        emptyVC.dismissSpinner()
+                        completion()
+                        self?.makeTabBarAsRoot()
+                    } failure: { [weak self] error in
+                        emptyVC.dismissSpinner()
+                        self?.makeAuthViewControllerAsRoot()
+                        completion()
+                        guard !SettingsManager.shared.pulse.username.isEmpty else {
+                            AlertView.shared.presentError(error: error?.errorDescription, system: .iOS16AppleMusic)
+                            return
+                        }
+                        
+                        self?.pushSignInViewController()
+                        AlertView.shared.presentError(error: error?.errorDescription, system: .iOS16AppleMusic)
+                    }
                 }
             } else {
                 completion()
-                makeTabBarAsRoot()
+                self.makeTabBarAsRoot()
             }
         } else {
             self.makeAuthViewControllerAsRoot()
@@ -93,8 +122,7 @@ final class MainCoordinator {
     
     private func makeRootVC(vc: UIViewController) {
         DispatchQueue.main.async { [weak self] in
-            self?.window?.rootViewController = vc
-            self?.window?.makeKeyAndVisible()
+            self?.window?.setRootVC(vc, options: UIWindow.TransitionOptions(direction: .fade, style: .easeInOut))
         }
     }
     

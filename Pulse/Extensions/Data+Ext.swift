@@ -32,3 +32,26 @@ extension Data {
         return String(data: self, encoding: .utf8)
     }
 }
+
+extension Data {
+    var decodeJWT: [String: Any]? {
+        guard let jwt = String(data: self, encoding: .utf8) else { return nil }
+        
+        let segments = jwt.components(separatedBy: ".")
+        var base64 = segments[1].replacingOccurrences(of: "-", with: "+").replacingOccurrences(of: "_", with: "/")
+        let length = Double(base64.lengthOfBytes(using: String.Encoding.utf8))
+        let requiredLength = 4 * ceil(length / 4.0)
+        let paddingLength = requiredLength - length
+        if paddingLength > 0 {
+            let padding = "".padding(toLength: Int(paddingLength), withPad: "=", startingAt: 0)
+            base64 += padding
+        }
+        
+        guard let bodyData = Data(base64Encoded: base64, options: .ignoreUnknownCharacters),
+              let json = try? JSONSerialization.jsonObject(with: bodyData),
+              let payload = json as? [String: Any]
+        else { return nil }
+        
+        return payload
+    }
+}

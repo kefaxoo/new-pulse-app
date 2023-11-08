@@ -38,19 +38,22 @@ final class SignInViewController: CoversViewController {
     }()
     
     private lazy var emailTextField: UITextField = {
-        let textField = UITextField(withPlaceholder: "Email")
+        let textField = UITextField(withPlaceholder: Localization.Words.email.localization)
         textField.borderStyle = .roundedRect
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
         return textField
     }()
     
-    private lazy var passwordTextField = PasswordTextField(tintColor: SettingsManager.shared.color.color)
+    private lazy var passwordTextField = PasswordTextField(
+        tintColor: SettingsManager.shared.color.color,
+        placeholder: Localization.Words.password.localization
+    )
     
     private lazy var signInButton: UIButton = {
         let button = UIButton()
         button.configuration = UIButton.Configuration.tinted()
-        button.setTitle("Sign in", for: .normal)
+        button.setTitle(Localization.Words.signIn.localization, for: .normal)
         button.tintColor = SettingsManager.shared.color.color
         button.addTarget(self, action: #selector(signInAction), for: .touchUpInside)
         return button
@@ -58,7 +61,7 @@ final class SignInViewController: CoversViewController {
     
     private lazy var resetPassword: UIButton = {
         let button = UIButton()
-        button.setTitle("Forget password?", for: .normal)
+        button.setTitle(Localization.Controllers.SignIn.Buttons.forgetPassword.localization, for: .normal)
         button.setTitleColor(SettingsManager.shared.color.color, for: .normal)
         button.contentHorizontalAlignment = .trailing
         button.addTarget(self, action: #selector(resetPasswordAction), for: .touchUpInside)

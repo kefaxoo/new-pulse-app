@@ -48,9 +48,9 @@ enum SettingSectionType {
                 var array: [SettingType] = [.soundcloudSign]
                 if SettingsManager.shared.soundcloud.isSigned {
                     array.append(.soundcloudLike)
+                    array.append(.soundcloudSource)
                 }
                 
-                array.append(.soundcloudSource)
                 return array
             case .help:
                 return [.about]

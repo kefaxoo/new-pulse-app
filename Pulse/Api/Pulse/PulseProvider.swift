@@ -183,7 +183,7 @@ final class PulseProvider: BaseRestApiProvider {
     
     func getTopCovers(success: @escaping(([PulseCover]) -> ()), failure: EmptyClosure? = nil) {
         self.urlSession.dataTask(
-            with: URLRequest(type: PulseApi.topCovers(country: NetworkManager.shared.country), shouldPrintLog: self.shouldPrintLog)
+            with: URLRequest(type: PulseApi.topCovers(country: NetworkManager.shared.countryCode), shouldPrintLog: self.shouldPrintLog)
         ) { response in
             switch response {
                 case .success(let response):
@@ -335,6 +335,20 @@ final class PulseProvider: BaseRestApiProvider {
         }
     }
     
+    var features: PulseFeatures? {
+        get async throws {
+            let response = try await urlSession.dataTask(with: URLRequest(type: PulseApi.features, shouldPrintLog: self.shouldPrintLog))
+            switch response {
+                case .success(let response):
+                    guard let features = response.data?.map(to: PulseFeatures.self) else { return nil }
+                    
+                    return features
+                case .failure:
+                    return nil
+            }
+        }
+    }
+    
     func cancelTask() {
         task?.cancel()
     }
@@ -358,6 +372,167 @@ fileprivate extension PulseProvider {
             closure?(error)
         } else {
             closure?(nil)
+        }
+    }
+}
+
+// MARK: -
+// MARK: V3
+extension PulseProvider {
+    func createUserV3(
+        credentials: Credentials,
+        signMethod: SignMethodType,
+        success: @escaping((_ createUser: PulseCreateUserV3) -> ()),
+        failure: @escaping PulseDefaultErrorV3Closure
+    ) {
+        self.urlSession.dataTask(
+            with: URLRequest(
+                type: PulseApi.createUserV3(credentials: credentials, signMethod: signMethod),
+                decodeToHttp: true,
+                shouldPrintLog: self.shouldPrintLog
+            )
+        ) { [weak self] response in
+            switch response {
+                case .success(let response):
+                    guard let createUser = response.data?.map(to: PulseCreateUserV3.self) else {
+                        failure(nil, nil)
+                        return
+                    }
+                    
+                    success(createUser)
+                case .failure(let response):
+                    self?.parseError(response: response, closure: failure)
+            }
+        }
+    }
+    
+    func externalSign(
+        email: String, 
+        signMethod: SignMethodType, 
+        signInClosure: @escaping((PulseLoginUserV3) -> ()),
+        signUpClosure: @escaping((PulseCreateUserV3) -> ()),
+        verifyClosure: @escaping((PulseVerifyUserV3) -> ()),
+        failure: @escaping PulseDefaultErrorV3Closure
+    ) {
+        self.urlSession.dataTask(
+            with: URLRequest(
+                type: PulseApi.externalSign(email: email, signMethod: signMethod), 
+                shouldPrintLog: self.shouldPrintLog
+            )
+        ) { [weak self] response in
+            switch response {
+                case .success(let response):
+                    if response.statusCode == 200 {
+                        guard let loginUser = response.data?.map(to: PulseLoginUserV3.self) else {
+                            failure(nil, nil)
+                            return
+                        }
+                        
+                        signInClosure(loginUser)
+                    } else {
+                        guard let createUser = response.data?.map(to: PulseCreateUserV3.self) else {
+                            failure(nil, nil)
+                            return
+                        }
+                        
+                        signUpClosure(createUser)
+                    }
+                case .failure(let response):
+                    guard response.statusCode == 425,
+                          let verifyUser = response.data?.map(to: PulseVerifyUserV3.self)
+                    else {
+                        self?.parseError(response: response, closure: failure)
+                        return
+                    }
+                    
+                    verifyClosure(verifyUser)
+            }
+        }
+    }
+    
+    func loginUserV3(
+        credentials: Credentials,
+        signMethod: SignMethodType,
+        success: @escaping((PulseLoginUserV3) -> ()),
+        failure: @escaping PulseDefaultErrorV3Closure,
+        verifyClosure: @escaping((PulseVerifyUserV3) -> ())
+    ) {
+        self.urlSession.dataTask(
+            with: URLRequest(
+                type: PulseApi.loginUserV3(credentials: credentials, signMethod: signMethod),
+                decodeToHttp: true,
+                shouldPrintLog: self.shouldPrintLog
+            )
+        ) { [weak self] response in
+            switch response {
+                case .success(let response):
+                    guard let loginUser = response.data?.map(to: PulseLoginUserV3.self) else {
+                        failure(nil, nil)
+                        return
+                    }
+                    
+                    success(loginUser)
+                case .failure(let response):
+                    guard response.statusCode == 425,
+                          let verifyUser = response.data?.map(to: PulseVerifyUserV3.self)
+                    else {
+                        self?.parseError(response: response, closure: failure)
+                        return
+                    }
+                    
+                    verifyClosure(verifyUser)
+            }
+        }
+    }
+    
+    func resetPasswordV3(credentials: Credentials, success: @escaping((PulseResetPasswordV3) -> ()), failure: @escaping PulseDefaultErrorV3Closure) {
+        self.urlSession.dataTask(
+            with: URLRequest(
+                type: PulseApi.resetPasswordV3(credentials: credentials),
+                decodeToHttp: true,
+                shouldPrintLog: self.shouldPrintLog
+            )
+        ) { [weak self] response in
+            switch response {
+                case .success(let response):
+                    guard let resetPassword = response.data?.map(to: PulseResetPasswordV3.self) else {
+                        failure(nil, nil)
+                        return
+                    }
+                    
+                    success(resetPassword)
+                case .failure(let response):
+                    self?.parseError(response: response, closure: failure)
+            }
+        }
+    }
+    
+    func accessTokenV3(success: @escaping((PulseLoginUserV3) -> ()), failure: @escaping PulseDefaultErrorV3Closure) {
+        self.urlSession.dataTask(with: URLRequest(type: PulseApi.accessTokenV3, shouldPrintLog: self.shouldPrintLog)) { [weak self] response in
+            switch response {
+                case .success(let response):
+                    guard let accessToken = response.data?.map(to: PulseLoginUserV3.self) else {
+                        failure(nil, nil)
+                        return
+                    }
+                    
+                    success(accessToken)
+                case .failure(let response):
+                    self?.parseError(response: response, closure: failure)
+            }
+        }
+    }
+}
+
+fileprivate extension PulseProvider {
+    func parseError(response: Failure, closure: PulseDefaultErrorV3Closure?) {
+        response.sendLog()
+        if let error = response.data?.map(to: PulseBaseErrorModel.self) {
+            closure?(error, nil)
+        } else if let error = response.error {
+            closure?(nil, error)
+        } else {
+            closure?(nil, nil)
         }
     }
 }

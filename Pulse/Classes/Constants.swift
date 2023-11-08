@@ -156,6 +156,8 @@ enum Constants {
         
         case ip      = "deviceIp"
         case country = "deviceCountry"
+        
+        case featuresLastUpdate = "featuresLastUpdate"
     }
     // swiftlint:enable redundant_string_enum_value
     

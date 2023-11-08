@@ -210,7 +210,7 @@ fileprivate extension AudioPlayer {
     }
     
     func fetchCover(from link: String?) {
-        ImageManager.shared.image(from: link) { [weak self] image in
+        ImageManager.shared.image(from: link) { [weak self] image, _ in
             DispatchQueue.main.async { [weak self] in
                 self?.cover = image
                 self?.setupCoverInDelegates()
