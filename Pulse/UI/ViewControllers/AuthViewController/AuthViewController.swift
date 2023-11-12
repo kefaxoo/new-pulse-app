@@ -81,9 +81,14 @@ final class AuthViewController: CoversViewController {
     
     private lazy var continueWithGoogleButton: UIButton = {
         let button = UIButton()
-        button.configuration = UIButton.Configuration.filled()
+        var configuartion = UIButton.Configuration.filled()
+//        configuartion.image = Constants.Images.googleLogo.image
+        configuartion.imagePlacement = .leading
+        configuartion.imagePadding = 8
+        button.configuration = configuartion
         button.setTitle(Localization.Controllers.Auth.Buttons.continueWithGoogle.localization, for: .normal)
         button.tintColor = UIColor(hex: "#DC342A") ?? .systemRed
+        button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(googleSignAction), for: .touchUpInside)
         return button
     }()

@@ -49,7 +49,7 @@ final class SettingsManager {
     
     // MARK: Realm configuration
     var realmConfiguration: Realm.Configuration {
-        let configuration = Realm.Configuration(schemaVersion: 7) { migration, oldSchemaVersion in
+        let configuration = Realm.Configuration(schemaVersion: 9) { migration, oldSchemaVersion in
             if oldSchemaVersion < 2 {
                 migration.enumerateObjects(ofType: LibraryTrackModel.className()) { _, newObject in
                     newObject?["shareLink"] = ""
@@ -83,6 +83,18 @@ final class SettingsManager {
             if oldSchemaVersion < 7 {
                 migration.enumerateObjects(ofType: LibraryTrackModel.className()) { _, newObject in
                     newObject?["dateAdded"] = 0
+                }
+            }
+            
+            if oldSchemaVersion < 8 {
+                migration.enumerateObjects(ofType: LocalFeaturesModel.className()) { _, newObject in
+                    newObject?["newLibrary"] = LocalFeatureModel(prod: false, debug: false)
+                }
+            }
+            
+            if oldSchemaVersion < 9 {
+                migration.enumerateObjects(ofType: LocalFeaturesModel.className()) { _, newObject in
+                    newObject?["newSoundcloud"] = LocalFeatureModel(prod: false, debug: false)
                 }
             }
         }
@@ -131,7 +143,7 @@ final class SettingsManager {
         }
     }
     
-    let featuresKeys = ["newSign"]
+    let featuresKeys = ["newSign", "newLibrary", "newSoundcloud"]
     var localFeatures = LocalFeaturesModel()
     var featuresLastUpdate: Int {
         get {
@@ -142,6 +154,8 @@ final class SettingsManager {
     }
     
     var shouldUpdateFeatures: Bool {
+        guard AppEnvironment.current.isRelease else { return true }
+        
         return Int(Date().timeIntervalSince1970) - self.featuresLastUpdate >= 86400
     }
     
@@ -156,7 +170,9 @@ final class SettingsManager {
         DispatchQueue.main.async {
             RealmManager<LocalFeaturesModel>().update { realm in
                 try? realm.write {
-                    self.localFeatures.newSign = features.newSign.toRealmModel
+                    self.localFeatures.newSign    = features.newSign?.toRealmModel
+                    self.localFeatures.newLibrary = features.newFeature?.toRealmModel
+                    self.localFeatures.newSoundcloud = features.newSoundcloud?.toRealmModel
                 }
             }
         }

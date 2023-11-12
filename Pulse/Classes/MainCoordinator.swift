@@ -54,6 +54,7 @@ final class MainCoordinator {
                 if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSign?.prod ?? false {
                     guard SettingsManager.shared.pulse.shouldUpdateToken else {
                         self.makeTabBarAsRoot()
+                        completion()
                         return
                     }
                     

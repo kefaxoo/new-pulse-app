@@ -21,7 +21,11 @@ final class LibraryManager {
         
         DownloadManager.shared.cacheTracksIfNeeded()
         
-        syncTracksIfNeeded()
+        if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newLibrary?.prod ?? false {
+            syncTracksIfNeededV2()
+        } else {
+            syncTracksIfNeeded()
+        }
     }
     
     private func createDirectoriesIfNeeded() {
@@ -156,6 +160,10 @@ final class LibraryManager {
         }
     }
     
+    fileprivate func syncTracksIfNeededV2() {
+        PulseProvider.shared.syncTracks()
+    }
+    
     func cleanLibrary() -> Bool {
         _ = LibraryManager.shared.removeFile(URL(filename: "Covers", path: .documentDirectory))
         _ = LibraryManager.shared.removeFile(URL(filename: "Tracks", path: .documentDirectory))
@@ -171,49 +179,52 @@ final class LibraryManager {
     func fetchLibrary() {
         createDirectoriesIfNeeded()
         
-        PulseProvider.shared.fetchTracks { tracks in
-            tracks.forEach { track in
-                switch track.source {
-                    case .muffon:
-                        guard let id = Int(track.id) else { return }
-                        
-                        MuffonProvider.shared.trackInfo(id: id, service: track.service, shouldCancelTask: false) { muffonTrack in
-                            guard !RealmManager<LibraryTrackModel>().read().contains(where: {
-                                $0.id == muffonTrack.source.id && $0.service == muffonTrack.source.service.rawValue
-                            }) else { return }
+        if AppEnvironment.current.isRelease,
+           SettingsManager.shared.localFeatures.newLibrary?.prod ?? false {
+            PulseProvider.shared.fetchTracks { tracks in
+                tracks.forEach { track in
+                    switch track.source {
+                        case .muffon:
+                            guard let id = Int(track.id) else { return }
                             
-                            let trackObj = TrackModel(muffonTrack)
-                            ImageManager.shared.saveCover(trackObj) { filename in
-                                let libraryTrack = LibraryTrackModel(trackObj)
-                                libraryTrack.isSynced = true
-                                if let filename {
-                                    libraryTrack.coverFilename = filename
-                                }
+                            MuffonProvider.shared.trackInfo(id: id, service: track.service, shouldCancelTask: false) { muffonTrack in
+                                guard !RealmManager<LibraryTrackModel>().read().contains(where: {
+                                    $0.id == muffonTrack.source.id && $0.service == muffonTrack.source.service.rawValue
+                                }) else { return }
                                 
-                                RealmManager<LibraryTrackModel>().write(object: libraryTrack)
+                                let trackObj = TrackModel(muffonTrack)
+                                ImageManager.shared.saveCover(trackObj) { filename in
+                                    let libraryTrack = LibraryTrackModel(trackObj)
+                                    libraryTrack.isSynced = true
+                                    if let filename {
+                                        libraryTrack.coverFilename = filename
+                                    }
+                                    
+                                    RealmManager<LibraryTrackModel>().write(object: libraryTrack)
+                                }
                             }
-                        }
-                    case .soundcloud:
-                        guard let id = Int(track.id) else { return }
-                        
-                        SoundcloudProvider.shared.trackInfo(id: id) { soundcloudTrack in
-                            guard !RealmManager<LibraryTrackModel>().read().contains(where: {
-                                $0.id == soundcloudTrack.id && $0.service == ServiceType.soundcloud.rawValue
-                            }) else { return }
+                        case .soundcloud:
+                            guard let id = Int(track.id) else { return }
                             
-                            let trackObj = TrackModel(soundcloudTrack)
-                            ImageManager.shared.saveCover(trackObj) { filename in
-                                let libraryTrack = LibraryTrackModel(trackObj)
-                                libraryTrack.isSynced = true
-                                if let filename {
-                                    libraryTrack.coverFilename = filename
-                                }
+                            SoundcloudProvider.shared.trackInfo(id: id) { soundcloudTrack in
+                                guard !RealmManager<LibraryTrackModel>().read().contains(where: {
+                                    $0.id == soundcloudTrack.id && $0.service == ServiceType.soundcloud.rawValue
+                                }) else { return }
                                 
-                                RealmManager<LibraryTrackModel>().write(object: libraryTrack)
+                                let trackObj = TrackModel(soundcloudTrack)
+                                ImageManager.shared.saveCover(trackObj) { filename in
+                                    let libraryTrack = LibraryTrackModel(trackObj)
+                                    libraryTrack.isSynced = true
+                                    if let filename {
+                                        libraryTrack.coverFilename = filename
+                                    }
+                                    
+                                    RealmManager<LibraryTrackModel>().write(object: libraryTrack)
+                                }
                             }
-                        }
-                    case .none:
-                        break
+                        case .none:
+                            break
+                    }
                 }
             }
         }

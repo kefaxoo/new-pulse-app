@@ -66,7 +66,11 @@ final class ActionsManager {
                 self?.delegate?.updatedTrack(track)
                 self?.delegate?.updateTrackState(.added)
                 
-                LibraryManager.shared.syncTrack(track)
+                if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSign?.prod ?? false {
+                    PulseProvider.shared.likeTrack(track)
+                } else {
+                    LibraryManager.shared.syncTrack(track)
+                }
                 
                 switch track.service {
                     case .soundcloud:
@@ -129,7 +133,11 @@ final class ActionsManager {
             self.delegate?.reloadData()
             AlertView.shared.present(title: "Removed to library", alertType: .done, system: .iOS17AppleMusic)
             
-            LibraryManager.shared.removeTrack(track)
+            if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newLibrary?.prod ?? false {
+                PulseProvider.shared.dislikeTrack(track)
+            } else {
+                LibraryManager.shared.removeTrack(track)
+            }
         }
         
         return action

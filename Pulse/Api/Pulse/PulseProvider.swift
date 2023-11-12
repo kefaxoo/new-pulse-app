@@ -377,7 +377,7 @@ fileprivate extension PulseProvider {
 }
 
 // MARK: -
-// MARK: V3
+// MARK: Library V2, Soundcloud V2, Sign V3
 extension PulseProvider {
     func createUserV3(
         credentials: Credentials,
@@ -522,17 +522,199 @@ extension PulseProvider {
             }
         }
     }
+    
+    func syncTracks() {
+        self.urlSession.dataTask(with: URLRequest(type: PulseApi.syncTracks, shouldPrintLog: self.shouldPrintLog)) { [weak self] response in
+            switch response {
+                case .success(let response):
+                    guard let tracks = response.data?.map(to: PulseAddTracksModels.self) else { return }
+                    
+                    tracks.toAdd.forEach { track in
+                        switch track.source {
+                            case .muffon:
+                                guard let id = Int(track.id) else { return }
+                                
+                                MuffonProvider.shared.trackInfo(id: id, service: track.service, shouldCancelTask: false) { muffonTrack in
+                                    let appTrackObj = TrackModel(muffonTrack)
+                                    appTrackObj.dateAdded = track.dateAdded
+                                    DispatchQueue.main.async {
+                                        guard !LibraryManager.shared.isTrackInLibrary(appTrackObj) else { return }
+                                        
+                                        RealmManager<LibraryTrackModel>().write(object: LibraryTrackModel(appTrackObj))
+                                    }
+                                }
+                            case .soundcloud:
+                                guard SettingsManager.shared.soundcloud.isSigned,
+                                      let id = Int(track.id)
+                                else { return }
+                                
+                                SoundcloudProvider.shared.trackInfo(id: id) { soundcloudTrack in
+                                    let appTrackObj = TrackModel(soundcloudTrack)
+                                    appTrackObj.dateAdded = track.dateAdded
+                                    DispatchQueue.main.async {
+                                        guard !LibraryManager.shared.isTrackInLibrary(appTrackObj) else { return }
+                                        
+                                        RealmManager<LibraryTrackModel>().write(object: LibraryTrackModel(appTrackObj))
+                                    }
+                                }
+                            default:
+                                break
+                        }
+                    }
+                case .failure(let response):
+                    guard response.statusCode == 401 else { return }
+                    
+                    self?.refreshTokens {
+                        self?.syncTracks()
+                    }
+            }
+        }
+    }
+    
+    func likeTrack(_ track: TrackModel) {
+        self.urlSession.dataTask(with: URLRequest(type: PulseApi.likeTrack(track), shouldPrintLog: self.shouldPrintLog)) { [weak self] response in
+            switch response {
+                case .success:
+                    break
+                case .failure(let response):
+                    guard response.statusCode == 401 else { return }
+                    
+                    self?.refreshTokens {
+                        self?.likeTrack(track)
+                    }
+            }
+        }
+    }
+    
+    func dislikeTrack(_ track: TrackModel) {
+        self.urlSession.dataTask(with: URLRequest(type: PulseApi.dislikeTrack(track), shouldPrintLog: self.shouldPrintLog)) { [weak self] response in
+            switch response {
+                case .success:
+                    break
+                case .failure(let response):
+                    guard response.statusCode == 401 else { return }
+                    
+                    self?.refreshTokens {
+                        self?.dislikeTrack(track)
+                    }
+            }
+        }
+    }
+    
+    func incrementCountListen(for track: TrackModel) {
+        self.urlSession.dataTask(
+            with: URLRequest(
+                type: PulseApi.incrementListenCount(track),
+                shouldPrintLog: self.shouldPrintLog
+            )
+        ) { [weak self] response in
+            switch response {
+                case .success:
+                    break
+                case .failure(let response):
+                    guard response.statusCode == 401 else { return }
+                    
+                    self?.refreshTokens {
+                        self?.incrementCountListen(for: track)
+                    }
+            }
+        }
+    }
+    
+    func fetchDislikedTracks(
+        offset: Int = 0,
+        success: @escaping(([PulseServerTrack], _ canLoadMore: Bool) -> ()),
+        failure: @escaping PulseDefaultErrorV3Closure
+    ) {
+        self.urlSession.dataTask(
+            with: URLRequest(
+                type: PulseApi.fetchDislikedTracks(offset: offset),
+                shouldPrintLog: self.shouldPrintLog
+            )
+        ) { [weak self] response in
+            switch response {
+                case .success(let response):
+                    guard let content = response.data?.map(to: PulsebaseContentModel<PulseServerTrack>.self) else {
+                        failure(nil, nil)
+                        return
+                    }
+                    
+                    success(content.content, content.nextPage != nil)
+                case .failure(let response):
+                    self?.parseError(response: response, closure: failure, retryClosure: {
+                        self?.fetchDislikedTracks(offset: offset, success: success, failure: failure)
+                    })
+            }
+        }
+    }
+    
+    func soundcloudPlaylistArtworkV2(
+        for playlist: PlaylistModel,
+        success: @escaping((PulseCover) -> Void),
+        failure: PulseDefaultErrorV3Closure? = nil
+    ) {
+        self.urlSession.dataTask(
+            with: URLRequest(
+                type: PulseApi.soundcloudPlaylistArtworkV2(id: playlist.id),
+                shouldPrintLog: self.shouldPrintLog
+            )
+        ) { [weak self] response in
+            switch response {
+                case .success(let response):
+                    guard let images = response.data?.map(to: PulseImagesModel.self) else {
+                        failure?(nil, nil)
+                        return
+                    }
+                    
+                    success(images.images)
+                case .failure(let response):
+                    if response.statusCode == 401 {
+                        guard let error = response.data?.map(to: PulseBaseErrorModel.self) else {
+                            self?.parseError(response: response, closure: failure)
+                            return
+                        }
+                        
+                        if error.localizationKey.contains("soundcloud") {
+                            SoundcloudProvider.shared.refreshToken { tokens in
+                                SettingsManager.shared.soundcloud.updateTokens(tokens)
+                                self?.soundcloudPlaylistArtworkV2(for: playlist, success: success, failure: failure)
+                            } failure: { _ in }
+                        } else {
+                            self?.accessTokenV3(success: { loginUser in
+                                SettingsManager.shared.pulse.updateTokens(loginUser.tokens)
+                                self?.soundcloudPlaylistArtworkV2(for: playlist, success: success, failure: failure)
+                            }, failure: { _, _ in })
+                        }
+                    } else {
+                        self?.parseError(response: response, closure: failure)
+                    }
+            }
+        }
+    }
 }
 
 fileprivate extension PulseProvider {
-    func parseError(response: Failure, closure: PulseDefaultErrorV3Closure?) {
+    func parseError(response: Failure, closure: PulseDefaultErrorV3Closure?, retryClosure: (() -> ())? = nil) {
         response.sendLog()
-        if let error = response.data?.map(to: PulseBaseErrorModel.self) {
+        if response.statusCode == 401 {
+            self.accessTokenV3 { loginUser in
+                SettingsManager.shared.pulse.updateTokens(loginUser.tokens)
+                retryClosure?()
+            } failure: { _, _ in }
+        } else if let error = response.data?.map(to: PulseBaseErrorModel.self) {
             closure?(error, nil)
         } else if let error = response.error {
             closure?(nil, error)
         } else {
             closure?(nil, nil)
         }
+    }
+    
+    func refreshTokens(completion: @escaping(() -> ())) {
+        self.accessTokenV3 { loginUser in
+            SettingsManager.shared.pulse.updateTokens(loginUser.tokens)
+            completion()
+        } failure: { _, _ in }
+
     }
 }

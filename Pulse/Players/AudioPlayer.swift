@@ -415,6 +415,11 @@ extension AudioPlayer {
 // MARK: Observable methods
 fileprivate extension AudioPlayer {
     @objc func playerDidFinishPlaying() {
+        if let track,
+           LibraryManager.shared.isTrackInLibrary(track) {
+            PulseProvider.shared.incrementCountListen(for: track)
+        }
+        
         _ = self.nextTrack()
     }
     

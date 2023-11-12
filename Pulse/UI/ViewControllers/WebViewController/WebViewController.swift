@@ -20,6 +20,7 @@ class WebViewController: BaseUIViewController {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
         button.setTitleColor(SettingsManager.shared.color.color, for: .normal)
+        button.addTarget(self, action: #selector(dismissAction), for: .touchUpInside)
         return button
     }()
     

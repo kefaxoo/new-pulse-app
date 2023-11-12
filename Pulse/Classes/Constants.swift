@@ -41,6 +41,7 @@ enum Constants {
         case minVolume
         case maxVolume
         case previousTrack
+        case googleLogo
         
         var image: UIImage? {
             let type: System
@@ -117,6 +118,8 @@ enum Constants {
             switch self {
                 case .soundcloudLogo:
                     type = .soundcloudLogo
+                case .googleLogo:
+                    type = .googleLogo
                 default:
                     return nil
             }
@@ -216,6 +219,7 @@ extension Constants.Images {
     
     fileprivate enum Custom: String {
         case soundcloudLogo = "SoundcloudLogo"
+        case googleLogo     = "GoogleLogo"
         
         var image: UIImage? {
             return UIImage(named: self.rawValue)

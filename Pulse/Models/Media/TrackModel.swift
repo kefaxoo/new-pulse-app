@@ -38,8 +38,8 @@ final class TrackModel {
     let `extension`: String
     let source     : SourceType
     let isAvailable: Bool
-    let dateAdded  : Int
     
+    var dateAdded      : Int
     var image          : ImageModel?
     var playableLinks  : PlayableLinkModel?
     var cachedFilename = ""
@@ -144,6 +144,17 @@ final class TrackModel {
         dict["service"]   = self.service.rawValue
         dict["source"]    = self.source.rawValue
         dict["dateAdded"] = self.dateAdded
+        
+        return dict
+    }
+    
+    var newJson: [String: Any] {
+        let dict: [String: Any] = [
+            "id": self.id,
+            "service": self.service.rawValue,
+            "source": self.source.rawValue,
+            "dateAdded": self.dateAdded
+        ]
         
         return dict
     }

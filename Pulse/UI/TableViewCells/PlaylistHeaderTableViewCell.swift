@@ -67,10 +67,18 @@ final class PlaylistHeaderTableViewCell: BaseUITableViewCell {
         if playlist.image != nil {
             self.playlistImageView.setImage(from: playlist.image?.original)
         } else {
-            PulseProvider.shared.soundcloudPlaylistArtwork(for: playlist) { [weak self] cover in
-                self?.playlistImageView.setImage(from: cover.xl)
-            } failure: { _ in
-                self.playlistImageView.image = Constants.Images.warning.image
+            if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSoundcloud?.prod ?? false {
+                PulseProvider.shared.soundcloudPlaylistArtworkV2(for: playlist) { [weak self] cover in
+                    self?.playlistImageView.setImage(from: cover.xl)
+                } failure: { _, _ in
+                    self.playlistImageView.image = Constants.Images.warning.image
+                }
+            } else {
+                PulseProvider.shared.soundcloudPlaylistArtwork(for: playlist) { [weak self] cover in
+                    self?.playlistImageView.setImage(from: cover.xl)
+                } failure: { _ in
+                    self.playlistImageView.image = Constants.Images.warning.image
+                }
             }
         }
         

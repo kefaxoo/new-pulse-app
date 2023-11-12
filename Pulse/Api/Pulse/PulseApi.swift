@@ -38,10 +38,20 @@ enum PulseApi {
     case syncTrack(_ track: TrackModel)
     case fetchTracks
     case removeTrack(_ track: TrackModel)
+    
+    // Library V2
+    case syncTracks
+    case likeTrack(_ track: TrackModel)
+    case dislikeTrack(_ track: TrackModel)
+    case incrementListenCount(_ track: TrackModel)
+    case fetchDislikedTracks(offset: Int)
 
     // Soundcloud
     case soundcloudArtwork(link: String)
     case soundcloudPlaylistArtwork(id: String)
+    
+    // Soundcloud V2
+    case soundcloudPlaylistArtworkV2(id: String)
     
     case features
 }
@@ -94,14 +104,25 @@ extension PulseApi: BaseRestApiEnum {
                 return "/v3/user/resetPassword"
             case .accessTokenV3:
                 return "/v3/user/accessToken"
+            case .syncTracks:
+                return "/v2/library/tracks/sync"
+            case .likeTrack, .dislikeTrack:
+                return "/v2/library/track"
+            case .incrementListenCount:
+                return "/v2/library/track/incrementListenCount"
+            case .fetchDislikedTracks:
+                return "/v2/library/tracks/disliked"
+            case .soundcloudPlaylistArtworkV2:
+                return "/v2/soundcloud/playlist/artwork"
         }
     }
     
     var method: FriendlyURLSession.HTTPMethod {
         switch self {
-            case .createUser, .log, .syncTrack, .createUserV2, .features, .createUserV3, .externalSign:
+            case .createUser, .log, .syncTrack, .createUserV2, .features, .createUserV3, .externalSign, .syncTracks, .likeTrack, 
+                    .incrementListenCount:
                 return .post
-            case .removeTrack:
+            case .removeTrack, .dislikeTrack:
                 return .delete
             case .resetPasswordV3:
                 return .patch
@@ -130,6 +151,18 @@ extension PulseApi: BaseRestApiEnum {
                 if let refreshToken = SettingsManager.shared.pulse.refreshToken {
                     headers["X-Pulse-Refresh-Token"] = refreshToken
                 }
+            case .syncTracks, .likeTrack, .dislikeTrack, .incrementListenCount, .fetchDislikedTracks:
+                if let accessToken = SettingsManager.shared.pulse.accessToken {
+                    headers["X-Pulse-Token"] = accessToken
+                }
+            case .soundcloudPlaylistArtworkV2:
+                if let accessToken = SettingsManager.shared.pulse.accessToken {
+                    headers["X-Pulse-Token"] = accessToken
+                }
+                
+                if let soundcloudToken = SettingsManager.shared.soundcloud.accessToken {
+                    headers["X-Soundcloud-Token"] = soundcloudToken
+                }
             default:
                 break
         }
@@ -155,7 +188,7 @@ extension PulseApi: BaseRestApiEnum {
                 parameters["source"]   = track.source.rawValue
             case .soundcloudArtwork(let link):
                 parameters["artwork_link"] = link
-            case .soundcloudPlaylistArtwork(let id):
+            case .soundcloudPlaylistArtwork(let id), .soundcloudPlaylistArtworkV2(let id):
                 parameters["playlist_id"] = id
             case .createUserV3(let credentials, let signMethod), .loginUserV3(let credentials, let signMethod):
                 parameters["email"]        = credentials.username
@@ -164,6 +197,13 @@ extension PulseApi: BaseRestApiEnum {
             case .externalSign(let email, let signMethod):
                 parameters["email"]        = email
                 parameters["account_type"] = signMethod.rawValue
+            case .dislikeTrack(let track):
+                parameters["track_id"] = track.id
+                parameters["service"]  = track.service.rawValue
+                parameters["source"]   = track.source.rawValue
+            case .fetchDislikedTracks(let offset):
+                parameters["offset"] = offset
+                parameters["limit"]  = 20
             default:
                 return nil
         }
@@ -179,6 +219,10 @@ extension PulseApi: BaseRestApiEnum {
                 return track.json
             case .features:
                 return ["features": SettingsManager.shared.featuresKeys]
+            case .syncTracks:
+                return ["tracks": RealmManager<LibraryTrackModel>().read().compactMap({ TrackModel($0).newJson })]
+            case .likeTrack(let track), .incrementListenCount(let track):
+                return track.newJson
             default:
                 return nil
         }

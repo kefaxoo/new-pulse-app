@@ -37,13 +37,19 @@ typealias PulseVerificationCodeV2 = ResponsePulseVerificationCodeV2Model
 typealias PulseBaseModel        = ResponsePulseBaseModel
 typealias PulseBaseSuccessModel = ResponsePulseBaseSuccessModel
 typealias PulseBaseErrorModel   = ResponsePulseBaseErrorModel
+typealias PulsebaseContentModel = ResponsePulseBaseContentModel
 
-// V3
+// Sign V3, Library V2, Soundcloud V2
 typealias PulseCreateUserV3      = ResponsePulseCreateUserV3Model
 typealias PulseAuthorizationInfo = ResponsePulseAuthorizationInfoModel
 typealias PulseLoginUserV3       = ResponsePulseLoginUserV3Model
 typealias PulseVerifyUserV3      = ResponsePulseVerifyUserV3Model
 typealias PulseResetPasswordV3   = ResponsePulseResetPasswordV3Model
+typealias PulseAddTracksModels   = ResponsePulseAddTracksModel
+typealias PulseImagesModel       = ResponsePulseImagesModel
+
+// Models V3
+typealias PulseServerTrack = ResponsePulseServerTrackModel
 
 // MARK: -
 // MARK: Closures

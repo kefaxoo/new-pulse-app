@@ -30,9 +30,7 @@ final class SoundcloudProvider: BaseRestApiProvider {
                     
                     success(token)
                 case .failure(let response):
-                    self?.parseError(response: response, closure: failure, reload: {
-                        self?.signIn(success: success, failure: failure)
-                    })
+                    self?.parseError(response: response, closure: failure)
             }
         }
     }
@@ -48,9 +46,7 @@ final class SoundcloudProvider: BaseRestApiProvider {
                 
                     success(token)
                 case .failure(let response):
-                    self?.parseError(response: response, closure: failure, reload: {
-                        self?.refreshToken(success: success, failure: failure)
-                    })
+                    self?.parseError(response: response, closure: failure)
             }
         }
     }
@@ -73,8 +69,8 @@ final class SoundcloudProvider: BaseRestApiProvider {
                     
                     success(userInfo)
                 case .failure(let response):
-                    self?.parseError(response: response, closure: failure, reload: {
-                        self?.userInfo(accessToken: accessToken, success: success, failure: failure)
+                    self?.parseError(response: response, closure: failure, retryClosure: {
+                        self?.userInfo(success: success, failure: failure)
                     })
             }
         }
@@ -102,8 +98,8 @@ final class SoundcloudProvider: BaseRestApiProvider {
                     
                     success(response.collection, response.cursor)
                 case .failure(let response):
-                    self?.parseError(response: response, closure: failure, reload: {
-                        self?.libraryTracks(success: success, failure: failure)
+                    self?.parseError(response: response, closure: failure, retryClosure: {
+                        self?.libraryTracks(cursor: cursor, success: success, failure: failure)
                     })
             }
         }
@@ -129,8 +125,8 @@ final class SoundcloudProvider: BaseRestApiProvider {
                     
                     success(response.collection, response.cursor)
                 case .failure(let response):
-                    self?.parseError(response: response, closure: failure, reload: { [weak self] in
-                        self?.libraryPlaylists(success: success, failure: failure)
+                    self?.parseError(response: response, closure: failure, retryClosure: {
+                        self?.libraryPlaylists(cursor: cursor, success: success, failure: failure)
                     })
             }
         }
@@ -156,7 +152,7 @@ final class SoundcloudProvider: BaseRestApiProvider {
                     
                     success(response.collection, response.cursor)
                 case .failure(let response):
-                    self?.parseError(response: response, closure: failure, reload: { [weak self] in 
+                    self?.parseError(response: response, closure: failure, retryClosure: {
                         self?.likedPlaylists(cursor: cursor, success: success, failure: failure)
                     })
             }
@@ -190,7 +186,7 @@ final class SoundcloudProvider: BaseRestApiProvider {
                         
                         success(playableLinks)
                     case .failure(let response):
-                        self?.parseError(response: response, closure: failure, reload: {
+                        self?.parseError(response: response, closure: failure, retryClosure: {
                             self?.fetchPlayableLinks(id: id, shouldCancelTask: shouldCancelTask, success: success, failure: failure)
                         })
                 }
@@ -209,7 +205,7 @@ final class SoundcloudProvider: BaseRestApiProvider {
                     
                     success(track)
                 case .failure(let response):
-                    self?.parseError(response: response, closure: failure, reload: {
+                    self?.parseError(response: response, closure: failure, retryClosure: {
                         self?.trackInfo(id: id, success: success, failure: failure)
                     })
             }
@@ -222,7 +218,7 @@ final class SoundcloudProvider: BaseRestApiProvider {
                 case .success:
                     break
                 case .failure(let response):
-                    self?.parseError(response: response, closure: nil, reload: {
+                    self?.parseError(response: response, closure: nil, retryClosure: {
                         self?.likeTrack(id: id)
                     })
             }
@@ -261,8 +257,8 @@ final class SoundcloudProvider: BaseRestApiProvider {
                 case .failure(let response):
                     guard response.statusCode != -1 else { return }
                     
-                    self?.parseError(response: response, closure: failure, reload: {
-                        self?.search(query: query, searchType: searchType, success: success, failure: failure)
+                    self?.parseError(response: response, closure: failure, retryClosure: {
+                        self?.search(query: query, searchType: searchType, offset: offset, success: success, failure: failure)
                     })
             }
         }
@@ -296,7 +292,7 @@ final class SoundcloudProvider: BaseRestApiProvider {
                     
                     success(tracks.collection, tracks.offset)
                 case .failure(let response):
-                    self?.parseError(response: response, closure: failure, reload: {
+                    self?.parseError(response: response, closure: failure, retryClosure: {
                         self?.playlistTracks(id: id, offset: offset, success: success, failure: failure)
                     })
             }
@@ -305,16 +301,18 @@ final class SoundcloudProvider: BaseRestApiProvider {
 }
 
 fileprivate extension SoundcloudProvider {
-    private func parseError(response: Failure, closure: SoundcloudDefualtErrorClosure?, reload: @escaping(() -> ())) {
+    private func parseError(response: Failure, closure: SoundcloudDefualtErrorClosure?, retryClosure: (() -> ())? = nil) {
         if response.statusCode == 401 {
-            self.refreshToken { token in
-                SettingsManager.shared.soundcloud.updateTokens(token)
-                reload()
-            } failure: { [weak self] _ in
-                self?.parseError(response: response, closure: closure)
-            }
+            self.refreshToken { tokens in
+                SettingsManager.shared.soundcloud.updateTokens(tokens)
+                retryClosure?()
+            } failure: { _ in }
+        } else if let error = response.error {
+            closure?(SoundcloudError(errorDescription: error.localizedDescription))
+        } else if let error = response.data?.map(to: SoundcloudError.self) {
+            closure?(error)
         } else {
-            self.parseError(response: response, closure: closure)
+            closure?(nil)
         }
     }
     

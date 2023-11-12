@@ -9,7 +9,9 @@ import Foundation
 import RealmSwift
 
 final class LocalFeaturesModel: Object {
-    @Persisted dynamic var newSign: LocalFeatureModel?
+    @Persisted dynamic var newSign      : LocalFeatureModel?
+    @Persisted dynamic var newLibrary   : LocalFeatureModel?
+    @Persisted dynamic var newSoundcloud: LocalFeatureModel?
     
     convenience init(newSign: LocalFeatureModel) {
         self.init()

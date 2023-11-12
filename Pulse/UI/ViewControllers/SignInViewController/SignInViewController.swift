@@ -42,6 +42,7 @@ final class SignInViewController: CoversViewController {
         textField.borderStyle = .roundedRect
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
+        textField.tintColor = SettingsManager.shared.color.color
         return textField
     }()
     
