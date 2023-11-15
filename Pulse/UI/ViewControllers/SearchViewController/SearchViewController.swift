@@ -36,6 +36,13 @@ final class SearchViewController: BaseUIViewController {
         return tableView
     }()
     
+    private lazy var emptySearchQuerySearchContentView: ContentUnavailableView = {
+        let contentUnavailableView = ContentUnavailableView()
+        contentUnavailableView.contentImage = Constants.Images.search.image
+        contentUnavailableView.titleText = "Type search in text field"
+        return contentUnavailableView
+    }()
+    
     private lazy var presenter: SearchPresenter = {
         let presenter = SearchPresenter()
         presenter.delegate = self
@@ -71,6 +78,7 @@ extension SearchViewController {
         self.view.addSubview(serviceSegmentedControl)
         self.view.addSubview(typeSegmentedControl)
         self.view.addSubview(resultsTableView)
+        self.view.addSubview(emptySearchQuerySearchContentView)
     }
     
     override func setupConstraints() {
@@ -88,6 +96,11 @@ extension SearchViewController {
             make.top.equalTo(typeSegmentedControl.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
+        }
+        
+        emptySearchQuerySearchContentView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.centerY.equalToSuperview()
         }
     }
     
@@ -131,6 +144,12 @@ extension SearchViewController: SearchPresenterDelegate {
 // MARK: UISearchBarDelegate
 extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            self.emptySearchQuerySearchContentView.show()
+        } else {
+            self.emptySearchQuerySearchContentView.hide()
+        }
+        
         self.presenter.textDidChange(searchText)
     }
 }

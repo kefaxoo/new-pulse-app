@@ -258,4 +258,64 @@ final class LibraryManager {
             _ = LibraryManager.shared.removeFile(url)
         }
     }
+    
+    func likeTrack(_ track: TrackModel) {
+        DispatchQueue.main.async {
+            let libraryTrack = LibraryTrackModel(track)
+            RealmManager<LibraryTrackModel>().write(object: libraryTrack)
+            if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newLibrary?.prod ?? false {
+                PulseProvider.shared.likeTrack(track)
+            } else {
+                LibraryManager.shared.syncTrack(track)
+            }
+            
+            switch track.service {
+                case .soundcloud:
+                    if SettingsManager.shared.soundcloudLike,
+                       SettingsManager.shared.soundcloud.isSigned {
+                        SoundcloudProvider.shared.likeTrack(id: track.id)
+                    }
+                default:
+                    break
+            }
+            
+            guard SettingsManager.shared.autoDownload else { return }
+            
+            DownloadManager.shared.addTrackToQueue(track)
+        }
+    }
+    
+    func dislikeTrack(_ track: TrackModel) {
+        DispatchQueue.main.async {
+            guard let libraryTrack = RealmManager<LibraryTrackModel>().read()
+                .first(where: { $0.id == track.id && $0.service == track.service.rawValue && $0.source == track.source.rawValue }) else { return }
+            
+            if !libraryTrack.coverFilename.isEmpty,
+               RealmManager<LibraryTrackModel>().read().filter({ track.image?.contains($0.coverFilename) ?? false }).count < 2 {
+                _ = LibraryManager.shared.removeFile(URL(filename: libraryTrack.trackFilename, path: .documentDirectory))
+                
+                RealmManager<LibraryTrackModel>().update { realm in
+                    try? realm.write {
+                        libraryTrack.trackFilename = ""
+                    }
+                }
+            }
+            
+            let tracks = RealmManager<LibraryTrackModel>().read()
+                .filter({ $0.artistId == (track.artist?.id ?? -1) || $0.artistIds.contains(track.artist?.id ?? -1) })
+            
+            
+            if tracks.count < 2,
+               let artist = RealmManager<LibraryArtistModel>().read().first(where: { $0.id == tracks[0].artistId }) {
+                RealmManager<LibraryArtistModel>().delete(object: artist)
+            }
+            
+            RealmManager<LibraryTrackModel>().delete(object: libraryTrack)
+            if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newLibrary?.prod ?? false {
+                PulseProvider.shared.dislikeTrack(track)
+            } else {
+                LibraryManager.shared.removeTrack(track)
+            }
+        }
+    }
 }

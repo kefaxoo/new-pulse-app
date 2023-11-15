@@ -8,6 +8,8 @@
 import UIKit
 
 enum Constants {
+    static var localPulseBaseUrl = "http://192.168.100.70:8000"
+    
     enum Images {
         case warning
         case inLibrary

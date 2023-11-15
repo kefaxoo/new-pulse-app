@@ -51,6 +51,7 @@ enum PulseApi {
     case soundcloudPlaylistArtwork(id: String)
     
     // Soundcloud V2
+    case soundcloudArtworkV2(link: String)
     case soundcloudPlaylistArtworkV2(id: String)
     
     case features
@@ -60,7 +61,7 @@ extension PulseApi: BaseRestApiEnum {
     var baseUrl: String {
         switch AppEnvironment.current {
             case .local:
-                return "http://192.168.100.70:8000/api"
+                return "\(Constants.localPulseBaseUrl)/api"
             case .test:
                 return "https://test-pulse-api.fly.dev/api"
             default:
@@ -114,6 +115,8 @@ extension PulseApi: BaseRestApiEnum {
                 return "/v2/library/tracks/disliked"
             case .soundcloudPlaylistArtworkV2:
                 return "/v2/soundcloud/playlist/artwork"
+            case .soundcloudArtworkV2:
+                return "/v2/soundcloud/artwork"
         }
     }
     
@@ -151,7 +154,7 @@ extension PulseApi: BaseRestApiEnum {
                 if let refreshToken = SettingsManager.shared.pulse.refreshToken {
                     headers["X-Pulse-Refresh-Token"] = refreshToken
                 }
-            case .syncTracks, .likeTrack, .dislikeTrack, .incrementListenCount, .fetchDislikedTracks:
+            case .syncTracks, .likeTrack, .dislikeTrack, .incrementListenCount, .fetchDislikedTracks, .soundcloudArtworkV2:
                 if let accessToken = SettingsManager.shared.pulse.accessToken {
                     headers["X-Pulse-Token"] = accessToken
                 }
@@ -186,7 +189,7 @@ extension PulseApi: BaseRestApiEnum {
                 parameters["track_id"] = String(track.id)
                 parameters["service"]  = track.service.rawValue
                 parameters["source"]   = track.source.rawValue
-            case .soundcloudArtwork(let link):
+            case .soundcloudArtwork(let link), .soundcloudArtworkV2(let link):
                 parameters["artwork_link"] = link
             case .soundcloudPlaylistArtwork(let id), .soundcloudPlaylistArtworkV2(let id):
                 parameters["playlist_id"] = id

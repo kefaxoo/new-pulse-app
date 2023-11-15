@@ -691,6 +691,29 @@ extension PulseProvider {
             }
         }
     }
+    
+    func soundcloudArtworkV2(link: String, success: @escaping((PulseCover) -> Void), failure: PulseDefaultErrorV3Closure? = nil) {
+        self.urlSession.dataTask(
+            with: URLRequest(
+                type: PulseApi.soundcloudArtworkV2(link: link),
+                shouldPrintLog: self.shouldPrintLog
+            )
+        ) { [weak self] response in
+            switch response {
+                case .success(let response):
+                    guard let images = response.data?.map(to: PulseImagesModel.self) else {
+                        failure?(nil, nil)
+                        return
+                    }
+                    
+                    success(images.images)
+                case .failure(let response):
+                    self?.parseError(response: response, closure: failure, retryClosure: {
+                        self?.soundcloudArtworkV2(link: link, success: success, failure: failure)
+                    })
+            }
+        }
+    }
 }
 
 fileprivate extension PulseProvider {
@@ -715,6 +738,5 @@ fileprivate extension PulseProvider {
             SettingsManager.shared.pulse.updateTokens(loginUser.tokens)
             completion()
         } failure: { _, _ in }
-
     }
 }

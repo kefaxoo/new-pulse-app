@@ -150,7 +150,7 @@ final class TrackModel {
     
     var newJson: [String: Any] {
         let dict: [String: Any] = [
-            "id": self.id,
+            "id": "\(self.id)",
             "service": self.service.rawValue,
             "source": self.source.rawValue,
             "dateAdded": self.dateAdded

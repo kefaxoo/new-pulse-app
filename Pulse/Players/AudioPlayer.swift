@@ -106,11 +106,7 @@ final class AudioPlayer: NSObject {
         self.setupCover()
         self.setupObserver()
         self.updatePlayableLink(at: self.nextPosition)
-//        if isNewPlaylist {
-//            self.setupCache()
-//        } else {
-//            SessionCacheManager.shared.addTrackToQueue(track)
-//        }
+        self.setupTrackNowPlayingCommands()
     }
     
     func state(for track: TrackModel) -> CoverImageViewState {
@@ -191,13 +187,24 @@ fileprivate extension AudioPlayer {
            !coverModel.isImageLocal {
             switch self.track?.source {
                 case .soundcloud:
-                    PulseProvider.shared.soundcloudArtwork(exampleLink: coverModel.original) { [weak self] cover in
-                        self?.track?.image = ImageModel(cover)
-                        self?.fetchCover(from: cover.xl)
-                        
-                        guard let self else { return }
-                        
-                        self.playlist[self.position].image = ImageModel(cover)
+                    if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSoundcloud?.prod ?? false {
+                        PulseProvider.shared.soundcloudArtworkV2(link: coverModel.original) { [weak self] cover in
+                            self?.track?.image = ImageModel(cover)
+                            self?.fetchCover(from: cover.xl)
+                            
+                            guard let self else { return }
+                            
+                            self.playlist[self.position].image = ImageModel(cover)
+                        }
+                    } else {
+                        PulseProvider.shared.soundcloudArtwork(exampleLink: coverModel.original) { [weak self] cover in
+                            self?.track?.image = ImageModel(cover)
+                            self?.fetchCover(from: cover.xl)
+                            
+                            guard let self else { return }
+                            
+                            self.playlist[self.position].image = ImageModel(cover)
+                        }
                     }
                 default:
                     break
@@ -248,6 +255,27 @@ fileprivate extension AudioPlayer {
             }
             
             return .success
+        }
+    }
+    
+    func setupTrackNowPlayingCommands() {
+        if #available(iOS 17.0, *) {
+            guard let track else { return }
+            
+            commandCenter.likeCommand.isActive = LibraryManager.shared.isTrackInLibrary(track)
+            
+            commandCenter.likeCommand.addTarget { [weak self] _ in
+                guard let self else { return .commandFailed }
+                
+                if self.commandCenter.likeCommand.isActive {
+                    LibraryManager.shared.dislikeTrack(track)
+                } else {
+                    LibraryManager.shared.likeTrack(track)
+                }
+                
+                self.commandCenter.likeCommand.isActive.toggle()
+                return .success
+            }
         }
     }
     
