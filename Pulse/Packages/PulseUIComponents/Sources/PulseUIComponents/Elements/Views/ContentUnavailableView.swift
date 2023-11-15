@@ -175,12 +175,10 @@ public extension ContentUnavailableView {
     }
     
     func hide() {
-        self.contentStackView.subviews.forEach { view in
-            UIView.animate(withDuration: 0.2) {
-                view.isHidden = true
-            } completion: { [weak self] _ in
-                self?.loadingActivityIndicatorView.stopAnimating()
-            }
+        UIView.animate(withDuration: 0.2) { [weak self] in
+            self?.contentStackView.alpha = 0
+        } completion: { [weak self] _ in
+            self?.loadingActivityIndicatorView.stopAnimating()
         }
     }
     
@@ -189,21 +187,9 @@ public extension ContentUnavailableView {
             self.loadingActivityIndicatorView.startAnimating()
         }
         
-        self.contentStackView.subviews.forEach { [weak self] view in
-            guard let self else { return }
-            
-            if view == self.loadingActivityIndicatorView {
-                self.loadingActivityIndicatorView.isHidden = !self.isLoadingActivityIndicatorShowing
-            } else if view == self.contentImageView {
-                self.contentImageView.isHidden = self.contentImage == nil
-            } else if view == self.titleLabel {
-                self.titleLabel.isHidden = self.titleText == nil
-            } else if view == self.subtitleLabel {
-                self.subtitleLabel.isHidden = self.subtitleText == nil
-            }
+        UIView.animate(withDuration: 0.2) { [weak self] in
+            self?.contentStackView.alpha = 1
         }
-        
-        self.contentStackView.layoutSubviews()
     }
 }
 

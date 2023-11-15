@@ -24,15 +24,15 @@ final class TracksViewController: BaseUIViewController {
         return tableView
     }()
     
-    private lazy var emptyView: InformationView = {
-        let view = InformationView(style: .empty(title: "There is no tracks"))
+    private lazy var emptyView: ContentUnavailableView = {
+        let view = ContentUnavailableView()
+        view.titleText = "There is no content"
         view.isHidden = true
         return view
     }()
     
     private lazy var presenter: TracksPresenter = {
         let presenter = TracksPresenter(type: self.type, delegate: self)
-        emptyView.isHidden = presenter.tracksCount > 0
         return presenter
     }()
     
@@ -67,11 +67,7 @@ extension TracksViewController {
             make.leading.trailing.bottom.equalToSuperview()
         }
         
-        emptyView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(60)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(60)
-        }
+        emptyView.snp.makeConstraints({ $0.leading.trailing.centerY.equalToSuperview() })
     }
     
     private func setupNavigationController() {
@@ -122,7 +118,12 @@ extension TracksViewController: UITableViewDelegate {
 // MARK: TracksPresenterDelegate
 extension TracksViewController: TracksPresenterDelegate {
     func reloadData() {
-        self.emptyView.isHidden = self.presenter.tracksCount > 0
+        if self.presenter.tracksIsEmpty {
+            self.emptyView.hide()
+        } else {
+            self.emptyView.show()
+        }
+        
         self.tracksTableView.reloadData()
     }
 }

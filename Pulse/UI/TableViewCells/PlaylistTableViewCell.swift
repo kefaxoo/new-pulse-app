@@ -61,6 +61,7 @@ extension PlaylistTableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
+        self.playlistImageView.image = nil
         self.playlistTitleLabel.text = ""
     }
 }

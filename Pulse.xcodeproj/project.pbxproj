@@ -25,7 +25,6 @@
 		70017EFF2AEEDB34001E1C02 /* ArtistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E1A2AEEDB33001E1C02 /* ArtistModel.swift */; };
 		70017F002AEEDB34001E1C02 /* PlayPauseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E1D2AEEDB34001E1C02 /* PlayPauseButton.swift */; };
 		70017F012AEEDB34001E1C02 /* ServiceSignTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E1F2AEEDB34001E1C02 /* ServiceSignTableViewCell.swift */; };
-		70017F022AEEDB34001E1C02 /* PlaylistHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E202AEEDB34001E1C02 /* PlaylistHeaderTableViewCell.swift */; };
 		70017F032AEEDB34001E1C02 /* PlaylistTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E212AEEDB34001E1C02 /* PlaylistTableViewCell.swift */; };
 		70017F042AEEDB34001E1C02 /* ColorSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E222AEEDB34001E1C02 /* ColorSettingTableViewCell.swift */; };
 		70017F052AEEDB34001E1C02 /* ChevronTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E232AEEDB34001E1C02 /* ChevronTableViewCell.swift */; };
@@ -67,7 +66,6 @@
 		70017F292AEEDB34001E1C02 /* NowPlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E592AEEDB34001E1C02 /* NowPlayingView.swift */; };
 		70017F2A2AEEDB34001E1C02 /* ScrollingCoverCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E5B2AEEDB34001E1C02 /* ScrollingCoverCollectionViewCell.swift */; };
 		70017F2B2AEEDB34001E1C02 /* CoversScrollingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E5C2AEEDB34001E1C02 /* CoversScrollingView.swift */; };
-		70017F2C2AEEDB34001E1C02 /* InformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E5D2AEEDB34001E1C02 /* InformationView.swift */; };
 		70017F2D2AEEDB34001E1C02 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E5F2AEEDB34001E1C02 /* MainTabBarController.swift */; };
 		70017F2E2AEEDB34001E1C02 /* Float+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E612AEEDB34001E1C02 /* Float+Ext.swift */; };
 		70017F2F2AEEDB34001E1C02 /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E622AEEDB34001E1C02 /* Date+Ext.swift */; };
@@ -199,6 +197,7 @@
 		70174C532B00F04D00E7DA0D /* ResponsePulseAddTracksModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70174C522B00F04D00E7DA0D /* ResponsePulseAddTracksModel.swift */; };
 		70174C552B00F08500E7DA0D /* ResponsePulseServerTrackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70174C542B00F08500E7DA0D /* ResponsePulseServerTrackModel.swift */; };
 		703E65692AFA663C001A62FA /* LocalizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703E65682AFA663C001A62FA /* LocalizationManager.swift */; };
+		706974C32B055B500093D1FB /* PlaylistTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706974C22B055B500093D1FB /* PlaylistTableHeaderView.swift */; };
 		7072CC062AF8F43500E51E0A /* SignMethodType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7072CC052AF8F43500E51E0A /* SignMethodType.swift */; };
 		7072CC0A2AF8F4BB00E51E0A /* ResponsePulseBaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7072CC092AF8F4BB00E51E0A /* ResponsePulseBaseModel.swift */; };
 		7072CC0C2AF8F50000E51E0A /* ResponsePulseBaseSuccessModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7072CC0B2AF8F50000E51E0A /* ResponsePulseBaseSuccessModel.swift */; };
@@ -238,7 +237,6 @@
 		70017E1A2AEEDB33001E1C02 /* ArtistModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistModel.swift; sourceTree = "<group>"; };
 		70017E1D2AEEDB34001E1C02 /* PlayPauseButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayPauseButton.swift; sourceTree = "<group>"; };
 		70017E1F2AEEDB34001E1C02 /* ServiceSignTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceSignTableViewCell.swift; sourceTree = "<group>"; };
-		70017E202AEEDB34001E1C02 /* PlaylistHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		70017E212AEEDB34001E1C02 /* PlaylistTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistTableViewCell.swift; sourceTree = "<group>"; };
 		70017E222AEEDB34001E1C02 /* ColorSettingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSettingTableViewCell.swift; sourceTree = "<group>"; };
 		70017E232AEEDB34001E1C02 /* ChevronTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChevronTableViewCell.swift; sourceTree = "<group>"; };
@@ -280,7 +278,6 @@
 		70017E592AEEDB34001E1C02 /* NowPlayingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingView.swift; sourceTree = "<group>"; };
 		70017E5B2AEEDB34001E1C02 /* ScrollingCoverCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollingCoverCollectionViewCell.swift; sourceTree = "<group>"; };
 		70017E5C2AEEDB34001E1C02 /* CoversScrollingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoversScrollingView.swift; sourceTree = "<group>"; };
-		70017E5D2AEEDB34001E1C02 /* InformationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InformationView.swift; sourceTree = "<group>"; };
 		70017E5F2AEEDB34001E1C02 /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		70017E612AEEDB34001E1C02 /* Float+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Float+Ext.swift"; sourceTree = "<group>"; };
 		70017E622AEEDB34001E1C02 /* Date+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
@@ -403,6 +400,7 @@
 		70174C522B00F04D00E7DA0D /* ResponsePulseAddTracksModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseAddTracksModel.swift; sourceTree = "<group>"; };
 		70174C542B00F08500E7DA0D /* ResponsePulseServerTrackModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseServerTrackModel.swift; sourceTree = "<group>"; };
 		703E65682AFA663C001A62FA /* LocalizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationManager.swift; sourceTree = "<group>"; };
+		706974C22B055B500093D1FB /* PlaylistTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistTableHeaderView.swift; sourceTree = "<group>"; };
 		7072CC052AF8F43500E51E0A /* SignMethodType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignMethodType.swift; sourceTree = "<group>"; };
 		7072CC092AF8F4BB00E51E0A /* ResponsePulseBaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseBaseModel.swift; sourceTree = "<group>"; };
 		7072CC0B2AF8F50000E51E0A /* ResponsePulseBaseSuccessModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseBaseSuccessModel.swift; sourceTree = "<group>"; };
@@ -548,7 +546,6 @@
 			isa = PBXGroup;
 			children = (
 				70017E1F2AEEDB34001E1C02 /* ServiceSignTableViewCell.swift */,
-				70017E202AEEDB34001E1C02 /* PlaylistHeaderTableViewCell.swift */,
 				70017E212AEEDB34001E1C02 /* PlaylistTableViewCell.swift */,
 				70017E222AEEDB34001E1C02 /* ColorSettingTableViewCell.swift */,
 				70017E232AEEDB34001E1C02 /* ChevronTableViewCell.swift */,
@@ -726,11 +723,11 @@
 		70017E562AEEDB34001E1C02 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				706974C12B055B420093D1FB /* TableHeaderViews */,
 				70017E572AEEDB34001E1C02 /* StaticGradientView.swift */,
 				70017E582AEEDB34001E1C02 /* AlertView.swift */,
 				70017E592AEEDB34001E1C02 /* NowPlayingView.swift */,
 				70017E5A2AEEDB34001E1C02 /* CoversScrollingView */,
-				70017E5D2AEEDB34001E1C02 /* InformationView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1071,6 +1068,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		706974C12B055B420093D1FB /* TableHeaderViews */ = {
+			isa = PBXGroup;
+			children = (
+				706974C22B055B500093D1FB /* PlaylistTableHeaderView.swift */,
+			);
+			path = TableHeaderViews;
+			sourceTree = "<group>";
+		};
 		7072CC082AF8F4B200E51E0A /* V3 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1283,7 +1288,6 @@
 				70017F072AEEDB34001E1C02 /* TextTableViewCell.swift in Sources */,
 				70017F922AEEDB34001E1C02 /* ResponseSoundcloudPlaylistModel.swift in Sources */,
 				70017F392AEEDB34001E1C02 /* UITextField+Ext.swift in Sources */,
-				70017F2C2AEEDB34001E1C02 /* InformationView.swift in Sources */,
 				7072CC292AF987C600E51E0A /* ResponsePulseVerifyUserV3Model.swift in Sources */,
 				70017EFC2AEEDB34001E1C02 /* TrackModel.swift in Sources */,
 				70017F342AEEDB34001E1C02 /* UIEdgeInsets+Ext.swift in Sources */,
@@ -1345,7 +1349,6 @@
 				70174C532B00F04D00E7DA0D /* ResponsePulseAddTracksModel.swift in Sources */,
 				70017F4B2AEEDB34001E1C02 /* DownloadManager.swift in Sources */,
 				70017F182AEEDB34001E1C02 /* PlaylistPresenter.swift in Sources */,
-				70017F022AEEDB34001E1C02 /* PlaylistHeaderTableViewCell.swift in Sources */,
 				70017F622AEEDB34001E1C02 /* BaseKeychainModel.swift in Sources */,
 				70017F062AEEDB34001E1C02 /* TrackTableViewCell.swift in Sources */,
 				70017F852AEEDB34001E1C02 /* ResponsePulseAccessTokenModel.swift in Sources */,
@@ -1376,6 +1379,7 @@
 				70017F1F2AEEDB34001E1C02 /* VerifyPulseAccountPopUpViewController.swift in Sources */,
 				70017F3D2AEEDB34001E1C02 /* UIColor+Ext.swift in Sources */,
 				70017F442AEEDB34001E1C02 /* URL+Ext.swift in Sources */,
+				706974C32B055B500093D1FB /* PlaylistTableHeaderView.swift in Sources */,
 				70017F662AEEDB34001E1C02 /* ResponseMuffonLinksModel.swift in Sources */,
 				70017F012AEEDB34001E1C02 /* ServiceSignTableViewCell.swift in Sources */,
 				70017F562AEEDB34001E1C02 /* LibaryTrackModel.swift in Sources */,

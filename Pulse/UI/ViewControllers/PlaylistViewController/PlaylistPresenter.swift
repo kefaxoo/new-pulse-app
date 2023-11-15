@@ -9,6 +9,7 @@ import UIKit
 
 protocol PlaylistPresenterDelegate: AnyObject {
     func reloadData()
+    func changeNavigationTitleAlpha(_ alpha: CGFloat)
 }
 
 final class PlaylistPresenter: BasePresenter {
@@ -62,27 +63,20 @@ final class PlaylistPresenter: BasePresenter {
 // MARK: BaseTableViewPresenter
 extension PlaylistPresenter: BaseTableViewPresenter {
     func setupCell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
-        let id = indexPath.item == 0 ? PlaylistHeaderTableViewCell.id : TrackTableViewCell.id
+        let id = TrackTableViewCell.id
         return self.setupCell(tableView.dequeueReusableCell(withIdentifier: id, for: indexPath), at: indexPath)
     }
     
     func setupCell(_ cell: UITableViewCell, at indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.item == 0 {
-            (cell as? PlaylistHeaderTableViewCell)?.setupCell(self.playlist)
-        } else {
-            let index = indexPath.item - 1
-            let track = self.tracks[index]
-            (cell as? TrackTableViewCell)?.setupCell(track, state: AudioPlayer.shared.state(for: track))
-            (cell as? TrackTableViewCell)?.delegate = self
-        }
-        
+        let index = indexPath.item
+        let track = self.tracks[index]
+        (cell as? TrackTableViewCell)?.setupCell(track, state: AudioPlayer.shared.state(for: track))
+        (cell as? TrackTableViewCell)?.delegate = self
         return cell
     }
     
     func didSelectRow(at indexPath: IndexPath) {
-        guard indexPath.item > 0 else { return }
-        
-        let index = indexPath.item - 1
+        let index = indexPath.item
         let track = tracks[index]
         if track.needFetchingPlayableLinks {
             AudioManager.shared.getPlayableLink(for: track) { [weak self] updatedTrack in
@@ -110,6 +104,22 @@ extension PlaylistPresenter: BaseTableViewPresenter {
         guard self.type != .library,
               self.type != .none
         else { return }
+        
+        if let headerView = (scrollView as? UITableView)?.tableHeaderView as? PlaylistTableHeaderView,
+           let heightOfNavigationBar = (MainCoordinator.shared.currentViewController as? UINavigationController)?.navigationBar.bounds.height {
+            let contentOffsetY = scrollView.contentOffset.y + heightOfNavigationBar
+            let headerTitleMinY = headerView.titleLabel.frame.minY
+            let headerTitleMaxY = headerView.titleLabel.frame.maxY
+            
+            var alpha = contentOffsetY / headerTitleMaxY
+            if alpha > 1 {
+                alpha = 1
+            } else if alpha < 0 {
+                alpha = 0
+            }
+            
+            self.delegate?.changeNavigationTitleAlpha(alpha)
+        }
         
         if (scrollView.contentOffset.y + scrollView.frame.size.height) > scrollView.contentSize.height,
            !isResultsLoading,

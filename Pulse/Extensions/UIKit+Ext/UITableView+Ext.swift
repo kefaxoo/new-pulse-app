@@ -14,4 +14,27 @@ extension UITableView {
             self?.register(cell, forCellReuseIdentifier: id)
         }
     }
+    
+    func layoutHeaderView() {
+        guard let headerView = self.tableHeaderView else { return }
+        
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        let headerWidth = headerView.bounds.width
+        let temporaryWidthConstraint = headerView.widthAnchor.constraint(equalToConstant: headerWidth)
+        
+        headerView.addConstraint(temporaryWidthConstraint)
+        headerView.setNeedsLayout()
+        headerView.layoutIfNeeded()
+        
+        let headerSize = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        
+        var height = headerSize.height
+        var frame = headerView.frame
+        
+        frame.size.height = height
+        headerView.frame = frame
+        
+        headerView.removeConstraint(temporaryWidthConstraint)
+        headerView.translatesAutoresizingMaskIntoConstraints = true
+    }
 }

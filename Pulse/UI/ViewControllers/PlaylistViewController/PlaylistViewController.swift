@@ -9,11 +9,18 @@ import UIKit
 import PulseUIComponents
 
 final class PlaylistViewController: BaseUIViewController {
+    private lazy var playlistTableHeaderView: PlaylistTableHeaderView = {
+        let view = PlaylistTableHeaderView(playlist: self.playlist)
+        return view
+    }()
+    
     private lazy var playlistTableView: BaseUITableView = {
         let tableView = BaseUITableView()
         tableView.dataSource = self
-        tableView.register(PlaylistHeaderTableViewCell.self, TrackTableViewCell.self)
+        tableView.register(TrackTableViewCell.self)
         tableView.delegate = self
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
+        tableView.tableHeaderView = playlistTableHeaderView
         return tableView
     }()
     
@@ -55,12 +62,27 @@ extension PlaylistViewController {
 // MARK: -
 // MARK: Setup interface methods
 extension PlaylistViewController {
+    override func setupInterface() {
+        super.setupInterface()
+        self.setupNavigationController()
+    }
+    
     override func setupLayout() {
         self.view.addSubview(playlistTableView)
     }
     
     override func setupConstraints() {
         playlistTableView.snp.makeConstraints({ $0.edges.equalToSuperview() })
+        
+        self.view.layoutIfNeeded()
+        self.playlistTableView.layoutHeaderView()
+    }
+    
+    private func setupNavigationController() {
+        self.navigationItem.title = self.playlist.title
+        self.navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.clear.withAlphaComponent(0)
+        ]
     }
 }
 
@@ -68,7 +90,7 @@ extension PlaylistViewController {
 // MARK: UITableViewDataSource
 extension PlaylistViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1 + self.presenter.tracksCount
+        return self.presenter.tracksCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -81,6 +103,12 @@ extension PlaylistViewController: UITableViewDataSource {
 extension PlaylistViewController: PlaylistPresenterDelegate {
     func reloadData() {
         self.playlistTableView.reloadData()
+    }
+    
+    func changeNavigationTitleAlpha(_ alpha: CGFloat) {
+        self.navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.clear.withAlphaComponent(alpha)
+        ]
     }
 }
 
@@ -101,7 +129,7 @@ extension PlaylistViewController: UITableViewDelegate {
 // MARK: AudioPlayerTableViewDelegate
 extension PlaylistViewController: AudioPlayerTableViewDelegate {
     func changeStateImageView(_ state: CoverImageViewState, position: Int) {
-        let indexPath = IndexPath(row: position + 1, section: 0)
+        let indexPath = IndexPath(row: position, section: 0)
         (playlistTableView.cellForRow(at: indexPath) as? TrackTableViewCell)?.changeState(state)
     }
 }

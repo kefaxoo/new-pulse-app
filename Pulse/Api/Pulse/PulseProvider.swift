@@ -37,28 +37,6 @@ final class PulseProvider: BaseRestApiProvider {
         }
     }
     
-    func createUserV2(credentials: Credentials, success: @escaping((PulseCreateUserV2) -> ()), failure: @escaping PulseDefaultErrorV2Closure) {
-        self.urlSession.dataTask(
-            with: URLRequest(
-                type: PulseApi.createUserV2(credentials: credentials),
-                decodeToHttp: true,
-                shouldPrintLog: self.shouldPrintLog
-            )
-        ) { [weak self] response in
-            switch response {
-                case .success(let response):
-                    guard let createUser = response.data?.map(to: PulseCreateUserV2.self) else {
-                        failure(nil)
-                        return
-                    }
-                    
-                    success(createUser)
-                case .failure(let response):
-                    self?.parseError(response: response, closure: failure)
-            }
-        }
-    }
-    
     func loginUser(
         credentials: Credentials,
         success: @escaping((PulseLoginUser) -> ()),
@@ -81,36 +59,6 @@ final class PulseProvider: BaseRestApiProvider {
                 case .failure(let response):
                     guard response.statusCode == 425,
                           let verifyError = response.data?.map(to: PulseLoginWithCode.self)
-                    else {
-                        self?.parseError(response: response, closure: failure)
-                        return
-                    }
-                    
-                    verifyClosure(verifyError)
-            }
-        }
-    }
-    
-    func loginUserV2(
-        credentials: Credentials,
-        success: @escaping((PulseLoginUserV2) -> ()),
-        failure: @escaping PulseDefaultErrorV2Closure,
-        verifyClosure: @escaping((PulseVerificationCodeV2) -> ())
-    ) {
-        self.urlSession.dataTask(
-            with: URLRequest(type: PulseApi.loginUserV2(credentials: credentials), decodeToHttp: true, shouldPrintLog: self.shouldPrintLog)
-        ) { [weak self] response in
-            switch response {
-                case .success(let response):
-                    guard let loginUser = response.data?.map(to: PulseLoginUserV2.self) else {
-                        failure(nil)
-                        return
-                    }
-                    
-                    success(loginUser)
-                case .failure(let response):
-                    guard response.statusCode == 425,
-                          let verifyError = response.data?.map(to: PulseVerificationCodeV2.self) 
                     else {
                         self?.parseError(response: response, closure: failure)
                         return
@@ -159,22 +107,6 @@ final class PulseProvider: BaseRestApiProvider {
                     }
                     
                     success(loginUser)
-                case .failure(let response):
-                    self?.parseError(response: response, closure: failure)
-            }
-        }
-    }
-    
-    func accessTokenV2(success: @escaping((PulseAccessToken) -> ()), failure: @escaping PulseDefaultErrorV2Closure) {
-        self.urlSession.dataTask(with: URLRequest(type: PulseApi.accessTokenV2, shouldPrintLog: self.shouldPrintLog)) { [weak self] response in
-            switch response {
-                case .success(let response):
-                    guard let accessToken = response.data?.map(to: PulseAccessToken.self) else {
-                        failure(nil)
-                        return
-                    }
-                    
-                    success(accessToken)
                 case .failure(let response):
                     self?.parseError(response: response, closure: failure)
             }

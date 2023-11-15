@@ -30,12 +30,6 @@ final class PlaylistsViewController: BaseUIViewController {
         return tableView
     }()
     
-    private lazy var emptyView: InformationView = {
-        let view = InformationView(style: .empty(title: "There is no playlists"))
-        view.isHidden = true
-        return view
-    }()
-    
     private lazy var presenter: PlaylistsPresenter = {
         let presenter = PlaylistsPresenter(type: self.type, delegate: self)
         return presenter
@@ -65,8 +59,6 @@ extension PlaylistsViewController {
     override func setupLayout() {
         self.view.addSubview(playlistsTableView)
         playlistsTableView.tableHeaderView = self.playlistsTypeSegmentedControl
-        
-        self.view.addSubview(emptyView)
     }
     
     override func setupConstraints() {
@@ -80,12 +72,6 @@ extension PlaylistsViewController {
             make.bottom.equalToSuperview()
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(20)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
-        }
-        
-        emptyView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(60)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(60)
         }
     }
     
@@ -155,7 +141,6 @@ extension PlaylistsViewController: UITableViewDelegate {
 // MARK: TracksPresenterDelegate
 extension PlaylistsViewController: PlaylistsPresenterDelegate {
     func reloadData() {
-        self.emptyView.isHidden = self.presenter.playlistsCount > 0
         self.playlistsTableView.reloadData()
     }
     

@@ -29,6 +29,10 @@ final class TracksPresenter: BasePresenter {
         return showedTracks.count
     }
     
+    var tracksIsEmpty: Bool {
+        return showedTracks.isEmpty
+    }
+    
     init(type: LibraryControllerType, delegate: TracksPresenterDelegate?) {
         self.type = type
         self.delegate = delegate
