@@ -1,0 +1,78 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  before_all do
+    clean_build_artifacts
+  end
+
+  desc "Push a new beta build to TestFlight"
+  lane :upload_prod do
+    app_store_connect_api_key(
+      key_id: "TJF5UX9U83",
+      issuer_id: "b8379a9f-ebd0-49b8-b4fb-ea5d7f96c664",
+      key_filepath: "./AuthKey_TJF5UX9U83.p8"
+    )
+    
+    current_build = increment_build_number(
+      build_number: latest_testflight_build_number + 1,
+      xcodeproj: "Pulse.xcodeproj"
+    )
+    
+    current_version = get_version_number(xcodeproj: "Pulse.xcodeproj", target: "Pulse")
+    components = current_version.split(".")
+    puts "Which component to increment? (1: Major, 2: Minor, 3: Patch, 0: Leave unchanged)"
+    choice = gets.chomp.to_i
+
+    if choice >= 0 && choice <= 3
+      case choice
+      when 1
+        components[0] = (components[0].to_i + 1).to_s
+      when 2
+        components[1] = (components[1].to_i + 1).to_s
+      when 3
+        components[2] = (components[2].to_i + 1).to_s
+      else
+      end
+
+      new_version = components.join(".")
+
+      increment_version_number(
+        version_number: new_version,
+        xcodeproj: "Pulse.xcodeproj"
+      )
+
+      en_description = prompt(
+        text: "\nWrite description for update in English:\n",
+        multi_line_end_keyword: "END"
+      )
+
+      ru_description = prompt(
+        text: "\nWrite description for update in Russian:\n",
+        multi_line_end_keyword: "END"
+      )
+
+      build_app(scheme: "ReleaseServerProd")
+      upload_to_testflight
+      add_git_tag(
+        tag: "v" + current_version + "-" + current_build
+      )
+    else
+      puts "Invalid choice"
+    end
+  end
+end
