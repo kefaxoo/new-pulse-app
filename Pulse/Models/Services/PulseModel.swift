@@ -94,12 +94,6 @@ final class PulseModel {
         self.refreshToken = refreshToken
     }
     
-    func updateTokens(_ tokens: PulseAuthTokens) {
-        self.expireAt = tokens.expireAt
-        self.updateAccessToken(tokens.accessToken)
-        self.updateRefreshToken(tokens.refreshToken)
-    }
-    
     func updateTokens(_ tokens: PulseAuthorizationInfo) {
         self.expireAt = tokens.expireAt
         self.updateAccessToken(tokens.accessToken)

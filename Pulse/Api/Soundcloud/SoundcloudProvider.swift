@@ -35,12 +35,12 @@ final class SoundcloudProvider: BaseRestApiProvider {
         }
     }
     
-    func refreshToken(success: @escaping((SoundcloudToken) -> ()), failure: @escaping SoundcloudDefualtErrorClosure) {
+    func refreshToken(success: @escaping((SoundcloudToken) -> ()), failure: SoundcloudDefualtErrorClosure? = nil) {
         urlSession.dataTask(with: URLRequest(type: SoundcloudApi.refreshToken, shouldPrintLog: self.shouldPrintLog)) { [weak self] response in
             switch response {
                 case .success(let response):
                     guard let token = response.data?.map(to: SoundcloudToken.self) else {
-                        failure(nil)
+                        failure?(nil)
                         return
                     }
                 
@@ -306,7 +306,7 @@ fileprivate extension SoundcloudProvider {
             self.refreshToken { tokens in
                 SettingsManager.shared.soundcloud.updateTokens(tokens)
                 retryClosure?()
-            } failure: { _ in }
+            }
         } else if let error = response.error {
             closure?(SoundcloudError(errorDescription: error.localizedDescription))
         } else if let error = response.data?.map(to: SoundcloudError.self) {

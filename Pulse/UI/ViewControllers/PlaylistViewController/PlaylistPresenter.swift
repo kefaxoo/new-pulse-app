@@ -108,7 +108,6 @@ extension PlaylistPresenter: BaseTableViewPresenter {
         if let headerView = (scrollView as? UITableView)?.tableHeaderView as? PlaylistTableHeaderView,
            let heightOfNavigationBar = (MainCoordinator.shared.currentViewController as? UINavigationController)?.navigationBar.bounds.height {
             let contentOffsetY = scrollView.contentOffset.y + heightOfNavigationBar
-            let headerTitleMinY = headerView.titleLabel.frame.minY
             let headerTitleMaxY = headerView.titleLabel.frame.maxY
             
             var alpha = contentOffsetY / headerTitleMaxY

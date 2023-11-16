@@ -20,18 +20,8 @@ typealias PulseVerificationCode = ResponsePulseVerificationCodeModel
 typealias PulseTrack            = ResponsePulseTrackModel
 typealias PulseResults          = ResponsePulseResultsModel
 
-typealias PulseDefault     = ResponsePulseDefaultModel
-typealias PulseAuthTokens  = ResponsePulseAuthTokensModel
-typealias PulseAccessToken = ResponsePulseAccessTokenModel
 typealias PulseFeature     = ResponsePulseFeatureModel
 typealias PulseFeatures    = ResponsePulseFeaturesModel
-
-// V2
-typealias PulseSuccessV2          = ResponsePulseSuccessV2Model
-typealias PulseErrorV2            = ResponsePulseErrorV2Model
-typealias PulseCreateUserV2       = ResponsePulseCreateUserV2Model
-typealias PulseLoginUserV2        = ResponsePulseLoginUserV2Model
-typealias PulseVerificationCodeV2 = ResponsePulseVerificationCodeV2Model
 
 // Base
 typealias PulseBaseModel        = ResponsePulseBaseModel
@@ -54,9 +44,6 @@ typealias PulseServerTrack = ResponsePulseServerTrackModel
 // MARK: -
 // MARK: Closures
 typealias PulseDefaultErrorClosure = ((PulseError?) -> ())
-
-// V2
-typealias PulseDefaultErrorV2Closure = ((PulseErrorV2?) -> ())
 
 // V3
 typealias PulseDefaultErrorV3Closure = ((_ serverError: PulseBaseErrorModel?, _ internalError: Error?) -> ())

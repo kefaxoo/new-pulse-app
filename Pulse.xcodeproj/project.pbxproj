@@ -143,18 +143,10 @@
 		70017F772AEEDB34001E1C02 /* ResponsePulseCoverModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017EBD2AEEDB34001E1C02 /* ResponsePulseCoverModel.swift */; };
 		70017F782AEEDB34001E1C02 /* ResponsePulseVerificationCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017EBE2AEEDB34001E1C02 /* ResponsePulseVerificationCodeModel.swift */; };
 		70017F792AEEDB34001E1C02 /* ResponsePulseFeaturesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017EBF2AEEDB34001E1C02 /* ResponsePulseFeaturesModel.swift */; };
-		70017F7A2AEEDB34001E1C02 /* ResponsePulseSuccessV2Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017EC12AEEDB34001E1C02 /* ResponsePulseSuccessV2Model.swift */; };
-		70017F7B2AEEDB34001E1C02 /* ResponsePulseVerificationCodeV2Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017EC22AEEDB34001E1C02 /* ResponsePulseVerificationCodeV2Model.swift */; };
-		70017F7C2AEEDB34001E1C02 /* ResponsePulseCreateUserV2Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017EC32AEEDB34001E1C02 /* ResponsePulseCreateUserV2Model.swift */; };
-		70017F7D2AEEDB34001E1C02 /* ResponsePulseErrorV2Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017EC42AEEDB34001E1C02 /* ResponsePulseErrorV2Model.swift */; };
-		70017F7E2AEEDB34001E1C02 /* ResponsePulseLoginUserV2Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017EC52AEEDB34001E1C02 /* ResponsePulseLoginUserV2Model.swift */; };
 		70017F7F2AEEDB34001E1C02 /* ResponsePulseResultsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017EC62AEEDB34001E1C02 /* ResponsePulseResultsModel.swift */; };
-		70017F802AEEDB34001E1C02 /* ResponsePulseDefaultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017EC72AEEDB34001E1C02 /* ResponsePulseDefaultModel.swift */; };
 		70017F812AEEDB34001E1C02 /* ResponsePulseTrackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017EC82AEEDB34001E1C02 /* ResponsePulseTrackModel.swift */; };
-		70017F822AEEDB34001E1C02 /* ResponsePulseAuthTokensModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017EC92AEEDB34001E1C02 /* ResponsePulseAuthTokensModel.swift */; };
 		70017F832AEEDB34001E1C02 /* ResponsePulseLoginWithCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017ECA2AEEDB34001E1C02 /* ResponsePulseLoginWithCodeModel.swift */; };
 		70017F842AEEDB34001E1C02 /* ResponsePulseCoverInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017ECB2AEEDB34001E1C02 /* ResponsePulseCoverInfoModel.swift */; };
-		70017F852AEEDB34001E1C02 /* ResponsePulseAccessTokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017ECC2AEEDB34001E1C02 /* ResponsePulseAccessTokenModel.swift */; };
 		70017F862AEEDB34001E1C02 /* ResponsePulseFeatureModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017ECD2AEEDB34001E1C02 /* ResponsePulseFeatureModel.swift */; };
 		70017F872AEEDB34001E1C02 /* ResponsePulseSuccessModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017ECE2AEEDB34001E1C02 /* ResponsePulseSuccessModel.swift */; };
 		70017F882AEEDB34001E1C02 /* PulseTypealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017ECF2AEEDB34001E1C02 /* PulseTypealiases.swift */; };
@@ -355,18 +347,10 @@
 		70017EBD2AEEDB34001E1C02 /* ResponsePulseCoverModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsePulseCoverModel.swift; sourceTree = "<group>"; };
 		70017EBE2AEEDB34001E1C02 /* ResponsePulseVerificationCodeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsePulseVerificationCodeModel.swift; sourceTree = "<group>"; };
 		70017EBF2AEEDB34001E1C02 /* ResponsePulseFeaturesModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsePulseFeaturesModel.swift; sourceTree = "<group>"; };
-		70017EC12AEEDB34001E1C02 /* ResponsePulseSuccessV2Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsePulseSuccessV2Model.swift; sourceTree = "<group>"; };
-		70017EC22AEEDB34001E1C02 /* ResponsePulseVerificationCodeV2Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsePulseVerificationCodeV2Model.swift; sourceTree = "<group>"; };
-		70017EC32AEEDB34001E1C02 /* ResponsePulseCreateUserV2Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsePulseCreateUserV2Model.swift; sourceTree = "<group>"; };
-		70017EC42AEEDB34001E1C02 /* ResponsePulseErrorV2Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsePulseErrorV2Model.swift; sourceTree = "<group>"; };
-		70017EC52AEEDB34001E1C02 /* ResponsePulseLoginUserV2Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsePulseLoginUserV2Model.swift; sourceTree = "<group>"; };
 		70017EC62AEEDB34001E1C02 /* ResponsePulseResultsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsePulseResultsModel.swift; sourceTree = "<group>"; };
-		70017EC72AEEDB34001E1C02 /* ResponsePulseDefaultModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsePulseDefaultModel.swift; sourceTree = "<group>"; };
 		70017EC82AEEDB34001E1C02 /* ResponsePulseTrackModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsePulseTrackModel.swift; sourceTree = "<group>"; };
-		70017EC92AEEDB34001E1C02 /* ResponsePulseAuthTokensModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsePulseAuthTokensModel.swift; sourceTree = "<group>"; };
 		70017ECA2AEEDB34001E1C02 /* ResponsePulseLoginWithCodeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsePulseLoginWithCodeModel.swift; sourceTree = "<group>"; };
 		70017ECB2AEEDB34001E1C02 /* ResponsePulseCoverInfoModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsePulseCoverInfoModel.swift; sourceTree = "<group>"; };
-		70017ECC2AEEDB34001E1C02 /* ResponsePulseAccessTokenModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsePulseAccessTokenModel.swift; sourceTree = "<group>"; };
 		70017ECD2AEEDB34001E1C02 /* ResponsePulseFeatureModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsePulseFeatureModel.swift; sourceTree = "<group>"; };
 		70017ECE2AEEDB34001E1C02 /* ResponsePulseSuccessModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsePulseSuccessModel.swift; sourceTree = "<group>"; };
 		70017ECF2AEEDB34001E1C02 /* PulseTypealiases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulseTypealiases.swift; sourceTree = "<group>"; };
@@ -974,37 +958,18 @@
 		70017EB92AEEDB34001E1C02 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				70AEDE752B0573A100BCC72C /* V1 */,
 				7072CC082AF8F4B200E51E0A /* V3 */,
-				70017EBA2AEEDB34001E1C02 /* ResponsePulseCreateUserModel.swift */,
-				70017EBB2AEEDB34001E1C02 /* ResponsePulseErrorModel.swift */,
-				70017EBC2AEEDB34001E1C02 /* ResponsePulseLoginUserModel.swift */,
 				70017EBD2AEEDB34001E1C02 /* ResponsePulseCoverModel.swift */,
-				70017EBE2AEEDB34001E1C02 /* ResponsePulseVerificationCodeModel.swift */,
 				70017EBF2AEEDB34001E1C02 /* ResponsePulseFeaturesModel.swift */,
-				70017EC02AEEDB34001E1C02 /* V2 */,
 				70017EC62AEEDB34001E1C02 /* ResponsePulseResultsModel.swift */,
-				70017EC72AEEDB34001E1C02 /* ResponsePulseDefaultModel.swift */,
 				70017EC82AEEDB34001E1C02 /* ResponsePulseTrackModel.swift */,
-				70017EC92AEEDB34001E1C02 /* ResponsePulseAuthTokensModel.swift */,
 				70017ECA2AEEDB34001E1C02 /* ResponsePulseLoginWithCodeModel.swift */,
 				70017ECB2AEEDB34001E1C02 /* ResponsePulseCoverInfoModel.swift */,
-				70017ECC2AEEDB34001E1C02 /* ResponsePulseAccessTokenModel.swift */,
 				70017ECD2AEEDB34001E1C02 /* ResponsePulseFeatureModel.swift */,
 				70017ECE2AEEDB34001E1C02 /* ResponsePulseSuccessModel.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		70017EC02AEEDB34001E1C02 /* V2 */ = {
-			isa = PBXGroup;
-			children = (
-				70017EC12AEEDB34001E1C02 /* ResponsePulseSuccessV2Model.swift */,
-				70017EC22AEEDB34001E1C02 /* ResponsePulseVerificationCodeV2Model.swift */,
-				70017EC32AEEDB34001E1C02 /* ResponsePulseCreateUserV2Model.swift */,
-				70017EC42AEEDB34001E1C02 /* ResponsePulseErrorV2Model.swift */,
-				70017EC52AEEDB34001E1C02 /* ResponsePulseLoginUserV2Model.swift */,
-			);
-			path = V2;
 			sourceTree = "<group>";
 		};
 		70017ED22AEEDB34001E1C02 /* Soundcloud */ = {
@@ -1111,6 +1076,17 @@
 				703E65682AFA663C001A62FA /* LocalizationManager.swift */,
 			);
 			path = Localization;
+			sourceTree = "<group>";
+		};
+		70AEDE752B0573A100BCC72C /* V1 */ = {
+			isa = PBXGroup;
+			children = (
+				70017EBA2AEEDB34001E1C02 /* ResponsePulseCreateUserModel.swift */,
+				70017EBB2AEEDB34001E1C02 /* ResponsePulseErrorModel.swift */,
+				70017EBC2AEEDB34001E1C02 /* ResponsePulseLoginUserModel.swift */,
+				70017EBE2AEEDB34001E1C02 /* ResponsePulseVerificationCodeModel.swift */,
+			);
+			path = V1;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1284,14 +1260,12 @@
 				70017F082AEEDB34001E1C02 /* LibraryTableViewCell.swift in Sources */,
 				70017FA22AEEDB34001E1C02 /* AppEnvironment.swift in Sources */,
 				70017F432AEEDB34001E1C02 /* Data+Ext.swift in Sources */,
-				70017F7E2AEEDB34001E1C02 /* ResponsePulseLoginUserV2Model.swift in Sources */,
 				70017F072AEEDB34001E1C02 /* TextTableViewCell.swift in Sources */,
 				70017F922AEEDB34001E1C02 /* ResponseSoundcloudPlaylistModel.swift in Sources */,
 				70017F392AEEDB34001E1C02 /* UITextField+Ext.swift in Sources */,
 				7072CC292AF987C600E51E0A /* ResponsePulseVerifyUserV3Model.swift in Sources */,
 				70017EFC2AEEDB34001E1C02 /* TrackModel.swift in Sources */,
 				70017F342AEEDB34001E1C02 /* UIEdgeInsets+Ext.swift in Sources */,
-				70017F822AEEDB34001E1C02 /* ResponsePulseAuthTokensModel.swift in Sources */,
 				70017DF92AEEDABA001E1C02 /* AppDelegate.swift in Sources */,
 				70017F302AEEDB34001E1C02 /* Failure+Ext.swift in Sources */,
 				70017F612AEEDB34001E1C02 /* BaseUICollectionViewCell.swift in Sources */,
@@ -1351,17 +1325,14 @@
 				70017F182AEEDB34001E1C02 /* PlaylistPresenter.swift in Sources */,
 				70017F622AEEDB34001E1C02 /* BaseKeychainModel.swift in Sources */,
 				70017F062AEEDB34001E1C02 /* TrackTableViewCell.swift in Sources */,
-				70017F852AEEDB34001E1C02 /* ResponsePulseAccessTokenModel.swift in Sources */,
 				70017F6D2AEEDB34001E1C02 /* MuffonTypealias.swift in Sources */,
 				70017F6F2AEEDB34001E1C02 /* ResponseIpifyModel.swift in Sources */,
 				70017FA02AEEDB34001E1C02 /* WebViewType.swift in Sources */,
 				70017F6A2AEEDB34001E1C02 /* ResponseMuffonSourceModel.swift in Sources */,
-				70017F7C2AEEDB34001E1C02 /* ResponsePulseCreateUserV2Model.swift in Sources */,
 				7072CC272AF9865D00E51E0A /* ResponsePulseAuthorizationInfoModel.swift in Sources */,
 				70017F4F2AEEDB34001E1C02 /* AudioPlayer.swift in Sources */,
 				70017F6B2AEEDB34001E1C02 /* ResponseMuffonImageModel.swift in Sources */,
 				70017F552AEEDB34001E1C02 /* DownloadQueueTrackModel.swift in Sources */,
-				70017F7A2AEEDB34001E1C02 /* ResponsePulseSuccessV2Model.swift in Sources */,
 				70017F9F2AEEDB34001E1C02 /* LibraryType.swift in Sources */,
 				70017F252AEEDB34001E1C02 /* SearchViewController.swift in Sources */,
 				70017DFB2AEEDABA001E1C02 /* SceneDelegate.swift in Sources */,
@@ -1374,7 +1345,6 @@
 				70017EFA2AEEDB34001E1C02 /* PulseModel.swift in Sources */,
 				70017F002AEEDB34001E1C02 /* PlayPauseButton.swift in Sources */,
 				70017F172AEEDB34001E1C02 /* SignInViewController.swift in Sources */,
-				70017F7D2AEEDB34001E1C02 /* ResponsePulseErrorV2Model.swift in Sources */,
 				70017F882AEEDB34001E1C02 /* PulseTypealiases.swift in Sources */,
 				70017F1F2AEEDB34001E1C02 /* VerifyPulseAccountPopUpViewController.swift in Sources */,
 				70017F3D2AEEDB34001E1C02 /* UIColor+Ext.swift in Sources */,
@@ -1391,7 +1361,6 @@
 				70017F202AEEDB34001E1C02 /* VerifyPulseAccountPresenter.swift in Sources */,
 				70017F232AEEDB34001E1C02 /* NowPlayingPresenter.swift in Sources */,
 				70017F8E2AEEDB34001E1C02 /* ResponseSoundcloudUserModel.swift in Sources */,
-				70017F802AEEDB34001E1C02 /* ResponsePulseDefaultModel.swift in Sources */,
 				70017F642AEEDB34001E1C02 /* BaseTableViewPresenter.swift in Sources */,
 				70017F3E2AEEDB34001E1C02 /* UICollectionViewCell+Ext.swift in Sources */,
 				70017F832AEEDB34001E1C02 /* ResponsePulseLoginWithCodeModel.swift in Sources */,
@@ -1416,7 +1385,6 @@
 				70017F862AEEDB34001E1C02 /* ResponsePulseFeatureModel.swift in Sources */,
 				70017F722AEEDB34001E1C02 /* IpApiProvider.swift in Sources */,
 				70017F652AEEDB34001E1C02 /* MuffonProvider.swift in Sources */,
-				70017F7B2AEEDB34001E1C02 /* ResponsePulseVerificationCodeV2Model.swift in Sources */,
 				70017F032AEEDB34001E1C02 /* PlaylistTableViewCell.swift in Sources */,
 				70017F262AEEDB34001E1C02 /* SearchPresenter.swift in Sources */,
 				70017F762AEEDB34001E1C02 /* ResponsePulseLoginUserModel.swift in Sources */,

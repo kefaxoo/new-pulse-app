@@ -297,15 +297,6 @@ fileprivate extension PulseProvider {
             closure?(nil)
         }
     }
-    
-    func parseError(response: Failure, closure: PulseDefaultErrorV2Closure?) {
-        response.sendLog()
-        if let error = response.data?.map(to: PulseErrorV2.self) {
-            closure?(error)
-        } else {
-            closure?(nil)
-        }
-    }
 }
 
 // MARK: -
@@ -439,12 +430,12 @@ extension PulseProvider {
         }
     }
     
-    func accessTokenV3(success: @escaping((PulseLoginUserV3) -> ()), failure: @escaping PulseDefaultErrorV3Closure) {
+    func accessTokenV3(success: @escaping((PulseLoginUserV3) -> ()), failure: PulseDefaultErrorV3Closure? = nil) {
         self.urlSession.dataTask(with: URLRequest(type: PulseApi.accessTokenV3, shouldPrintLog: self.shouldPrintLog)) { [weak self] response in
             switch response {
                 case .success(let response):
                     guard let accessToken = response.data?.map(to: PulseLoginUserV3.self) else {
-                        failure(nil, nil)
+                        failure?(nil, nil)
                         return
                     }
                     
@@ -610,7 +601,7 @@ extension PulseProvider {
                             SoundcloudProvider.shared.refreshToken { tokens in
                                 SettingsManager.shared.soundcloud.updateTokens(tokens)
                                 self?.soundcloudPlaylistArtworkV2(for: playlist, success: success, failure: failure)
-                            } failure: { _ in }
+                            }
                         } else {
                             self?.accessTokenV3(success: { loginUser in
                                 SettingsManager.shared.pulse.updateTokens(loginUser.tokens)
@@ -655,7 +646,7 @@ fileprivate extension PulseProvider {
             self.accessTokenV3 { loginUser in
                 SettingsManager.shared.pulse.updateTokens(loginUser.tokens)
                 retryClosure?()
-            } failure: { _, _ in }
+            }
         } else if let error = response.data?.map(to: PulseBaseErrorModel.self) {
             closure?(error, nil)
         } else if let error = response.error {
@@ -669,6 +660,6 @@ fileprivate extension PulseProvider {
         self.accessTokenV3 { loginUser in
             SettingsManager.shared.pulse.updateTokens(loginUser.tokens)
             completion()
-        } failure: { _, _ in }
+        }
     }
 }
