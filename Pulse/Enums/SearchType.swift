@@ -11,6 +11,7 @@ enum SearchType {
     case tracks
     case albums
     case artists
+    case playlists
     case none
     
     var muffonApi: String {
@@ -21,7 +22,7 @@ enum SearchType {
                 return "albums"
             case .artists:
                 return "artists"
-            case .none:
+            default:
                 return ""
         }
     }
@@ -34,6 +35,8 @@ enum SearchType {
                 return ""
             case .artists:
                 return "users"
+            case .playlists:
+                return "playlists"
             case .none:
                 return ""
         }
@@ -50,7 +53,12 @@ enum SearchType {
             case .deezer:
                 return []
             case .soundcloud:
-                return [.tracks]
+                var soundcloudTypes: [SearchType] = [.tracks]
+                if service.source == .soundcloud {
+                    soundcloudTypes.append(.playlists)
+                }
+                
+                return soundcloudTypes
             case .none:
                 return []
         }
@@ -64,6 +72,8 @@ enum SearchType {
                 return "Albums"
             case .artists:
                 return "Artists"
+            case .playlists:
+                return "Playlists"
             case .none:
                 return ""
         }

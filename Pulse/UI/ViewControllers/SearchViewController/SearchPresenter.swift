@@ -54,6 +54,10 @@ final class SearchPresenter: BasePresenter {
         self.currentType = searchTypes[0]
     }
     
+    func viewWillAppear(_ currentServiceIndex: Int = 0, _ currentTypeIndex: Int = 0) {
+        self.setupSegmentedControls(currentServiceIndex, currentTypeIndex)
+    }
+    
     func textDidChange(_ text: String) {
         timer?.invalidate()
         
@@ -67,6 +71,22 @@ final class SearchPresenter: BasePresenter {
         self.query = text
         timer = Timer(timeInterval: 1, target: self, selector: #selector(search), userInfo: nil, repeats: false)
         timer?.fire()
+    }
+    
+    func setupSegmentedControls(_ currentServiceIndex: Int = 0, _ currentTypeIndex: Int = 0) {
+        self.delegate?.setupServiceSegmentedControl(items: services.map({ $0.title }))
+        guard !services.isEmpty,
+              services.count > currentServiceIndex
+        else { return }
+        
+        self.currentService = services[currentServiceIndex]
+        let searchTypes = SearchType.types(for: self.currentService)
+        self.delegate?.setupTypeSegmentedControl(items: searchTypes.map({ $0.title }))
+        guard !searchTypes.isEmpty,
+              searchTypes.count > currentTypeIndex
+        else { return }
+        
+        self.currentType = searchTypes[currentTypeIndex]
     }
     
     func serviceDidChange(index: Int) {

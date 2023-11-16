@@ -60,6 +60,11 @@ extension SearchViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.presenter.viewWillAppear(
+            self.serviceSegmentedControl.selectedSegmentIndex,
+            self.typeSegmentedControl.selectedSegmentIndex
+        )
+        
         self.searchController.searchBar.tintColor = SettingsManager.shared.color.color
         self.presenter.search()
         AudioPlayer.shared.tableViewDelegate = self
@@ -113,6 +118,8 @@ extension SearchViewController {
 // MARK: SearchPresenterDelegate
 extension SearchViewController: SearchPresenterDelegate {
     func setupServiceSegmentedControl(items: [String]) {
+        self.serviceSegmentedControl.removeAllSegments()
+        
         items.enumerated().forEach { [weak self] index, item in
             self?.serviceSegmentedControl.insertSegment(withTitle: item, at: index, animated: true)
         }
@@ -123,6 +130,8 @@ extension SearchViewController: SearchPresenterDelegate {
     }
     
     func setupTypeSegmentedControl(items: [String]) {
+        self.typeSegmentedControl.removeAllSegments()
+        
         items.enumerated().forEach { [weak self] index, item in
             self?.typeSegmentedControl.insertSegment(withTitle: item, at: index, animated: true)
         }
