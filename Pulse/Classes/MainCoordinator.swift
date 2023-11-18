@@ -58,16 +58,11 @@ final class MainCoordinator {
                         return
                     }
                     
-                    let emptyVC = UIViewController.empty
-                    self.makeRootVC(vc: emptyVC)
-                    emptyVC.presentSpinner()
                     PulseProvider.shared.accessTokenV3 { [weak self] tokens in
                         SettingsManager.shared.pulse.updateTokens(tokens.tokens)
-                        emptyVC.dismissSpinner()
                         completion()
                         self?.makeTabBarAsRoot()
                     } failure: { [weak self] serverError, internalError in
-                        emptyVC.dismissSpinner()
                         self?.makeAuthViewControllerAsRoot()
                         completion()
                         let localizedError = LocalizationManager.shared.localizeError(
@@ -85,18 +80,13 @@ final class MainCoordinator {
                         AlertView.shared.presentError(error: localizedError, system: .iOS16AppleMusic)
                     }
                 } else {
-                    let emptyVC = UIViewController.empty
-                    self.makeRootVC(vc: emptyVC)
-                    emptyVC.presentSpinner()
                     PulseProvider.shared.accessToken { [weak self] loginUser in
                         SettingsManager.shared.pulse.expireAt = loginUser.expireAt ?? 0
                         SettingsManager.shared.pulse.updateAccessToken(loginUser.accessToken)
                         LibraryManager.shared.fetchLibrary()
-                        emptyVC.dismissSpinner()
                         completion()
                         self?.makeTabBarAsRoot()
                     } failure: { [weak self] error in
-                        emptyVC.dismissSpinner()
                         self?.makeAuthViewControllerAsRoot()
                         completion()
                         guard !SettingsManager.shared.pulse.username.isEmpty else {
@@ -121,9 +111,14 @@ final class MainCoordinator {
         }
     }
     
-    private func makeRootVC(vc: UIViewController) {
+    private func makeRootVC(vc: UIViewController, shouldUseTransition: Bool = true) {
         DispatchQueue.main.async { [weak self] in
-            self?.window?.setRootVC(vc, options: UIWindow.TransitionOptions(direction: .fade, style: .easeInOut))
+            if shouldUseTransition {
+                self?.window?.setRootVC(vc, options: UIWindow.TransitionOptions(direction: .fade, style: .easeInOut))
+            } else {
+                self?.window?.rootViewController = vc
+                self?.window?.makeKeyAndVisible()
+            }
         }
     }
     
@@ -197,5 +192,11 @@ final class MainCoordinator {
     func pushPlaylistViewController(type: LibraryControllerType, playlist: PlaylistModel) {
         let playlistVC = PlaylistViewController(type: type, playlist: playlist)
         self.pushViewController(vc: playlistVC)
+    }
+    
+    func makeLaunchScreenAsRoot() {
+        guard let launchScreenVC = UIStoryboard.launchScreen.viewController else { return }
+        
+        self.makeRootVC(vc: launchScreenVC, shouldUseTransition: false)
     }
 }

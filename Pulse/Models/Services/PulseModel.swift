@@ -39,6 +39,7 @@ final class PulseModel {
     }
     
     var isSignedIn: Bool {
+        debugLog("Pulse access token:", self.accessToken ?? "")
         return !(self.accessToken?.isEmpty ?? true)
     }
     

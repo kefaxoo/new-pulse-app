@@ -189,6 +189,7 @@
 		70174C532B00F04D00E7DA0D /* ResponsePulseAddTracksModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70174C522B00F04D00E7DA0D /* ResponsePulseAddTracksModel.swift */; };
 		70174C552B00F08500E7DA0D /* ResponsePulseServerTrackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70174C542B00F08500E7DA0D /* ResponsePulseServerTrackModel.swift */; };
 		703E65692AFA663C001A62FA /* LocalizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703E65682AFA663C001A62FA /* LocalizationManager.swift */; };
+		7044731D2B0882F900B3FB98 /* UIStoryboard+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7044731C2B0882F900B3FB98 /* UIStoryboard+Ext.swift */; };
 		706974C32B055B500093D1FB /* PlaylistTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706974C22B055B500093D1FB /* PlaylistTableHeaderView.swift */; };
 		7072CC062AF8F43500E51E0A /* SignMethodType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7072CC052AF8F43500E51E0A /* SignMethodType.swift */; };
 		7072CC0A2AF8F4BB00E51E0A /* ResponsePulseBaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7072CC092AF8F4BB00E51E0A /* ResponsePulseBaseModel.swift */; };
@@ -384,6 +385,7 @@
 		70174C522B00F04D00E7DA0D /* ResponsePulseAddTracksModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseAddTracksModel.swift; sourceTree = "<group>"; };
 		70174C542B00F08500E7DA0D /* ResponsePulseServerTrackModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseServerTrackModel.swift; sourceTree = "<group>"; };
 		703E65682AFA663C001A62FA /* LocalizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationManager.swift; sourceTree = "<group>"; };
+		7044731C2B0882F900B3FB98 /* UIStoryboard+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Ext.swift"; sourceTree = "<group>"; };
 		706974C22B055B500093D1FB /* PlaylistTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistTableHeaderView.swift; sourceTree = "<group>"; };
 		7072CC052AF8F43500E51E0A /* SignMethodType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignMethodType.swift; sourceTree = "<group>"; };
 		7072CC092AF8F4BB00E51E0A /* ResponsePulseBaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseBaseModel.swift; sourceTree = "<group>"; };
@@ -768,6 +770,7 @@
 				70017E732AEEDB34001E1C02 /* UIViewController+Ext.swift */,
 				70017E742AEEDB34001E1C02 /* UIView+Ext.swift */,
 				70DC852D2AFC340600C63F46 /* UIWindow+Ext.swift */,
+				7044731C2B0882F900B3FB98 /* UIStoryboard+Ext.swift */,
 			);
 			path = "UIKit+Ext";
 			sourceTree = "<group>";
@@ -1346,6 +1349,7 @@
 				70017F002AEEDB34001E1C02 /* PlayPauseButton.swift in Sources */,
 				70017F172AEEDB34001E1C02 /* SignInViewController.swift in Sources */,
 				70017F882AEEDB34001E1C02 /* PulseTypealiases.swift in Sources */,
+				7044731D2B0882F900B3FB98 /* UIStoryboard+Ext.swift in Sources */,
 				70017F1F2AEEDB34001E1C02 /* VerifyPulseAccountPopUpViewController.swift in Sources */,
 				70017F3D2AEEDB34001E1C02 /* UIColor+Ext.swift in Sources */,
 				70017F442AEEDB34001E1C02 /* URL+Ext.swift in Sources */,

@@ -13,6 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         debugLog(AppEnvironment.current)
         
+        MainCoordinator.shared.makeLaunchScreenAsRoot()
         SettingsManager.shared.initRealmVariables()
         NetworkManager.shared.checkNetwork()
         NetworkManager.shared.updateValues()

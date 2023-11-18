@@ -68,6 +68,10 @@ final class AudioPlayer: NSObject {
         return self.player.currentItem?.duration.seconds
     }
     
+    var isPlaying: Bool {
+        return self.player.rate != 0
+    }
+    
     weak var viewDelegate      : AudioPlayerViewDelegate?
     weak var controllerDelegate: AudioPlayerControllerDelegate?
     weak var tableViewDelegate : AudioPlayerTableViewDelegate?

@@ -95,6 +95,28 @@ final class ImageManager {
                     }
                     
                     return
+                case .soundcloud:
+                    SoundcloudProvider.shared.trackInfo(id: track.id) { track in
+                        if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSoundcloud?.prod ?? false {
+                            PulseProvider.shared.soundcloudArtworkV2(link: track.coverLink ?? "") { [weak self] cover in
+                                self?.image(from: cover.xl, imageClosure: { image, _ in
+                                    self?.saveImage(image, filename: filename, completion: completion)
+                                })
+                            } failure: { _, _ in
+                                completion(nil)
+                            }
+                        } else {
+                            PulseProvider.shared.soundcloudArtwork(exampleLink: track.coverLink ?? "") { [weak self] cover in
+                                self?.image(from: cover.xl, imageClosure: { image, _ in
+                                    self?.saveImage(image, filename: filename, completion: completion)
+                                })
+                            } failure: { _ in
+                                completion(nil)
+                            }
+                        }
+                    } failure: { _ in
+                        completion(nil)
+                    }
                 default:
                     completion(nil)
                     return

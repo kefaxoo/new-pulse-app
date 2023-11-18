@@ -24,21 +24,6 @@ final class NowPlayingViewController: BaseUIViewController {
         return imageView
     }()
     
-    private lazy var trackInfoHorizontalStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 20
-        return stackView
-    }()
-    
-    private lazy var trackInfoStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        stackView.distribution = .fill
-        return stackView
-    }()
-    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
@@ -56,6 +41,16 @@ final class NowPlayingViewController: BaseUIViewController {
         return button
     }()
     
+    private lazy var trackInfoStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        stackView.distribution = .fill
+        stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(artistButton)
+        return stackView
+    }()
+    
     private lazy var actionsButton: UIButton = {
         let button = UIButton()
         button.setImage(Constants.Images.actionsNowPlaying.image, for: .normal)
@@ -65,6 +60,15 @@ final class NowPlayingViewController: BaseUIViewController {
         configuration.imagePlacement = .trailing
         button.configuration = configuration
         return button
+    }()
+    
+    private lazy var trackInfoHorizontalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 20
+        stackView.addArrangedSubview(trackInfoStackView)
+        stackView.addArrangedSubview(actionsButton)
+        return stackView
     }()
     
     private lazy var durationSlider: SliderControl = {
@@ -90,6 +94,54 @@ final class NowPlayingViewController: BaseUIViewController {
         return label
     }()
     
+    private lazy var durationStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        stackView.addArrangedSubview(currentTimeLabel)
+        stackView.addArrangedSubview(.spacer)
+        stackView.addArrangedSubview(leftTimeLabel)
+        return stackView
+    }()
+    
+    private lazy var previousTrackButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(Constants.Images.previousTrack.image?.withConfiguration(UIImage.SymbolConfiguration(pointSize: 40)), for: .normal)
+        button.tintColor = SettingsManager.shared.color.color
+        button.imageView?.contentMode = .scaleAspectFill
+        button.addTarget(self, action: #selector(previousTrackAction), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var playPauseButton: UIButton = {
+        let button = UIButton()
+        button.setImage(Constants.Images.pause.image?.withConfiguration(UIImage.SymbolConfiguration(pointSize: 40)), for: .normal)
+        button.tintColor = SettingsManager.shared.color.color
+        button.imageView?.contentMode = .scaleAspectFill
+        button.addTarget(self, action: #selector(playPauseAction), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var nextTrackButton: UIButton = {
+        let button = UIButton()
+        button.setImage(Constants.Images.nextTrack.image?.withConfiguration(UIImage.SymbolConfiguration(pointSize: 40)), for: .normal)
+        button.tintColor = SettingsManager.shared.color.color
+        button.imageView?.contentMode = .scaleAspectFill
+        button.addTarget(self, action: #selector(nextTrackAction), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var controlStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .equalCentering
+        stackView.alignment = .center
+        stackView.addArrangedSubview(previousTrackButton)
+        stackView.addArrangedSubview(playPauseButton)
+        stackView.addArrangedSubview(nextTrackButton)
+        return stackView
+    }()
+    
     private lazy var muteImageView: UIImageView = {
         let imageView = UIImageView.default
         imageView.image = Constants.Images.minVolume.image
@@ -113,41 +165,13 @@ final class NowPlayingViewController: BaseUIViewController {
         return imageView
     }()
     
-    private lazy var controlStackView: UIStackView = {
+    private lazy var volumeStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.distribution = .equalSpacing
-        return stackView
-    }()
-    
-    private lazy var previousTrackButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(Constants.Images.previousTrack.image?.withConfiguration(UIImage.SymbolConfiguration(scale: .large)), for: .normal)
-        button.tintColor = SettingsManager.shared.color.color
-        button.imageView?.contentMode = .scaleAspectFill
-        return button
-    }()
-    
-    private lazy var playPauseButton: UIButton = {
-        let button = UIButton()
-        button.setImage(Constants.Images.pause.image, for: .normal)
-        button.tintColor = SettingsManager.shared.color.color
-        button.imageView?.contentMode = .scaleAspectFill
-        return button
-    }()
-    
-    private lazy var nextTrackButton: UIButton = {
-        let button = UIButton()
-        button.setImage(Constants.Images.nextTrack.image, for: .normal)
-        button.tintColor = SettingsManager.shared.color.color
-        button.imageView?.contentMode = .scaleAspectFill
-        return button
-    }()
-    
-    private lazy var bottomStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.distribution = .equalCentering
+        stackView.spacing = 10
+        stackView.addArrangedSubview(self.muteImageView)
+        stackView.addArrangedSubview(self.volumeSlider)
+        stackView.addArrangedSubview(self.maxVolumeImageView)
         return stackView
     }()
     
@@ -156,6 +180,29 @@ final class NowPlayingViewController: BaseUIViewController {
         avRoutePickerView.tintColor = SettingsManager.shared.color.color
         avRoutePickerView.activeTintColor = SettingsManager.shared.color.color
         return avRoutePickerView
+    }()
+    
+    private lazy var bottomStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .equalCentering
+        stackView.addArrangedSubview(routePickerView)
+        return stackView
+    }()
+    
+    private lazy var contentVerticalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 16
+        stackView.distribution = .fill
+        stackView.addArrangedSubview(self.coverImageView)
+        stackView.addArrangedSubview(self.trackInfoHorizontalStackView)
+        stackView.addArrangedSubview(self.durationSlider)
+        stackView.addArrangedSubview(self.durationStackView)
+        stackView.addArrangedSubview(self.controlStackView)
+        stackView.addArrangedSubview(self.volumeStackView)
+        stackView.addArrangedSubview(self.bottomStackView)
+        return stackView
     }()
     
     private lazy var presenter: NowPlayingPresenter = {
@@ -199,26 +246,7 @@ extension NowPlayingViewController {
 extension NowPlayingViewController {
     override func setupLayout() {
         self.view.addSubview(dismissButton)
-        self.view.addSubview(coverImageView)
-        self.view.addSubview(trackInfoHorizontalStackView)
-        trackInfoHorizontalStackView.addArrangedSubview(trackInfoStackView)
-        trackInfoStackView.addArrangedSubview(titleLabel)
-        trackInfoStackView.addArrangedSubview(artistButton)
-        trackInfoHorizontalStackView.addArrangedSubview(actionsButton)
-        
-        self.view.addSubview(durationSlider)
-        self.view.addSubview(currentTimeLabel)
-        self.view.addSubview(leftTimeLabel)
-        
-        self.view.addSubview(muteImageView)
-        self.view.addSubview(volumeSlider)
-        self.view.addSubview(maxVolumeImageView)
-        
-//        self.view.addSubview(controlStackView)
-//        controlStackView.addArrangedSubview(previousTrackButton)
-        
-        self.view.addSubview(bottomStackView)
-        bottomStackView.addArrangedSubview(routePickerView)
+        self.view.addSubview(contentVerticalStackView)
     }
     
     override func setupConstraints() {
@@ -227,71 +255,29 @@ extension NowPlayingViewController {
             make.top.equalTo(MainCoordinator.shared.safeAreaInsets.top + 10)
             make.width.equalToSuperview()
         }
-        
-        coverImageView.snp.makeConstraints { make in
+
+        contentVerticalStackView.snp.makeConstraints { make in
             make.top.equalTo(self.dismissButton.snp.bottom).offset(20)
-            make.height.width.equalTo(self.view.frame.width - 40)
-            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(UIEdgeInsets(horizontal: 20))
+            make.bottom.equalTo(MainCoordinator.shared.safeAreaInsets.bottom).offset(-30)
         }
         
-        trackInfoHorizontalStackView.snp.makeConstraints { make in
-            make.top.equalTo(self.coverImageView.snp.bottom).offset(20)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(trackInfoStackView.spacing + titleLabel.textSize.height + (artistButton.titleLabel?.textSize.height ?? 0))
-        }
+        coverImageView.snp.makeConstraints({ $0.height.width.equalTo(contentVerticalStackView.snp.width) })
+        
+        trackInfoHorizontalStackView.snp.makeConstraints({
+            $0.height.equalTo(trackInfoStackView.spacing + titleLabel.textSize.height + (artistButton.titleLabel?.textSize.height ?? 0))
+        })
         
         titleLabel.snp.makeConstraints({ $0.height.equalTo(titleLabel.textSize.height) })
         artistButton.snp.makeConstraints({ $0.height.equalTo(artistButton.titleLabel?.textSize.height ?? 0) })
         
         actionsButton.snp.makeConstraints({ $0.width.equalTo(trackInfoHorizontalStackView.snp.height) })
         
-        durationSlider.snp.makeConstraints { make in
-            make.top.equalTo(trackInfoHorizontalStackView.snp.bottom).offset(20)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().inset(20)
-        }
+        durationStackView.snp.makeConstraints({ $0.height.equalTo(currentTimeLabel.textSize.height) })
         
-        currentTimeLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.durationSlider.snp.bottom).offset(10)
-            make.leading.equalToSuperview().offset(20)
-        }
+        volumeStackView.snp.makeConstraints({ $0.height.equalTo(20) })
         
-        leftTimeLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.durationSlider.snp.bottom).offset(10)
-            make.trailing.equalToSuperview().inset(20)
-        }
-        
-//        controlStackView.snp.makeConstraints { make in
-//            make.top.equalTo(currentTimeLabel.snp.bottom).offset(20)
-//            make.leading.trailing.equalToSuperview().inset(UIEdgeInsets(horizontal: 20))
-//            make.bottom.equalTo(volumeSlider.snp.top).offset(-20)
-//        }
-        
-        bottomStackView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(MainCoordinator.shared.safeAreaInsets.bottom + 20)
-            make.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(20)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing).inset(20)
-            make.height.equalTo(30)
-        }
-        
-        muteImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.bottom.equalTo(bottomStackView.snp.top).offset(-16)
-            make.height.width.equalTo(20)
-        }
-        
-        volumeSlider.snp.makeConstraints { make in
-            make.leading.equalTo(muteImageView.snp.trailing).offset(10)
-            make.trailing.equalTo(maxVolumeImageView.snp.leading).offset(-10)
-            make.centerY.equalTo(muteImageView.snp.centerY)
-        }
-        
-        maxVolumeImageView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(20)
-            make.bottom.equalTo(bottomStackView.snp.top).offset(-16)
-            make.height.width.equalTo(20)
-        }
+        bottomStackView.snp.makeConstraints({ $0.height.equalTo(30) })
     }
     
     private func setupDuration(_ duration: Float, currentTime: Float) {
@@ -350,6 +336,22 @@ extension NowPlayingViewController {
         
         sender.setTranslation(.zero, in: view)
     }
+    
+    @objc private func previousTrackAction(_ sender: UIButton) {
+        _ = AudioPlayer.shared.previousTrack()
+    }
+    
+    @objc private func playPauseAction(_ sender: UIButton) {
+        _ = AudioPlayer.shared.playPause()
+        sender.setImage(
+            (AudioPlayer.shared.isPlaying ? Constants.Images.pause : Constants.Images.play).image?.withConfiguration(UIImage.SymbolConfiguration(pointSize: 40)),
+            for: .normal
+        )
+    }
+    
+    @objc private func nextTrackAction(_ sender: UIButton) {
+        _ = AudioPlayer.shared.nextTrack()
+    }
 }
 
 // MARK: -
@@ -402,4 +404,10 @@ extension NowPlayingViewController: SliderControlDelegate {
     func valueDidNotChange(tag: Int) {
         self.configureSwipe()
     }
+}
+
+@available(iOS 17.0, *)
+#Preview {
+    let vc = NowPlayingViewController()
+    return vc
 }
