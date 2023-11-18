@@ -1,0 +1,51 @@
+
+/*  */
+"alert.password.doesnt.meet.requirements" = "Пароль не соответствует требованиям";
+
+/*  */
+"controller.auth.button.continue.with.apple" = "Продолжить через Apple";
+
+/*  */
+"controller.auth.button.continue.with.google" = "Продолжить через Google";
+
+/*  */
+"controller.signIn.button.forget.password" = "Забыли пароль?";
+
+/*  */
+"error.exception" = "Ошибка сервера (исключение)";
+
+/*  */
+"error.something.is.exist" = "%@ существует";
+
+/*  */
+"error.something.is.incorrect" = "%@ неверно";
+
+/*  */
+"error.try.another.sign.method" = "Попробуйте другой способ входа";
+
+/*  */
+"lines.password.doesnt.meet.requirements" = "Пароль не соответствует требованиям";
+
+/*  */
+"lines.text.in.textfield.is.empty" = "Текст в %@ пустой";
+
+/*  */
+"lines.unknown.error" = "Неизвестная %@ ошибка";
+
+/*  */
+"word.email" = "Электронная почта";
+
+/*  */
+"word.user" = "Пользователь";
+
+/*  */
+"words.email" = "Электронная почта";
+
+/*  */
+"words.password" = "Пароль";
+
+/*  */
+"words.sign.in" = "Войти";
+
+/*  */
+"words.sign.up" = "Зарегестрироваться";
