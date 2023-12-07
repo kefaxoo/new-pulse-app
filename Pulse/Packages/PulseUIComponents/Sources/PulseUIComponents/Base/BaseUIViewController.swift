@@ -7,13 +7,13 @@
 
 import UIKit
 
-class BaseUIViewController: UIViewController {
-    override func viewDidLoad() {
+open class BaseUIViewController: UIViewController {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         self.setupInterface()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.removeKeyboardObserversIfNeeded()
     }

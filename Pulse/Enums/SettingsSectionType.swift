@@ -41,7 +41,7 @@ enum SettingSectionType {
     var settings: [SettingType] {
         switch self {
             case .general:
-                return [.autoDownload]
+                return [.autoDownload, .import]
             case .appearance:
                 return [.accentColor]
             case .soundcloud:

@@ -15,7 +15,10 @@ protocol ActionsManagerDelegate: AnyObject {
 }
 
 extension ActionsManagerDelegate {
+    func updateButtonMenu() {}
+    func updatedTrack(_ track: TrackModel) {}
     func reloadData() {}
+    func updateTrackState(_ state: TrackLibraryState) {}
 }
 
 final class ActionsManager {
@@ -25,7 +28,7 @@ final class ActionsManager {
         self.delegate = delegate
     }
     
-    func trackActions(_ track: TrackModel) -> UIMenu {
+    func trackActions(_ track: TrackModel, shouldReverseActions: Bool = false) -> UIMenu {
         var libraryActions = [UIAction]()
         if LibraryManager.shared.isTrackInLibrary(track) {
             libraryActions.append(self.removeTrackFromLibrary(track))
@@ -40,13 +43,38 @@ final class ActionsManager {
             libraryActions.append(self.addTrackToLibrary(track))
         }
         
+        if shouldReverseActions {
+            libraryActions = libraryActions.reversed()
+        }
+        
         let libraryMenu = UIMenu(options: .displayInline, children: libraryActions)
         
-        let playerMenu = UIMenu(options: .displayInline, children: [self.playNext(track), self.playLast(track)])
+        var playerActions = [self.playNext(track), self.playLast(track)]
         
-        let shareMenu = UIMenu(options: .displayInline, children: [self.shareTrackAsLink(track), self.shareTrackAsFile(track)])
+        if shouldReverseActions {
+            playerActions = playerActions.reversed()
+        }
         
-        return UIMenu(options: .displayInline, children: [libraryMenu, playerMenu, shareMenu])
+        let playerMenu = UIMenu(options: .displayInline, children: playerActions)
+        
+        var shareActions = [self.shareTrackAsLink(track), self.shareTrackAsFile(track)]
+        
+        if shouldReverseActions {
+            shareActions = shareActions.reversed()
+        }
+        
+        let shareMenu = UIMenu(options: .displayInline, children: shareActions)
+        
+        var actions = [libraryMenu, playerMenu, shareMenu]
+        if shouldReverseActions {
+            actions = actions.reversed()
+        }
+        
+        return UIMenu(options: .displayInline, children: actions)
+    }
+    
+    func artistNowPlayingActions(_ artist: ArtistModel) -> UIMenu {
+        return UIMenu(options: .displayInline)
     }
     
     private func addTrackToLibrary(_ track: TrackModel) -> UIAction {

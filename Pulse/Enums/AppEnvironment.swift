@@ -13,7 +13,7 @@ enum AppEnvironment: String, CaseIterable {
     case releaseDebug = "release.debug"
     case releaseProd  = "release.prod"
     
-    fileprivate static var environmentByScheme: AppEnvironment {
+    static var environmentByScheme: AppEnvironment {
 #if LOCAL
         return .local
 #elseif TEST

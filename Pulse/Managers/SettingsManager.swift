@@ -168,10 +168,14 @@ final class SettingsManager {
     private func updateFeatures(features: PulseFeatures) {
         self.featuresLastUpdate = Int(Date().timeIntervalSince1970)
         DispatchQueue.main.async {
+            RealmManager<LocalFeatureModel>().read().forEach { obj in
+                RealmManager<LocalFeatureModel>().delete(object: obj)
+            }
+            
             RealmManager<LocalFeaturesModel>().update { realm in
                 try? realm.write {
                     self.localFeatures.newSign    = features.newSign?.toRealmModel
-                    self.localFeatures.newLibrary = features.newFeature?.toRealmModel
+                    self.localFeatures.newLibrary = features.newLibrary?.toRealmModel
                     self.localFeatures.newSoundcloud = features.newSoundcloud?.toRealmModel
                 }
             }

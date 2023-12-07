@@ -21,4 +21,12 @@ struct SearchResponse {
     mutating func cannotLoadMore() {
         self.canLoadMore = false
     }
+    
+    func result<T: Decodable>(at indexPath: IndexPath, of type: T.Type) -> T? {
+        return self.results(of: type)?[indexPath.item]
+    }
+    
+    func results<T: Decodable>(of type: T.Type) -> [T]? {
+        return self.results as? [T]
+    }
 }

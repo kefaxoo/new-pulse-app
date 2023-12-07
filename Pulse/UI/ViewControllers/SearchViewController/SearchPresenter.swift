@@ -181,6 +181,19 @@ final class SearchPresenter: BasePresenter {
             }
         }
     }
+    
+    func trackIndex(for track: TrackModel) -> Int? {
+        guard self.currentType == .tracks else { return nil }
+        
+        switch self.currentService.source {
+            case .muffon:
+                return self.searchResponse?.results(of: MuffonTrack.self)?.map({ TrackModel($0) }).firstIndex(where: { $0 == track })
+            case .soundcloud:
+                return self.searchResponse?.results(of: SoundcloudTrack.self)?.map({ TrackModel($0) }).firstIndex(where: { $0 == track })
+            default:
+                return nil
+        }
+    }
 }
 
 // MARK: -

@@ -78,7 +78,7 @@ extension PlaylistTableViewCell {
     override func setupConstraints() {
         playlistImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)
-            make.leading.equalToSuperview()
+            make.leading.equalToSuperview().inset(20)
             make.bottom.equalToSuperview().inset(10)
             make.height.width.equalTo(50)
         }
@@ -89,7 +89,7 @@ extension PlaylistTableViewCell {
         }
         
         chevronImageView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-20)
             make.centerY.equalToSuperview()
             make.leading.equalTo(playlistTitleLabel.snp.trailing).offset(10)
             make.width.equalTo(20)

@@ -7,23 +7,9 @@
 
 import UIKit
 import WebKit
+import PulseUIComponents
 
-class WebViewController: BaseUIViewController {
-    private lazy var navigationView = UIView(with: .systemBackground)
-    
-    private lazy var navigationTitle: UILabel = {
-        let label = UILabel()
-        return label
-    }()
-    
-    private lazy var cancelButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Cancel", for: .normal)
-        button.setTitleColor(SettingsManager.shared.color.color, for: .normal)
-        button.addTarget(self, action: #selector(dismissAction), for: .touchUpInside)
-        return button
-    }()
-    
+class WebViewController: PageNavigationViewController {
     private var webView: WKWebView?
     
     private let presenter: WebPresenter
@@ -48,10 +34,13 @@ class WebViewController: BaseUIViewController {
     
     init(type: WebViewType) {
         self.presenter = WebPresenter(type: type)
-        super.init(nibName: nil, bundle: nil)
+        super.init(buttonTitleColor: SettingsManager.shared.color.color)
         self.presenter.viewDelegate = self
-        
-        self.isModalInPresentation = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.buttonTitleColor = SettingsManager.shared.color.color
     }
     
     required init?(coder: NSCoder) {
@@ -84,10 +73,7 @@ extension WebViewController {
 // MARK: Setup interface methods
 extension WebViewController {
     override func setupLayout() {
-        self.view.addSubview(navigationView)
-        navigationView.addSubview(navigationTitle)
-        navigationView.addSubview(cancelButton)
-        
+        super.setupLayout()
         guard let webView else {
             self.dismiss(animated: true)
             return
@@ -97,30 +83,11 @@ extension WebViewController {
     }
     
     override func setupConstraints() {
-        navigationView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(50)
-        }
-        
-        navigationTitle.snp.makeConstraints({ $0.centerX.centerY.equalToSuperview() })
-        
-        cancelButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(20)
-            make.centerY.equalToSuperview()
-        }
-        
+        super.setupConstraints()
         webView?.snp.makeConstraints { make in
-            make.top.equalTo(navigationView.snp.bottom)
+            make.top.equalTo(navigationViewConstraintItem)
             make.leading.trailing.bottom.equalToSuperview()
         }
-    }
-}
-
-// MARK: -
-// MARK: Actions
-fileprivate extension WebViewController {
-    @objc func dismissAction(_ sender: UIButton) {
-        self.dismiss(animated: true)
     }
 }
 
@@ -137,7 +104,7 @@ extension WebViewController: WebPresenterDelegate {
     }
     
     func changeNavigationTitle(to link: String) {
-        self.navigationTitle.text = link
+        self.navigationTitle = link
     }
     
     func dismissVC(animated: Bool) {
@@ -157,4 +124,9 @@ extension WebViewController: WKNavigationDelegate {
         
         decisionHandler(wkNavigationActionPolicy)
     }
+}
+
+@available(iOS 17.0, *)
+#Preview {
+    return WebViewController(type: .soundcloud)
 }

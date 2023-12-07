@@ -8,6 +8,10 @@
 import UIKit
 
 extension UITableView {
+    func dequeueReusableCell(withIdentifier identifier: String) -> UITableViewCell {
+        return self.dequeueReusableCell(withIdentifier: identifier) ?? UITableViewCell()
+    }
+    
     func register(_ cells: AnyClass...) {
         cells.forEach { [weak self] cell in
             let id = String(describing: cell.self)

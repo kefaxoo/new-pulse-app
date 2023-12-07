@@ -83,6 +83,8 @@ enum SearchType {
         switch self {
             case .tracks:
                 return TrackTableViewCell.id
+            case .playlists:
+                return PlaylistTableViewCell.id
             default:
                 return ""
         }

@@ -75,6 +75,10 @@ final class TracksPresenter: BasePresenter {
         
         self.delegate?.reloadData()
     }
+    
+    func index(for track: TrackModel) -> Int? {
+        return self.tracks.firstIndex(where: { $0 == track })
+    }
 }
 
 // MARK: -
@@ -89,7 +93,7 @@ extension TracksPresenter {
 // MARK: Table view methods
 extension TracksPresenter: BaseTableViewPresenter {
     func setupCell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
-        self.setupCell(tableView.dequeueReusableCell(withIdentifier: TrackTableViewCell.id, for: indexPath), at: indexPath)
+        self.setupCell(tableView.dequeueReusableCell(withIdentifier: TrackTableViewCell.id), at: indexPath)
     }
     
     func setupCell(_ cell: UITableViewCell, at indexPath: IndexPath) -> UITableViewCell {

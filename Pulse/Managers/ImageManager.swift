@@ -85,9 +85,9 @@ final class ImageManager {
         if track.image == nil {
             switch track.source {
                 case .muffon:
-                    MuffonProvider.shared.trackInfo(track) { updatedTrack in
+                    MuffonProvider.shared.trackInfo(track) { [weak self] updatedTrack in
                         track = TrackModel(updatedTrack)
-                        self.image(from: track.image?.original) { [weak self] image, _ in
+                        self?.image(from: track.image?.original) { image, _ in
                             self?.saveImage(image, filename: filename, completion: completion)
                         }
                     } failure: {

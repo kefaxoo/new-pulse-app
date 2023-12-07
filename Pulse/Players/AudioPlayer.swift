@@ -24,10 +24,11 @@ protocol AudioPlayerViewDelegate: AudioPlayerCommonDelegate {
 
 protocol AudioPlayerControllerDelegate: AudioPlayerCommonDelegate {
     func updateDuration(_ duration: Float, currentTime: Float)
+    func updateVolume(_ volume: Float)
 }
 
 protocol AudioPlayerTableViewDelegate: AnyObject {
-    func changeStateImageView(_ state: CoverImageViewState, position: Int)
+    func changeStateImageView(_ state: CoverImageViewState, for track: TrackModel)
 }
 
 final class AudioPlayer: NSObject {
@@ -38,7 +39,7 @@ final class AudioPlayer: NSObject {
         self.setupRemoteControl()
     }
     
-    private let player: AVPlayer = {
+    private lazy var player: AVPlayer = {
         let player = AVPlayer()
         player.volume = 1
         player.automaticallyWaitsToMinimizeStalling = false
@@ -53,19 +54,22 @@ final class AudioPlayer: NSObject {
         return player
     }()
     
-    private var playlist       = [TrackModel]()
-    private var position       = 0
-    private var observer       : Any?
-    private var nowPlayingInfo = [String: Any]()
+    private var playlist            = [TrackModel]()
+    private var position            = 0
+    private var observer            : Any?
+    private var nowPlayingInfo      = [String: Any]()
+    private var outputVolumeObserver: Any?
     
     private(set) var track: TrackModel?
     private(set) var cover: UIImage?
+    
+    private var durationWhenPaused: Double?
     
     private let commandCenter = MPRemoteCommandCenter.shared()
     
     var isDurationChanging = false
     var duration: Double? {
-        return self.player.currentItem?.duration.seconds
+        return self.player.rate == 0 ? self.durationWhenPaused : self.player.currentItem?.duration.seconds
     }
     
     var isPlaying: Bool {
@@ -105,7 +109,7 @@ final class AudioPlayer: NSObject {
             )
         }
         
-        self.tableViewDelegate?.changeStateImageView(.loading, position: self.position)
+        self.tableViewDelegate?.changeStateImageView(.loading, for: track)
         self.setupTrackInfoInDelegates()
         self.setupCover()
         self.setupObserver()
@@ -128,7 +132,10 @@ final class AudioPlayer: NSObject {
         self.player.replaceCurrentItem(with: nil)
         self.cover = nil
         self.viewDelegate?.changeState(isPlaying: false)
-        self.tableViewDelegate?.changeStateImageView(.stopped, position: self.position)
+        if let track {
+            self.tableViewDelegate?.changeStateImageView(.stopped, for: track)
+        }
+        
         guard isNewPlaylist else { return }
         
         SessionCacheManager.shared.cleanAllCache()
@@ -176,10 +183,12 @@ fileprivate extension AudioPlayer {
                 self.setupDurationInDelegates()
                 self.setupNowPlaying()
                 
+                guard let track else { return }
+                
                 if self.player.currentItem?.status == .readyToPlay {
-                    self.tableViewDelegate?.changeStateImageView(self.player.rate == 0 ? .paused : .playing, position: self.position)
+                    self.tableViewDelegate?.changeStateImageView(self.player.rate == 0 ? .paused : .playing, for: track)
                 } else {
-                    self.tableViewDelegate?.changeStateImageView(.loading, position: self.position)
+                    self.tableViewDelegate?.changeStateImageView(.loading, for: track)
                 }
             }
         )
@@ -367,8 +376,9 @@ extension AudioPlayer {
         }
         
         self.viewDelegate?.changeState(isPlaying: self.player.rate != 0)
-        if self.player.currentItem?.status == .readyToPlay {
-            self.tableViewDelegate?.changeStateImageView(self.player.rate == 0 ? .stopped : .playing, position: self.position)
+        if self.player.currentItem?.status == .readyToPlay,
+           let track {
+            self.tableViewDelegate?.changeStateImageView(self.player.coverState, for: track)
         }
         
         return .success
@@ -473,5 +483,27 @@ fileprivate extension AudioPlayer {
                 self.viewDelegate?.changeState(isPlaying: true)
             }
         }
+    }
+}
+
+// MARK: -
+// MARK: Volume methods
+extension AudioPlayer {
+    func setVolume(_ volume: Float) {
+        MPVolumeView.setVolume(volume)
+    }
+    
+    var currentVolume: Float {
+        return AVAudioSession.sharedInstance().outputVolume
+    }
+    
+    func observeSystemVolume() {
+        self.outputVolumeObserver = AVAudioSession.sharedInstance().observe(\.outputVolume, options: [.new]) { [weak self] audioSession, _ in
+            self?.controllerDelegate?.updateVolume(audioSession.outputVolume)
+        }
+    }
+    
+    func removeSystemVolumeObserver() {
+        (self.outputVolumeObserver as? NSKeyValueObservation)?.invalidate()
     }
 }

@@ -248,12 +248,28 @@ final class SoundcloudProvider: BaseRestApiProvider {
         ) { [weak self] response in
             switch response {
                 case .success(let response):
-                    guard let searchResponse = response.data?.map(to: SoundcloudMain<SoundcloudTrack>.self) else {
-                        failure(nil)
-                        return
+                    let searchResponse: SearchResponse
+                    switch searchType {
+                        case .tracks:
+                            guard let tracks = response.data?.map(to: SoundcloudMain<SoundcloudTrack>.self) else {
+                                failure(nil)
+                                return
+                            }
+                            
+                            searchResponse = SearchResponse(results: tracks.collection)
+                        case .playlists:
+                            guard let playlists = response.data?.map(to: SoundcloudMain<SoundcloudPlaylist>.self) else {
+                                failure(nil)
+                                return
+                            }
+                            
+                            searchResponse = SearchResponse(results: playlists.collection)
+                        default:
+                            failure(nil)
+                            return
                     }
                     
-                    success(SearchResponse(results: searchResponse.collection))
+                    success(searchResponse)
                 case .failure(let response):
                     guard response.statusCode != -1 else { return }
                     

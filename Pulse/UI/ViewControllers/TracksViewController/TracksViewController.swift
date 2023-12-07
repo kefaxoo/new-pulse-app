@@ -139,8 +139,10 @@ extension TracksViewController: UISearchBarDelegate {
 // MARK: -
 // MARK: AudioPlayerTableViewDelegate
 extension TracksViewController: AudioPlayerTableViewDelegate {
-    func changeStateImageView(_ state: PulseUIComponents.CoverImageViewState, position: Int) {
-        let indexPath = IndexPath(row: position, section: 0)
-        (tracksTableView.cellForRow(at: indexPath) as? TrackTableViewCell)?.changeState(state)
+    func changeStateImageView(_ state: CoverImageViewState, for track: TrackModel) {
+        guard let index = self.presenter.index(for: track) else { return }
+        
+        let indexPath = IndexPath(row: index, section: 0)
+        (self.tracksTableView.cellForRow(at: indexPath) as? TrackTableViewCell)?.changeState(state)
     }
 }

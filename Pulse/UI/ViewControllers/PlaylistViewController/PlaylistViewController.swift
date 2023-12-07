@@ -128,8 +128,10 @@ extension PlaylistViewController: UITableViewDelegate {
 // MARK: -
 // MARK: AudioPlayerTableViewDelegate
 extension PlaylistViewController: AudioPlayerTableViewDelegate {
-    func changeStateImageView(_ state: CoverImageViewState, position: Int) {
-        let indexPath = IndexPath(row: position, section: 0)
+    func changeStateImageView(_ state: CoverImageViewState, for track: TrackModel) {
+        guard let index = self.presenter.index(for: track) else { return }
+        
+        let indexPath = IndexPath(row: index, section: 0)
         (playlistTableView.cellForRow(at: indexPath) as? TrackTableViewCell)?.changeState(state)
     }
 }

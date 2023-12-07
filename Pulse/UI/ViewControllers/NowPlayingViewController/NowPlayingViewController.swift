@@ -38,6 +38,11 @@ final class NowPlayingViewController: BaseUIViewController {
         button.contentHorizontalAlignment = .left
         button.setTitle("Artist", for: .normal)
         button.titleLabel?.numberOfLines = 0
+        button.showsMenuAsPrimaryAction = true
+        if let artist = self.artist {
+            button.menu = self.actionsManager.artistNowPlayingActions(artist)
+        }
+        
         return button
     }()
     
@@ -59,6 +64,11 @@ final class NowPlayingViewController: BaseUIViewController {
         configuration.preferredSymbolConfigurationForImage = .init(font: .systemFont(ofSize: 17), scale: .large)
         configuration.imagePlacement = .trailing
         button.configuration = configuration
+        button.showsMenuAsPrimaryAction = true
+        if let track = self.track {
+            button.menu = self.actionsManager.trackActions(track, shouldReverseActions: true)
+        }
+        
         return button
     }()
     
@@ -77,6 +87,7 @@ final class NowPlayingViewController: BaseUIViewController {
         slider.tag = 1001
         slider.defaultProgressColor = SettingsManager.shared.color.color
         slider.enlargedProgressColor = SettingsManager.shared.color.color
+        slider.value = Float(AudioPlayer.shared.duration ?? 0)
         return slider
     }()
     
@@ -155,6 +166,7 @@ final class NowPlayingViewController: BaseUIViewController {
         slider.tag = 1002
         slider.defaultProgressColor = SettingsManager.shared.color.color
         slider.enlargedProgressColor = SettingsManager.shared.color.color
+        slider.value = AudioPlayer.shared.currentVolume
         return slider
     }()
     
@@ -215,11 +227,23 @@ final class NowPlayingViewController: BaseUIViewController {
         return UIPanGestureRecognizer(target: self, action: #selector(swipeDismissAction))
     }()
     
+    private lazy var actionsManager: ActionsManager = { return ActionsManager(self)
+    }()
+    
+    private var track: TrackModel? {
+        return AudioPlayer.shared.track
+    }
+    
+    private var artist: ArtistModel? {
+        return self.track?.artist
+    }
+    
     init() {
         super.init(nibName: nil, bundle: nil)
         self.modalPresentationStyle = .overCurrentContext
         
         AudioPlayer.shared.controllerDelegate = self
+        AudioPlayer.shared.observeSystemVolume()
     }
     
     required init?(coder: NSCoder) {
@@ -228,6 +252,7 @@ final class NowPlayingViewController: BaseUIViewController {
     
     deinit {
         AudioPlayer.shared.controllerDelegate = nil
+        AudioPlayer.shared.removeSystemVolumeObserver()
     }
 }
 
@@ -304,6 +329,10 @@ extension NowPlayingViewController: NowPlayingPresenterDelegate {
     func setTrack(_ track: TrackModel) {
         self.titleLabel.text = track.title
         self.artistButton.setTitle(track.artistText, for: .normal)
+        self.actionsButton.menu = actionsManager.trackActions(track, shouldReverseActions: true)
+        if let artist = track.artist {
+            self.artistButton.menu = actionsManager.artistNowPlayingActions(artist)
+        }
     }
 }
 
@@ -344,7 +373,8 @@ extension NowPlayingViewController {
     @objc private func playPauseAction(_ sender: UIButton) {
         _ = AudioPlayer.shared.playPause()
         sender.setImage(
-            (AudioPlayer.shared.isPlaying ? Constants.Images.pause : Constants.Images.play).image?.withConfiguration(UIImage.SymbolConfiguration(pointSize: 40)),
+            (AudioPlayer.shared.isPlaying ? Constants.Images.pause : Constants.Images.play)
+                .image?.withConfiguration(UIImage.SymbolConfiguration(pointSize: 40)),
             for: .normal
         )
     }
@@ -370,6 +400,13 @@ extension NowPlayingViewController: AudioPlayerControllerDelegate {
         durationSlider.value = currentTime / duration
         self.setupDuration(duration, currentTime: currentTime)
     }
+    
+    func updateVolume(_ volume: Float) {
+        UIView.animate(withDuration: 0.2) { [weak self] in
+            self?.volumeSlider.value = volume
+            self?.volumeSlider.layoutIfNeeded()
+        }
+    }
 }
 
 // MARK: -
@@ -389,6 +426,8 @@ extension NowPlayingViewController: SliderControlDelegate {
             
             let duration = Float(doubleDuration)
             self.setupDuration(duration, currentTime: value * duration)
+        } else if tag == self.volumeSlider.tag {
+            AudioPlayer.shared.setVolume(value)
         }
     }
     
@@ -396,6 +435,8 @@ extension NowPlayingViewController: SliderControlDelegate {
         if tag == self.durationSlider.tag {
             AudioPlayer.shared.isDurationChanging = false
             AudioPlayer.shared.updateTimePosition(value)
+        } else if tag == self.volumeSlider.tag {
+            AudioPlayer.shared.setVolume(value)
         }
         
         self.configureSwipe()
@@ -403,6 +444,16 @@ extension NowPlayingViewController: SliderControlDelegate {
     
     func valueDidNotChange(tag: Int) {
         self.configureSwipe()
+    }
+}
+
+// MARK: -
+// MARK: ActionsManagerDelegate
+extension NowPlayingViewController: ActionsManagerDelegate {
+    func updateButtonMenu() {
+        guard let track else { return }
+        
+        actionsButton.menu = actionsManager.trackActions(track, shouldReverseActions: true)
     }
 }
 

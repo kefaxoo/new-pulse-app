@@ -48,6 +48,14 @@ final class SearchViewController: BaseUIViewController {
         presenter.delegate = self
         return presenter
     }()
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 // MARK: -
@@ -203,10 +211,10 @@ extension SearchViewController: UITableViewDelegate {
 // MARK: -
 // MARK: AudioPlayerTableViewDelegate
 extension SearchViewController: AudioPlayerTableViewDelegate {
-    func changeStateImageView(_ state: CoverImageViewState, position: Int) {
-        guard self.presenter.currentType == .tracks else { return }
+    func changeStateImageView(_ state: CoverImageViewState, for track: TrackModel) {
+        guard let index = self.presenter.trackIndex(for: track) else { return }
         
-        let indexPath = IndexPath(row: position, section: 0)
+        let indexPath = IndexPath(row: index, section: 0)
         (self.resultsTableView.cellForRow(at: indexPath) as? TrackTableViewCell)?.changeState(state)
     }
 }

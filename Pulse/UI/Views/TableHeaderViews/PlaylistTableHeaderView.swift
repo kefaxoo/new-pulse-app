@@ -13,7 +13,8 @@ final class PlaylistTableHeaderView: BaseUIView {
         let imageView = UIImageView.default
         imageView.tintColor = SettingsManager.shared.color.color
         imageView.layer.cornerRadius = 20
-        if self.playlist.image != nil {
+        if self.playlist.image != nil,
+           self.playlist.source != .soundcloud {
             imageView.setImage(from: self.playlist.image?.original)
         } else {
             if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSoundcloud?.prod ?? false {

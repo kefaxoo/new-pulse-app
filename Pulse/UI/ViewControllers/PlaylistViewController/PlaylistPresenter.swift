@@ -57,6 +57,10 @@ final class PlaylistPresenter: BasePresenter {
                 break
         }
     }
+    
+    func index(for track: TrackModel) -> Int? {
+        return self.tracks.firstIndex(where: { $0 == track })
+    }
 }
 
 // MARK: -
@@ -64,7 +68,7 @@ final class PlaylistPresenter: BasePresenter {
 extension PlaylistPresenter: BaseTableViewPresenter {
     func setupCell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
         let id = TrackTableViewCell.id
-        return self.setupCell(tableView.dequeueReusableCell(withIdentifier: id, for: indexPath), at: indexPath)
+        return self.setupCell(tableView.dequeueReusableCell(withIdentifier: id), at: indexPath)
     }
     
     func setupCell(_ cell: UITableViewCell, at indexPath: IndexPath) -> UITableViewCell {

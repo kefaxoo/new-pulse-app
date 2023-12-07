@@ -107,12 +107,16 @@ extension SoundcloudApi: BaseRestApiEnum {
                 guard let cursor else { break }
                 
                 parameters["cursor"] = cursor
-            case .search(_, let query, let offset):
+            case .search(let type, let query, let offset):
                 parameters["q"]                   = query
                 parameters["access"]              = "playable"
                 parameters["limit"]               = 20
                 parameters["linked_partitioning"] = true
                 parameters["offset"]              = offset
+                if type == .playlists {
+                    parameters["show_tracks"] = false
+                }
+                
             case .likedPlaylists(let cursor):
                 parameters["limit"]               = 10
                 parameters["linked_partitioning"] = true

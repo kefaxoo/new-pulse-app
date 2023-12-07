@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PulseUIComponents
 
 final class PlaylistsViewController: BaseUIViewController {
     private lazy var searchController: UISearchController = {
@@ -15,10 +16,10 @@ final class PlaylistsViewController: BaseUIViewController {
         return searchController
     }()
     
-    private lazy var playlistsTypeSegmentedControl: UISegmentedControl = {
-        let segmentedControl = UISegmentedControl()
+    private lazy var playlistsTypeSegmentedControl: InsetSegmentedControl = {
+        let segmentedControl = InsetSegmentedControl(insets: UIEdgeInsets(horizontal: 20))
         segmentedControl.isHidden = true
-        segmentedControl.addTarget(self, action: #selector(playlistsTypeDidChange), for: .valueChanged)
+        segmentedControl.delegate = self
         return segmentedControl
     }()
     
@@ -64,14 +65,14 @@ extension PlaylistsViewController {
     override func setupConstraints() {
         playlistsTypeSegmentedControl.snp.makeConstraints { make in
             make.width.equalToSuperview()
-            make.height.equalTo(self.playlistsTypeSegmentedControl.defaultHeight)
+            make.height.equalTo(self.playlistsTypeSegmentedControl.height)
         }
         
         playlistsTableView.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide)
             make.bottom.equalToSuperview()
-            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(20)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
+            make.leading.equalTo(self.view.safeAreaLayoutGuide)
+            make.trailing.equalTo(self.view.safeAreaLayoutGuide)
         }
     }
     
@@ -105,14 +106,6 @@ extension PlaylistsViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.presenter.viewWillAppear()
-    }
-}
-
-// MARK: -
-// MARK: Actions
-fileprivate extension PlaylistsViewController {
-    @objc func playlistsTypeDidChange(_ sender: UISegmentedControl) {
-        self.presenter.playlistsTypeDidChange()
     }
 }
 
@@ -156,5 +149,13 @@ extension PlaylistsViewController: PlaylistsPresenterDelegate {
 extension PlaylistsViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.presenter.textDidChange(searchText)
+    }
+}
+
+// MARK: -
+// MARK: InsetSegmentedControlDelegate
+extension PlaylistsViewController: InsetSegmentedControlDelegate {
+    func segmentedControlValueChanged(value: Int) {
+        self.presenter.playlistsTypeDidChange()
     }
 }
