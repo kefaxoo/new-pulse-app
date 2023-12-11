@@ -1,0 +1,44 @@
+/* 
+  Localizable.strings
+  Pulse
+
+  Created by Bahdan Piatrouski on 6.11.23.
+  
+*/
+
+// MARK: -
+// MARK: Words
+"words.sign.in"  = "Sign in";
+"words.sign.up"  = "Sign up";
+"words.email"    = "Email";
+"words.password" = "Password";
+
+// MARK: -
+// MARK: Controllers
+// MARK: Auth controller
+// MARK: Buttons
+"controller.auth.button.continue.with.apple"  = "Continue with Apple";
+"controller.auth.button.continue.with.google" = "Continue with Google";
+
+// MARK: Sign in controller
+// MARK: Buttons
+"controller.signIn.button.forget.password" = "Forget password?";
+
+// MARK: -
+// MARK: Server localization
+// MARK: Localization keys
+"error.something.is.incorrect"  = "%@ is incorrect";
+"error.try.another.sign.method" = "Try another sign method";
+"error.something.is.exist"      = "%@ is exist";
+"error.exception"               = "Server error (Exception)";
+"error.something.not.found"     = "%@ not found";
+
+// MARK: Localization parameters
+"word.email" = "Email";
+"word.user"  = "User";
+
+// MARK: -
+// MARK: Lines
+"lines.unknown.error"                     = "Unknown %@ error";
+"lines.password.doesnt.meet.requirements" = "Password doesn't meet requirements";
+"lines.text.in.textfield.is.empty"        = "Text in %@ is empty";
