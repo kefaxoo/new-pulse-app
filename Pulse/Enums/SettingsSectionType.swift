@@ -15,7 +15,7 @@ enum SettingSectionType {
     case debug
     
     static var allCases: [SettingSectionType] {
-        var allCases: [SettingSectionType] = [.general, .appearance, .soundcloud, .help]
+        var allCases: [SettingSectionType] = [.general, .appearance, .soundcloud]
 #if !RELEASE_P
         allCases.append(.debug)
 #endif
@@ -41,7 +41,7 @@ enum SettingSectionType {
     var settings: [SettingType] {
         switch self {
             case .general:
-                return [.autoDownload, .import]
+                return [.autoDownload]
             case .appearance:
                 return [.accentColor]
             case .soundcloud:

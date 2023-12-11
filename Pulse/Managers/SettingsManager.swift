@@ -49,7 +49,7 @@ final class SettingsManager {
     
     // MARK: Realm configuration
     var realmConfiguration: Realm.Configuration {
-        let configuration = Realm.Configuration(schemaVersion: 9) { migration, oldSchemaVersion in
+        let configuration = Realm.Configuration(schemaVersion: 10) { migration, oldSchemaVersion in
             if oldSchemaVersion < 2 {
                 migration.enumerateObjects(ofType: LibraryTrackModel.className()) { _, newObject in
                     newObject?["shareLink"] = ""
@@ -95,6 +95,12 @@ final class SettingsManager {
             if oldSchemaVersion < 9 {
                 migration.enumerateObjects(ofType: LocalFeaturesModel.className()) { _, newObject in
                     newObject?["newSoundcloud"] = LocalFeatureModel(prod: false, debug: false)
+                }
+            }
+            
+            if oldSchemaVersion < 10 {
+                migration.enumerateObjects(ofType: LocalFeaturesModel.className()) { _, newObject in
+                    newObject?["searchSoundcloudPlaylists"] = LocalFeatureModel(prod: false, debug: false)
                 }
             }
         }
@@ -143,7 +149,7 @@ final class SettingsManager {
         }
     }
     
-    let featuresKeys = ["newSign", "newLibrary", "newSoundcloud"]
+    let featuresKeys = ["newSign", "newLibrary", "newSoundcloud", "nowPlayingVC", "searchSoundcloudPlaylists"]
     var localFeatures = LocalFeaturesModel()
     var featuresLastUpdate: Int {
         get {
@@ -159,10 +165,21 @@ final class SettingsManager {
         return Int(Date().timeIntervalSince1970) - self.featuresLastUpdate >= 86400
     }
     
-    func updateFeatures() async throws {
-        guard let features = try await PulseProvider.shared.features else { return }
+    func updateFeatures(completion: @escaping(() -> ())) {
+        guard self.shouldUpdateFeatures else {
+            completion()
+            return
+        }
         
-        self.updateFeatures(features: features)
+        PulseProvider.shared.features { [weak self] features in
+            guard let features else {
+                completion()
+                return
+            }
+            
+            self?.updateFeatures(features: features)
+            completion()
+        }
     }
     
     private func updateFeatures(features: PulseFeatures) {
@@ -174,9 +191,11 @@ final class SettingsManager {
             
             RealmManager<LocalFeaturesModel>().update { realm in
                 try? realm.write {
-                    self.localFeatures.newSign    = features.newSign?.toRealmModel
-                    self.localFeatures.newLibrary = features.newLibrary?.toRealmModel
-                    self.localFeatures.newSoundcloud = features.newSoundcloud?.toRealmModel
+                    self.localFeatures.newSign                   = features.newSign?.toRealmModel
+                    self.localFeatures.newLibrary                = features.newLibrary?.toRealmModel
+                    self.localFeatures.newSoundcloud             = features.newSoundcloud?.toRealmModel
+                    self.localFeatures.nowPlayingVC              = features.nowPlayingVC?.toRealmModel
+                    self.localFeatures.searchSoundcloudPlaylists = features.searchSoundcloudPlaylists?.toRealmModel
                 }
             }
         }

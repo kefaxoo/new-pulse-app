@@ -179,8 +179,9 @@ final class LibraryManager {
     func fetchLibrary() {
         createDirectoriesIfNeeded()
         
-        if AppEnvironment.current.isRelease,
-           SettingsManager.shared.localFeatures.newLibrary?.prod ?? false {
+        if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newLibrary?.prod ?? false {
+            PulseProvider.shared.syncTracks()
+        } else {
             PulseProvider.shared.fetchTracks { tracks in
                 tracks.forEach { track in
                     switch track.source {

@@ -54,7 +54,8 @@ enum SearchType {
                 return []
             case .soundcloud:
                 var soundcloudTypes: [SearchType] = [.tracks]
-                if service.source == .soundcloud {
+                if service.source == .soundcloud,
+                   AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.searchSoundcloudPlaylists?.prod ?? false {
                     soundcloudTypes.append(.playlists)
                 }
                 

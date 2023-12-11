@@ -18,8 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NetworkManager.shared.updateValues()
         ServicesManager.shared.refreshTokens()
         LibraryManager.shared.removeTemporaryCache()
-        Task {
-            try await SettingsManager.shared.updateFeatures()
+        SettingsManager.shared.updateFeatures {
             MainCoordinator.shared.firstLaunch {
                 LibraryManager.shared.initialSetup()
             }

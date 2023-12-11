@@ -267,16 +267,13 @@ final class PulseProvider: BaseRestApiProvider {
         }
     }
     
-    var features: PulseFeatures? {
-        get async throws {
-            let response = try await urlSession.dataTask(with: URLRequest(type: PulseApi.features, shouldPrintLog: self.shouldPrintLog))
+    func features(completion: @escaping((PulseFeatures?) -> ())) {
+        self.urlSession.dataTask(with: URLRequest(type: PulseApi.features, shouldPrintLog: self.shouldPrintLog)) { response in
             switch response {
                 case .success(let response):
-                    guard let features = response.data?.map(to: PulseFeatures.self) else { return nil }
-                    
-                    return features
+                    completion(response.data?.map(to: PulseFeatures.self))
                 case .failure:
-                    return nil
+                    completion(nil)
             }
         }
     }

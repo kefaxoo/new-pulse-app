@@ -14,6 +14,7 @@ open class PageNavigationViewController: BaseUIViewController {
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
+        button.addTarget(self, action: #selector(dismissAction), for: .touchUpInside)
         return button
     }()
     

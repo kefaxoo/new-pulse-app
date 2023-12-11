@@ -189,7 +189,7 @@ extension NowPlayingView {
     }
     
     @objc private func presentNowPlayingVC() {
-        guard AppEnvironment.current.isDebug else { return }
+        guard AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.nowPlayingVC?.prod ?? false else { return }
         
         MainCoordinator.shared.presentNowPlayingController()
     }
