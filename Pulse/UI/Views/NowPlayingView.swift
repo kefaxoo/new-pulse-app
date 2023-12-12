@@ -34,6 +34,7 @@ final class NowPlayingView: BaseUIView {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         label.text = "Not playing"
+        label.baselineAdjustment = .none
         return label
     }()
     
@@ -142,6 +143,8 @@ extension NowPlayingView {
             make.bottom.equalToSuperview().inset(18)
             make.width.equalTo(30)
         }
+        
+        titleLabel.snp.makeConstraints({ $0.height.equalTo(titleLabel.textSize.height).priority(.high) })
         
         self.layoutIfNeeded()
         
