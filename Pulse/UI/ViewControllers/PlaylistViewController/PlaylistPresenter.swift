@@ -61,6 +61,48 @@ final class PlaylistPresenter: BasePresenter {
     func index(for track: TrackModel) -> Int? {
         return self.tracks.firstIndex(where: { $0 == track })
     }
+    
+    func play() {
+        guard !self.tracks.isEmpty else { return }
+        
+        let track = tracks[0]
+        if track.needFetchingPlayableLinks {
+            AudioManager.shared.getPlayableLink(for: track) { [weak self] updatedTrack in
+                self?.tracks[0] = updatedTrack.track
+                AudioPlayer.shared.play(from: updatedTrack.track, playlist: self?.tracks ?? [], position: 0, isNewPlaylist: !(self?.didChangePlaylistInPlayer ?? false))
+                
+                if !(self?.didChangePlaylistInPlayer ?? false) {
+                    self?.didChangePlaylistInPlayer = true
+                }
+            }
+        } else {
+            AudioPlayer.shared.play(from: track, playlist: self.tracks, position: 0, isNewPlaylist: !self.didChangePlaylistInPlayer)
+            if !self.didChangePlaylistInPlayer {
+                self.didChangePlaylistInPlayer = true
+            }
+        }
+    }
+    
+    func shuffle() {
+        guard !self.tracks.isEmpty else { return }
+        
+        let tracks = self.tracks.shuffled()
+        let track = tracks[0]
+        if track.needFetchingPlayableLinks {
+            AudioManager.shared.getPlayableLink(for: track) { [weak self] updatedTrack in
+                AudioPlayer.shared.play(from: updatedTrack.track, playlist: tracks, position: 0, isNewPlaylist: !(self?.didChangePlaylistInPlayer ?? false))
+                
+                if !(self?.didChangePlaylistInPlayer ?? false) {
+                    self?.didChangePlaylistInPlayer = true
+                }
+            }
+        } else {
+            AudioPlayer.shared.play(from: track, playlist: tracks, position: 0, isNewPlaylist: !self.didChangePlaylistInPlayer)
+            if !self.didChangePlaylistInPlayer {
+                self.didChangePlaylistInPlayer = true
+            }
+        }
+    }
 }
 
 // MARK: -
