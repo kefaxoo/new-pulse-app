@@ -8,6 +8,11 @@
 import UIKit
 import PulseUIComponents
 
+protocol PlaylistTableHeaderViewDelegate: AnyObject {
+    func play()
+    func shuffle()
+}
+
 final class PlaylistTableHeaderView: BaseUIView {
     private lazy var playlistImageView: UIImageView = {
         let imageView = UIImageView.default
@@ -58,8 +63,17 @@ final class PlaylistTableHeaderView: BaseUIView {
         return label
     }()
     
-    private lazy var playButton = PlayShuffleButton(type: .play, tintColor: SettingsManager.shared.color.color)
-    private lazy var shuffleButton = PlayShuffleButton(type: .shuffle, tintColor: SettingsManager.shared.color.color)
+    private lazy var playButton: PlayShuffleButton = {
+        let button = PlayShuffleButton(type: .play, tintColor: SettingsManager.shared.color.color)
+        button.addTarget(self, action: #selector(playAction), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var shuffleButton: PlayShuffleButton = {
+        let button = PlayShuffleButton(type: .shuffle, tintColor: SettingsManager.shared.color.color)
+        button.addTarget(self, action: #selector(shuffleAction), for: .touchUpInside)
+        return button
+    }()
     
     private lazy var buttonsStackView: UIStackView = {
         let stackView = UIStackView()
@@ -83,6 +97,8 @@ final class PlaylistTableHeaderView: BaseUIView {
     }()
     
     private let playlist: PlaylistModel
+    
+    weak var delegate: PlaylistTableHeaderViewDelegate?
     
     init(playlist: PlaylistModel) {
         self.playlist = playlist
@@ -113,5 +129,17 @@ extension PlaylistTableHeaderView {
             make.centerX.equalToSuperview()
             make.top.bottom.equalToSuperview()
         }
+    }
+}
+
+// MARK: -
+// MARK: Actions
+fileprivate extension PlaylistTableHeaderView {
+    @objc func playAction(_ sender: UIButton) {
+        self.delegate?.play()
+    }
+    
+    @objc func shuffleAction(_ sender: UIButton) {
+        self.delegate?.shuffle()
     }
 }

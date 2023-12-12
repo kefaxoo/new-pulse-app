@@ -11,6 +11,7 @@ import PulseUIComponents
 final class PlaylistViewController: BaseUIViewController {
     private lazy var playlistTableHeaderView: PlaylistTableHeaderView = {
         let view = PlaylistTableHeaderView(playlist: self.playlist)
+        view.delegate = self
         return view
     }()
     
@@ -133,5 +134,17 @@ extension PlaylistViewController: AudioPlayerTableViewDelegate {
         
         let indexPath = IndexPath(row: index, section: 0)
         (playlistTableView.cellForRow(at: indexPath) as? TrackTableViewCell)?.changeState(state)
+    }
+}
+
+// MARK: -
+// MARK: PlaylistTableHeaderViewDelegate
+extension PlaylistViewController: PlaylistTableHeaderViewDelegate {
+    func play() {
+        self.presenter.play()
+    }
+    
+    func shuffle() {
+        self.presenter.shuffle()
     }
 }
