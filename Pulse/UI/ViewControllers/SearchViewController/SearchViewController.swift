@@ -49,6 +49,10 @@ final class SearchViewController: BaseUIViewController {
         return presenter
     }()
     
+    private lazy var dismissKeyboardGesture: UITapGestureRecognizer = {
+        return UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardAction))
+    }()
+    
     init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -75,6 +79,14 @@ extension SearchViewController {
         
         self.searchController.searchBar.tintColor = SettingsManager.shared.color.color
         AudioPlayer.shared.tableViewDelegate = self
+        
+        self.searchController.view.addGestureRecognizer(self.dismissKeyboardGesture)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.searchController.view.removeGestureRecognizer(self.dismissKeyboardGesture)
     }
 }
 
@@ -154,6 +166,10 @@ extension SearchViewController: SearchPresenterDelegate {
         
         self.resultsTableView.setContentOffset(.zero, animated: true)
     }
+    
+    override func dismissKeyboard() {
+        self.searchController.searchBar.endEditing(true)
+    }
 }
 
 // MARK: -
@@ -172,13 +188,17 @@ extension SearchViewController: UISearchBarDelegate {
 
 // MARK: -
 // MARK: Actions
-extension SearchViewController {
-    @objc private func serviceDidChange(_ sender: UISegmentedControl) {
+fileprivate extension SearchViewController {
+    @objc func serviceDidChange(_ sender: UISegmentedControl) {
         self.presenter.serviceDidChange(index: sender.selectedSegmentIndex)
     }
     
-    @objc private func searchTypeDidChange(_ sender: UISegmentedControl) {
+    @objc func searchTypeDidChange(_ sender: UISegmentedControl) {
         self.presenter.typeDidChange(index: sender.selectedSegmentIndex)
+    }
+    
+    @objc func dismissKeyboardAction(_ sender: UITapGestureRecognizer) {
+        self.searchController.searchBar.endEditing(true)
     }
 }
 

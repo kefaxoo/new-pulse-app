@@ -11,6 +11,7 @@ protocol SearchPresenterDelegate: AnyObject {
     func setupServiceSegmentedControl(items: [String], selectedIndex: Int)
     func setupTypeSegmentedControl(items: [String], selectedIndex: Int)
     func reloadData(scrollToTop: Bool)
+    func dismissKeyboard()
 }
 
 extension SearchPresenterDelegate {
@@ -19,7 +20,7 @@ extension SearchPresenterDelegate {
     }
 }
 
-final class SearchPresenter: BasePresenter {
+final class SearchPresenter: NSObject, BasePresenter {
     private var services: [ServiceType] {
         return ServiceType.searchController
     }
@@ -27,7 +28,6 @@ final class SearchPresenter: BasePresenter {
     private var currentServices = [ServiceType]()
     private var currentTypes = [SearchType]()
     private var query = ""
-    private var timer: Timer?
     
     private var currentService: ServiceType = .none
     private var currentSource: SourceType {
@@ -41,6 +41,8 @@ final class SearchPresenter: BasePresenter {
     private var didChangePlaylistInPlayer = false
     
     private var isMovingFromNavigationController = false
+    
+    private var isQueryActive: Bool = false
     
     weak var delegate: SearchPresenterDelegate?
     
@@ -72,18 +74,20 @@ final class SearchPresenter: BasePresenter {
     }
     
     func textDidChange(_ text: String) {
-        timer?.invalidate()
-        
         if text.isEmpty {
             self.searchResponse = nil
             self.delegate?.reloadData()
             MuffonProvider.shared.cancelTask()
+            SoundcloudProvider.shared.cancelTask()
             return
         }
         
         self.query = text
-        timer = Timer(timeInterval: 1, target: self, selector: #selector(search), userInfo: nil, repeats: false)
-        timer?.fire()
+        if self.isQueryActive {
+            perform(#selector(search), with: nil, afterDelay: 1)
+        } else {
+            self.search()
+        }
     }
     
     func setupSegmentedControls(_ currentServiceIndex: Int = 0, _ currentTypeIndex: Int = 0) {
@@ -113,10 +117,11 @@ final class SearchPresenter: BasePresenter {
     }
     
     @objc func search() {
-        timer?.invalidate()
-        
+        self.isQueryActive = true
         guard !self.query.isEmpty else {
+            self.isQueryActive = false
             MuffonProvider.shared.cancelTask()
+            SoundcloudProvider.shared.cancelTask()
             MainCoordinator.shared.currentViewController?.dismissSpinner()
             return
         }
@@ -128,22 +133,27 @@ final class SearchPresenter: BasePresenter {
                 MuffonProvider.shared.search(query: query, in: self.currentService, type: self.currentType) { [weak self] response in
                     MainCoordinator.shared.currentViewController?.dismissSpinner()
                     self?.searchResponse = response
+                    self?.isQueryActive = false
                     self?.delegate?.reloadData()
-                } failure: {
+                } failure: { [weak self] in
                     MainCoordinator.shared.currentViewController?.dismissSpinner()
                     AlertView.shared.presentError(error: "Unknown Muffon Error", system: .iOS16AppleMusic)
+                    self?.isQueryActive = false
                 }
             case .soundcloud:
                 SoundcloudProvider.shared.search(query: query, searchType: self.currentType) { [weak self] response in
                     MainCoordinator.shared.currentViewController?.dismissSpinner()
                     self?.searchResponse = response
+                    self?.isQueryActive = false
                     self?.delegate?.reloadData()
-                } failure: { error in
+                } failure: { [weak self] error in
                     MainCoordinator.shared.currentViewController?.dismissSpinner()
                     AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
+                    self?.isQueryActive = false
                 }
 
             case .none:
+                self.isQueryActive = false
                 MainCoordinator.shared.currentViewController?.dismissSpinner()
         }
     }
@@ -259,6 +269,7 @@ extension SearchPresenter: BaseTableViewPresenter {
     }
     
     func didSelectRow(at indexPath: IndexPath) {
+        self.delegate?.dismissKeyboard()
         switch self.currentType {
             case .tracks:
                 guard let playlist = AudioManager.shared.convertPlaylist(self.searchResponse?.results ?? [], source: self.currentSource),
@@ -269,7 +280,16 @@ extension SearchPresenter: BaseTableViewPresenter {
                 if track.needFetchingPlayableLinks {
                     AudioManager.shared.getPlayableLink(for: track) { [weak self] updatedTrack in
                         if let response = updatedTrack.response {
-                            self?.searchResponse?.results[indexPath.item] = response
+                            switch self?.currentSource {
+                                case .soundcloud:
+                                    guard let streamingLink = (response as? SoundcloudPlayableLinks)?.streamingLink else { break }
+                                    
+                                    (self?.searchResponse?.results[indexPath.item] as? SoundcloudTrack)?.playableLink = streamingLink
+                                case .muffon:
+                                    self?.searchResponse?.results[indexPath.item] = response
+                                default:
+                                    break
+                            }
                         }
                         
                         AudioPlayer.shared.play(
