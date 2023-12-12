@@ -127,6 +127,7 @@ extension PlaylistPresenter: BaseTableViewPresenter {
         if (scrollView.contentOffset.y + scrollView.frame.size.height) > scrollView.contentSize.height,
            !isResultsLoading,
            !tracks.isEmpty,
+           self.soundcloudOffset != nil,
            canLoadMore {
             self.isResultsLoading = true
             MainCoordinator.shared.currentViewController?.presentSpinner()

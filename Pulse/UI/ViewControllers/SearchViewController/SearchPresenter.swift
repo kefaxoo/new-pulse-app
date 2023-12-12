@@ -8,8 +8,8 @@
 import UIKit
 
 protocol SearchPresenterDelegate: AnyObject {
-    func setupServiceSegmentedControl(items: [String])
-    func setupTypeSegmentedControl(items: [String])
+    func setupServiceSegmentedControl(items: [String], selectedIndex: Int)
+    func setupTypeSegmentedControl(items: [String], selectedIndex: Int)
     func reloadData(scrollToTop: Bool)
 }
 
@@ -20,7 +20,12 @@ extension SearchPresenterDelegate {
 }
 
 final class SearchPresenter: BasePresenter {
-    private let services = ServiceType.searchController
+    private var services: [ServiceType] {
+        return ServiceType.searchController
+    }
+    
+    private var currentServices = [ServiceType]()
+    private var currentTypes = [SearchType]()
     private var query = ""
     private var timer: Timer?
     
@@ -35,6 +40,8 @@ final class SearchPresenter: BasePresenter {
     private var isResultsLoading = false
     private var didChangePlaylistInPlayer = false
     
+    private var isMovingFromNavigationController = false
+    
     weak var delegate: SearchPresenterDelegate?
     
     var resultsCount: Int {
@@ -42,12 +49,14 @@ final class SearchPresenter: BasePresenter {
     }
     
     func viewDidLoad() {
-        self.delegate?.setupServiceSegmentedControl(items: services.map({ $0.title }))
+        self.currentServices = self.services
+        self.delegate?.setupServiceSegmentedControl(items: services.map({ $0.title }), selectedIndex: 0)
         guard !services.isEmpty else { return }
         
         self.currentService = services[0]
         let searchTypes = SearchType.types(for: services[0])
-        self.delegate?.setupTypeSegmentedControl(items: searchTypes.map({ $0.title }))
+        self.currentTypes = searchTypes
+        self.delegate?.setupTypeSegmentedControl(items: searchTypes.map({ $0.title }), selectedIndex: 0)
         
         guard !searchTypes.isEmpty else { return }
         
@@ -55,7 +64,11 @@ final class SearchPresenter: BasePresenter {
     }
     
     func viewWillAppear(_ currentServiceIndex: Int = 0, _ currentTypeIndex: Int = 0) {
+        guard !self.isMovingFromNavigationController else { return }
+        
         self.setupSegmentedControls(currentServiceIndex, currentTypeIndex)
+        self.isMovingFromNavigationController = false
+        self.search()
     }
     
     func textDidChange(_ text: String) {
@@ -74,14 +87,14 @@ final class SearchPresenter: BasePresenter {
     }
     
     func setupSegmentedControls(_ currentServiceIndex: Int = 0, _ currentTypeIndex: Int = 0) {
-        self.delegate?.setupServiceSegmentedControl(items: services.map({ $0.title }))
+        self.delegate?.setupServiceSegmentedControl(items: services.map({ $0.title }), selectedIndex: currentServiceIndex)
         guard !services.isEmpty,
               services.count > currentServiceIndex
         else { return }
         
         self.currentService = services[currentServiceIndex]
         let searchTypes = SearchType.types(for: self.currentService)
-        self.delegate?.setupTypeSegmentedControl(items: searchTypes.map({ $0.title }))
+        self.delegate?.setupTypeSegmentedControl(items: searchTypes.map({ $0.title }), selectedIndex: currentTypeIndex)
         guard !searchTypes.isEmpty,
               searchTypes.count > currentTypeIndex
         else { return }
@@ -223,10 +236,26 @@ extension SearchPresenter: BaseTableViewPresenter {
                 }
                 
                 (cell as? TrackTableViewCell)?.setupCell(track, state: AudioPlayer.shared.state(for: track), isSearchController: true)
-                return cell
+            case .playlists:
+                let playlist: PlaylistModel
+                switch self.currentSource {
+                    case .soundcloud:
+                        guard let soundcloudPlaylist = self.searchResponse?.result(
+                            at: indexPath,
+                            of: SoundcloudPlaylist.self
+                        ) else { return UITableViewCell() }
+                        
+                        playlist = PlaylistModel(soundcloudPlaylist)
+                    default:
+                        return UITableViewCell()
+                }
+                
+                (cell as? PlaylistTableViewCell)?.setupCell(playlist)
             default:
                 return UITableViewCell()
         }
+        
+        return cell
     }
     
     func didSelectRow(at indexPath: IndexPath) {
@@ -260,6 +289,21 @@ extension SearchPresenter: BaseTableViewPresenter {
                         self.didChangePlaylistInPlayer = true
                     }
                 }
+            case .playlists:
+                let type: LibraryControllerType
+                let playlist: PlaylistModel
+                switch self.currentSource {
+                    case .soundcloud:
+                        guard let soundcloudPlaylist = self.searchResponse?.result(at: indexPath, of: SoundcloudPlaylist.self) else { return }
+                        
+                        type = .soundcloud
+                        playlist = PlaylistModel(soundcloudPlaylist)
+                    default:
+                        return
+                }
+                
+                self.isMovingFromNavigationController = true
+                MainCoordinator.shared.pushPlaylistViewController(type: type, playlist: playlist)
             default:
                 return
         }

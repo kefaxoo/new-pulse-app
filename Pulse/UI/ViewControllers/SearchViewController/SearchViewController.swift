@@ -31,7 +31,7 @@ final class SearchViewController: BaseUIViewController {
     private lazy var resultsTableView: BaseUITableView = {
         let tableView = BaseUITableView()
         tableView.dataSource = self
-        tableView.register(TrackTableViewCell.self)
+        tableView.register(TrackTableViewCell.self, PlaylistTableViewCell.self)
         tableView.delegate = self
         return tableView
     }()
@@ -74,7 +74,6 @@ extension SearchViewController {
         )
         
         self.searchController.searchBar.tintColor = SettingsManager.shared.color.color
-        self.presenter.search()
         AudioPlayer.shared.tableViewDelegate = self
     }
 }
@@ -125,7 +124,7 @@ extension SearchViewController {
 // MARK: -
 // MARK: SearchPresenterDelegate
 extension SearchViewController: SearchPresenterDelegate {
-    func setupServiceSegmentedControl(items: [String]) {
+    func setupServiceSegmentedControl(items: [String], selectedIndex: Int) {
         self.serviceSegmentedControl.removeAllSegments()
         
         items.enumerated().forEach { [weak self] index, item in
@@ -134,10 +133,10 @@ extension SearchViewController: SearchPresenterDelegate {
         
         guard !items.isEmpty else { return }
         
-        self.serviceSegmentedControl.selectedSegmentIndex = 0
+        self.serviceSegmentedControl.selectedSegmentIndex = selectedIndex
     }
     
-    func setupTypeSegmentedControl(items: [String]) {
+    func setupTypeSegmentedControl(items: [String], selectedIndex: Int) {
         self.typeSegmentedControl.removeAllSegments()
         
         items.enumerated().forEach { [weak self] index, item in
@@ -146,7 +145,7 @@ extension SearchViewController: SearchPresenterDelegate {
         
         guard !items.isEmpty else { return }
         
-        self.typeSegmentedControl.selectedSegmentIndex = 0
+        self.typeSegmentedControl.selectedSegmentIndex = selectedIndex
     }
     
     func reloadData(scrollToTop: Bool) {
