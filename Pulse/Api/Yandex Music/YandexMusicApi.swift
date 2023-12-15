@@ -22,6 +22,8 @@ enum YandexMusicApi {
     
     // MARK: - Media
     case track(trackId: Int)
+    case likeTrack(track: TrackModel)
+    case removeLikeTrack(track: TrackModel)
 }
 
 extension YandexMusicApi: BaseRestApiEnum {
@@ -29,6 +31,8 @@ extension YandexMusicApi: BaseRestApiEnum {
         switch self {
             case .userProfileInfo:
                 return "https://login.yandex.ru"
+            case .fetchAudioLinkStep2(let components):
+                return components.fullHost ?? ""
             default:
                 return "https://api.music.yandex.net"
         }
@@ -48,9 +52,17 @@ extension YandexMusicApi: BaseRestApiEnum {
                 return components.path
             case .track(let trackId):
                 return "/tracks/\(trackId)"
+            case .likeTrack:
+                return "/users/\(SettingsManager.shared.yandexMusic.id)/likes/tracks/add-multiple"
+            case .removeLikeTrack:
+                return "/users/\(SettingsManager.shared.yandexMusic.id)/likes/tracks/remove"
+        }
+    }
     
     var method: FriendlyURLSession.HTTPMethod {
         switch self {
+            case .likeTrack, .removeLikeTrack:
+                return .post
             default:
                 return .get
         }
@@ -83,6 +95,27 @@ extension YandexMusicApi: BaseRestApiEnum {
         
         return parameters
     }
+    
+    var body: JSON? {
+        var body = JSON()
+        switch self {
+            case .likeTrack(let track), .removeLikeTrack(let track):
+                if let artistId = track.artist?.id {
+                    body["track-ids"] = "\(track.id):\(artistId)"
+                }
+            default:
+                return nil
+        }
+        
+        return body
+    }
+    
+    var bodyType: BodyType? {
+        switch self {
+            case .likeTrack, .removeLikeTrack:
+                return .urlEncoded
+            default:
+                return nil
         }
     }
 }

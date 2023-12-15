@@ -130,4 +130,18 @@ final class YandexMusicProvider: BaseRestApiProvider {
             }
         }
     }
+    
+    func likeTrack(_ track: TrackModel) {
+        self.urlSession.dataTask(
+            with: URLRequest(type: YandexMusicApi.likeTrack(track: track), shouldPrintLog: self.shouldPrintLog), 
+            response: { _ in }
+        )
+    }
+    
+    func removeLikeTrack(_ track: TrackModel) {
+        self.urlSession.dataTask(
+            with: URLRequest(type: YandexMusicApi.removeLikeTrack(track: track), shouldPrintLog: self.shouldPrintLog),
+            response: { _ in }
+        )
+    }
 }
