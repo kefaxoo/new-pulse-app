@@ -31,4 +31,8 @@ struct Credentials {
     init(userId: Int, accessToken: String?) {
         self.init(email: String(userId), password: accessToken)
     }
+    
+    init(service: String, accessToken: String?) {
+        self.init(email: service, password: accessToken)
+    }
 }

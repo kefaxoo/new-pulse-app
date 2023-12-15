@@ -204,9 +204,17 @@
 		7072CC272AF9865D00E51E0A /* ResponsePulseAuthorizationInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7072CC262AF9865D00E51E0A /* ResponsePulseAuthorizationInfoModel.swift */; };
 		7072CC292AF987C600E51E0A /* ResponsePulseVerifyUserV3Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7072CC282AF987C600E51E0A /* ResponsePulseVerifyUserV3Model.swift */; };
 		7074CD092B0E6BA100143D92 /* ImportLibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7074CD082B0E6BA100143D92 /* ImportLibraryViewController.swift */; };
+		709507982B2A526600C73909 /* YandexMusicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709507972B2A526600C73909 /* YandexMusicModel.swift */; };
 		70DC852E2AFC340600C63F46 /* UIWindow+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DC852D2AFC340600C63F46 /* UIWindow+Ext.swift */; };
 		70E560972B0173A80000E26F /* ResponsePulseBaseContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E560962B0173A80000E26F /* ResponsePulseBaseContentModel.swift */; };
 		70E5609B2B017E390000E26F /* ResponsePulseImagesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E5609A2B017E390000E26F /* ResponsePulseImagesModel.swift */; };
+		70E6A58D2B2A624300700471 /* YandexMusicApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E6A58C2B2A624300700471 /* YandexMusicApi.swift */; };
+		70E6A5912B2A62E000700471 /* ResponseYandexAccountInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E6A5902B2A62E000700471 /* ResponseYandexAccountInfoModel.swift */; };
+		70E6A5932B2A637800700471 /* ResponseYandexPlusInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E6A5922B2A637800700471 /* ResponseYandexPlusInfoModel.swift */; };
+		70E6A5952B2A63A900700471 /* ResponseYandexMusicBaseResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E6A5942B2A63A900700471 /* ResponseYandexMusicBaseResultModel.swift */; };
+		70E6A5972B2A63FC00700471 /* ResponseYandexMusicAccountStatusModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E6A5962B2A63FC00700471 /* ResponseYandexMusicAccountStatusModel.swift */; };
+		70E6A5992B2A641400700471 /* YandexMusicTypealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E6A5982B2A641400700471 /* YandexMusicTypealiases.swift */; };
+		70E6A59B2B2A64B300700471 /* YandexMusicProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E6A59A2B2A64B300700471 /* YandexMusicProvider.swift */; };
 		70EE30C72AFBF7AF0037DB1E /* ResponsePulseResetPasswordV3Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EE30C62AFBF7AF0037DB1E /* ResponsePulseResetPasswordV3Model.swift */; };
 /* End PBXBuildFile section */
 
@@ -404,9 +412,17 @@
 		7072CC282AF987C600E51E0A /* ResponsePulseVerifyUserV3Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseVerifyUserV3Model.swift; sourceTree = "<group>"; };
 		7072CC2A2AF98D0100E51E0A /* Pulse.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pulse.entitlements; sourceTree = "<group>"; };
 		7074CD082B0E6BA100143D92 /* ImportLibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportLibraryViewController.swift; sourceTree = "<group>"; };
+		709507972B2A526600C73909 /* YandexMusicModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMusicModel.swift; sourceTree = "<group>"; };
 		70DC852D2AFC340600C63F46 /* UIWindow+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+Ext.swift"; sourceTree = "<group>"; };
 		70E560962B0173A80000E26F /* ResponsePulseBaseContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseBaseContentModel.swift; sourceTree = "<group>"; };
 		70E5609A2B017E390000E26F /* ResponsePulseImagesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseImagesModel.swift; sourceTree = "<group>"; };
+		70E6A58C2B2A624300700471 /* YandexMusicApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMusicApi.swift; sourceTree = "<group>"; };
+		70E6A5902B2A62E000700471 /* ResponseYandexAccountInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexAccountInfoModel.swift; sourceTree = "<group>"; };
+		70E6A5922B2A637800700471 /* ResponseYandexPlusInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexPlusInfoModel.swift; sourceTree = "<group>"; };
+		70E6A5942B2A63A900700471 /* ResponseYandexMusicBaseResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicBaseResultModel.swift; sourceTree = "<group>"; };
+		70E6A5962B2A63FC00700471 /* ResponseYandexMusicAccountStatusModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicAccountStatusModel.swift; sourceTree = "<group>"; };
+		70E6A5982B2A641400700471 /* YandexMusicTypealiases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMusicTypealiases.swift; sourceTree = "<group>"; };
+		70E6A59A2B2A64B300700471 /* YandexMusicProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMusicProvider.swift; sourceTree = "<group>"; };
 		70EE30C62AFBF7AF0037DB1E /* ResponsePulseResetPasswordV3Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseResetPasswordV3Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -493,6 +509,7 @@
 			children = (
 				70017E132AEEDB33001E1C02 /* SoundcloudModel.swift */,
 				70017E142AEEDB33001E1C02 /* PulseModel.swift */,
+				709507972B2A526600C73909 /* YandexMusicModel.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -856,6 +873,7 @@
 		70017EA12AEEDB34001E1C02 /* Api */ = {
 			isa = PBXGroup;
 			children = (
+				70E6A58B2B2A623900700471 /* Yandex Music */,
 				70017EA22AEEDB34001E1C02 /* Muffon */,
 				70017EAD2AEEDB34001E1C02 /* NetworkApi */,
 				70017EB82AEEDB34001E1C02 /* Pulse */,
@@ -1087,6 +1105,36 @@
 			path = V1;
 			sourceTree = "<group>";
 		};
+		70E6A58B2B2A623900700471 /* Yandex Music */ = {
+			isa = PBXGroup;
+			children = (
+				70E6A58E2B2A62C900700471 /* Models */,
+				70E6A58C2B2A624300700471 /* YandexMusicApi.swift */,
+				70E6A5982B2A641400700471 /* YandexMusicTypealiases.swift */,
+				70E6A59A2B2A64B300700471 /* YandexMusicProvider.swift */,
+			);
+			path = "Yandex Music";
+			sourceTree = "<group>";
+		};
+		70E6A58E2B2A62C900700471 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				70E6A58F2B2A62CE00700471 /* Profile */,
+				70E6A5942B2A63A900700471 /* ResponseYandexMusicBaseResultModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		70E6A58F2B2A62CE00700471 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				70E6A5902B2A62E000700471 /* ResponseYandexAccountInfoModel.swift */,
+				70E6A5922B2A637800700471 /* ResponseYandexPlusInfoModel.swift */,
+				70E6A5962B2A63FC00700471 /* ResponseYandexMusicAccountStatusModel.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1221,6 +1269,7 @@
 				70017F592AEEDB34001E1C02 /* Constants.swift in Sources */,
 				70017F9D2AEEDB34001E1C02 /* LibraryControllerType.swift in Sources */,
 				70017F602AEEDB34001E1C02 /* BaseUITableView.swift in Sources */,
+				70E6A59B2B2A64B300700471 /* YandexMusicProvider.swift in Sources */,
 				70017F462AEEDB34001E1C02 /* ActionsManager.swift in Sources */,
 				70017F692AEEDB34001E1C02 /* ResponseMuffonSearchModel.swift in Sources */,
 				70017F322AEEDB34001E1C02 /* String+Ext.swift in Sources */,
@@ -1280,6 +1329,7 @@
 				70017F362AEEDB34001E1C02 /* UITableViewCell+Ext.swift in Sources */,
 				70017F772AEEDB34001E1C02 /* ResponsePulseCoverModel.swift in Sources */,
 				70EE30C72AFBF7AF0037DB1E /* ResponsePulseResetPasswordV3Model.swift in Sources */,
+				70E6A5912B2A62E000700471 /* ResponseYandexAccountInfoModel.swift in Sources */,
 				70017F192AEEDB34001E1C02 /* PlaylistViewController.swift in Sources */,
 				70017F152AEEDB34001E1C02 /* PlaylistsPresenter.swift in Sources */,
 				70017F492AEEDB34001E1C02 /* AudioManager.swift in Sources */,
@@ -1295,12 +1345,15 @@
 				70017F132AEEDB34001E1C02 /* SignUpPresenter.swift in Sources */,
 				7072CC062AF8F43500E51E0A /* SignMethodType.swift in Sources */,
 				70017F7F2AEEDB34001E1C02 /* ResponsePulseResultsModel.swift in Sources */,
+				70E6A5952B2A63A900700471 /* ResponseYandexMusicBaseResultModel.swift in Sources */,
 				70017F812AEEDB34001E1C02 /* ResponsePulseTrackModel.swift in Sources */,
 				70017F5B2AEEDB34001E1C02 /* MainCoordinator.swift in Sources */,
 				70017F332AEEDB34001E1C02 /* UILabel+Ext.swift in Sources */,
 				70017F312AEEDB34001E1C02 /* Bundle+Ext.swift in Sources */,
+				70E6A5972B2A63FC00700471 /* ResponseYandexMusicAccountStatusModel.swift in Sources */,
 				70017F3A2AEEDB34001E1C02 /* UITableView+Ext.swift in Sources */,
 				70017F5C2AEEDB34001E1C02 /* AudioPlayerItem.swift in Sources */,
+				70E6A5992B2A641400700471 /* YandexMusicTypealiases.swift in Sources */,
 				70017EF72AEEDB34001E1C02 /* VerificationCode.swift in Sources */,
 				70017F2F2AEEDB34001E1C02 /* Date+Ext.swift in Sources */,
 				70017F452AEEDB34001E1C02 /* ImageManager.swift in Sources */,
@@ -1320,13 +1373,16 @@
 				70174C532B00F04D00E7DA0D /* ResponsePulseAddTracksModel.swift in Sources */,
 				70017F4B2AEEDB34001E1C02 /* DownloadManager.swift in Sources */,
 				70017F182AEEDB34001E1C02 /* PlaylistPresenter.swift in Sources */,
+				70E6A5932B2A637800700471 /* ResponseYandexPlusInfoModel.swift in Sources */,
 				70017F622AEEDB34001E1C02 /* BaseKeychainModel.swift in Sources */,
 				70017F062AEEDB34001E1C02 /* TrackTableViewCell.swift in Sources */,
 				70017F6D2AEEDB34001E1C02 /* MuffonTypealias.swift in Sources */,
 				70017F6F2AEEDB34001E1C02 /* ResponseIpifyModel.swift in Sources */,
 				70017FA02AEEDB34001E1C02 /* WebViewType.swift in Sources */,
+				709507982B2A526600C73909 /* YandexMusicModel.swift in Sources */,
 				70017F6A2AEEDB34001E1C02 /* ResponseMuffonSourceModel.swift in Sources */,
 				7072CC272AF9865D00E51E0A /* ResponsePulseAuthorizationInfoModel.swift in Sources */,
+				70E6A58D2B2A624300700471 /* YandexMusicApi.swift in Sources */,
 				70017F4F2AEEDB34001E1C02 /* AudioPlayer.swift in Sources */,
 				70017F6B2AEEDB34001E1C02 /* ResponseMuffonImageModel.swift in Sources */,
 				70017F552AEEDB34001E1C02 /* DownloadQueueTrackModel.swift in Sources */,

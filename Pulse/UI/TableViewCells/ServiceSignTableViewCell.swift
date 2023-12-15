@@ -14,7 +14,25 @@ class ServiceSignTableViewCell: BaseUITableViewCell {
         return imageView
     }()
     
+    private lazy var yandexPlusImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.setImage(.yandexPlusLogo)
+        imageView.contentMode = .scaleAspectFit
+        imageView.isHidden = true
+        return imageView
+    }()
+    
     private lazy var serviceTitleLabel = UILabel()
+    
+    private lazy var serviceStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 8
+        stackView.addArrangedSubview(yandexPlusImageView)
+        stackView.addArrangedSubview(serviceTitleLabel)
+        stackView.addArrangedSubview(.spacer)
+        return stackView
+    }()
     
     private lazy var signButton: UIButton = {
         let button = UIButton()
@@ -28,12 +46,19 @@ class ServiceSignTableViewCell: BaseUITableViewCell {
     private var type: SettingType = .none
     
     func setupCell(type: SettingType) {
-        if SettingsManager.shared.soundcloud.isSigned {
-            SoundcloudProvider.shared.userInfo { [weak self] userInfo in
-                self?.serviceImageView.setImage(from: userInfo.avatarLink)
-            }
-        } else {
-            self.serviceImageView.image = type.service.image
+        self.serviceImageView.image = type.service.image
+        switch type.service {
+            case .soundcloud:
+                guard SettingsManager.shared.soundcloud.isSigned else { break }
+                
+                SoundcloudProvider.shared.userInfo(success: { self.serviceImageView.setImage(from: $0.avatarLink) })
+            case .yandexMusic:
+                guard SettingsManager.shared.yandexMusic.isSigned else { break }
+                
+                YandexMusicProvider.shared.fetchUserProfileInfo(success: { self.serviceImageView.setImage(from: $0.avatarLink) })
+                YandexMusicProvider.shared.fetchAccountInfo(success: { self.yandexPlusImageView.smoothIsHidden = !$0.plus.hasPlus })
+            default:
+                break
         }
         
         self.serviceTitleLabel.text = type.title
@@ -51,6 +76,7 @@ extension ServiceSignTableViewCell {
         
         self.signButton.tintColor = SettingsManager.shared.color.color
         self.serviceTitleLabel.text = self.type.title
+        self.yandexPlusImageView.isHidden = true
         self.setupSignButton()
     }
 }
@@ -61,11 +87,13 @@ extension ServiceSignTableViewCell {
     override func setupInterface() {
         super.setupInterface()
         self.setupSignButton()
+        self.selectionStyle = self.type.selectionStyle
     }
     
     override func setupLayout() {
         self.contentView.addSubview(serviceImageView)
         self.contentView.addSubview(serviceTitleLabel)
+        self.contentView.addSubview(yandexPlusImageView)
         self.contentView.addSubview(signButton)
     }
     
@@ -82,6 +110,13 @@ extension ServiceSignTableViewCell {
             make.centerY.equalToSuperview()
         }
         
+        yandexPlusImageView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.height.equalTo(20)
+            make.width.equalTo(441 * 20 / 185)
+            make.leading.equalTo(serviceTitleLabel.snp.trailing).offset(10)
+        }
+        
         signButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(20)
             make.centerY.equalToSuperview()
@@ -89,40 +124,44 @@ extension ServiceSignTableViewCell {
     }
     
     private func setupSignButton() {
+        self.signButton.menu = nil
+        self.signButton.showsMenuAsPrimaryAction = false
+        self.signButton.setTitle("Sign in", for: .normal)
+        
         switch self.type.service {
             case .soundcloud:
-                if SettingsManager.shared.soundcloud.isSigned {
-                    self.signButton.showsMenuAsPrimaryAction = true
-                    self.signButton.setTitle("Menu", for: .normal)
-                    let refreshAction = UIAction(title: "Refresh token") { _ in
-                        guard SettingsManager.shared.soundcloud.refreshToken != nil else { return }
-                        
-                        MainCoordinator.shared.currentViewController?.presentSpinner()
-                        SoundcloudProvider.shared.refreshToken { tokens in
-                            MainCoordinator.shared.currentViewController?.dismissSpinner()
-                            SettingsManager.shared.soundcloud.updateTokens(tokens)
-                            
-                            AlertView.shared.present(title: "Success refresh soundcloud token", alertType: .done, system: .iOS16AppleMusic)
-                            
-                            self.delegate?.reloadData()
-                        } failure: { error in
-                            MainCoordinator.shared.currentViewController?.dismissSpinner()
-                            AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
-                        }
-                    }
+                guard SettingsManager.shared.soundcloud.isSigned else { return }
+                
+                self.signButton.showsMenuAsPrimaryAction = true
+                self.signButton.setTitle("Menu", for: .normal)
+                let refreshAction = UIAction(title: "Refresh token") { _ in
+                    guard SettingsManager.shared.soundcloud.refreshToken != nil else { return }
                     
-                    let signOutAction = UIAction(title: "Sign out") { [weak self] _ in
-                        guard SettingsManager.shared.soundcloud.signOut() else { return }
+                    MainCoordinator.shared.currentViewController?.presentSpinner()
+                    SoundcloudProvider.shared.refreshToken { tokens in
+                        MainCoordinator.shared.currentViewController?.dismissSpinner()
+                        SettingsManager.shared.soundcloud.updateTokens(tokens)
                         
-                        self?.delegate?.reloadData()
+                        AlertView.shared.present(title: "Success refresh soundcloud token", alertType: .done, system: .iOS16AppleMusic)
+                        
+                        self.delegate?.reloadData()
+                    } failure: { error in
+                        MainCoordinator.shared.currentViewController?.dismissSpinner()
+                        AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
                     }
-                    
-                    self.signButton.menu = UIMenu(options: .displayInline, children: [refreshAction, signOutAction])
-                } else {
-                    self.signButton.menu = nil
-                    self.signButton.showsMenuAsPrimaryAction = false
-                    self.signButton.setTitle("Sign in", for: .normal)
                 }
+                
+                let signOutAction = UIAction(title: "Sign out") { [weak self] _ in
+                    guard SettingsManager.shared.soundcloud.signOut() else { return }
+                    
+                    self?.delegate?.reloadData()
+                }
+                
+                self.signButton.menu = UIMenu(options: .displayInline, children: [refreshAction, signOutAction])
+            case .yandexMusic:
+                guard SettingsManager.shared.yandexMusic.isSigned else { return }
+                
+                self.signButton.setTitle("Sign out", for: .normal)
             default:
                 return
         }
@@ -133,9 +172,20 @@ extension ServiceSignTableViewCell {
 // MARK: Actions
 fileprivate extension ServiceSignTableViewCell {
     @objc func signAction(_ sender: UIButton) {
-        if SettingsManager.shared.soundcloud.accessToken == nil {
-            MainCoordinator.shared.presentWebController(type: self.webViewType, delegate: self)
+        switch self.type.service {
+            case .soundcloud:
+                guard !SettingsManager.shared.soundcloud.isSigned else { return }
+            case .yandexMusic:
+                guard !SettingsManager.shared.yandexMusic.isSigned else { 
+                    _ = SettingsManager.shared.yandexMusic.signOut()
+                    self.delegate?.reloadData()
+                    return
+                }
+            default:
+                return
         }
+        
+        MainCoordinator.shared.presentWebController(type: self.webViewType, delegate: self)
     }
 }
 
@@ -143,23 +193,31 @@ fileprivate extension ServiceSignTableViewCell {
 // MARK: WebViewControllerDelegate
 extension ServiceSignTableViewCell: WebViewControllerDelegate {
     func viewDidDisappear() {
-        MainCoordinator.shared.currentViewController?.presentSpinner()
-        SoundcloudProvider.shared.signIn { [weak self] tokens in
-            SoundcloudProvider.shared.userInfo(accessToken: tokens.accessToken) { [weak self] userInfo in
-                MainCoordinator.shared.currentViewController?.dismissSpinner()
-                SettingsManager.shared.soundcloud.updateUserInfo(userInfo)
-                SettingsManager.shared.soundcloud.saveTokens(tokens)
-                
-                AlertView.shared.present(title: "Success sign in Soundcloud", alertType: .done, system: .iOS16AppleMusic)
-                
-                self?.delegate?.reloadData()
-            } failure: { error in
-                MainCoordinator.shared.currentViewController?.dismissSpinner()
-                AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
-            }
-        } failure: { error in
-            MainCoordinator.shared.currentViewController?.dismissSpinner()
-            AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
+        switch self.type.service {
+            case .soundcloud:
+                MainCoordinator.shared.currentViewController?.presentSpinner()
+                SoundcloudProvider.shared.signIn { [weak self] tokens in
+                    SoundcloudProvider.shared.userInfo(accessToken: tokens.accessToken) { [weak self] userInfo in
+                        MainCoordinator.shared.currentViewController?.dismissSpinner()
+                        SettingsManager.shared.soundcloud.updateUserInfo(userInfo)
+                        SettingsManager.shared.soundcloud.saveTokens(tokens)
+                        
+                        AlertView.shared.present(title: "Success sign in Soundcloud", alertType: .done, system: .iOS16AppleMusic)
+                        
+                        self?.delegate?.reloadData()
+                    } failure: { error in
+                        MainCoordinator.shared.currentViewController?.dismissSpinner()
+                        AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
+                    }
+                } failure: { error in
+                    MainCoordinator.shared.currentViewController?.dismissSpinner()
+                    AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
+                }
+            case .yandexMusic:
+                AlertView.shared.present(title: "Success sign in Yandex Music", alertType: .done, system: .iOS16AppleMusic)
+                self.delegate?.reloadData()
+            default:
+                break
         }
     }
 }

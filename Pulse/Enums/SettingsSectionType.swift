@@ -13,9 +13,14 @@ enum SettingSectionType {
     case soundcloud
     case help
     case debug
+    case yandexMusic
     
     static var allCases: [SettingSectionType] {
         var allCases: [SettingSectionType] = [.general, .appearance, .soundcloud]
+        if AppEnvironment.current.isDebug {
+            allCases.append(.yandexMusic)
+        }
+        
 #if !RELEASE_P
         allCases.append(.debug)
 #endif
@@ -35,6 +40,8 @@ enum SettingSectionType {
                 return "Help"
             case .debug:
                 return "Debug"
+            case .yandexMusic:
+                return "Yandex Music"
         }
     }
     
@@ -56,6 +63,14 @@ enum SettingSectionType {
                 return [.about]
             case .debug:
                 return [.appEnvironment, .appInfo]
+            case .yandexMusic:
+                var array: [SettingType] = [.yandexMusicSign]
+                if SettingsManager.shared.yandexMusic.isSigned {
+                    array.append(.yandexMusicLike)
+                    array.append(.yandexMusicSource)
+                }
+                
+                return array
         }
     }
 }

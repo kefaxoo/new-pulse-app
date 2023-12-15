@@ -133,6 +133,18 @@ extension ButtonTableViewCell {
                     
                     actions.append(action)
                 }
+            case .yandexMusicSource:
+                YandexMusicSourceType.allCases.forEach { [weak self] yandexMusicSource in
+                    let action = UIAction(
+                        title: yandexMusicSource.buttonTitle,
+                        state: yandexMusicSource.isEqual(to: SettingsManager.shared.yandexMusic.currentSource)
+                    ) { _ in
+                        SettingsManager.shared.yandexMusic.currentSource = yandexMusicSource
+                        self?.delegate?.reloadData()
+                    }
+                    
+                    actions.append(action)
+                }
             default:
                 return
         }
