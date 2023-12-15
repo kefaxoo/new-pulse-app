@@ -223,7 +223,26 @@ final class LibraryManager {
                                     RealmManager<LibraryTrackModel>().write(object: libraryTrack)
                                 }
                             }
-                        case .none:
+                        case .yandexMusic:
+                            guard let id = Int(track.id) else { return }
+                            
+                            YandexMusicProvider.shared.trackInfo(id: id) { yandexMusicTrack in
+                                guard !RealmManager<LibraryTrackModel>().read().contains(where: {
+                                    $0.id == yandexMusicTrack.id && $0.service == ServiceType.yandexMusic.rawValue
+                                }) else { return }
+                                
+                                let trackObj = TrackModel(yandexMusicTrack)
+                                ImageManager.shared.saveCover(trackObj) { filename in
+                                    let libraryTrack = LibraryTrackModel(trackObj)
+                                    libraryTrack.isSynced = true
+                                    if let filename {
+                                        libraryTrack.coverFilename = filename
+                                    }
+                                    
+                                    RealmManager<LibraryTrackModel>().write(object: libraryTrack)
+                                }
+                            }
+                        default:
                             break
                     }
                 }
@@ -275,6 +294,11 @@ final class LibraryManager {
                     if SettingsManager.shared.soundcloudLike,
                        SettingsManager.shared.soundcloud.isSigned {
                         SoundcloudProvider.shared.likeTrack(id: track.id)
+                    }
+                case .yandexMusic:
+                    if SettingsManager.shared.yandexMusicLike,
+                       SettingsManager.shared.yandexMusic.isSigned {
+                        YandexMusicProvider.shared.likeTrack(track)
                     }
                 default:
                     break

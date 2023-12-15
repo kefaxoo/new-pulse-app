@@ -37,6 +37,11 @@ final class ImageModel {
         self.original = cover.xl
     }
     
+    init(small: String, original: String) {
+        self.small = small
+        self.original = original
+    }
+    
     var isSmallEqualToOriginal: Bool {
         return self.small == self.original
     }

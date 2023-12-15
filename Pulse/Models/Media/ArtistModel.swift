@@ -27,6 +27,11 @@ final class ArtistModel {
         self.id   = artist.id
     }
     
+    init(_ artist: YandexMusicArtist) {
+        self.name = artist.name
+        self.id   = artist.id
+    }
+    
     var json: [String: Any] {
         return [
             "id"  : self.id,

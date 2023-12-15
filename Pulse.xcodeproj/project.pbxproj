@@ -187,7 +187,19 @@
 		70174C532B00F04D00E7DA0D /* ResponsePulseAddTracksModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70174C522B00F04D00E7DA0D /* ResponsePulseAddTracksModel.swift */; };
 		70174C552B00F08500E7DA0D /* ResponsePulseServerTrackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70174C542B00F08500E7DA0D /* ResponsePulseServerTrackModel.swift */; };
 		703E65692AFA663C001A62FA /* LocalizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703E65682AFA663C001A62FA /* LocalizationManager.swift */; };
+		704240D12B2B9F7D00B7F0AD /* ResponseYandexMusicSearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704240D02B2B9F7D00B7F0AD /* ResponseYandexMusicSearchModel.swift */; };
+		704240D42B2B9FA200B7F0AD /* ResponseYandexMusicTracksModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704240D32B2B9FA200B7F0AD /* ResponseYandexMusicTracksModel.swift */; };
+		704240D72B2B9FC700B7F0AD /* ResponseYandexMusicTrackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704240D62B2B9FC700B7F0AD /* ResponseYandexMusicTrackModel.swift */; };
+		704240D92B2B9FF300B7F0AD /* ResponseYandexMusicArtistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704240D82B2B9FF300B7F0AD /* ResponseYandexMusicArtistModel.swift */; };
+		704240DD2B2BA01F00B7F0AD /* ResponseYandexMusicCoverModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704240DC2B2BA01F00B7F0AD /* ResponseYandexMusicCoverModel.swift */; };
+		704240DF2B2BA0BB00B7F0AD /* YandexMusicCoverType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704240DE2B2BA0BB00B7F0AD /* YandexMusicCoverType.swift */; };
+		704240E12B2BA17900B7F0AD /* ResponseYandexMusicAlbumModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704240E02B2BA17900B7F0AD /* ResponseYandexMusicAlbumModel.swift */; };
+		704240E32B2BA1F000B7F0AD /* ResponseYandexMusicAlbumLabelModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704240E22B2BA1F000B7F0AD /* ResponseYandexMusicAlbumLabelModel.swift */; };
+		704240E52B2BA23700B7F0AD /* ResponseYandexMusicTrackPositionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704240E42B2BA23700B7F0AD /* ResponseYandexMusicTrackPositionModel.swift */; };
+		704240E72B2BA2CB00B7F0AD /* ResponseYandexMusicLyricsInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704240E62B2BA2CB00B7F0AD /* ResponseYandexMusicLyricsInfoModel.swift */; };
+		704240E92B2BAA4700B7F0AD /* ResponseYandexMusicDownloadInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704240E82B2BAA4700B7F0AD /* ResponseYandexMusicDownloadInfoModel.swift */; };
 		704240ED2B2BAD2600B7F0AD /* URLComponents+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704240EC2B2BAD2600B7F0AD /* URLComponents+Ext.swift */; };
+		704240EF2B2BAEF100B7F0AD /* ResponseYandexMusicFileDownloadInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704240EE2B2BAEF100B7F0AD /* ResponseYandexMusicFileDownloadInfoModel.swift */; };
 		7044731D2B0882F900B3FB98 /* UIStoryboard+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7044731C2B0882F900B3FB98 /* UIStoryboard+Ext.swift */; };
 		706974C32B055B500093D1FB /* PlaylistTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706974C22B055B500093D1FB /* PlaylistTableHeaderView.swift */; };
 		706CB6D62B210E8900B966EE /* AVPlayer+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706CB6D52B210E8900B966EE /* AVPlayer+Ext.swift */; };
@@ -392,7 +404,19 @@
 		70174C522B00F04D00E7DA0D /* ResponsePulseAddTracksModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseAddTracksModel.swift; sourceTree = "<group>"; };
 		70174C542B00F08500E7DA0D /* ResponsePulseServerTrackModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseServerTrackModel.swift; sourceTree = "<group>"; };
 		703E65682AFA663C001A62FA /* LocalizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationManager.swift; sourceTree = "<group>"; };
+		704240D02B2B9F7D00B7F0AD /* ResponseYandexMusicSearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicSearchModel.swift; sourceTree = "<group>"; };
+		704240D32B2B9FA200B7F0AD /* ResponseYandexMusicTracksModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicTracksModel.swift; sourceTree = "<group>"; };
+		704240D62B2B9FC700B7F0AD /* ResponseYandexMusicTrackModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicTrackModel.swift; sourceTree = "<group>"; };
+		704240D82B2B9FF300B7F0AD /* ResponseYandexMusicArtistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicArtistModel.swift; sourceTree = "<group>"; };
+		704240DC2B2BA01F00B7F0AD /* ResponseYandexMusicCoverModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicCoverModel.swift; sourceTree = "<group>"; };
+		704240DE2B2BA0BB00B7F0AD /* YandexMusicCoverType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMusicCoverType.swift; sourceTree = "<group>"; };
+		704240E02B2BA17900B7F0AD /* ResponseYandexMusicAlbumModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicAlbumModel.swift; sourceTree = "<group>"; };
+		704240E22B2BA1F000B7F0AD /* ResponseYandexMusicAlbumLabelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicAlbumLabelModel.swift; sourceTree = "<group>"; };
+		704240E42B2BA23700B7F0AD /* ResponseYandexMusicTrackPositionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicTrackPositionModel.swift; sourceTree = "<group>"; };
+		704240E62B2BA2CB00B7F0AD /* ResponseYandexMusicLyricsInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicLyricsInfoModel.swift; sourceTree = "<group>"; };
+		704240E82B2BAA4700B7F0AD /* ResponseYandexMusicDownloadInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicDownloadInfoModel.swift; sourceTree = "<group>"; };
 		704240EC2B2BAD2600B7F0AD /* URLComponents+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLComponents+Ext.swift"; sourceTree = "<group>"; };
+		704240EE2B2BAEF100B7F0AD /* ResponseYandexMusicFileDownloadInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicFileDownloadInfoModel.swift; sourceTree = "<group>"; };
 		7044731C2B0882F900B3FB98 /* UIStoryboard+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Ext.swift"; sourceTree = "<group>"; };
 		706974C22B055B500093D1FB /* PlaylistTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistTableHeaderView.swift; sourceTree = "<group>"; };
 		706CB6D52B210E8900B966EE /* AVPlayer+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVPlayer+Ext.swift"; sourceTree = "<group>"; };
@@ -1041,6 +1065,31 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		704240D22B2B9F9500B7F0AD /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				704240D02B2B9F7D00B7F0AD /* ResponseYandexMusicSearchModel.swift */,
+				704240D32B2B9FA200B7F0AD /* ResponseYandexMusicTracksModel.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		704240D52B2B9FBD00B7F0AD /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				704240D62B2B9FC700B7F0AD /* ResponseYandexMusicTrackModel.swift */,
+				704240D82B2B9FF300B7F0AD /* ResponseYandexMusicArtistModel.swift */,
+				704240DC2B2BA01F00B7F0AD /* ResponseYandexMusicCoverModel.swift */,
+				704240E02B2BA17900B7F0AD /* ResponseYandexMusicAlbumModel.swift */,
+				704240E22B2BA1F000B7F0AD /* ResponseYandexMusicAlbumLabelModel.swift */,
+				704240E42B2BA23700B7F0AD /* ResponseYandexMusicTrackPositionModel.swift */,
+				704240E62B2BA2CB00B7F0AD /* ResponseYandexMusicLyricsInfoModel.swift */,
+				704240E82B2BAA4700B7F0AD /* ResponseYandexMusicDownloadInfoModel.swift */,
+				704240EE2B2BAEF100B7F0AD /* ResponseYandexMusicFileDownloadInfoModel.swift */,
+			);
+			path = Media;
+			sourceTree = "<group>";
+		};
 		706974C12B055B420093D1FB /* TableHeaderViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -1112,6 +1161,7 @@
 				70E6A58C2B2A624300700471 /* YandexMusicApi.swift */,
 				70E6A5982B2A641400700471 /* YandexMusicTypealiases.swift */,
 				70E6A59A2B2A64B300700471 /* YandexMusicProvider.swift */,
+				704240DE2B2BA0BB00B7F0AD /* YandexMusicCoverType.swift */,
 			);
 			path = "Yandex Music";
 			sourceTree = "<group>";
@@ -1119,6 +1169,8 @@
 		70E6A58E2B2A62C900700471 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				704240D52B2B9FBD00B7F0AD /* Media */,
+				704240D22B2B9F9500B7F0AD /* Search */,
 				70E6A58F2B2A62CE00700471 /* Profile */,
 				70E6A5942B2A63A900700471 /* ResponseYandexMusicBaseResultModel.swift */,
 			);
@@ -1253,7 +1305,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				70017F122AEEDB34001E1C02 /* SignUpViewController.swift in Sources */,
+				704240E72B2BA2CB00B7F0AD /* ResponseYandexMusicLyricsInfoModel.swift in Sources */,
 				70017EF52AEEDB34001E1C02 /* SearchResponse.swift in Sources */,
+				704240E92B2BAA4700B7F0AD /* ResponseYandexMusicDownloadInfoModel.swift in Sources */,
 				70017F402AEEDB34001E1C02 /* UIView+Ext.swift in Sources */,
 				7074CD092B0E6BA100143D92 /* ImportLibraryViewController.swift in Sources */,
 				70017F5D2AEEDB34001E1C02 /* Device.swift in Sources */,
@@ -1286,6 +1340,7 @@
 				7072CC252AF9857C00E51E0A /* ResponsePulseLoginUserV3Model.swift in Sources */,
 				70017F0C2AEEDB34001E1C02 /* CoversViewController.swift in Sources */,
 				70017F092AEEDB34001E1C02 /* ButtonTableViewCell.swift in Sources */,
+				704240E52B2BA23700B7F0AD /* ResponseYandexMusicTrackPositionModel.swift in Sources */,
 				70017F2B2AEEDB34001E1C02 /* CoversScrollingView.swift in Sources */,
 				70017F242AEEDB34001E1C02 /* NowPlayingViewController.swift in Sources */,
 				70017F732AEEDB34001E1C02 /* IpApi.swift in Sources */,
@@ -1303,6 +1358,7 @@
 				7072CC1B2AF8FCE000E51E0A /* Localization.swift in Sources */,
 				70017FA12AEEDB34001E1C02 /* SettingsSectionType.swift in Sources */,
 				70017F2E2AEEDB34001E1C02 /* Float+Ext.swift in Sources */,
+				704240DD2B2BA01F00B7F0AD /* ResponseYandexMusicCoverModel.swift in Sources */,
 				70017F1D2AEEDB34001E1C02 /* TracksViewController.swift in Sources */,
 				70017F992AEEDB34001E1C02 /* ColorType.swift in Sources */,
 				70017F082AEEDB34001E1C02 /* LibraryTableViewCell.swift in Sources */,
@@ -1336,6 +1392,7 @@
 				70174C552B00F08500E7DA0D /* ResponsePulseServerTrackModel.swift in Sources */,
 				70017F682AEEDB34001E1C02 /* ResponseMuffonTrackModel.swift in Sources */,
 				70017F112AEEDB34001E1C02 /* WebViewController.swift in Sources */,
+				704240D12B2B9F7D00B7F0AD /* ResponseYandexMusicSearchModel.swift in Sources */,
 				70017F9B2AEEDB34001E1C02 /* SourceType.swift in Sources */,
 				70017F0A2AEEDB34001E1C02 /* SwitchTableViewCell.swift in Sources */,
 				70E5609B2B017E390000E26F /* ResponsePulseImagesModel.swift in Sources */,
@@ -1376,6 +1433,7 @@
 				70E6A5932B2A637800700471 /* ResponseYandexPlusInfoModel.swift in Sources */,
 				70017F622AEEDB34001E1C02 /* BaseKeychainModel.swift in Sources */,
 				70017F062AEEDB34001E1C02 /* TrackTableViewCell.swift in Sources */,
+				704240D42B2B9FA200B7F0AD /* ResponseYandexMusicTracksModel.swift in Sources */,
 				70017F6D2AEEDB34001E1C02 /* MuffonTypealias.swift in Sources */,
 				70017F6F2AEEDB34001E1C02 /* ResponseIpifyModel.swift in Sources */,
 				70017FA02AEEDB34001E1C02 /* WebViewType.swift in Sources */,
@@ -1405,6 +1463,7 @@
 				70017F3D2AEEDB34001E1C02 /* UIColor+Ext.swift in Sources */,
 				70017F442AEEDB34001E1C02 /* URL+Ext.swift in Sources */,
 				706974C32B055B500093D1FB /* PlaylistTableHeaderView.swift in Sources */,
+				704240DF2B2BA0BB00B7F0AD /* YandexMusicCoverType.swift in Sources */,
 				70017F662AEEDB34001E1C02 /* ResponseMuffonLinksModel.swift in Sources */,
 				70017F012AEEDB34001E1C02 /* ServiceSignTableViewCell.swift in Sources */,
 				70017F562AEEDB34001E1C02 /* LibaryTrackModel.swift in Sources */,
@@ -1415,7 +1474,10 @@
 				7072CC112AF8F5C200E51E0A /* ResponsePulseCreateUserV3Model.swift in Sources */,
 				70017F202AEEDB34001E1C02 /* VerifyPulseAccountPresenter.swift in Sources */,
 				70017F232AEEDB34001E1C02 /* NowPlayingPresenter.swift in Sources */,
+				704240EF2B2BAEF100B7F0AD /* ResponseYandexMusicFileDownloadInfoModel.swift in Sources */,
 				70017F8E2AEEDB34001E1C02 /* ResponseSoundcloudUserModel.swift in Sources */,
+				704240D92B2B9FF300B7F0AD /* ResponseYandexMusicArtistModel.swift in Sources */,
+				704240E32B2BA1F000B7F0AD /* ResponseYandexMusicAlbumLabelModel.swift in Sources */,
 				70017F642AEEDB34001E1C02 /* BaseTableViewPresenter.swift in Sources */,
 				70017F3E2AEEDB34001E1C02 /* UICollectionViewCell+Ext.swift in Sources */,
 				70017F832AEEDB34001E1C02 /* ResponsePulseLoginWithCodeModel.swift in Sources */,
@@ -1432,6 +1494,7 @@
 				70017F142AEEDB34001E1C02 /* PlaylistsViewController.swift in Sources */,
 				70017F512AEEDB34001E1C02 /* RealmManager.swift in Sources */,
 				70017EFB2AEEDB34001E1C02 /* PlayableLinkModel.swift in Sources */,
+				704240E12B2BA17900B7F0AD /* ResponseYandexMusicAlbumModel.swift in Sources */,
 				70017F502AEEDB34001E1C02 /* LocalFeatureModel.swift in Sources */,
 				70017F742AEEDB34001E1C02 /* ResponsePulseCreateUserModel.swift in Sources */,
 				70017F0D2AEEDB34001E1C02 /* CoversPresenter.swift in Sources */,
@@ -1443,6 +1506,7 @@
 				70017F652AEEDB34001E1C02 /* MuffonProvider.swift in Sources */,
 				70017F032AEEDB34001E1C02 /* PlaylistTableViewCell.swift in Sources */,
 				70017F262AEEDB34001E1C02 /* SearchPresenter.swift in Sources */,
+				704240D72B2B9FC700B7F0AD /* ResponseYandexMusicTrackModel.swift in Sources */,
 				70017F762AEEDB34001E1C02 /* ResponsePulseLoginUserModel.swift in Sources */,
 				70017F8F2AEEDB34001E1C02 /* ResponseSoundcloudErrorModel.swift in Sources */,
 			);

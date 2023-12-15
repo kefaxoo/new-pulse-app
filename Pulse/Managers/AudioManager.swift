@@ -60,6 +60,25 @@ final class AudioManager {
                         failure?()
                     }
                 }
+            case .yandexMusic:
+                if SettingsManager.shared.yandexMusic.isSigned {
+                    YandexMusicProvider.shared.fetchAudioLink(for: track, shouldCancelTask: false) { link in
+                        guard let link else {
+                            failure?()
+                            return
+                        }
+                        
+                        track.playableLinks = PlayableLinkModel(link)
+                        success(UpdatedTrack(track: track, response: nil))
+                    }
+                } else {
+                    MuffonProvider.shared.trackInfo(track, shouldCancelTask: false) { muffonTrack in
+                        let track = TrackModel(muffonTrack)
+                        success(UpdatedTrack(track: track, response: muffonTrack))
+                    } failure: {
+                        failure?()
+                    }
+                }
             case .none:
                 failure?()
         }
@@ -73,6 +92,10 @@ final class AudioManager {
                 return playlist.map({ TrackModel($0) })
             case .soundcloud:
                 guard let playlist = playlist as? [SoundcloudTrack] else { return nil }
+                
+                return playlist.map({ TrackModel($0) })
+            case .yandexMusic:
+                guard let playlist = playlist as? [YandexMusicTrack] else { return nil }
                 
                 return playlist.map({ TrackModel($0) })
             default:

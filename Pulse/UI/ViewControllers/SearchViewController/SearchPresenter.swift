@@ -79,6 +79,7 @@ final class SearchPresenter: NSObject, BasePresenter {
             self.delegate?.reloadData()
             MuffonProvider.shared.cancelTask()
             SoundcloudProvider.shared.cancelTask()
+            YandexMusicProvider.shared.cancelTask()
             MainCoordinator.shared.currentViewController?.dismissSpinner()
             return
         }
@@ -153,7 +154,13 @@ final class SearchPresenter: NSObject, BasePresenter {
                     AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
                     self?.isQueryActive = false
                 }
-
+            case .yandexMusic:
+                YandexMusicProvider.shared.search(query: query, searchType: self.currentType) { [weak self] response in
+                    MainCoordinator.shared.currentViewController?.dismissSpinner()
+                    self?.searchResponse = response
+                    self?.isQueryActive = false
+                    self?.delegate?.reloadData()
+                }
             case .none:
                 self.isQueryActive = false
                 MainCoordinator.shared.currentViewController?.dismissSpinner()
@@ -197,6 +204,17 @@ final class SearchPresenter: NSObject, BasePresenter {
                         self.isResultsLoading = false
                     } failure: { [weak self] _ in
                         self?.searchResponse?.cannotLoadMore()
+                        self?.isResultsLoading = false
+                    }
+                case .yandexMusic:
+                    YandexMusicProvider.shared.search(
+                        query: self.query,
+                        searchType: self.currentType,
+                        page: ((self.searchResponse?.page ?? 0) + 1)
+                    ) { [weak self] searchResponse in
+                        MainCoordinator.shared.currentViewController?.dismissSpinner()
+                        self?.searchResponse?.addResults(searchResponse)
+                        self?.delegate?.reloadData(scrollToTop: false)
                         self?.isResultsLoading = false
                     }
                 default:
@@ -243,6 +261,12 @@ extension SearchPresenter: BaseTableViewPresenter {
                         guard let soundcloudTrack = self.searchResponse?.results[indexPath.item] as? SoundcloudTrack else { return UITableViewCell() }
                         
                         track = TrackModel(soundcloudTrack)
+                    case .yandexMusic:
+                        guard let yandexMusicTrack = self.searchResponse?.result(
+                            at: indexPath, of: YandexMusicTrack.self
+                        ) else { return UITableViewCell() }
+                        
+                        track = TrackModel(yandexMusicTrack)
                     default:
                         return UITableViewCell()
                 }

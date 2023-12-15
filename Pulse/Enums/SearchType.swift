@@ -42,12 +42,28 @@ enum SearchType {
         }
     }
     
+    var yandexMusicApi: String {
+        switch self {
+            case .tracks:
+                return "track"
+            case .albums:
+                return "album"
+            case .artists:
+                return "artist"
+            case .playlists:
+                return "playlist"
+            case .none:
+                return ""
+        }
+    }
+    
     static func types(for service: ServiceType) -> [SearchType] {
         switch service {
             case .vk:
                 return []
             case .yandexMusic:
-                return []
+                var types: [SearchType] = [.tracks]
+                return types
             case .spotify:
                 return []
             case .deezer:
