@@ -225,6 +225,21 @@ final class SoundcloudProvider: BaseRestApiProvider {
         }
     }
     
+    func removeLikeTrack(id: Int) {
+        urlSession.dataTask(
+            with: URLRequest(type: SoundcloudApi.removeLikeTrack(id: id), shouldPrintLog: self.shouldPrintLog)
+        ) { [weak self] response in
+            switch response {
+                case .success:
+                    break
+                case .failure(let response):
+                    self?.parseError(response: response, closure: nil, retryClosure: {
+                        self?.removeLikeTrack(id: id)
+                    })
+            }
+        }
+    }
+    
     func search(
         query: String,
         searchType: SearchType,

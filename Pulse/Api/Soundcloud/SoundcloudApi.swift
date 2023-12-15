@@ -25,6 +25,7 @@ enum SoundcloudApi {
     case trackInfo(id: Int)
     case playableLink(id: Int)
     case likeTrack(id: Int)
+    case removeLikeTrack(id: Int)
     
     // MARK: Search
     case search(type: SearchType, query: String, offset: Int)
@@ -52,7 +53,7 @@ extension SoundcloudApi: BaseRestApiEnum {
                 return "/tracks/\(id)"
             case .playableLink(let id):
                 return "/tracks/\(id)/streams"
-            case .likeTrack(let id):
+            case .likeTrack(let id), .removeLikeTrack(let id):
                 return "/likes/tracks/\(id)"
             case .search(let type, _, _):
                 return "/\(type.soundcloudApi)"
@@ -67,6 +68,8 @@ extension SoundcloudApi: BaseRestApiEnum {
         switch self {
             case .signIn, .refreshToken, .likeTrack:
                 return .post
+            case .removeLikeTrack:
+                return .delete
             default:
                 return .get
         }

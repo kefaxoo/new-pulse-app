@@ -177,6 +177,10 @@ final class ActionsManager {
                     guard SettingsManager.shared.yandexMusicLike else { return }
                     
                     YandexMusicProvider.shared.removeLikeTrack(track)
+                case .soundcloud:
+                    guard SettingsManager.shared.soundcloudLike else { return }
+                    
+                    SoundcloudProvider.shared.removeLikeTrack(id: track.id)
                 default:
                     break
             }
