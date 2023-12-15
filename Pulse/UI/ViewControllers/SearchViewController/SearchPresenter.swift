@@ -42,7 +42,7 @@ final class SearchPresenter: NSObject, BasePresenter {
     
     private var isMovingFromNavigationController = false
     
-    private var isQueryActive: Bool = false
+    private var isQueryActive = false
     
     weak var delegate: SearchPresenterDelegate?
     
@@ -79,6 +79,7 @@ final class SearchPresenter: NSObject, BasePresenter {
             self.delegate?.reloadData()
             MuffonProvider.shared.cancelTask()
             SoundcloudProvider.shared.cancelTask()
+            MainCoordinator.shared.currentViewController?.dismissSpinner()
             return
         }
         
@@ -108,6 +109,7 @@ final class SearchPresenter: NSObject, BasePresenter {
     
     func serviceDidChange(index: Int) {
         self.currentService = services[index]
+        self.setupSegmentedControls(index)
         self.textDidChange(self.query)
     }
     
@@ -292,22 +294,12 @@ extension SearchPresenter: BaseTableViewPresenter {
                             }
                         }
                         
-                        AudioPlayer.shared.play(
-                            from: updatedTrack.track, 
-                            playlist: playlist,
-                            position: indexPath.item,
-                            isNewPlaylist: !(self?.didChangePlaylistInPlayer ?? false)
+                        self?.play(
+                            from: updatedTrack.track, in: playlist, at: indexPath.item, isNewPlaylist: !(self?.didChangePlaylistInPlayer ?? false)
                         )
-                        
-                        if !(self?.didChangePlaylistInPlayer ?? false) {
-                            self?.didChangePlaylistInPlayer = true
-                        }
                     }
                 } else {
-                    AudioPlayer.shared.play(from: track, playlist: playlist, position: indexPath.item, isNewPlaylist: !self.didChangePlaylistInPlayer)
-                    if !self.didChangePlaylistInPlayer {
-                        self.didChangePlaylistInPlayer = true
-                    }
+                    self.play(from: track, in: playlist, at: indexPath.item, isNewPlaylist: !self.didChangePlaylistInPlayer)
                 }
             case .playlists:
                 let type: LibraryControllerType
@@ -326,6 +318,18 @@ extension SearchPresenter: BaseTableViewPresenter {
                 MainCoordinator.shared.pushPlaylistViewController(type: type, playlist: playlist)
             default:
                 return
+        }
+    }
+}
+
+// MARK: -
+// MARK: Audio Player methods
+fileprivate extension SearchPresenter {
+    func play(from track: TrackModel, in playlist: [TrackModel], at position: Int, isNewPlaylist: Bool) {
+        AudioPlayer.shared.play(from: track, playlist: playlist, position: position, isNewPlaylist: isNewPlaylist)
+        
+        if !self.didChangePlaylistInPlayer {
+            self.didChangePlaylistInPlayer = true
         }
     }
 }

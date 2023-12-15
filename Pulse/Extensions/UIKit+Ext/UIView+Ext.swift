@@ -14,4 +14,15 @@ extension UIView {
     }
     
     static let spacer = UIView(with: .clear)
+    
+    var smoothIsHidden: Bool {
+        get {
+            return self.isHidden
+        }
+        set {
+            UIView.transition(with: self, duration: 0.2, options: .transitionCrossDissolve) { [weak self] in
+                self?.isHidden = newValue
+            }
+        }
+    }
 }

@@ -140,11 +140,12 @@ final class SettingsManager {
         }
     }
     
-    // MARK: Soundcloud settings
+    // MARK: - Soundcloud settings
     var soundcloudLike: Bool {
         get {
             return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.soundcloudLike.rawValue) as? Bool ?? false
-        } set {
+        } 
+        set {
             UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.soundcloudLike.rawValue)
         }
     }
