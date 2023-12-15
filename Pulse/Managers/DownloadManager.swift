@@ -212,7 +212,22 @@ fileprivate extension DownloadManager {
                     completion(nil)
                     return
                 }
-            case .none:
+            case .yandexMusic:
+                YandexMusicProvider.shared.trackInfo(id: obj.id) { [weak self] yandexMusicTrack in
+                    YandexMusicProvider.shared.fetchAudioLink(trackId: obj.id) { [weak self] link in
+                        let filename = TrackModel(yandexMusicTrack).libraryTrackFilename
+                        self?.downloadTrack(from: link, to: URL(filename: filename, path: .documentDirectory), completion: { url in
+                            guard url != nil else {
+                                completion(nil)
+                                return
+                            }
+                            
+                            obj.filename = filename
+                            completion(obj)
+                        })
+                    }
+                }
+            default:
                 completion(nil)
         }
     }

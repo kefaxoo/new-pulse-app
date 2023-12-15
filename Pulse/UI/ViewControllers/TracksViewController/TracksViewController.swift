@@ -118,7 +118,7 @@ extension TracksViewController: UITableViewDelegate {
 // MARK: TracksPresenterDelegate
 extension TracksViewController: TracksPresenterDelegate {
     func reloadData() {
-        if self.presenter.tracksIsEmpty {
+        if !self.presenter.tracksIsEmpty {
             self.emptyView.hide()
         } else {
             self.emptyView.show()

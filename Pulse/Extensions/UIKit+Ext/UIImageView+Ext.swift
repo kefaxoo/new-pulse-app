@@ -44,4 +44,8 @@ extension UIImageView {
         imageView.image = Constants.Images.chevronRight.image
         return imageView
     }
+    
+    func setImage(_ type: Constants.Images) {
+        self.image = type.image
+    }
 }

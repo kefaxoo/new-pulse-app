@@ -184,6 +184,11 @@ extension SearchViewController: UISearchBarDelegate {
         
         self.presenter.textDidChange(searchText)
     }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.emptySearchQuerySearchContentView.show()
+        self.presenter.textDidChange("")
+    }
 }
 
 // MARK: -

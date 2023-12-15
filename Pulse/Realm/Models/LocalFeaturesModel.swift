@@ -14,4 +14,5 @@ final class LocalFeaturesModel: Object {
     @Persisted dynamic var newSoundcloud            : LocalFeatureModel?
     @Persisted dynamic var nowPlayingVC             : LocalFeatureModel?
     @Persisted dynamic var searchSoundcloudPlaylists: LocalFeatureModel?
+    @Persisted dynamic var muffonYandex             : LocalFeatureModel?
 }

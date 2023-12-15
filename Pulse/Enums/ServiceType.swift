@@ -20,7 +20,7 @@ enum ServiceType: String {
             case .vk:
                 return "vk"
             case .yandexMusic:
-                return ""
+                return "yandexmusic"
             case .spotify:
                 return "spotify"
             case .deezer:
@@ -33,7 +33,12 @@ enum ServiceType: String {
     }
     
     static var searchController: [ServiceType] {
-        return [.soundcloud]
+        var services: [ServiceType] = [.soundcloud]
+        if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.muffonYandex?.prod ?? false {
+            services.append(.yandexMusic)
+        }
+        
+        return services
     }
     
     var title: String {
@@ -57,6 +62,8 @@ enum ServiceType: String {
         switch rawValue {
             case "soundcloud":
                 return .soundcloud
+            case "yandexmusic":
+                return .yandexMusic
             default:
                 return .none
         }
@@ -66,6 +73,8 @@ enum ServiceType: String {
         switch self {
             case .soundcloud:
                 return Constants.Images.soundcloudLogo.image
+            case .yandexMusic:
+                return Constants.Images.yandexMusicLogo.image
             default:
                 return nil
         }
@@ -75,6 +84,8 @@ enum ServiceType: String {
         switch self {
             case .soundcloud:
                 return SourceType.soundcloudService(SettingsManager.shared.soundcloud.currentSource)
+            case .yandexMusic:
+                return SourceType.yandexMusicService(SettingsManager.shared.yandexMusic.currentSource)
             default:
                 return .none
         }
@@ -84,6 +95,8 @@ enum ServiceType: String {
         switch self {
             case .soundcloud:
                 return .soundcloud
+            case .yandexMusic:
+                return .yandexMusic
             default:
                 return .none
         }

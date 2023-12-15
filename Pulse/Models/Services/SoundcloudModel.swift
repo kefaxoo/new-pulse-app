@@ -27,7 +27,7 @@ enum SoundcloudSourceType: String {
                 return "Muffon"
             case .soundcloud:
                 return "Soundcloud"
-            case .none:
+            case .none: 
                 return ""
         }
     }
@@ -133,9 +133,10 @@ final class SoundcloudModel {
               refreshTokenKeychainModel.deleteAccount(username: String(self.userId))
         else { return false }
         
-        userId       = -1
-        accessToken  = nil
-        refreshToken = nil
+        userId        = -1
+        accessToken   = nil
+        refreshToken  = nil
+        currentSource = .muffon
         return true
     }
     

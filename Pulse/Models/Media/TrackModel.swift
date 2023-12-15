@@ -127,6 +127,26 @@ final class TrackModel {
         self.artistText    = self.artists.names
     }
     
+    init(_ track: YandexMusicTrack) {
+        self.id    = track.id
+        self.title = track.title
+        if let artist = track.artists.first {
+            self.artist = ArtistModel(artist)
+        } else {
+            self.artist = nil
+        }
+        
+        self.artists     = track.artists.map({ ArtistModel($0) })
+        self.service     = .yandexMusic
+        self.artistText  = track.artists.map({ $0.name }).joined(separator: ", ")
+        self.shareLink   = "https://song.link/ya/\(track.id)"
+        self.`extension` = "mp3"
+        self.source      = .yandexMusic
+        self.isAvailable = track.isAvailable
+        self.image = ImageModel(small: track.coverLink(for: .small), original: track.coverLink(for: .xl))
+        self.dateAdded = Int(Date().timeIntervalSince1970)
+    }
+    
     var json: [String: Any] {
         var dict: [String: Any] = [
             "id"   : self.id,

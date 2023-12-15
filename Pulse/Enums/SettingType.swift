@@ -20,6 +20,9 @@ enum SettingType {
     case soundcloudSource
     case appEnvironment
     case appInfo
+    case yandexMusicSign
+    case yandexMusicSource
+    case yandexMusicLike
     
     var cellType: CellType {
         switch self {
@@ -29,11 +32,11 @@ enum SettingType {
                 return .text
             case .about:
                 return .chevronText
-            case .accentColor, .soundcloudSource, .appEnvironment:
+            case .accentColor, .soundcloudSource, .appEnvironment, .yandexMusicSource:
                 return .tintedButton
-            case .soundcloudSign:
+            case .soundcloudSign, .yandexMusicSign:
                 return .service
-            case .soundcloudLike:
+            case .soundcloudLike, .yandexMusicLike:
                 return .switch
             case .none:
                 return .none
@@ -58,14 +61,24 @@ enum SettingType {
                 if SettingsManager.shared.soundcloud.isSigned {
                     return "User: \(SettingsManager.shared.soundcloud.username)"
                 } else {
-                    return "Sign in soundcloud"
+                    return "Sign in Soundcloud"
+                }
+            case .yandexMusicSign:
+                if SettingsManager.shared.yandexMusic.isSigned {
+                    return "User: \(SettingsManager.shared.yandexMusic.displayName)"
+                } else {
+                    return "Sign in Yandex Music"
                 }
             case .none:
                 return ""
             case .soundcloudLike:
                 return "Like track in Soundcloud"
+            case .yandexMusicLike:
+                return "Like track in Yandex Music"
             case .soundcloudSource:
                 return SettingsManager.shared.soundcloud.currentSource.title
+            case .yandexMusicSource:
+                return SettingsManager.shared.yandexMusic.currentSource.title
             case .appEnvironment:
                 return "App Environment Mode"
             case .appInfo:
@@ -87,8 +100,12 @@ enum SettingType {
                 return "Choose the color of the application based on your mood"
             case .soundcloudLike:
                 return "All tracks that have been added to the library will be added to the Soundcloud library"
+            case .yandexMusicLike:
+                return "All tracks that have been added to the library will be added to the Yandex Music library"
             case .soundcloudSource:
                 return SettingsManager.shared.soundcloud.currentSource.description
+            case .yandexMusicSource:
+                return SettingsManager.shared.yandexMusic.currentSource.description
             case .appInfo:
                 return "Build number: \(Bundle.main.buildVersion ?? "nil")"
             default:
@@ -132,6 +149,8 @@ enum SettingType {
                 return SettingsManager.shared.autoDownload
             case .soundcloudLike:
                 return SettingsManager.shared.soundcloudLike
+            case .yandexMusicLike:
+                return SettingsManager.shared.yandexMusicLike
             default:
                 return nil
         }
@@ -147,6 +166,8 @@ enum SettingType {
                 SettingsManager.shared.autoDownload = state
             case .soundcloudLike:
                 SettingsManager.shared.soundcloudLike = state
+            case .yandexMusicLike:
+                SettingsManager.shared.yandexMusicLike = state
             default:
                 return
         }
@@ -156,6 +177,8 @@ enum SettingType {
         switch self {
             case .soundcloudSign:
                 return .soundcloud
+            case .yandexMusicSign:
+                return .yandexMusic
             default:
                 return .none
         }
@@ -163,7 +186,7 @@ enum SettingType {
     
     var isMenu: Bool {
         switch self {
-            case .accentColor, .soundcloudSource, .appEnvironment:
+            case .accentColor, .soundcloudSource, .appEnvironment, .yandexMusicSource:
                 return true
             default:
                 return false
@@ -176,6 +199,8 @@ enum SettingType {
                 return SettingsManager.shared.color.title
             case .soundcloudSource:
                 return SettingsManager.shared.soundcloud.currentSource.buttonTitle
+            case .yandexMusicSource:
+                return SettingsManager.shared.yandexMusic.currentSource.buttonTitle
             case .appEnvironment:
                 return AppEnvironment.current.buttonTitle
             default:

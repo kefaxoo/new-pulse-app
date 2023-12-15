@@ -13,6 +13,7 @@ final class ResponsePulseFeaturesModel: Decodable {
     let newSoundcloud            : PulseFeature?
     let nowPlayingVC             : PulseFeature?
     let searchSoundcloudPlaylists: PulseFeature?
+    let muffonYandex             : PulseFeature?
     
     enum CodingKeys: CodingKey {
         case newSign
@@ -20,6 +21,7 @@ final class ResponsePulseFeaturesModel: Decodable {
         case newSoundcloud
         case nowPlayingVC
         case searchSoundcloudPlaylists
+        case muffonYandex
     }
     
     init(from decoder: Decoder) throws {
@@ -30,5 +32,6 @@ final class ResponsePulseFeaturesModel: Decodable {
         self.newSoundcloud = try container.decodeIfPresent(PulseFeature.self, forKey: .newSoundcloud)
         self.nowPlayingVC = try container.decodeIfPresent(PulseFeature.self, forKey: .nowPlayingVC)
         self.searchSoundcloudPlaylists = try container.decodeIfPresent(PulseFeature.self, forKey: .searchSoundcloudPlaylists)
+        self.muffonYandex = try container.decodeIfPresent(PulseFeature.self, forKey: .muffonYandex)
     }
 }

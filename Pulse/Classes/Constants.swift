@@ -44,6 +44,8 @@ enum Constants {
         case maxVolume
         case previousTrack
         case googleLogo
+        case yandexMusicLogo
+        case yandexPlusLogo
         
         var image: UIImage? {
             let type: System
@@ -122,6 +124,10 @@ enum Constants {
                     type = .soundcloudLogo
                 case .googleLogo:
                     type = .googleLogo
+                case .yandexMusicLogo:
+                    type = .yandexMusicLogo
+                case .yandexPlusLogo:
+                    type = .yandexPlusLogo
                 default:
                     return nil
             }
@@ -139,6 +145,7 @@ enum Constants {
         case soundcloudAccessToken  = "soundcloudAccessToken"
         case soundcloudRefreshToken = "soundcloudRefreshToken"
         case soundcloudUser         = "soundcloudUser"
+        case yandexMusicAccessToken = "yandexMusicAccessToken"
     }
     
     enum UserDefaultsKeys: String {
@@ -150,8 +157,14 @@ enum Constants {
         case soundcloudUserId = "soundcloudUserId"
         case soundcloudUser   = "soundcloudUser"
         
-        case soundcloudLike = "soundcloud.like"
+        case soundcloudLike   = "soundcloud.like"
         case soundcloudSource = "soundcloud.source"
+        
+        case yandexMusicSource      = "yandexMusic.source"
+        case yandexMusicUid         = "yandexMusic.uid"
+        case yandexMusicDisplayName = "yandexMusic.displayName"
+        case yandexMusicIsPlus      = "yandexMusic.isPlus"
+        case yandexMusicLike        = "yandexMusic.like"
         
         case autoDownload          = "general.autoDownload"
         case isAdultContentEnabled = "general.isAdultContentEnabled"
@@ -220,8 +233,10 @@ extension Constants.Images {
     }
     
     fileprivate enum Custom: String {
-        case soundcloudLogo = "SoundcloudLogo"
-        case googleLogo     = "GoogleLogo"
+        case soundcloudLogo  = "SoundcloudLogo"
+        case googleLogo      = "GoogleLogo"
+        case yandexMusicLogo = "YandexMusicLogo"
+        case yandexPlusLogo  = "YandexPlusLogo"
         
         var image: UIImage? {
             return UIImage(named: self.rawValue)

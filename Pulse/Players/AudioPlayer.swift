@@ -68,6 +68,8 @@ final class AudioPlayer: NSObject {
     private let commandCenter = MPRemoteCommandCenter.shared()
     
     var isDurationChanging = false
+    var isVolumeChanging   = false
+    
     var duration: Double? {
         return self.player.rate == 0 ? self.durationWhenPaused : self.player.currentItem?.duration.seconds
     }
@@ -490,7 +492,11 @@ fileprivate extension AudioPlayer {
 // MARK: Volume methods
 extension AudioPlayer {
     func setVolume(_ volume: Float) {
+        guard !self.isVolumeChanging else { return }
+        
+        self.isVolumeChanging = true
         MPVolumeView.setVolume(volume)
+        self.isVolumeChanging = false
     }
     
     var currentVolume: Float {
@@ -499,7 +505,11 @@ extension AudioPlayer {
     
     func observeSystemVolume() {
         self.outputVolumeObserver = AVAudioSession.sharedInstance().observe(\.outputVolume, options: [.new]) { [weak self] audioSession, _ in
+            guard !(self?.isVolumeChanging ?? true) else { return }
+            
+            self?.isVolumeChanging = true
             self?.controllerDelegate?.updateVolume(audioSession.outputVolume)
+            self?.isVolumeChanging = false
         }
     }
     

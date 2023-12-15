@@ -12,7 +12,7 @@ final class ResponseSoundcloudTrackModel: Decodable {
     let title       : String
     let coverLink   : String?
     let user        : SoundcloudUser
-    let playableLink: String
+    var playableLink: String = ""
     
     enum CodingKeys: String, CodingKey {
         case id

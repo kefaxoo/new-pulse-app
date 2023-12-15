@@ -76,6 +76,8 @@ final class ImageManager {
         switch track.service {
             case .soundcloud:
                 filename = "Covers/soundcloud-\(track.id).png"
+            case .yandexMusic:
+                filename = "Covers/yandexMusic-\(track.id).png"
             default:
                 completion(nil)
                 return
@@ -116,6 +118,14 @@ final class ImageManager {
                         }
                     } failure: { _ in
                         completion(nil)
+                    }
+                case .yandexMusic:
+                    YandexMusicProvider.shared.trackInfo(id: track.id) { [weak self] track in
+                        self?.image(from: track.coverLink(for: .xl)) { image, _ in
+                            self?.saveImage(image, filename: filename, completion: completion)
+                        } errorClosure: {
+                            completion(nil)
+                        }
                     }
                 default:
                     completion(nil)

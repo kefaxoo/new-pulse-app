@@ -39,8 +39,16 @@ class LibraryTrackModel: Object {
         
         ImageManager.shared.saveCover(track) { [weak self] filename in
             guard let filename else { return }
-            
-            self?.coverFilename = filename
+             
+            if let libraryTrack = RealmManager<Self>().read().first(where: { $0.id == track.id }) {
+                RealmManager<Self>().update { realm in
+                    try? realm.write {
+                        libraryTrack.coverFilename = filename
+                    }
+                }
+            } else {
+                self?.coverFilename = filename
+            }
         }
     }
 }

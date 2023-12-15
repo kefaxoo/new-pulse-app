@@ -65,10 +65,28 @@ final class WebPresenter: BasePresenter {
             }
             
             if url.contains(self.type.obserableLink) {
-                let token = url.replacingOccurrences(of: self.type.obserableLink, with: "")
-                debugLog("Token:", token)
-                self.type.saveSignToken(token)
-                self.viewDelegate?.dismissVC(animated: true)
+                if self.type.shouldUseURLComponents {
+                    let urlComponents = URLComponents(string: url)
+                    guard let fragment = urlComponents?.fragment else {
+                        self.viewDelegate?.dismissVC(animated: true)
+                        return
+                    }
+                    
+                    let queryItemsArray = fragment.split(separator: "&").map({ String($0).split(separator: "=").map({ String($0) }) })
+                    
+                    guard let accessToken = queryItemsArray.first(where: { $0[0] == self.type.urlQueryComponent })?[1] else {
+                        self.viewDelegate?.dismissVC(animated: true)
+                        return
+                    }
+                    
+                    self.type.saveSignToken(accessToken)
+                    self.viewDelegate?.dismissVC(animated: true)
+                } else {
+                    let token = url.replacingOccurrences(of: self.type.obserableLink, with: "")
+                    debugLog("Token:", token)
+                    self.type.saveSignToken(token)
+                    self.viewDelegate?.dismissVC(animated: true)
+                }
             }
         })
     }

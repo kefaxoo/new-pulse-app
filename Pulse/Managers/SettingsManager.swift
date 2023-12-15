@@ -29,6 +29,7 @@ final class SettingsManager {
     
     var pulse = PulseModel()
     var soundcloud = SoundcloudModel()
+    var yandexMusic = YandexMusicModel()
     
     var color: ColorType {
         get {
@@ -49,7 +50,7 @@ final class SettingsManager {
     
     // MARK: Realm configuration
     var realmConfiguration: Realm.Configuration {
-        let configuration = Realm.Configuration(schemaVersion: 10) { migration, oldSchemaVersion in
+        let configuration = Realm.Configuration(schemaVersion: 11) { migration, oldSchemaVersion in
             if oldSchemaVersion < 2 {
                 migration.enumerateObjects(ofType: LibraryTrackModel.className()) { _, newObject in
                     newObject?["shareLink"] = ""
@@ -103,6 +104,12 @@ final class SettingsManager {
                     newObject?["searchSoundcloudPlaylists"] = LocalFeatureModel(prod: false, debug: false)
                 }
             }
+            
+            if oldSchemaVersion < 11 {
+                migration.enumerateObjects(ofType: LocalFeaturesModel.className()) { _, newObject in
+                    newObject?["muffonYandex"] = LocalFeatureModel(prod: false, debug: false)
+                }
+            }
         }
         
         return configuration
@@ -140,16 +147,28 @@ final class SettingsManager {
         }
     }
     
-    // MARK: Soundcloud settings
+    // MARK: - Soundcloud settings
     var soundcloudLike: Bool {
         get {
             return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.soundcloudLike.rawValue) as? Bool ?? false
-        } set {
+        } 
+        set {
             UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.soundcloudLike.rawValue)
         }
     }
     
-    let featuresKeys = ["newSign", "newLibrary", "newSoundcloud", "nowPlayingVC", "searchSoundcloudPlaylists"]
+    // MARK: - Yandex Music settings
+    var yandexMusicLike: Bool {
+        get {
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.yandexMusicLike.rawValue) as? Bool ?? false
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.yandexMusicLike.rawValue)
+        }
+    }
+    
+    // MARK: - Features
+    let featuresKeys = ["newSign", "newLibrary", "newSoundcloud", "nowPlayingVC", "searchSoundcloudPlaylists", "muffonYandex"]
     var localFeatures = LocalFeaturesModel()
     var featuresLastUpdate: Int {
         get {
@@ -196,6 +215,7 @@ final class SettingsManager {
                     self.localFeatures.newSoundcloud             = features.newSoundcloud?.toRealmModel
                     self.localFeatures.nowPlayingVC              = features.nowPlayingVC?.toRealmModel
                     self.localFeatures.searchSoundcloudPlaylists = features.searchSoundcloudPlaylists?.toRealmModel
+                    self.localFeatures.muffonYandex              = features.muffonYandex?.toRealmModel
                 }
             }
         }
@@ -213,6 +233,7 @@ extension SettingsManager {
         
         _ = pulse.signOut()
         _ = soundcloud.signOut()
+        _ = yandexMusic.signOut()
         
         return true
     }

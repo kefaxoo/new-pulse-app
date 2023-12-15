@@ -178,6 +178,7 @@ public extension ContentUnavailableView {
         UIView.animate(withDuration: 0.2) { [weak self] in
             self?.contentStackView.alpha = 0
         } completion: { [weak self] _ in
+            self?.isHidden = true
             self?.loadingActivityIndicatorView.stopAnimating()
         }
     }
@@ -187,6 +188,7 @@ public extension ContentUnavailableView {
             self.loadingActivityIndicatorView.startAnimating()
         }
         
+        self.isHidden = false
         UIView.animate(withDuration: 0.2) { [weak self] in
             self?.contentStackView.alpha = 1
         }

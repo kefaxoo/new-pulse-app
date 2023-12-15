@@ -106,6 +106,11 @@ final class ActionsManager {
                            SettingsManager.shared.soundcloud.isSigned {
                             SoundcloudProvider.shared.likeTrack(id: track.id)
                         }
+                    case .yandexMusic:
+                        if SettingsManager.shared.yandexMusicLike,
+                           SettingsManager.shared.yandexMusic.isSigned {
+                            YandexMusicProvider.shared.likeTrack(track)
+                        }
                     default:
                         break
                 }
@@ -165,6 +170,19 @@ final class ActionsManager {
                 PulseProvider.shared.dislikeTrack(track)
             } else {
                 LibraryManager.shared.removeTrack(track)
+            }
+            
+            switch track.service {
+                case .yandexMusic:
+                    guard SettingsManager.shared.yandexMusicLike else { return }
+                    
+                    YandexMusicProvider.shared.removeLikeTrack(track)
+                case .soundcloud:
+                    guard SettingsManager.shared.soundcloudLike else { return }
+                    
+                    SoundcloudProvider.shared.removeLikeTrack(id: track.id)
+                default:
+                    break
             }
         }
         

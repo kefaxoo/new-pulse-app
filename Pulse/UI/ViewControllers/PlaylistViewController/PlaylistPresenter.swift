@@ -69,7 +69,12 @@ final class PlaylistPresenter: BasePresenter {
         if track.needFetchingPlayableLinks {
             AudioManager.shared.getPlayableLink(for: track) { [weak self] updatedTrack in
                 self?.tracks[0] = updatedTrack.track
-                AudioPlayer.shared.play(from: updatedTrack.track, playlist: self?.tracks ?? [], position: 0, isNewPlaylist: !(self?.didChangePlaylistInPlayer ?? false))
+                AudioPlayer.shared.play(
+                    from: updatedTrack.track,
+                    playlist: self?.tracks ?? [],
+                    position: 0,
+                    isNewPlaylist: !(self?.didChangePlaylistInPlayer ?? false)
+                )
                 
                 if !(self?.didChangePlaylistInPlayer ?? false) {
                     self?.didChangePlaylistInPlayer = true
@@ -90,7 +95,12 @@ final class PlaylistPresenter: BasePresenter {
         let track = tracks[0]
         if track.needFetchingPlayableLinks {
             AudioManager.shared.getPlayableLink(for: track) { [weak self] updatedTrack in
-                AudioPlayer.shared.play(from: updatedTrack.track, playlist: tracks, position: 0, isNewPlaylist: !(self?.didChangePlaylistInPlayer ?? false))
+                AudioPlayer.shared.play(
+                    from: updatedTrack.track,
+                    playlist: tracks,
+                    position: 0,
+                    isNewPlaylist: !(self?.didChangePlaylistInPlayer ?? false)
+                )
                 
                 if !(self?.didChangePlaylistInPlayer ?? false) {
                     self?.didChangePlaylistInPlayer = true
