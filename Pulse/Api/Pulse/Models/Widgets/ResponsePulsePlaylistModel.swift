@@ -8,12 +8,13 @@
 import Foundation
 
 final class ResponsePulsePlaylistModel: Decodable {
-    let id             : Int
-    let title          : String
-    let localizationKey: String
-    let tracks         : [PulseExclusiveTrack]?
-    let tracksCount    : Int?
-    let coverLink      : String?
+    let id              : Int
+    let title           : String
+    let localizationKey : String
+    let tracks          : [PulseExclusiveTrack]?
+    let tracksCount     : Int?
+    let coverLink       : String?
+    let localizableTitle: String?
     
     enum CodingKeys: CodingKey {
         case id
@@ -22,6 +23,7 @@ final class ResponsePulsePlaylistModel: Decodable {
         case tracks
         case tracksCount
         case coverLink
+        case localizableTitle
     }
     
     init(from decoder: Decoder) throws {
@@ -33,5 +35,6 @@ final class ResponsePulsePlaylistModel: Decodable {
         self.tracks = try container.decodeIfPresent([PulseExclusiveTrack].self, forKey: .tracks)
         self.tracksCount = try container.decodeIfPresent(Int.self, forKey: .tracksCount)
         self.coverLink = try container.decodeIfPresent(String.self, forKey: .coverLink)
+        self.localizableTitle = try container.decodeIfPresent(String.self, forKey: .localizableTitle)
     }
 }

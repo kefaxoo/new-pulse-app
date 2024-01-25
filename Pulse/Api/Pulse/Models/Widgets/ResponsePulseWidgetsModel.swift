@@ -10,7 +10,7 @@ import Foundation
 enum PulseWidgetsScheme: String {
     case stories
     case exclusiveSongs
-    case playlists
+    case categories
     case none
     
     var cellId: String {
@@ -19,7 +19,7 @@ enum PulseWidgetsScheme: String {
                 return StoriesTableViewCell.id
             case .exclusiveSongs:
                 return TrackTableViewCell.id
-            case .playlists:
+            case .categories:
                 return PlaylistsCollectionTableViewCell.id
             case .none:
                 return ""
@@ -30,7 +30,7 @@ enum PulseWidgetsScheme: String {
 final class ResponsePulseWidgetsModel: Decodable {
     let exclusiveTracks: PulseWidget<PulseExclusiveTrack>?
     let stories        : PulseWidget<PulseStory>?
-    let playlists      : PulseWidget<PulsePlaylist>?
+    let categories     : PulseWidget<PulsePlaylist>?
     
     var scheme: [PulseWidgetsScheme] {
         var scheme = [PulseWidgetsScheme]()
@@ -60,8 +60,8 @@ final class ResponsePulseWidgetsModel: Decodable {
             scheme.append(.exclusiveSongs)
         }
         
-        if playlists != nil {
-            scheme.append(.playlists)
+        if categories != nil {
+            scheme.append(.categories)
         }
         
         return scheme
@@ -70,7 +70,7 @@ final class ResponsePulseWidgetsModel: Decodable {
     enum CodingKeys: CodingKey {
         case exclusiveTracks
         case stories
-        case playlists
+        case categories
     }
     
     init(from decoder: Decoder) throws {
@@ -78,6 +78,6 @@ final class ResponsePulseWidgetsModel: Decodable {
      
         self.exclusiveTracks = try container.decodeIfPresent(PulseWidget<PulseExclusiveTrack>.self, forKey: .exclusiveTracks)
         self.stories = try container.decodeIfPresent(PulseWidget<PulseStory>.self, forKey: .stories)
-        self.playlists = try container.decodeIfPresent(PulseWidget<PulsePlaylist>.self, forKey: .playlists)
+        self.categories = try container.decodeIfPresent(PulseWidget<PulsePlaylist>.self, forKey: .categories)
     }
 }

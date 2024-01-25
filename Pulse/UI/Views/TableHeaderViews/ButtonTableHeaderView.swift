@@ -42,12 +42,8 @@ final class ButtonTableHeaderView: BaseUIView {
         shouldShowButton: Bool = true,
         completion: @escaping(() -> ())
     ) -> Self where T: Decodable {
-        self.titleLabel.text = Localization.Server.Widgets(rawValue: widget.localizationKey)?.localization ?? widget.title
-        self.actionButton.setTitle(
-            Localization.Server.Widgets.Button(rawValue: widget.buttonLocalizationKey)?.localization ?? widget.buttonText,
-            for: .normal
-        )
-        
+        self.titleLabel.text = widget.localizableTitle ?? widget.title
+        self.actionButton.setTitle(widget.localizableButtonText ?? widget.buttonText, for: .normal)
         self.actionButton.isHidden = !shouldShowButton
         self.completion = completion
         return self

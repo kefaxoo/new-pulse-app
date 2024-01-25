@@ -246,6 +246,7 @@
 		707C579E2B49B6BB0069D3CF /* ResponsePulseServiceSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707C579D2B49B6BB0069D3CF /* ResponsePulseServiceSettingsModel.swift */; };
 		708290D02B432634007E1DB4 /* PulseMedia in Resources */ = {isa = PBXBuildFile; fileRef = 708290CF2B432634007E1DB4 /* PulseMedia */; };
 		708290D32B432648007E1DB4 /* PulseMedia in Frameworks */ = {isa = PBXBuildFile; productRef = 708290D22B432648007E1DB4 /* PulseMedia */; };
+		7093395A2B631CE10080125D /* Locale+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709339592B631CE10080125D /* Locale+Ext.swift */; };
 		709507982B2A526600C73909 /* YandexMusicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709507972B2A526600C73909 /* YandexMusicModel.swift */; };
 		70962F932B38DC2F00A9BBDE /* ResponseYandexMusicLibraryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70962F922B38DC2F00A9BBDE /* ResponseYandexMusicLibraryModel.swift */; };
 		70962F952B38DC9200A9BBDE /* ResponseYandexMusicShortTrackInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70962F942B38DC9200A9BBDE /* ResponseYandexMusicShortTrackInfoModel.swift */; };
@@ -516,6 +517,7 @@
 		707C579B2B49B6730069D3CF /* ResponsePulseSettingsRootModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseSettingsRootModel.swift; sourceTree = "<group>"; };
 		707C579D2B49B6BB0069D3CF /* ResponsePulseServiceSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseServiceSettingsModel.swift; sourceTree = "<group>"; };
 		708290CF2B432634007E1DB4 /* PulseMedia */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PulseMedia; sourceTree = "<group>"; };
+		709339592B631CE10080125D /* Locale+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+Ext.swift"; sourceTree = "<group>"; };
 		709507972B2A526600C73909 /* YandexMusicModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMusicModel.swift; sourceTree = "<group>"; };
 		70962F922B38DC2F00A9BBDE /* ResponseYandexMusicLibraryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicLibraryModel.swift; sourceTree = "<group>"; };
 		70962F942B38DC9200A9BBDE /* ResponseYandexMusicShortTrackInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicShortTrackInfoModel.swift; sourceTree = "<group>"; };
@@ -892,6 +894,7 @@
 				704240EC2B2BAD2600B7F0AD /* URLComponents+Ext.swift */,
 				70D49FE52B4AA39B0058FA0A /* UserDefaults+Ext.swift */,
 				70C0E18C2B6198920078C13B /* NSNotification.Name+Ext.swift */,
+				709339592B631CE10080125D /* Locale+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1565,6 +1568,7 @@
 				70017F9D2AEEDB34001E1C02 /* LibraryControllerType.swift in Sources */,
 				70E6A59B2B2A64B300700471 /* YandexMusicProvider.swift in Sources */,
 				70017F462AEEDB34001E1C02 /* ActionsManager.swift in Sources */,
+				7093395A2B631CE10080125D /* Locale+Ext.swift in Sources */,
 				70017F692AEEDB34001E1C02 /* ResponseMuffonSearchModel.swift in Sources */,
 				70017F322AEEDB34001E1C02 /* String+Ext.swift in Sources */,
 				707C044E2B40CC06000B91BF /* ApplicationStyle.swift in Sources */,

@@ -38,7 +38,7 @@ final class PlaylistModel {
     
     init(_ playlist: PulsePlaylist) {
         self.id          = String(playlist.id)
-        self.title       = playlist.title
+        self.title       = playlist.localizableTitle ?? playlist.title
         self.dateCreated = -1
         self.source      = .pulse
         self.dateUpdated = -1

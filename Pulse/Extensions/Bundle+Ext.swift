@@ -19,21 +19,6 @@ extension Bundle {
     static let enLocalizationPath: String? = Bundle.main.path(forResource: "en", ofType: "lproj")
     
     static var localizedBundle: Bundle! {
-        var locale: String?
-        if #available(iOS 16.0, *) {
-            locale = Locale.current.language.languageCode?.identifier
-        } else {
-            locale = Locale.current.languageCode
-        }
-        
-        if let locale {
-            if locale == "ru" {
-                return Bundle(path: Bundle.main.path(forResource: "ru", ofType: "lproj")!)
-            } else {
-                return Bundle(path: self.enLocalizationPath!)
-            }
-        } else {
-            return Bundle(path: self.enLocalizationPath!)
-        }
+        return Bundle(path: Bundle.main.path(forResource: Locale.current.isoLanguageCode, ofType: "lproj") ?? self.enLocalizationPath!)
     }
 }

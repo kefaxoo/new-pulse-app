@@ -59,7 +59,7 @@ final class StoryCollectionViewCell: BaseUICollectionViewCell {
     
     func configure(withStory story: PulseStory, trackCompletion: @escaping((TrackModel) -> ())) {
         self.story = story
-        self.titleLabel.text = story.storyType.title
+        self.titleLabel.text = story.storyType.localizableTitle ?? story.storyType.title
         let track = story.track
         switch track.source {
             case .muffon:

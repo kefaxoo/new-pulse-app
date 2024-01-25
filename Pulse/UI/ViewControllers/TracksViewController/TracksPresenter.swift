@@ -87,9 +87,7 @@ final class TracksPresenter: BasePresenter {
                     case .exclusiveSongs:
                         PulseProvider.shared.exclusiveTracks { [weak self] widget in
                             self?.setTracks(widget.content.map({ TrackModel($0) }))
-                            self?.delegate?.setNavigationControllerTitle(
-                                Localization.Server.Widgets(rawValue: widget.localizationKey)?.localization ?? widget.title
-                            )
+                            self?.delegate?.setNavigationControllerTitle(widget.localizableTitle ?? widget.title)
                         } failure: { serverError, internalError in
                             MainCoordinator.shared.currentViewController?.dismissSpinner()
                             MainCoordinator.shared.popViewController()

@@ -43,8 +43,8 @@ extension MainFeedPresenter: MainFeedProtocol {
                 return self.widgets?.exclusiveTracks?.content.count ?? 0
             case .stories:
                 return self.widgets?.scheme != nil ? 1 : 0
-            case .playlists:
-                return self.widgets?.playlists != nil ? 1 : 0
+            case .categories:
+                return self.widgets?.categories != nil ? 1 : 0
             default:
                 return 0
         }
@@ -99,8 +99,8 @@ extension MainFeedPresenter: MainFeedProtocol {
         switch scheme {
             case .exclusiveSongs:
                 return self.widgets?.exclusiveTracks
-            case .playlists:
-                return self.widgets?.playlists
+            case .categories:
+                return self.widgets?.categories
             default:
                 return nil
         }
@@ -153,8 +153,8 @@ extension MainFeedPresenter {
                     
                     self?.view?.reloadSection(section)
                 })
-            case .playlists:
-                guard let playlists = self.widgets?.playlists else { return cell }
+            case .categories:
+                guard let playlists = self.widgets?.categories else { return cell }
                 
                 (cell as? PlaylistsCollectionTableViewCell)?.configure(withPlaylists: playlists.content)
             default:

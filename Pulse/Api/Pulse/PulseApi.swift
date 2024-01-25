@@ -187,8 +187,8 @@ extension PulseApi: BaseRestApiEnum {
                 if let refreshToken = SettingsManager.shared.pulse.refreshToken {
                     headers["X-Pulse-Refresh-Token"] = refreshToken
                 }
-            case .syncTracks, .likeTrack, .dislikeTrack, .incrementListenCount, .fetchDislikedTracks, .soundcloudArtworkV2, .mainScreen, 
-                    .spotifyCanvas, .exclusiveTracks, .pulseCanvas, .exclusiveTrack, .markStoryAsWatched, .fetchSettings, .updateSettings, 
+            case .syncTracks, .likeTrack, .dislikeTrack, .incrementListenCount, .fetchDislikedTracks, .soundcloudArtworkV2, .spotifyCanvas,
+                    .exclusiveTracks, .pulseCanvas, .exclusiveTrack, .markStoryAsWatched, .fetchSettings, .updateSettings,
                     .isUserBlocked, .exclusivePlaylist:
                 if let accessToken = SettingsManager.shared.pulse.accessToken {
                     headers["X-Pulse-Token"] = accessToken
@@ -201,6 +201,13 @@ extension PulseApi: BaseRestApiEnum {
                 if let soundcloudToken = SettingsManager.shared.soundcloud.accessToken {
                     headers["X-Soundcloud-Token"] = soundcloudToken
                 }
+            case .mainScreen:
+                if let accessToken = SettingsManager.shared.pulse.accessToken {
+                    headers["X-Pulse-Token"] = accessToken
+                }
+                
+                headers["X-Locale"] = Locale.current.isoLanguageCode
+                headers["X-User-Current-Date"] = Date.currentDate(inFormat: "dd-MM-YYYY")
             default:
                 break
         }

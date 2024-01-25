@@ -138,7 +138,7 @@ extension MainFeedViewController: UITableViewDelegate {
         guard let scheme = self.presenter.scheme(for: section) else { return 0 }
         
         switch scheme {
-            case .exclusiveSongs, .playlists:
+            case .exclusiveSongs, .categories:
                 return UITableView.automaticDimension
             default:
                 return 0
@@ -160,7 +160,7 @@ extension MainFeedViewController: UITableViewDelegate {
                 ) { [scheme, weak self] in
                     self?.headerDidTap(scheme)
                 }
-            case .playlists:
+            case .categories:
                 guard let playlists = widget as? PulseWidget<PulsePlaylist> else { return nil }
                 
                 return ButtonTableHeaderView().configure(
