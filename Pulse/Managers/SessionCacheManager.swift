@@ -36,7 +36,7 @@ fileprivate extension [CachedTrackModel] {
             var minTrack = self[0]
             self.forEach({ minTrack = minTrack.listeningCount > $0.listeningCount ? $0 : minTrack })
             DispatchQueue.main.async {
-                _ = SessionCacheManager.shared.cleanTrack(minTrack)
+                SessionCacheManager.shared.cleanTrack(minTrack)
             }
         }
         
@@ -139,7 +139,7 @@ final class SessionCacheManager {
         }
     }
     
-    fileprivate func cleanTrack(_ track: CachedTrackModel) -> Bool {
+    @discardableResult fileprivate func cleanTrack(_ track: CachedTrackModel) -> Bool {
         guard let index = self.cachedTracks.firstIndex(where: { $0.track == track.track }) else { return false }
             
         self.cachedTracks.remove(at: index)
@@ -147,7 +147,7 @@ final class SessionCacheManager {
     }
     
     func cleanAllCache() {
-        self.cachedTracks.forEach({ _ = self.cleanTrack($0) })
+        self.cachedTracks.forEach({ self.cleanTrack($0) })
         self.isDownloading = false
     }
     

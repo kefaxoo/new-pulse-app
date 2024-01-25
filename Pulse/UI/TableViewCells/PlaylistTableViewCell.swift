@@ -63,6 +63,7 @@ extension PlaylistTableViewCell {
         
         self.playlistImageView.image = nil
         self.playlistTitleLabel.text = ""
+        self.playlistImageView.sd_cancelCurrentImageLoad()
     }
 }
 

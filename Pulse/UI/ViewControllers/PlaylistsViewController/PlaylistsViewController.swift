@@ -11,7 +11,7 @@ import PulseUIComponents
 final class PlaylistsViewController: BaseUIViewController {
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController()
-        searchController.searchBar.placeholder = "Type playlist name..."
+        searchController.searchBar.placeholder = Localization.Controllers.Playlists.SearchControllers.typeQuery.localization
         searchController.searchBar.delegate = self
         return searchController
     }()
@@ -28,6 +28,7 @@ final class PlaylistsViewController: BaseUIViewController {
         tableView.dataSource = self
         tableView.register(PlaylistTableViewCell.self)
         tableView.delegate = self
+        tableView.footerHeight = NowPlayingView.height
         return tableView
     }()
     
@@ -77,7 +78,7 @@ extension PlaylistsViewController {
     }
     
     private func setupNavigationController() {
-        self.navigationItem.title = "Playlists"
+        self.navigationItem.title = Localization.Words.playlists.localization
         guard self.type == .library else { return }
         
         self.navigationItem.searchController = self.searchController

@@ -7,12 +7,17 @@
 
 import UIKit
 
-final class MainCoordinator {
+final class MainCoordinator: NSObject {
     static let shared = MainCoordinator()
     
     var window: UIWindow?
     
-    private(set) var mainTabBarController: MainTabBarController
+    private(set) var mainTabBarController: MainTabBarController {
+        didSet {
+            self.mainTabBarController.delegate = self
+        }
+    }
+    
     var safeAreaInsets: UIEdgeInsets {
         let window = UIApplication.shared.keyWindow
         return window?.safeAreaInsets ?? UIEdgeInsets(all: 0)
@@ -44,8 +49,9 @@ final class MainCoordinator {
         return self.mainTabBarController.traitCollection.userInterfaceStyle == .dark
     }
     
-    fileprivate init() {
+    override fileprivate init() {
         self.mainTabBarController = MainTabBarController()
+        super.init()
     }
     
     func firstLaunch(completion: @escaping(() -> ())) {
@@ -113,6 +119,7 @@ final class MainCoordinator {
     
     private func makeRootVC(vc: UIViewController, shouldUseTransition: Bool = true) {
         DispatchQueue.main.async { [weak self] in
+            self?.window?.overrideUserInterfaceStyle = SettingsManager.shared.appearance.userIntefaceStyle
             if shouldUseTransition {
                 self?.window?.setRootVC(vc, options: UIWindow.TransitionOptions(direction: .fade, style: .easeInOut))
             } else {
@@ -149,6 +156,10 @@ final class MainCoordinator {
         self.makeRootVC(vc: self.mainTabBarController)
     }
     
+    func makeBlockScreenAsRoot() {
+        self.makeRootVC(vc: AccountBlockedViewController(), shouldUseTransition: true)
+    }
+    
     func present(_ vc: UIViewController, animated: Bool = true) {
         self.currentViewController?.present(vc, animated: animated)
     }
@@ -159,8 +170,8 @@ final class MainCoordinator {
         }
     }
     
-    func pushTracksViewController(type: LibraryControllerType) {
-        let tracksVC = TracksViewController(type: type)
+    func pushTracksViewController(type: LibraryControllerType = .none, scheme: PulseWidgetsScheme = .none) {
+        let tracksVC = TracksViewController(type: type, scheme: scheme)
         self.pushViewController(vc: tracksVC)
     }
     
@@ -169,6 +180,10 @@ final class MainCoordinator {
         
         let nowPlayingVC = NowPlayingViewController()
         self.mainTabBarController.present(nowPlayingVC, animated: true)
+    }
+    
+    func presentStoryTrackController(track: TrackModel, story: PulseStory, completion: (() -> ())?) {
+        self.mainTabBarController.present(StoryTrackViewController(track: track, story: story, completion: completion), animated: true)
     }
     
     func presentWebController(type: WebViewType = .none, delegate: WebViewControllerDelegate? = nil) {
@@ -198,5 +213,25 @@ final class MainCoordinator {
         guard let launchScreenVC = UIStoryboard.launchScreen.viewController else { return }
         
         self.makeRootVC(vc: launchScreenVC, shouldUseTransition: false)
+    }
+    
+    func pushArtistViewController(artist: ArtistModel) {
+        self.pushViewController(vc: ArtistViewController(artist: artist))
+    }
+    
+    func presentOpenInServiceViewController(track: TrackModel) {
+        self.present(OpenInServiceViewController(track: track), animated: true)
+    }
+}
+
+// MARK: -
+// MARK: UITabBarControllerDelegate
+extension MainCoordinator: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        guard let index = tabBarController.viewControllers?.firstIndex(of: viewController),
+              index < 2
+        else { return }
+        
+        SettingsManager.shared.lastTabBarIndex = index
     }
 }

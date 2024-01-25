@@ -50,27 +50,27 @@ enum ColorType: String, CaseIterable {
     var title: String {
         switch self {
             case .blue:
-                return "Blue"
+                return Localization.Words.blue.localization
             case .cyan:
-                return "Cyan"
+                return Localization.Words.cyan.localization
             case .green:
-                return "Green"
+                return Localization.Words.green.localization
             case .indigo:
-                return "Indigo"
+                return Localization.Words.indigo.localization
             case .mint:
-                return "Mint"
+                return Localization.Words.mint.localization
             case .orange:
-                return "Orange"
+                return Localization.Words.orange.localization
             case .pink:
-                return "Pink"
+                return Localization.Words.pink.localization
             case .purple:
-                return "Purple"
+                return Localization.Words.purple.localization
             case .red:
-                return "Red"
+                return Localization.Words.red.localization
             case .teal:
-                return "Teal"
+                return Localization.Words.teal.localization
             case .yellow:
-                return "Yellow"
+                return Localization.Words.yellow.localization
         }
     }
     

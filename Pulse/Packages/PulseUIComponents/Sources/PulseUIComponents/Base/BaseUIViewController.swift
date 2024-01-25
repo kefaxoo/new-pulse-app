@@ -61,6 +61,7 @@ extension BaseUIViewController {
     final public func configureKeyboardObservating(observeView view: UIView?, movingOffset offset: CGFloat? = nil) {
         self.movingView = view
         self.defaultOffset = offset
+        self.setupKeyboardObservers()
     }
     
     fileprivate func setupKeyboardObservers() {
@@ -106,7 +107,7 @@ extension BaseUIViewController {
         }).startAnimation()
     }
     
-    @objc func dismissKeyboard() {
+    @objc open func dismissKeyboard() {
         self.view.endEditing(true)
     }
     
@@ -115,5 +116,27 @@ extension BaseUIViewController {
         
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+}
+
+extension BaseUIViewController {
+    fileprivate struct StatusBar {
+        static var style: UIStatusBarStyle = .default
+    }
+    
+    public var statusBarStyle: UIStatusBarStyle {
+        get {
+            return self.preferredStatusBarStyle
+        }
+        set {
+            StatusBar.style = newValue
+            UIView.animate(withDuration: 0.2) { [weak self] in
+                self?.setNeedsStatusBarAppearanceUpdate()
+            }
+        }
+    }
+    
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return StatusBar.style
     }
 }

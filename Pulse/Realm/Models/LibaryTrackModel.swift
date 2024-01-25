@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 class LibraryTrackModel: Object {
-    @Persisted dynamic var id            = -1
+    @Persisted dynamic var id            = ""
     @Persisted dynamic var title         = ""
     @Persisted dynamic var artistId      = -1
     @Persisted dynamic var artistIds     = List<Int>()
@@ -22,6 +22,9 @@ class LibraryTrackModel: Object {
     @Persisted dynamic var trackFilename = ""
     @Persisted dynamic var isSynced      = false
     @Persisted dynamic var dateAdded     = 0
+    @Persisted dynamic var subtitle      = ""
+    @Persisted dynamic var isExplicit    = false
+    @Persisted dynamic var labels        = List<String>()
     
     convenience init(_ track: TrackModel) {
         self.init()
@@ -36,6 +39,15 @@ class LibraryTrackModel: Object {
         self.source     = track.source.rawValue
         self.isSynced   = track.isSynced
         self.dateAdded  = Int(Date().timeIntervalSince1970)
+        self.isExplicit = track.isExplicit
+        
+        let labels = List<String>()
+        labels.append(objectsIn: track.labels.map({ $0.rawValue }))
+        self.labels = labels
+        
+        if let subtitle = track.subtitle {
+            self.subtitle = subtitle
+        }
         
         ImageManager.shared.saveCover(track) { [weak self] filename in
             guard let filename else { return }

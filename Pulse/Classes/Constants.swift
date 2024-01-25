@@ -46,6 +46,17 @@ enum Constants {
         case googleLogo
         case yandexMusicLogo
         case yandexPlusLogo
+        case openIn
+        case mainNonSelected
+        case mainSelected
+        case pulseLogo
+        case dolbyAtmosLogo
+        case losslessLogo
+        case deezerLogo
+        case appleMusicLogo
+        case spotifyLogo
+        case youtubeLogo
+        case youtubeMusicLogo
         
         var image: UIImage? {
             let type: System
@@ -110,6 +121,12 @@ enum Constants {
                     type = .speakerWave3Fill
                 case .previousTrack:
                     type = .backwardFill
+                case .openIn:
+                    type = .rectanglePortraitAndArrowRight
+                case .mainNonSelected:
+                    type = .house
+                case .mainSelected:
+                    type = .houseFill
                 default:
                     return self.customImage
             }
@@ -128,6 +145,22 @@ enum Constants {
                     type = .yandexMusicLogo
                 case .yandexPlusLogo:
                     type = .yandexPlusLogo
+                case .pulseLogo:
+                    type = .pulseLogo
+                case .dolbyAtmosLogo:
+                    type = .dolbyAtmosLogo
+                case .losslessLogo:
+                    type = .losslessLogo
+                case .deezerLogo:
+                    type = .deezerLogo
+                case .appleMusicLogo:
+                    type = .appleMusicLogo
+                case .spotifyLogo:
+                    type = .spotifyLogo
+                case .youtubeLogo:
+                    type = .youtubeLogo
+                case .youtubeMusicLogo:
+                    type = .youtubeMusicLogo
                 default:
                     return nil
             }
@@ -151,8 +184,9 @@ enum Constants {
     enum UserDefaultsKeys: String {
         case appEnvironment = "appEnvironment"
         
-        case pulseUsername = "pulseUsername"
-        case pulseExpireAt = "pulseExpireAt"
+        case pulseUsername      = "pulseUsername"
+        case pulseExpireAt      = "pulseExpireAt"
+        case pulseAccessDenied = "pulse.accessDenied"
         
         case soundcloudUserId = "soundcloudUserId"
         case soundcloudUser   = "soundcloudUser"
@@ -160,15 +194,18 @@ enum Constants {
         case soundcloudLike   = "soundcloud.like"
         case soundcloudSource = "soundcloud.source"
         
-        case yandexMusicSource      = "yandexMusic.source"
-        case yandexMusicUid         = "yandexMusic.uid"
-        case yandexMusicDisplayName = "yandexMusic.displayName"
-        case yandexMusicIsPlus      = "yandexMusic.isPlus"
-        case yandexMusicLike        = "yandexMusic.like"
+        case yandexMusicSource           = "yandexMusic.source"
+        case yandexMusicUid              = "yandexMusic.uid"
+        case yandexMusicDisplayName      = "yandexMusic.displayName"
+        case yandexMusicIsPlus           = "yandexMusic.isPlus"
+        case yandexMusicLike             = "yandexMusic.like"
+        case yandexMusicStreamingQuality = "yandexMusic.quality.streaming"
+        case yandexMusicDownloadQuality  = "yandexMusic.quality.download"
         
         case autoDownload          = "general.autoDownload"
         case isAdultContentEnabled = "general.isAdultContentEnabled"
         case isCanvasesEnabled     = "general.isCanvasesEnabled"
+        case appearance            = "general.appearance"
         
         case colorType = "accentColorType"
         
@@ -176,6 +213,8 @@ enum Constants {
         case country = "deviceCountry"
         
         case featuresLastUpdate = "featuresLastUpdate"
+        
+        case lastTabBarIndex = "lastTabBarIndex"
     }
     // swiftlint:enable redundant_string_enum_value
     
@@ -196,36 +235,39 @@ enum Constants {
 
 extension Constants.Images {
     fileprivate enum System: String {
-        case exclamationMarkTriangle  = "exclamationmark.triangle"
-        case heartFill                = "heart.fill"
-        case arrowDownHeartFill       = "arrow.down.heart.fill"
-        case trashFill                = "trash.fill"
-        case textInsert               = "text.insert"
-        case textAppend               = "text.append"
-        case minus                    = "minus"
-        case heartSlashFill           = "heart.slash.fill"
-        case chevronRight             = "chevron.right"
-        case eSquareFill              = "e.square.fill"
-        case ellipsis                 = "ellipsis"
-        case playFill                 = "play.fill"
-        case pauseFill                = "pause.fill"
-        case squareAndArrowDown       = "square.and.arrow.down"
-        case squareAndArrowUp         = "square.and.arrow.up"
-        case appleLogo                = "apple.logo"
-        case xCircleFill              = "x.circle.fill"
-        case eye                      = "eye"
-        case eyeSlash                 = "eye.slash"
-        case gear                     = "gear"
-        case magnifyingGlass          = "magnifyingglass"
-        case heart                    = "heart"
-        case musicNote                = "music.note"
-        case forwardFill              = "forward.fill"
-        case ellipsisCircleFill       = "ellipsis.circle.fill"
-        case musicNoteList            = "music.note.list"
-        case airplayAudio             = "airplayaudio"
-        case speakerFill              = "speaker.fill"
-        case speakerWave3Fill         = "speaker.wave.3.fill"
-        case backwardFill             = "backward.fill"
+        case exclamationMarkTriangle        = "exclamationmark.triangle"
+        case heartFill                      = "heart.fill"
+        case arrowDownHeartFill             = "arrow.down.heart.fill"
+        case trashFill                      = "trash.fill"
+        case textInsert                     = "text.insert"
+        case textAppend                     = "text.append"
+        case minus                          = "minus"
+        case heartSlashFill                 = "heart.slash.fill"
+        case chevronRight                   = "chevron.right"
+        case eSquareFill                    = "e.square.fill"
+        case ellipsis                       = "ellipsis"
+        case playFill                       = "play.fill"
+        case pauseFill                      = "pause.fill"
+        case squareAndArrowDown             = "square.and.arrow.down"
+        case squareAndArrowUp               = "square.and.arrow.up"
+        case appleLogo                      = "apple.logo"
+        case xCircleFill                    = "x.circle.fill"
+        case eye                            = "eye"
+        case eyeSlash                       = "eye.slash"
+        case gear                           = "gear"
+        case magnifyingGlass                = "magnifyingglass"
+        case heart                          = "heart"
+        case musicNote                      = "music.note"
+        case forwardFill                    = "forward.fill"
+        case ellipsisCircleFill             = "ellipsis.circle.fill"
+        case musicNoteList                  = "music.note.list"
+        case airplayAudio                   = "airplayaudio"
+        case speakerFill                    = "speaker.fill"
+        case speakerWave3Fill               = "speaker.wave.3.fill"
+        case backwardFill                   = "backward.fill"
+        case rectanglePortraitAndArrowRight = "rectangle.portrait.and.arrow.right"
+        case house                          = "house"
+        case houseFill                      = "house.fill"
         
         var image: UIImage? {
             return UIImage(systemName: self.rawValue)
@@ -233,10 +275,18 @@ extension Constants.Images {
     }
     
     fileprivate enum Custom: String {
-        case soundcloudLogo  = "SoundcloudLogo"
-        case googleLogo      = "GoogleLogo"
-        case yandexMusicLogo = "YandexMusicLogo"
-        case yandexPlusLogo  = "YandexPlusLogo"
+        case soundcloudLogo   = "SoundcloudLogo"
+        case googleLogo       = "GoogleLogo"
+        case yandexMusicLogo  = "YandexMusicLogo"
+        case yandexPlusLogo   = "YandexPlusLogo"
+        case pulseLogo        = "iconForLaunchScreen"
+        case dolbyAtmosLogo   = "DolbyAtmosLogo"
+        case losslessLogo     = "LosslessLogo"
+        case deezerLogo       = "DeezerLogo"
+        case appleMusicLogo   = "AppleMusicLogo"
+        case spotifyLogo      = "SpotifyLogo"
+        case youtubeLogo      = "YoutubeLogo"
+        case youtubeMusicLogo = "YoutubeMusicLogo"
         
         var image: UIImage? {
             return UIImage(named: self.rawValue)

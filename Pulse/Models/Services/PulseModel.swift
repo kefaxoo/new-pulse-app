@@ -47,6 +47,15 @@ final class PulseModel {
         return Int(Date().timeIntervalSince1970) >= self.expireAt
     }
     
+    var isAccessDenied: Bool {
+        get {
+            return UserDefaults.standard.value(forKey: .pulseAccessDenied) as? Bool ?? false
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: .pulseAccessDenied)
+        }
+    }
+    
     fileprivate var credentialsKeychainModel  = BaseKeychainModel(service: Constants.KeychainService.pulseCredentials.rawValue)
     fileprivate var accessTokenKeychainModel  = BaseKeychainModel(service: Constants.KeychainService.pulseToken.rawValue)
     fileprivate var refreshTokenKeychainModel = BaseKeychainModel(service: Constants.KeychainService.pulseRefreshToken.rawValue)
@@ -107,16 +116,32 @@ final class PulseModel {
         self.saveRefreshToken(Credentials(email: self.username, accessToken: tokens.refreshToken))
     }
     
-    func signOut() -> Bool {
-        guard credentialsKeychainModel.deleteAccount(username: username),
-              accessTokenKeychainModel.deleteAccount(username: username),
-              refreshTokenKeychainModel.deleteAccount(username: username)
-        else { return false }
+    @discardableResult func signOut() -> Bool {
+        credentialsKeychainModel.deleteAccount(username: username)
+        accessTokenKeychainModel.deleteAccount(username: username)
+        refreshTokenKeychainModel.deleteAccount(username: username)
         
         username     = ""
         password     = nil
         accessToken  = nil
         refreshToken = nil
         return true
+    }
+    
+    func isUserBlocked(completion: @escaping(() -> ())) {
+        if NetworkManager.shared.isReachable {
+            PulseProvider.shared.isUserBlocked { [weak self] isUserBlocked in
+                self?.isAccessDenied = isUserBlocked
+                if isUserBlocked {
+                    MainCoordinator.shared.makeBlockScreenAsRoot()
+                } else {
+                    completion()
+                }
+            }
+        } else if self.isAccessDenied {
+            MainCoordinator.shared.makeBlockScreenAsRoot()
+        } else {
+            completion()
+        }
     }
 }

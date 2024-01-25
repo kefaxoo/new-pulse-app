@@ -71,7 +71,7 @@ final class YandexMusicProvider: BaseRestApiProvider {
         self.fetchAudioLink(trackId: track.id, shouldCancelTask: shouldCancelTask, completion: completion)
     }
     
-    func fetchAudioLink(trackId: Int, shouldCancelTask: Bool = true, completion: @escaping((String?) -> ())) {
+    func fetchAudioLink(trackId: String, shouldCancelTask: Bool = true, completion: @escaping((String?) -> ())) {
         if shouldCancelTask {
             task?.cancel()
         }
@@ -85,9 +85,10 @@ final class YandexMusicProvider: BaseRestApiProvider {
             switch response {
                 case .success(let response):
                     guard let downloadInfo = response.data?.map(to: YandexMusicBaseResult<[YandexMusicDownloadInfo]>.self),
-                          let maxBitrate = downloadInfo.result.map({ $0.bitrate }).max(),
-                          let downloadInfoWithMaxBitrate = downloadInfo.result.first(where: { $0.bitrate == maxBitrate }),
-                          let urlComponents = URLComponents(string: downloadInfoWithMaxBitrate.downloadInfoUrl)
+                          let downloadInfoWithBitrate = downloadInfo.result.first(where: {
+                              $0.bitrate == SettingsManager.shared.yandexMusic.streamingQuality.rawValue
+                          }),
+                          let urlComponents = URLComponents(string: downloadInfoWithBitrate.downloadInfoUrl)
                     else {
                         completion(nil)
                         return
@@ -118,13 +119,13 @@ final class YandexMusicProvider: BaseRestApiProvider {
         }
     }
     
-    func trackInfo(id: Int, success: @escaping((YandexMusicTrack) -> ())) {
+    func trackInfo(id: String, success: @escaping((YandexMusicTrack) -> ())) {
         self.urlSession.dataTask(with: URLRequest(type: YandexMusicApi.track(trackId: id), shouldPrintLog: self.shouldPrintLog)) { response in
             switch response {
                 case .success(let response):
-                    guard let track = response.data?.map(to: YandexMusicBaseResult<YandexMusicTrack>.self) else { return }
+                    guard let track = response.data?.map(to: YandexMusicBaseResult<[YandexMusicTrack]>.self)?.result.first else { return }
                     
-                    success(track.result)
+                    success(track)
                 case .failure:
                     break
             }
@@ -143,5 +144,53 @@ final class YandexMusicProvider: BaseRestApiProvider {
             with: URLRequest(type: YandexMusicApi.removeLikeTrack(track: track), shouldPrintLog: self.shouldPrintLog),
             response: { _ in }
         )
+    }
+    
+    func libraryTracks(offset: Int = 0, success: @escaping(([YandexMusicTrack]) -> ()), failure: @escaping (() -> ())) {
+        self.urlSession.dataTask(with: URLRequest(type: YandexMusicApi.likedTracks, shouldPrintLog: self.shouldPrintLog)) { [weak self] response in
+            switch response {
+                case .success(let response):
+                    guard let shortTracksInfo = response.data?.map(to: YandexMusicBaseResult<YandexMusicLibrary>.self)?.result.library.tracks else {
+                        failure()
+                        return
+                    }
+                    
+                    self?.tracksInfo(ids: shortTracksInfo[offset..<offset + 20].map({ $0.id }), success: success, failure: failure)
+                case .failure:
+                    failure()
+            }
+        }
+    }
+    
+    func tracksInfo(ids: [String], success: @escaping(([YandexMusicTrack]) -> ()), failure: (() -> ())? = nil) {
+        self.urlSession.dataTask(with: URLRequest(type: YandexMusicApi.tracks(trackIds: ids), shouldPrintLog: self.shouldPrintLog)) { response in
+            switch response {
+                case .success(let response):
+                    guard let tracks = response.data?.map(to: YandexMusicBaseResult<[YandexMusicTrack]>.self) else {
+                        failure?()
+                        return
+                    }
+                    
+                    success(tracks.result)
+                case .failure:
+                    failure?()
+            }
+        }
+    }
+    
+    func fetchArtist(_ artist: ArtistModel, success: @escaping((YandexMusicArtistRoot) -> ()), failure: (() -> ())? = nil) {
+        self.urlSession.dataTask(with: URLRequest(type: YandexMusicApi.artist(artist: artist), shouldPrintLog: self.shouldPrintLog)) { response in
+            switch response {
+                case .success(let response):
+                    guard let artist = response.data?.map(to: YandexMusicBaseResult<YandexMusicArtistRoot>.self)?.result else {
+                        failure?()
+                        return
+                    }
+                    
+                    success(artist)
+                case .failure:
+                    failure?()
+            }
+        }
     }
 }

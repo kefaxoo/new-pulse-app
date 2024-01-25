@@ -30,7 +30,7 @@ final class AlertView {
     }
     
     func presentError(error: String? = nil, system: AlertViewStyle) {
-        self.present(title: "Error", message: error, alertType: .error, system: system)
+        self.present(title: Localization.Words.error.localization, message: error, alertType: .error, system: system)
     }
     
     func dismiss() {

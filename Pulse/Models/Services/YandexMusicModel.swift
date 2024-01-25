@@ -26,29 +26,24 @@ enum YandexMusicSourceType: String {
             case .muffon:
                 return "Muffon"
             case .yandexMusic:
-                return "Yandex Music"
+                return Localization.Words.yandexMusic.localization
             case .none:
                 return ""
         }
     }
     
     var title: String {
-        switch self {
-            case .muffon:
-                return "Current source: Muffon"
-            case .yandexMusic:
-                return "Current source: Yandex Music"
-            case .none:
-                return ""
-        }
+        return Localization.Lines.currentSource.localization(with: self.buttonTitle)
     }
     
     var description: String {
         switch self {
             case .muffon:
-                return "Current country: Russia 🇷🇺"
+                return Localization.Lines.currentCountry.localization(with: "Russia 🇷🇺")
             case .yandexMusic:
-                return "Current country: \(NetworkManager.shared.country ?? "United States") \(NetworkManager.shared.countryCode.emojiFlag)"
+                return Localization.Lines.currentCountry.localization(
+                    with: "\(NetworkManager.shared.country ?? "United States") \(NetworkManager.shared.countryCode.emojiFlag)"
+                )
             case .none:
                 return ""
         }
@@ -60,6 +55,31 @@ enum YandexMusicSourceType: String {
 }
 
 final class YandexMusicModel {
+    enum Quality: Int, CaseIterable {
+        case lq = 128
+        case mq = 192
+        case hq = 320
+        
+        var fileExtension: String {
+            return self == .lq ? "m4a" : "mp3"
+        }
+        
+        var title: String {
+            switch self {
+                case .lq:
+                    return Localization.Enums.YandexMusicQuality.lq.localization
+                case .mq:
+                    return Localization.Enums.YandexMusicQuality.mq.localization
+                case .hq:
+                    return Localization.Enums.YandexMusicQuality.hq.localization
+            }
+        }
+        
+        func isEqual(to type: Quality) -> UIMenuElement.State {
+            return self == type ? .on : .off
+        }
+    }
+    
     var displayName: String {
         get {
             return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.yandexMusicDisplayName.rawValue) as? String ?? ""
@@ -84,8 +104,35 @@ final class YandexMusicModel {
         }
     }
     
+    var hasPlus: Bool {
+        get {
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.yandexMusicIsPlus.rawValue) as? Bool ?? false
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.yandexMusicIsPlus.rawValue)
+        }
+    }
+    
     var isSigned: Bool {
         return self.accessToken != nil
+    }
+    
+    var streamingQuality: Quality {
+        get {
+            return Quality(rawValue: UserDefaults.standard.value(forKey: .yandexMusicStreamingQuality) as? Int ?? 0) ?? .lq
+        }
+        set {
+            UserDefaults.standard.setValue(newValue.rawValue, forKey: .yandexMusicStreamingQuality)
+        }
+    }
+    
+    var downloadQuality: Quality {
+        get {
+            return Quality(rawValue: UserDefaults.standard.value(forKey: .yandexMusicDownloadQuality) as? Int ?? 0) ?? .lq
+        }
+        set {
+            UserDefaults.standard.setValue(newValue.rawValue, forKey: .yandexMusicDownloadQuality)
+        }
     }
     
     fileprivate var accessTokenKeychainModel = BaseKeychainModel(service: YandexMusicModel.keychainService)
@@ -104,23 +151,28 @@ final class YandexMusicModel {
         self.accessToken = token
     }
     
-    func signOut() -> Bool {
-        guard accessTokenKeychainModel.deleteAccount(username: Self.keychainService) else { return false }
+    @discardableResult func signOut() -> Bool {
+        accessTokenKeychainModel.deleteAccount(username: Self.keychainService)
         
         id            = 0
         accessToken   = nil
         currentSource = .muffon
+        hasPlus       = false
         return true
     }
     
     var currentSource: YandexMusicSourceType {
         get {
             return YandexMusicSourceType(
-                rawValue: UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.yandexMusicSource.rawValue) as? String ?? "empty"
+                rawValue: UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.yandexMusicSource.rawValue) as? String ?? ""
             ) ?? .muffon
         }
         set {
             UserDefaults.standard.setValue(newValue.rawValue, forKey: Constants.UserDefaultsKeys.yandexMusicSource.rawValue)
         }
+    }
+    
+    func checkPlusSubscription() {
+        YandexMusicProvider.shared.fetchAccountInfo(success: { self.hasPlus = $0.plus.hasPlus })
     }
 }

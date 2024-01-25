@@ -28,6 +28,12 @@ final class ActionsManager {
         self.delegate = delegate
     }
     
+    func trackActions(for track: TrackModel, completion: @escaping((UIMenu?) -> ())) {
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            completion(self?.trackActions(track))
+        }
+    }
+    
     func trackActions(_ track: TrackModel, shouldReverseActions: Bool = false) -> UIMenu {
         var libraryActions = [UIAction]()
         if LibraryManager.shared.isTrackInLibrary(track) {
@@ -57,7 +63,20 @@ final class ActionsManager {
         
         let playerMenu = UIMenu(options: .displayInline, children: playerActions)
         
-        var shareActions = [self.shareTrackAsLink(track), self.shareTrackAsFile(track)]
+        var shareActions = [UIAction]()
+        if track.service != .pulse {
+            shareActions = [self.shareTrackAsLink(track), self.shareTrackAsFile(track), self.openInService(track)]
+        } else {
+            if track.spotifyId != nil || track.yandexMusicId != nil {
+                shareActions = [self.shareTrackAsLink(track)]
+            }
+            
+            shareActions.append(self.shareTrackAsFile(track))
+            
+            if track.spotifyId != nil || track.yandexMusicId != nil {
+                shareActions.append(self.openInService(track))
+            }
+        }
         
         if shouldReverseActions {
             shareActions = shareActions.reversed()
@@ -88,11 +107,16 @@ final class ActionsManager {
                 
                 let libraryTrack = LibraryTrackModel(track)
                 RealmManager<LibraryTrackModel>().write(object: libraryTrack)
+                AudioPlayer.shared.setupTrackNowPlayingCommands()
                 AlertView.shared.present(title: "Added to library", alertType: .done, system: .iOS17AppleMusic)
                 track.image = ImageModel(coverFilename: libraryTrack.coverFilename)
                 self?.delegate?.updateButtonMenu()
                 self?.delegate?.updatedTrack(track)
                 self?.delegate?.updateTrackState(.added)
+                NotificationCenter.default.post(name: .updateLibraryState, object: nil, userInfo: [
+                    "track": track,
+                    "state": TrackLibraryState.added
+                ])
                 
                 if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSign?.prod ?? false {
                     PulseProvider.shared.likeTrack(track)
@@ -138,11 +162,11 @@ final class ActionsManager {
             
             if !libraryTrack.coverFilename.isEmpty,
                RealmManager<LibraryTrackModel>().read().filter({ track.image?.contains($0.coverFilename) ?? false }).count < 2 {
-                _ = LibraryManager.shared.removeFile(URL(filename: libraryTrack.coverFilename, path: .documentDirectory))
+                LibraryManager.shared.removeFile(URL(filename: libraryTrack.coverFilename, path: .documentDirectory))
             }
             
             if !libraryTrack.trackFilename.isEmpty {
-                _ = LibraryManager.shared.removeFile(URL(filename: libraryTrack.trackFilename, path: .documentDirectory))
+                LibraryManager.shared.removeFile(URL(filename: libraryTrack.trackFilename, path: .documentDirectory))
                 
                 RealmManager<LibraryTrackModel>().update { realm in
                     try? realm.write {
@@ -164,6 +188,7 @@ final class ActionsManager {
             self.delegate?.updateButtonMenu()
             self.delegate?.updateTrackState(.none)
             self.delegate?.reloadData()
+            AudioPlayer.shared.setupTrackNowPlayingCommands()
             AlertView.shared.present(title: "Removed to library", alertType: .done, system: .iOS17AppleMusic)
             
             if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newLibrary?.prod ?? false {
@@ -184,13 +209,18 @@ final class ActionsManager {
                 default:
                     break
             }
+            
+            NotificationCenter.default.post(name: .updateLibraryState, object: nil, userInfo: [
+                "track": track,
+                "state": TrackLibraryState.none
+            ])
         }
         
         return action
     }
     
     private func downloadTrack(_ track: TrackModel) -> UIAction {
-        let action = UIAction(title: "Download track", image: Constants.Images.download.image) { _ in
+        let action = UIAction(title: Localization.Actions.Title.downloadTrack.localization, image: Constants.Images.download.image) { _ in
             DownloadManager.shared.addTrackToQueue(track) { [weak self] in
                 self?.delegate?.updateButtonMenu()
             }
@@ -220,8 +250,8 @@ final class ActionsManager {
     }
     
     private func shareTrackAsLink(_ track: TrackModel) -> UIAction {
-        let action = UIAction(title: "Share track as link", image: Constants.Images.share.image) { _ in
-            let text = "Listen to \(track.title) by \(track.artistText)\n\(track.shareLink)"
+        let action = UIAction(title: Localization.Actions.Title.shareTrackAsLink.localization, image: Constants.Images.share.image) { _ in
+            let text = Localization.Actions.ShareTrackAsLink.shareText.localization(with: track.title, track.artistText, track.shareLink)
             let activityVC = UIActivityViewController(activityItems: [text], applicationActivities: nil)
             MainCoordinator.shared.present(activityVC, animated: true)
         }
@@ -230,7 +260,7 @@ final class ActionsManager {
     }
     
     private func shareTrackAsFile(_ track: TrackModel) -> UIAction {
-        let action = UIAction(title: "Share track as file", image: Constants.Images.share.image) { _ in
+        let action = UIAction(title: Localization.Actions.Title.shareTrackAsFile.localization, image: Constants.Images.share.image) { _ in
             MainCoordinator.shared.currentViewController?.presentSpinner()
             DownloadManager.shared.downloadTempTrack(track) { url in
                 MainCoordinator.shared.currentViewController?.dismissSpinner()
@@ -247,13 +277,21 @@ final class ActionsManager {
         
         return action
     }
+    
+    private func openInService(_ track: TrackModel) -> UIAction {
+        let action = UIAction(title: Localization.Actions.Title.openIn.localization, image: Constants.Images.openIn.image) { _ in
+            MainCoordinator.shared.presentOpenInServiceViewController(track: track)
+        }
+        
+        return action
+    }
 }
 
 // MARK: -
 // MARK: Player actions
 fileprivate extension ActionsManager {
     func playNext(_ track: TrackModel) -> UIAction {
-        let action = UIAction(title: "Play next", image: Constants.Images.playNext.image) { _ in
+        let action = UIAction(title: Localization.Actions.Title.playNext.localization, image: Constants.Images.playNext.image) { _ in
             if SessionCacheManager.shared.isTrackInCache(track) || track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
                 AudioManager.shared.getPlayableLink(for: track) { updatedTrack in
                     AudioPlayer.shared.playNext(updatedTrack.track)
@@ -269,7 +307,7 @@ fileprivate extension ActionsManager {
     }
     
     func playLast(_ track: TrackModel) -> UIAction {
-        let action = UIAction(title: "Play last", image: Constants.Images.playLast.image) { _ in
+        let action = UIAction(title: Localization.Actions.Title.playLast.localization, image: Constants.Images.playLast.image) { _ in
             if SessionCacheManager.shared.isTrackInCache(track) || track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
                 AudioManager.shared.getPlayableLink(for: track) { updatedTrack in
                     AudioPlayer.shared.playLast(updatedTrack.track)

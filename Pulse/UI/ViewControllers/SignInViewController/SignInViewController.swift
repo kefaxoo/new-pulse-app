@@ -94,11 +94,6 @@ extension SignInViewController {
         super.viewDidLoad()
         self.presenter.fetchEmailFromKeychain()
     }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        self.removeKeyboardObservers()
-    }
 }
 
 // MARK: -
@@ -106,7 +101,7 @@ extension SignInViewController {
 extension SignInViewController {
     override func setupInterface() {
         super.setupInterface()
-        self.observeKeyboard(view: bottomStackView, defaultOffset: 30)
+        self.configureKeyboardObservating(observeView: self.bottomStackView, movingOffset: 30)
     }
     
     override func setupLayout() {

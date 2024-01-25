@@ -25,3 +25,10 @@ typealias YandexMusicTrackPosition    = ResponseYandexMusicTrackPositionModel
 typealias YandexMusicLyricsInfo       = ResponseYandexMusicLyricsInfoModel
 typealias YandexMusicDownloadInfo     = ResponseYandexMusicDownloadInfoModel
 typealias YandexMusicFileDownloadInfo = ResponseYandexMusicFileDownloadInfoModel
+typealias YandexMusicShortTrackInfo   = ResponseYandexMusicShortTrackInfoModel
+typealias YandexMusicArtistRoot       = ResponseYandexMusicArtistRootModel
+typealias YandexMusicPlaylist         = ResponseYandexMusicPlaylistModel
+
+
+typealias YandexMusicLibrary     = ResponseYandexMusicLibraryModel
+typealias YandexMusicLibraryRoot = ResponseYandexMusicLibraryRootModel

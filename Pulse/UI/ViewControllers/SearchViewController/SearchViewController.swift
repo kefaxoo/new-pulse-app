@@ -11,7 +11,7 @@ import PulseUIComponents
 final class SearchViewController: BaseUIViewController {
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController()
-        searchController.searchBar.placeholder = "Type track, artist, album..."
+        searchController.searchBar.placeholder = Localization.Controllers.Search.SearchControllers.typeQuery.localization
         searchController.searchBar.delegate = self
         return searchController
     }()
@@ -33,13 +33,14 @@ final class SearchViewController: BaseUIViewController {
         tableView.dataSource = self
         tableView.register(TrackTableViewCell.self, PlaylistTableViewCell.self)
         tableView.delegate = self
+        tableView.footerHeight = NowPlayingView.height
         return tableView
     }()
     
     private lazy var emptySearchQuerySearchContentView: ContentUnavailableView = {
         let contentUnavailableView = ContentUnavailableView()
         contentUnavailableView.contentImage = Constants.Images.search.image
-        contentUnavailableView.titleText = "Type search in text field"
+        contentUnavailableView.titleText = Localization.Controllers.Search.ContentUnavailableViews.typeQuery.localization
         return contentUnavailableView
     }()
     
@@ -169,6 +170,12 @@ extension SearchViewController: SearchPresenterDelegate {
     
     override func dismissKeyboard() {
         self.searchController.searchBar.endEditing(true)
+    }
+    
+    func appendNewCells(indexPaths: [IndexPath]) {
+        self.resultsTableView.beginUpdates()
+        self.resultsTableView.insertRows(at: indexPaths, with: .automatic)
+        self.resultsTableView.endUpdates()
     }
 }
 

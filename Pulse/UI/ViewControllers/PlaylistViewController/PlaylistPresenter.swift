@@ -51,7 +51,30 @@ final class PlaylistPresenter: BasePresenter {
                 } failure: { error in
                     MainCoordinator.shared.currentViewController?.dismissSpinner()
                     MainCoordinator.shared.popViewController()
-                    AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
+                    AlertView.shared.presentError(
+                        error: error?.message ?? Localization.Lines.unknownError.localization(with: "Soundcloud"),
+                        system: .iOS16AppleMusic
+                    )
+                }
+            case .pulse:
+                guard let id = Int(self.playlist.id) else { break }
+                
+                MainCoordinator.shared.currentViewController?.presentSpinner()
+                PulseProvider.shared.exclusivePlaylist(id: id) { [weak self] playlist in
+                    MainCoordinator.shared.currentViewController?.dismissSpinner()
+                    self?.tracks = (playlist.tracks ?? []).map({ TrackModel($0) })
+                    self?.delegate?.reloadData()
+                } failure: { serverError, internalError in
+                    MainCoordinator.shared.currentViewController?.dismissSpinner()
+                    MainCoordinator.shared.popViewController()
+                    AlertView.shared.presentError(
+                        error: LocalizationManager.shared.localizeError(
+                            server: serverError,
+                            internal: internalError,
+                            default: Localization.Lines.unknownError.localization(with: "Pulse")
+                        ),
+                        system: .iOS16AppleMusic
+                    )
                 }
             default:
                 break
@@ -179,13 +202,14 @@ extension PlaylistPresenter: BaseTableViewPresenter {
         if (scrollView.contentOffset.y + scrollView.frame.size.height) > scrollView.contentSize.height,
            !isResultsLoading,
            !tracks.isEmpty,
-           self.soundcloudOffset != nil,
            canLoadMore {
             self.isResultsLoading = true
             MainCoordinator.shared.currentViewController?.presentSpinner()
             switch self.type {
                 case .soundcloud:
-                    guard let id = Int(self.playlist.id) else {
+                    guard let id = Int(self.playlist.id),
+                          soundcloudOffset != nil
+                    else {
                         MainCoordinator.shared.currentViewController?.dismissSpinner()
                         return
                     }
@@ -198,6 +222,23 @@ extension PlaylistPresenter: BaseTableViewPresenter {
                         self?.delegate?.reloadData()
                         self?.canLoadMore = offset != nil
                     } failure: { [weak self] _ in
+                        MainCoordinator.shared.currentViewController?.dismissSpinner()
+                        self?.isResultsLoading = false
+                        self?.canLoadMore = false
+                    }
+                case .pulse:
+                    guard let id = Int(self.playlist.id) else {
+                        MainCoordinator.shared.currentViewController?.dismissSpinner()
+                        return
+                    }
+                    
+                    PulseProvider.shared.exclusivePlaylist(id: id, offset: self.tracks.count) { [weak self] playlist in
+                        MainCoordinator.shared.currentViewController?.dismissSpinner()
+                        self?.tracks.append(contentsOf: (playlist.tracks ?? []).map({ TrackModel($0) }))
+                        self?.isResultsLoading = false
+                        self?.delegate?.reloadData()
+                        self?.canLoadMore = !(playlist.tracks?.isEmpty ?? true)
+                    } failure: { [weak self] _, _ in
                         MainCoordinator.shared.currentViewController?.dismissSpinner()
                         self?.isResultsLoading = false
                         self?.canLoadMore = false

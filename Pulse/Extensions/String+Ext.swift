@@ -5,7 +5,7 @@
 //  Created by ios on 31.08.23.
 //
 
-import Foundation
+import UIKit
 
 fileprivate let normalLine = "!\"#$%&'()*+,-./0123456789:;<=>@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 fileprivate let cryptedLine = "mdl|cajoz~{wpyrusvktqhei`bnxf}gUHF[WPMR^GCAITY\\_]OEXSBJNKQ@VDLZ.\"*<-50&$;/:%'#2,7(>!8)14=3+69"
@@ -85,6 +85,24 @@ extension String {
     }
     
     func localized(parameters: [String]) -> String {
-        return String(format: self.localized, parameters)
+        if parameters.count == 1 {
+            return String(format: self.localized, parameters[0])
+        } else {
+            return String(format: self.localized, arguments: parameters)
+        }
+    }
+}
+
+extension String {
+    func height(withWidth width: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let boundingBox = self.boundingRect(
+            with: constraintRect,
+            options: .usesLineFragmentOrigin,
+            attributes: [NSAttributedString.Key.font: font],
+            context: nil
+        )
+            
+        return ceil(boundingBox.height)
     }
 }

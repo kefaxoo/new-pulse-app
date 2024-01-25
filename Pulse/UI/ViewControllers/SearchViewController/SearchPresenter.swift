@@ -12,6 +12,7 @@ protocol SearchPresenterDelegate: AnyObject {
     func setupTypeSegmentedControl(items: [String], selectedIndex: Int)
     func reloadData(scrollToTop: Bool)
     func dismissKeyboard()
+    func appendNewCells(indexPaths: [IndexPath])
 }
 
 extension SearchPresenterDelegate {
@@ -125,6 +126,7 @@ final class SearchPresenter: NSObject, BasePresenter {
             self.isQueryActive = false
             MuffonProvider.shared.cancelTask()
             SoundcloudProvider.shared.cancelTask()
+            YandexMusicProvider.shared.cancelTask()
             MainCoordinator.shared.currentViewController?.dismissSpinner()
             return
         }
@@ -140,7 +142,7 @@ final class SearchPresenter: NSObject, BasePresenter {
                     self?.delegate?.reloadData()
                 } failure: { [weak self] in
                     MainCoordinator.shared.currentViewController?.dismissSpinner()
-                    AlertView.shared.presentError(error: "Unknown Muffon Error", system: .iOS16AppleMusic)
+                    AlertView.shared.presentError(error: Localization.Lines.unknownError.localization(with: "Muffon"), system: .iOS16AppleMusic)
                     self?.isQueryActive = false
                 }
             case .soundcloud:
@@ -151,7 +153,11 @@ final class SearchPresenter: NSObject, BasePresenter {
                     self?.delegate?.reloadData()
                 } failure: { [weak self] error in
                     MainCoordinator.shared.currentViewController?.dismissSpinner()
-                    AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
+                    AlertView.shared.presentError(
+                        error: error?.message ?? Localization.Lines.unknownError.localization(with: "Soundcloud"),
+                        system: .iOS16AppleMusic
+                    )
+                    
                     self?.isQueryActive = false
                 }
             case .yandexMusic:
@@ -161,7 +167,7 @@ final class SearchPresenter: NSObject, BasePresenter {
                     self?.isQueryActive = false
                     self?.delegate?.reloadData()
                 }
-            case .none:
+            default:
                 self.isQueryActive = false
                 MainCoordinator.shared.currentViewController?.dismissSpinner()
         }
@@ -184,8 +190,9 @@ final class SearchPresenter: NSObject, BasePresenter {
                         page: searchResponse.page + 1
                     ) { [weak self] searchResponse in
                         MainCoordinator.shared.currentViewController?.dismissSpinner()
+                        let indexPaths = self?.indexPaths(for: searchResponse)
                         self?.searchResponse?.addResults(searchResponse)
-                        self?.delegate?.reloadData(scrollToTop: false)
+                        self?.delegate?.appendNewCells(indexPaths: indexPaths ?? [])
                         self?.isResultsLoading = false
                     } failure: { [weak self] in
                         MainCoordinator.shared.currentViewController?.dismissSpinner()
@@ -197,11 +204,12 @@ final class SearchPresenter: NSObject, BasePresenter {
                         query: self.query,
                         searchType: self.currentType,
                         offset: self.resultsCount
-                    ) { searchResponse in
+                    ) { [weak self] searchResponse in
                         MainCoordinator.shared.currentViewController?.dismissSpinner()
-                        self.searchResponse?.addResults(searchResponse)
-                        self.delegate?.reloadData(scrollToTop: false)
-                        self.isResultsLoading = false
+                        let indexPaths = self?.indexPaths(for: searchResponse)
+                        self?.searchResponse?.addResults(searchResponse)
+                        self?.delegate?.appendNewCells(indexPaths: indexPaths ?? [])
+                        self?.isResultsLoading = false
                     } failure: { [weak self] _ in
                         self?.searchResponse?.cannotLoadMore()
                         self?.isResultsLoading = false
@@ -213,8 +221,9 @@ final class SearchPresenter: NSObject, BasePresenter {
                         page: ((self.searchResponse?.page ?? 0) + 1)
                     ) { [weak self] searchResponse in
                         MainCoordinator.shared.currentViewController?.dismissSpinner()
+                        let indexPaths = self?.indexPaths(for: searchResponse)
                         self?.searchResponse?.addResults(searchResponse)
-                        self?.delegate?.reloadData(scrollToTop: false)
+                        self?.delegate?.appendNewCells(indexPaths: indexPaths ?? [])
                         self?.isResultsLoading = false
                     }
                 default:
@@ -233,9 +242,22 @@ final class SearchPresenter: NSObject, BasePresenter {
                 return self.searchResponse?.results(of: MuffonTrack.self)?.map({ TrackModel($0) }).firstIndex(where: { $0 == track })
             case .soundcloud:
                 return self.searchResponse?.results(of: SoundcloudTrack.self)?.map({ TrackModel($0) }).firstIndex(where: { $0 == track })
+            case .yandexMusic:
+                return self.searchResponse?.results(of: YandexMusicTrack.self)?.map({ TrackModel($0) }).firstIndex(where: { $0 == track })
             default:
                 return nil
         }
+    }
+    
+    func indexPaths(for searchResponse: SearchResponse) -> [IndexPath] {
+        let begin = self.searchResponse?.results.count ?? 0
+        let end = begin + searchResponse.results.count
+        var indexPaths = [IndexPath]()
+        for i in begin..<end {
+            indexPaths.append(IndexPath(row: i, section: 0))
+        }
+        
+        return indexPaths
     }
 }
 

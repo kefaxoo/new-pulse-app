@@ -160,7 +160,7 @@ final class SoundcloudProvider: BaseRestApiProvider {
     }
     
     func fetchPlayableLinks(
-        id: Int,
+        id: String,
         shouldCancelTask: Bool = true,
         success: @escaping((SoundcloudPlayableLinks) -> ()),
         failure: @escaping SoundcloudDefualtErrorClosure
@@ -194,7 +194,7 @@ final class SoundcloudProvider: BaseRestApiProvider {
         )
     }
     
-    func trackInfo(id: Int, success: @escaping((SoundcloudTrack) -> ()), failure: SoundcloudDefualtErrorClosure? = nil) {
+    func trackInfo(id: String, success: @escaping((SoundcloudTrack) -> ()), failure: SoundcloudDefualtErrorClosure? = nil) {
         urlSession.dataTask(with: URLRequest(type: SoundcloudApi.trackInfo(id: id), shouldPrintLog: self.shouldPrintLog)) { [weak self] response in
             switch response {
                 case .success(let response):
@@ -212,7 +212,7 @@ final class SoundcloudProvider: BaseRestApiProvider {
         }
     }
     
-    func likeTrack(id: Int) {
+    func likeTrack(id: String) {
         urlSession.dataTask(with: URLRequest(type: SoundcloudApi.likeTrack(id: id), shouldPrintLog: self.shouldPrintLog)) { [weak self] response in
             switch response {
                 case .success:
@@ -225,7 +225,7 @@ final class SoundcloudProvider: BaseRestApiProvider {
         }
     }
     
-    func removeLikeTrack(id: Int) {
+    func removeLikeTrack(id: String) {
         urlSession.dataTask(
             with: URLRequest(type: SoundcloudApi.removeLikeTrack(id: id), shouldPrintLog: self.shouldPrintLog)
         ) { [weak self] response in

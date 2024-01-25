@@ -33,22 +33,17 @@ enum SoundcloudSourceType: String {
     }
     
     var title: String {
-        switch self {
-            case .muffon:
-                return "Current source: Muffon"
-            case .soundcloud:
-                return "Current source: Soundcloud"
-            case .none:
-                return ""
-        }
+        return Localization.Lines.currentSource.localization(with: self.buttonTitle)
     }
     
     var description: String {
         switch self {
             case .muffon:
-                return "Current country: United Kingdom 🇬🇧"
+                return Localization.Lines.currentCountry.localization(with: "United Kingdom 🇬🇧")
             case .soundcloud:
-                return "Current country: \(NetworkManager.shared.country ?? "United States") \(NetworkManager.shared.countryCode.emojiFlag)"
+                return Localization.Lines.currentCountry.localization(
+                    with: "Current country: \(NetworkManager.shared.country ?? "United States") \(NetworkManager.shared.countryCode.emojiFlag)"
+                )
             case .none:
                 return ""
         }
@@ -128,10 +123,9 @@ final class SoundcloudModel {
         self.username = userInfo.username
     }
     
-    func signOut() -> Bool {
-        guard accessTokenKeychainModel.deleteAccount(username: String(self.userId)),
-              refreshTokenKeychainModel.deleteAccount(username: String(self.userId))
-        else { return false }
+    @discardableResult func signOut() -> Bool {
+        accessTokenKeychainModel.deleteAccount(username: String(self.userId))
+        refreshTokenKeychainModel.deleteAccount(username: String(self.userId))
         
         userId        = -1
         accessToken   = nil
@@ -143,7 +137,7 @@ final class SoundcloudModel {
     var currentSource: SoundcloudSourceType {
         get {
             return SoundcloudSourceType(
-                rawValue: UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.soundcloudSource.rawValue) as? String ?? "empty"
+                rawValue: UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.soundcloudSource.rawValue) as? String ?? ""
             ) ?? .muffon
         }
         set {

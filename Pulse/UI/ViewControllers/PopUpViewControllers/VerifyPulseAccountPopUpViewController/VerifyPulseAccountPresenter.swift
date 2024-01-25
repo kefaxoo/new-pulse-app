@@ -15,7 +15,7 @@ final class VerifyPulseAccountPresenter: BasePresenter {
     }
     
     var descriptionText: String {
-        return "To verify account, go to Telegram bot and enter \\verify \(self.verificationCodeAsString)"
+        return Localization.PopUp.VerifyPulseAccount.description.localization(with: self.verificationCodeAsString)
     }
     
     init(verificationCode: VerificationCode) {

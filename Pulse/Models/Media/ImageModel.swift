@@ -42,6 +42,13 @@ final class ImageModel {
         self.original = original
     }
     
+    init?(_ image: YandexMusicCover?) {
+        guard let image else { return nil }
+        
+        self.small    = image.cover(for: .small)
+        self.original = image.cover(for: .xl)
+    }
+    
     var isSmallEqualToOriginal: Bool {
         return self.small == self.original
     }

@@ -8,6 +8,7 @@
 import UIKit
 import ESTMusicIndicator
 import SnapKit
+import SDWebImage
 
 public enum CoverImageViewState {
     case loading
@@ -117,6 +118,7 @@ public class CoverImageView: UIImageView {
         self.musicIndicatorView.state = .stopped
         self.substrateView.isHidden = true
         self.image = nil
+        self.sd_cancelCurrentImageLoad()
     }
 }
 

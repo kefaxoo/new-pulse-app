@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PulseMedia
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,10 +18,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NetworkManager.shared.checkNetwork()
         NetworkManager.shared.updateValues()
         ServicesManager.shared.refreshTokens()
+        SettingsManager.shared.yandexMusic.checkPlusSubscription()
         LibraryManager.shared.removeTemporaryCache()
-        SettingsManager.shared.updateFeatures {
-            MainCoordinator.shared.firstLaunch {
-                LibraryManager.shared.initialSetup()
+        PulseProvider.shared.fetchSettings()
+        SettingsManager.shared.pulse.isUserBlocked {
+            SettingsManager.shared.updateFeatures {
+                MainCoordinator.shared.firstLaunch {
+                    LibraryManager.shared.initialSetup()
+                }
             }
         }
         

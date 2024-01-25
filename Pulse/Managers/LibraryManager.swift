@@ -21,9 +21,7 @@ final class LibraryManager {
         
         DownloadManager.shared.cacheTracksIfNeeded()
         
-        if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newLibrary?.prod ?? false {
-            syncTracksIfNeededV2()
-        } else {
+        if !(AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newLibrary?.prod ?? false) {
             syncTracksIfNeeded()
         }
     }
@@ -119,7 +117,7 @@ final class LibraryManager {
         return ArtistModel(artist)
     }
     
-    func removeFile(_ url: URL?) -> Bool {
+    @discardableResult func removeFile(_ url: URL?) -> Bool {
         guard let url else { return false }
         
         do {
@@ -165,9 +163,9 @@ final class LibraryManager {
     }
     
     func cleanLibrary() -> Bool {
-        _ = LibraryManager.shared.removeFile(URL(filename: "Covers", path: .documentDirectory))
-        _ = LibraryManager.shared.removeFile(URL(filename: "Tracks", path: .documentDirectory))
-        _ = LibraryManager.shared.removeFile(URL(filename: "", path: .cachesDirectory))
+        LibraryManager.shared.removeFile(URL(filename: "Covers", path: .documentDirectory))
+        LibraryManager.shared.removeFile(URL(filename: "Tracks", path: .documentDirectory))
+        LibraryManager.shared.removeFile(URL(filename: "", path: .cachesDirectory))
         
         RealmManager<LibraryTrackModel>().removeAll()
         RealmManager<LibraryArtistModel>().removeAll()
@@ -186,11 +184,9 @@ final class LibraryManager {
                 tracks.forEach { track in
                     switch track.source {
                         case .muffon:
-                            guard let id = Int(track.id) else { return }
-                            
-                            MuffonProvider.shared.trackInfo(id: id, service: track.service, shouldCancelTask: false) { muffonTrack in
+                            MuffonProvider.shared.trackInfo(id: track.id, service: track.service, shouldCancelTask: false) { muffonTrack in
                                 guard !RealmManager<LibraryTrackModel>().read().contains(where: {
-                                    $0.id == muffonTrack.source.id && $0.service == muffonTrack.source.service.rawValue
+                                    Int($0.id) == muffonTrack.source.id && $0.service == muffonTrack.source.service.rawValue
                                 }) else { return }
                                 
                                 let trackObj = TrackModel(muffonTrack)
@@ -205,11 +201,9 @@ final class LibraryManager {
                                 }
                             }
                         case .soundcloud:
-                            guard let id = Int(track.id) else { return }
-                            
-                            SoundcloudProvider.shared.trackInfo(id: id) { soundcloudTrack in
+                            SoundcloudProvider.shared.trackInfo(id: track.id) { soundcloudTrack in
                                 guard !RealmManager<LibraryTrackModel>().read().contains(where: {
-                                    $0.id == soundcloudTrack.id && $0.service == ServiceType.soundcloud.rawValue
+                                    Int($0.id) == soundcloudTrack.id && $0.service == ServiceType.soundcloud.rawValue
                                 }) else { return }
                                 
                                 let trackObj = TrackModel(soundcloudTrack)
@@ -224,9 +218,7 @@ final class LibraryManager {
                                 }
                             }
                         case .yandexMusic:
-                            guard let id = Int(track.id) else { return }
-                            
-                            YandexMusicProvider.shared.trackInfo(id: id) { yandexMusicTrack in
+                            YandexMusicProvider.shared.trackInfo(id: track.id) { yandexMusicTrack in
                                 guard !RealmManager<LibraryTrackModel>().read().contains(where: {
                                     $0.id == yandexMusicTrack.id && $0.service == ServiceType.yandexMusic.rawValue
                                 }) else { return }
@@ -275,7 +267,7 @@ final class LibraryManager {
                   !url.isDirectory || item.contains("SDImageCache")
             else { return }
             
-            _ = LibraryManager.shared.removeFile(url)
+            LibraryManager.shared.removeFile(url)
         }
     }
     
@@ -317,7 +309,7 @@ final class LibraryManager {
             
             if !libraryTrack.coverFilename.isEmpty,
                RealmManager<LibraryTrackModel>().read().filter({ track.image?.contains($0.coverFilename) ?? false }).count < 2 {
-                _ = LibraryManager.shared.removeFile(URL(filename: libraryTrack.trackFilename, path: .documentDirectory))
+                LibraryManager.shared.removeFile(URL(filename: libraryTrack.trackFilename, path: .documentDirectory))
                 
                 RealmManager<LibraryTrackModel>().update { realm in
                     try? realm.write {

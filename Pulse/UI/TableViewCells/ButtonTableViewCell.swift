@@ -39,9 +39,11 @@ class ButtonTableViewCell: BaseUITableViewCell {
     }()
     
     private var type: SettingType = .none
+    private var indexPath = IndexPath(row: 0, section: 0)
     
-    func setupCell(type: SettingType) {
+    func setupCell(type: SettingType, indexPath: IndexPath) {
         self.type = type
+        self.indexPath = indexPath
         
         self.selectionStyle = type.selectionStyle
         self.titleLabel.text = type.title
@@ -107,6 +109,7 @@ extension ButtonTableViewCell {
                 ColorType.allCases.forEach { [weak self] color in
                     let action = UIAction(title: color.title, state: color.isEqual(to: SettingsManager.shared.color)) { [weak self] _ in
                         SettingsManager.shared.color = color
+                        PulseProvider.shared.updateSettings()
                         self?.delegate?.reloadData()
                     }
                     
@@ -119,7 +122,10 @@ extension ButtonTableViewCell {
                         state: soundcloudSource.isEqual(to: SettingsManager.shared.soundcloud.currentSource)
                     ) { [weak self] _ in
                         SettingsManager.shared.soundcloud.currentSource = soundcloudSource
-                        self?.delegate?.reloadData()
+                        PulseProvider.shared.updateSettings()
+                        guard let self else { return }
+                        
+                        self.delegate?.reloadCells(at: [self.indexPath])
                     }
                     
                     actions.append(action)
@@ -128,7 +134,9 @@ extension ButtonTableViewCell {
                 AppEnvironment.allCases.forEach { [weak self] appEnvironment in
                     let action = UIAction(title: appEnvironment.buttonTitle, state: appEnvironment == AppEnvironment.current ? .on : .off) { _ in
                         AppEnvironment.current = appEnvironment
-                        self?.delegate?.reloadData()
+                        guard let self else { return }
+                        
+                        self.delegate?.reloadCells(at: [self.indexPath])
                     }
                     
                     actions.append(action)
@@ -140,7 +148,49 @@ extension ButtonTableViewCell {
                         state: yandexMusicSource.isEqual(to: SettingsManager.shared.yandexMusic.currentSource)
                     ) { _ in
                         SettingsManager.shared.yandexMusic.currentSource = yandexMusicSource
-                        self?.delegate?.reloadData()
+                        PulseProvider.shared.updateSettings()
+                        guard let self else { return }
+                        
+                        self.delegate?.reloadCells(at: [self.indexPath])
+                    }
+                    
+                    actions.append(action)
+                }
+            case .appearance:
+                ApplicationStyle.allCases.forEach { [weak self] style in
+                    let action = UIAction(title: style.title, state: style.isEqual(to: SettingsManager.shared.appearance)) { _ in
+                        SettingsManager.shared.appearance = style
+                        PulseProvider.shared.updateSettings()
+                        guard let self else { return }
+                        
+                        self.delegate?.reloadCells(at: [self.indexPath])
+                    }
+                    
+                    actions.append(action)
+                }
+            case .yandexMusicStreamingQuality:
+                YandexMusicModel.Quality.allCases.forEach { [weak self] quality in
+                    let action = UIAction(
+                        title: quality.title,
+                        state: quality.isEqual(to: SettingsManager.shared.yandexMusic.streamingQuality)
+                    ) { _ in
+                        SettingsManager.shared.yandexMusic.streamingQuality = quality
+                        PulseProvider.shared.updateSettings()
+                        guard let self else { return }
+                        
+                        self.delegate?.reloadCells(at: [self.indexPath])
+                    }
+                    
+                    actions.append(action)
+                }
+            case .yandexMusicDownloadQuality:
+                YandexMusicModel.Quality.allCases.forEach { [weak self] quality in
+                    let action = UIAction(title: quality.title, state: quality.isEqual(to: SettingsManager.shared.yandexMusic.downloadQuality)) { _ in
+                        SettingsManager.shared.yandexMusic.downloadQuality = quality
+                        PulseProvider.shared.updateSettings()
+                        guard let self else { return }
+                        
+                        self.delegate?.reloadCells(at: [self.indexPath])
                     }
                     
                     actions.append(action)

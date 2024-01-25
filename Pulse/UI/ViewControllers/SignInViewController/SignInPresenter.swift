@@ -75,7 +75,10 @@ final class SignInPresenter: CoversPresenter<SignInViewController> {
                 MainCoordinator.shared.makeTabBarAsRoot()
             } failure: { error in
                 MainCoordinator.shared.currentViewController?.dismissSpinner()
-                AlertView.shared.presentError(error: error?.errorDescription ?? "Unknown Pulse error", system: .iOS16AppleMusic)
+                AlertView.shared.presentError(
+                    error: error?.errorDescription ?? Localization.Lines.unknownError.localization(with: "Pulse"),
+                    system: .iOS16AppleMusic
+                )
             } verifyClosure: { verificationCode in
                 MainCoordinator.shared.currentViewController?.dismissSpinner()
                 SettingsManager.shared.pulse.username = email
@@ -114,7 +117,10 @@ final class SignInPresenter: CoversPresenter<SignInViewController> {
                 VerifyPulseAccountPopUpViewController(verificationCode: verificationCode.model).present()
             } failure: { error in
                 MainCoordinator.shared.currentViewController?.dismissSpinner()
-                AlertView.shared.presentError(error: error?.errorDescription ?? "Unknown Pulse error", system: .iOS16AppleMusic)
+                AlertView.shared.presentError(
+                    error: error?.errorDescription ?? Localization.Lines.unknownError.localization(with: "Pulse"),
+                    system: .iOS16AppleMusic
+                )
             }
         }
     }

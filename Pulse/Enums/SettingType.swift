@@ -23,6 +23,9 @@ enum SettingType {
     case yandexMusicSign
     case yandexMusicSource
     case yandexMusicLike
+    case yandexMusicStreamingQuality
+    case yandexMusicDownloadQuality
+    case appearance
     
     var cellType: CellType {
         switch self {
@@ -32,7 +35,8 @@ enum SettingType {
                 return .text
             case .about:
                 return .chevronText
-            case .accentColor, .soundcloudSource, .appEnvironment, .yandexMusicSource:
+            case .accentColor, .soundcloudSource, .appEnvironment, .yandexMusicSource, .appearance, .yandexMusicStreamingQuality, 
+                    .yandexMusicDownloadQuality:
                 return .tintedButton
             case .soundcloudSign, .yandexMusicSign:
                 return .service
@@ -46,68 +50,74 @@ enum SettingType {
     var title: String {
         switch self {
             case .adultContent:
-                return "Limit access to content"
+                return Localization.Enums.SettingType.Title.adultContent.localization
             case .import:
-                return "Import your media library"
+                return Localization.Enums.SettingType.Title.import.localization
             case .canvasEnabled:
-                return "Canvas in the app"
+                return Localization.Enums.SettingType.Title.canvasEnabled.localization
             case .autoDownload:
-                return "Auto-download tracks"
+                return Localization.Enums.SettingType.Title.autoDownload.localization
             case .about:
-                return "About"
+                return Localization.Enums.SettingType.Title.about.localization
             case .accentColor:
-                return "Color of the application"
+                return Localization.Enums.SettingType.Title.accentColor.localization
             case .soundcloudSign:
                 if SettingsManager.shared.soundcloud.isSigned {
-                    return "User: \(SettingsManager.shared.soundcloud.username)"
+                    return Localization.Lines.user.localization(with: SettingsManager.shared.soundcloud.username)
                 } else {
-                    return "Sign in Soundcloud"
+                    return Localization.Lines.signIn.localization(with: "Soundcloud")
                 }
             case .yandexMusicSign:
                 if SettingsManager.shared.yandexMusic.isSigned {
-                    return "User: \(SettingsManager.shared.yandexMusic.displayName)"
+                    return Localization.Lines.user.localization(with: SettingsManager.shared.yandexMusic.displayName)
                 } else {
-                    return "Sign in Yandex Music"
+                    return Localization.Lines.signIn.localization(with: Localization.Words.yandexMusic.localization)
                 }
             case .none:
                 return ""
             case .soundcloudLike:
-                return "Like track in Soundcloud"
+                return Localization.Lines.likeTrackIn.localization(with: "Soundcloud")
             case .yandexMusicLike:
-                return "Like track in Yandex Music"
+                return Localization.Lines.likeTrackIn.localization(with: Localization.Words.yandexMusic.localization)
             case .soundcloudSource:
                 return SettingsManager.shared.soundcloud.currentSource.title
             case .yandexMusicSource:
                 return SettingsManager.shared.yandexMusic.currentSource.title
             case .appEnvironment:
-                return "App Environment Mode"
+                return Localization.Enums.SettingType.Title.appEnvironment.localization
             case .appInfo:
-                return "App version: \(Bundle.main.releaseVersion ?? "nil")"
+                return Localization.Lines.appInfo.localization(with: Bundle.main.releaseVersion ?? "")
+            case .appearance:
+                return Localization.Words.appearance.localization
+            case .yandexMusicStreamingQuality:
+                return Localization.Enums.SettingType.Title.streamingQuality.localization
+            case .yandexMusicDownloadQuality:
+                return Localization.Enums.SettingType.Title.downloadQuality.localization
         }
     }
     
     var description: String? {
         switch self {
             case .adultContent:
-                return "We won't play tracks, which has explicit content"
+                return Localization.Enums.SettingType.Description.adultContent.localization
             case .import:
-                return "Move your library from other services to Pulse"
+                return Localization.Enums.SettingType.Description.import.localization
             case .canvasEnabled:
-                return "Canvases are shown in the player where artists' photos, cover art and videos come to life"
+                return Localization.Enums.SettingType.Description.canvasEnabled.localization
             case .autoDownload:
-                return "Tracks you liked are immediately downloaded so you can listen offline"
+                return Localization.Enums.SettingType.Description.autoDownload.localization
             case .accentColor:
-                return "Choose the color of the application based on your mood"
+                return Localization.Enums.SettingType.Description.accentColor.localization
             case .soundcloudLike:
-                return "All tracks that have been added to the library will be added to the Soundcloud library"
+                return Localization.Lines.likeTrackInDescription.localization(with: "Soundcloud")
             case .yandexMusicLike:
-                return "All tracks that have been added to the library will be added to the Yandex Music library"
+                return Localization.Lines.likeTrackInDescription.localization(with: Localization.Words.yandexMusic.localization)
             case .soundcloudSource:
                 return SettingsManager.shared.soundcloud.currentSource.description
             case .yandexMusicSource:
                 return SettingsManager.shared.yandexMusic.currentSource.description
             case .appInfo:
-                return "Build number: \(Bundle.main.buildVersion ?? "nil")"
+                return Localization.Lines.buildNumber.localization(with: Bundle.main.buildVersion ?? "")
             default:
                 return nil
         }
@@ -186,7 +196,8 @@ enum SettingType {
     
     var isMenu: Bool {
         switch self {
-            case .accentColor, .soundcloudSource, .appEnvironment, .yandexMusicSource:
+            case .accentColor, .soundcloudSource, .appEnvironment, .yandexMusicSource, .appearance, .yandexMusicStreamingQuality, 
+                    .yandexMusicDownloadQuality:
                 return true
             default:
                 return false
@@ -203,6 +214,12 @@ enum SettingType {
                 return SettingsManager.shared.yandexMusic.currentSource.buttonTitle
             case .appEnvironment:
                 return AppEnvironment.current.buttonTitle
+            case .appearance:
+                return SettingsManager.shared.appearance.title
+            case .yandexMusicStreamingQuality:
+                return SettingsManager.shared.yandexMusic.streamingQuality.title
+            case .yandexMusicDownloadQuality:
+                return SettingsManager.shared.yandexMusic.downloadQuality.title
             default:
                 return ""
         }

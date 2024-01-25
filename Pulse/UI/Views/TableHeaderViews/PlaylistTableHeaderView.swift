@@ -18,24 +18,26 @@ final class PlaylistTableHeaderView: BaseUIView {
         let imageView = UIImageView.default
         imageView.tintColor = SettingsManager.shared.color.color
         imageView.layer.cornerRadius = 20
-        if self.playlist.image != nil,
-           self.playlist.source != .soundcloud {
-            imageView.setImage(from: self.playlist.image?.original)
-        } else {
-            if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSoundcloud?.prod ?? false {
-                PulseProvider.shared.soundcloudPlaylistArtworkV2(for: playlist) { [weak self] cover in
-                    imageView.setImage(from: cover.xl)
-                } failure: { _, _ in
-                    imageView.image = Constants.Images.warning.image
-                }
+        if self.playlist.image != nil {
+            if self.playlist.source != .soundcloud {
+                imageView.setImage(from: self.playlist.image?.original)
             } else {
-                PulseProvider.shared.soundcloudPlaylistArtwork(for: playlist) { [weak self] cover in
-                    imageView.setImage(from: cover.xl)
-                } failure: { _ in
-                    imageView.image = Constants.Images.warning.image
+                if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSoundcloud?.prod ?? false {
+                    PulseProvider.shared.soundcloudPlaylistArtworkV2(for: playlist) { [weak self] cover in
+                        imageView.setImage(from: cover.xl)
+                    } failure: { _, _ in
+                        imageView.image = Constants.Images.warning.image
+                    }
+                } else {
+                    PulseProvider.shared.soundcloudPlaylistArtwork(for: playlist) { [weak self] cover in
+                        imageView.setImage(from: cover.xl)
+                    } failure: { _ in
+                        imageView.image = Constants.Images.warning.image
+                    }
                 }
             }
         }
+        
         return imageView
     }()
     
@@ -60,6 +62,7 @@ final class PlaylistTableHeaderView: BaseUIView {
         label.font = .systemFont(ofSize: 13, weight: .light)
         label.textColor = .label.withAlphaComponent(0.7)
         label.textAlignment = .center
+        label.isHidden = self.playlist.dateUpdated < 0
         return label
     }()
     
@@ -129,6 +132,11 @@ extension PlaylistTableHeaderView {
             make.centerX.equalToSuperview()
             make.top.bottom.equalToSuperview()
         }
+    }
+    
+    func changeColor() {
+        self.playButton.tintColor = SettingsManager.shared.color.color
+        self.shuffleButton.tintColor = SettingsManager.shared.color.color
     }
 }
 

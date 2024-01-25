@@ -33,9 +33,18 @@ final class NowPlayingView: BaseUIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-        label.text = "Not playing"
+        label.text = Localization.Views.NowPlaying.Label.notPlaying.localization
         label.baselineAdjustment = .none
         return label
+    }()
+    
+    private lazy var titleMarqueeView: MarqueeView = {
+        let view = MarqueeView()
+        view.contentView = self.titleLabel
+        view.contentMargin = 10
+        view.pointsPerFrame = 0.1
+        view.marqueeType = .reverse
+        return view
     }()
     
     private lazy var explicitAndArtistStackView: UIStackView = {
@@ -113,7 +122,7 @@ extension NowPlayingView {
         self.addSubview(contentView)
         contentView.addSubview(coverImageView)
         contentView.addSubview(trackInfoStackView)
-        trackInfoStackView.addArrangedSubview(titleLabel)
+        trackInfoStackView.addArrangedSubview(titleMarqueeView)
         trackInfoStackView.addArrangedSubview(explicitAndArtistStackView)
         explicitAndArtistStackView.addArrangedSubview(explicitImageView)
         explicitAndArtistStackView.addArrangedSubview(artistLabel)
@@ -144,7 +153,7 @@ extension NowPlayingView {
             make.width.equalTo(30)
         }
         
-        titleLabel.snp.makeConstraints({ $0.height.equalTo(titleLabel.textSize.height).priority(.high) })
+        titleMarqueeView.snp.makeConstraints({ $0.height.equalTo(titleLabel.textSize.height).priority(.high) })
         
         self.layoutIfNeeded()
         
@@ -182,13 +191,13 @@ extension NowPlayingView {
             return
         }
         
-        _ = AudioPlayer.shared.playPause()
+        AudioPlayer.shared.playPause()
     }
     
     @objc private func nextTrackAction(_ sender: UIButton) {
         guard AudioPlayer.shared.track != nil else { return }
         
-        _ = AudioPlayer.shared.nextTrack()
+        AudioPlayer.shared.nextTrack()
     }
     
     @objc private func presentNowPlayingVC() {
@@ -203,12 +212,13 @@ extension NowPlayingView {
 extension NowPlayingView: AudioPlayerViewDelegate {
     func setupTrackInfo(_ track: TrackModel) {
         self.titleLabel.text = track.title
+        self.titleMarqueeView.reloadData()
         self.artistLabel.text = track.artistText
         self.explicitAndArtistStackView.isHidden = track.artistText.isEmpty
     }
     
     func setupCover(_ cover: UIImage?) {
-        self.coverImageView.image = cover
+        self.coverImageView.setImage(cover)
     }
     
     func updateDuration(_ duration: Float) {
@@ -217,5 +227,12 @@ extension NowPlayingView: AudioPlayerViewDelegate {
     
     func changeState(isPlaying: Bool) {
         self.playPauseButton.changeState(isPlaying)
+    }
+    
+    func resetView() {
+        self.titleLabel.text = Localization.Views.NowPlaying.Label.notPlaying.localization
+        self.titleMarqueeView.reloadData()
+        self.explicitAndArtistStackView.isHidden = true
+        self.coverImageView.image = nil
     }
 }

@@ -97,7 +97,10 @@ final class PlaylistsPresenter: BasePresenter {
                         } failure: { error in
                             MainCoordinator.shared.currentViewController?.dismissSpinner()
                             MainCoordinator.shared.popViewController()
-                            AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
+                            AlertView.shared.presentError(
+                                error: error?.message ?? Localization.Lines.unknownError.localization(with: "Soundcloud"), 
+                                system: .iOS16AppleMusic
+                            )
                         }
                     case .liked:
                         SoundcloudProvider.shared.likedPlaylists { [weak self] soundcloudPlaylists, cursor in
@@ -111,7 +114,10 @@ final class PlaylistsPresenter: BasePresenter {
                         } failure: { error in
                             MainCoordinator.shared.currentViewController?.dismissSpinner()
                             MainCoordinator.shared.popViewController()
-                            AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
+                            AlertView.shared.presentError(
+                                error: error?.message ?? Localization.Lines.unknownError.localization(with: "Soundcloud"),
+                                system: .iOS16AppleMusic
+                            )
                         }
                 }
             default:

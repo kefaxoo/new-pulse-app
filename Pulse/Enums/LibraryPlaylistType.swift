@@ -14,9 +14,9 @@ enum LibraryPlaylistType {
     var title: String {
         switch self {
             case .user:
-                return "Your playlists"
+                return Localization.Lines.yourPlaylists.localization
             case .liked:
-                return "Liked playlists"
+                return Localization.Lines.likedPlaylists.localization
         }
     }
 }

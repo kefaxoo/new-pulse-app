@@ -44,8 +44,10 @@ class ServiceSignTableViewCell: BaseUITableViewCell {
     
     private var webViewType: WebViewType = .none
     private var type: SettingType = .none
+    private var section: Int = 0
     
-    func setupCell(type: SettingType) {
+    func setupCell(type: SettingType, section: Int) {
+        self.section = section
         self.serviceImageView.image = type.service.image
         switch type.service {
             case .soundcloud:
@@ -56,7 +58,11 @@ class ServiceSignTableViewCell: BaseUITableViewCell {
                 guard SettingsManager.shared.yandexMusic.isSigned else { break }
                 
                 YandexMusicProvider.shared.fetchUserProfileInfo(success: { self.serviceImageView.setImage(from: $0.avatarLink) })
-                YandexMusicProvider.shared.fetchAccountInfo(success: { self.yandexPlusImageView.smoothIsHidden = !$0.plus.hasPlus })
+                YandexMusicProvider.shared.fetchAccountInfo { [weak self] status in
+                    SettingsManager.shared.yandexMusic.hasPlus = status.plus.hasPlus
+                    self?.yandexPlusImageView.smoothIsHidden = !status.plus.hasPlus
+                    self?.setupConstraints()
+                }
             default:
                 break
         }
@@ -105,9 +111,12 @@ extension ServiceSignTableViewCell {
             make.height.width.equalTo(30)
         }
         
-        serviceTitleLabel.snp.makeConstraints { make in
+        serviceTitleLabel.snp.remakeConstraints { make in
             make.leading.equalTo(serviceImageView.snp.trailing).offset(10)
             make.centerY.equalToSuperview()
+            guard yandexPlusImageView.isHidden else { return }
+            
+            make.trailing.greaterThanOrEqualTo(signButton.snp.leading).offset(-10)
         }
         
         yandexPlusImageView.snp.makeConstraints { make in
@@ -115,6 +124,7 @@ extension ServiceSignTableViewCell {
             make.height.equalTo(20)
             make.width.equalTo(441 * 20 / 185)
             make.leading.equalTo(serviceTitleLabel.snp.trailing).offset(10)
+            make.trailing.equalTo(signButton.snp.leading).offset(-10)
         }
         
         signButton.snp.makeConstraints { make in
@@ -126,15 +136,15 @@ extension ServiceSignTableViewCell {
     private func setupSignButton() {
         self.signButton.menu = nil
         self.signButton.showsMenuAsPrimaryAction = false
-        self.signButton.setTitle("Sign in", for: .normal)
+        self.signButton.setTitle(Localization.Words.signIn.localization, for: .normal)
         
         switch self.type.service {
             case .soundcloud:
                 guard SettingsManager.shared.soundcloud.isSigned else { return }
                 
                 self.signButton.showsMenuAsPrimaryAction = true
-                self.signButton.setTitle("Menu", for: .normal)
-                let refreshAction = UIAction(title: "Refresh token") { _ in
+                self.signButton.setTitle(Localization.Words.menu.localization, for: .normal)
+                let refreshAction = UIAction(title: Localization.Lines.refreshToken.localization) { _ in
                     guard SettingsManager.shared.soundcloud.refreshToken != nil else { return }
                     
                     MainCoordinator.shared.currentViewController?.presentSpinner()
@@ -142,26 +152,35 @@ extension ServiceSignTableViewCell {
                         MainCoordinator.shared.currentViewController?.dismissSpinner()
                         SettingsManager.shared.soundcloud.updateTokens(tokens)
                         
-                        AlertView.shared.present(title: "Success refresh soundcloud token", alertType: .done, system: .iOS16AppleMusic)
+                        AlertView.shared.present(
+                            title: Localization.Lines.successRefreshToken.localization(with: "Soundcloud"),
+                            alertType: .done,
+                            system: .iOS16AppleMusic
+                        )
                         
-                        self.delegate?.reloadData()
+                        self.delegate?.reloadCells(at: self.section)
                     } failure: { error in
                         MainCoordinator.shared.currentViewController?.dismissSpinner()
-                        AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
+                        AlertView.shared.presentError(
+                            error: error?.message ?? Localization.Lines.unknownError.localization(with: "Soundcloud"),
+                            system: .iOS16AppleMusic
+                        )
                     }
                 }
                 
-                let signOutAction = UIAction(title: "Sign out") { [weak self] _ in
-                    guard SettingsManager.shared.soundcloud.signOut() else { return }
+                let signOutAction = UIAction(title: Localization.Words.signOut.localization) { [weak self] _ in
+                    guard SettingsManager.shared.soundcloud.signOut(),
+                          let self
+                    else { return }
                     
-                    self?.delegate?.reloadData()
+                    self.delegate?.reloadCells(at: self.section)
                 }
                 
                 self.signButton.menu = UIMenu(options: .displayInline, children: [refreshAction, signOutAction])
             case .yandexMusic:
                 guard SettingsManager.shared.yandexMusic.isSigned else { return }
                 
-                self.signButton.setTitle("Sign out", for: .normal)
+                self.signButton.setTitle(Localization.Words.signOut.localization, for: .normal)
             default:
                 return
         }
@@ -177,8 +196,8 @@ fileprivate extension ServiceSignTableViewCell {
                 guard !SettingsManager.shared.soundcloud.isSigned else { return }
             case .yandexMusic:
                 guard !SettingsManager.shared.yandexMusic.isSigned else { 
-                    _ = SettingsManager.shared.yandexMusic.signOut()
-                    self.delegate?.reloadData()
+                    SettingsManager.shared.yandexMusic.signOut()
+                    self.delegate?.reloadCells(at: self.section)
                     return
                 }
             default:
@@ -202,20 +221,37 @@ extension ServiceSignTableViewCell: WebViewControllerDelegate {
                         SettingsManager.shared.soundcloud.updateUserInfo(userInfo)
                         SettingsManager.shared.soundcloud.saveTokens(tokens)
                         
-                        AlertView.shared.present(title: "Success sign in Soundcloud", alertType: .done, system: .iOS16AppleMusic)
+                        AlertView.shared.present(
+                            title: Localization.Lines.successSignIn.localization(with: "Soundcloud"),
+                            alertType: .done,
+                            system: .iOS16AppleMusic
+                        )
                         
-                        self?.delegate?.reloadData()
+                        guard let self else { return }
+                        
+                        self.delegate?.reloadCells(at: self.section)
                     } failure: { error in
                         MainCoordinator.shared.currentViewController?.dismissSpinner()
-                        AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
+                        AlertView.shared.presentError(
+                            error: error?.message ?? Localization.Lines.unknownError.localization(with: "Soundcloud"),
+                            system: .iOS16AppleMusic
+                        )
                     }
                 } failure: { error in
                     MainCoordinator.shared.currentViewController?.dismissSpinner()
-                    AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
+                    AlertView.shared.presentError(
+                        error: error?.message ?? Localization.Lines.unknownError.localization(with: "Soundcloud"),
+                        system: .iOS16AppleMusic
+                    )
                 }
             case .yandexMusic:
-                AlertView.shared.present(title: "Success sign in Yandex Music", alertType: .done, system: .iOS16AppleMusic)
-                self.delegate?.reloadData()
+                AlertView.shared.present(
+                    title: Localization.Lines.successSignIn.localization(with: Localization.Words.yandexMusic.localization),
+                    alertType: .done,
+                    system: .iOS16AppleMusic
+                )
+                
+                self.delegate?.reloadCells(at: self.section)
             default:
                 break
         }

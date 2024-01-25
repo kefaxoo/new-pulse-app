@@ -11,7 +11,7 @@ import PulseUIComponents
 final class TracksViewController: BaseUIViewController {
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController()
-        searchController.searchBar.placeholder = "Type track..."
+        searchController.searchBar.placeholder = Localization.Controllers.Tracks.SearchControllers.typeQuery.localization
         searchController.searchBar.delegate = self
         return searchController
     }()
@@ -21,25 +21,28 @@ final class TracksViewController: BaseUIViewController {
         tableView.dataSource = self
         tableView.register(TrackTableViewCell.self)
         tableView.delegate = self
+        tableView.footerHeight = NowPlayingView.height
         return tableView
     }()
     
     private lazy var emptyView: ContentUnavailableView = {
         let view = ContentUnavailableView()
-        view.titleText = "There is no content"
+        view.titleText = Localization.Controllers.Tracks.ContentUnavailableViews.noContent.localization
         view.isHidden = true
         return view
     }()
     
     private lazy var presenter: TracksPresenter = {
-        let presenter = TracksPresenter(type: self.type, delegate: self)
+        let presenter = TracksPresenter(type: self.type, scheme: self.scheme, delegate: self)
         return presenter
     }()
     
     private let type: LibraryControllerType
+    private let scheme: PulseWidgetsScheme
     
-    init(type: LibraryControllerType) {
+    init(type: LibraryControllerType, scheme: PulseWidgetsScheme) {
         self.type = type
+        self.scheme = scheme
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -71,11 +74,15 @@ extension TracksViewController {
     }
     
     private func setupNavigationController() {
-        self.navigationItem.title = "Tracks"
+        self.navigationItem.title = Localization.Words.tracks.localization
         guard self.type == .library else { return }
         
         self.navigationItem.searchController = self.searchController
         self.navigationItem.hidesSearchBarWhenScrolling = false
+    }
+    
+    func applyColor() {
+        self.tracksTableView.visibleCells.forEach({ ($0 as? TrackTableViewCell)?.changeColor() })
     }
 }
 
@@ -84,8 +91,15 @@ extension TracksViewController {
 extension TracksViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.presenter.viewWillAppear()
+        self.applyColor()
         AudioPlayer.shared.tableViewDelegate = self
+        NotificationCenter.default.addObserver(self, selector: #selector(updateLibraryState), name: .updateLibraryState, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self, name: .updateLibraryState, object: nil)
     }
 }
 
@@ -126,6 +140,16 @@ extension TracksViewController: TracksPresenterDelegate {
         
         self.tracksTableView.reloadData()
     }
+    
+    func setNavigationControllerTitle(_ title: String) {
+        self.navigationItem.title = title
+    }
+    
+    func appendNewCells(indexPaths: [IndexPath]) {
+        self.tracksTableView.beginUpdates()
+        self.tracksTableView.insertRows(at: indexPaths, with: .automatic)
+        self.tracksTableView.endUpdates()
+    }
 }
 
 // MARK: -
@@ -144,5 +168,18 @@ extension TracksViewController: AudioPlayerTableViewDelegate {
         
         let indexPath = IndexPath(row: index, section: 0)
         (self.tracksTableView.cellForRow(at: indexPath) as? TrackTableViewCell)?.changeState(state)
+    }
+}
+
+// MARK: -
+// MARK: Actions
+extension TracksViewController {
+    @objc func updateLibraryState(_ notification: Notification) {
+        guard let track = notification.userInfo?["track"] as? TrackModel,
+              let state = notification.userInfo?["state"] as? TrackLibraryState,
+              let index = self.presenter.index(for: track)
+        else { return }
+        
+        (self.tracksTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? TrackTableViewCell)?.updateTrackState(state)
     }
 }

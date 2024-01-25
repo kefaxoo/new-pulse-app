@@ -59,15 +59,9 @@ enum SearchType {
     
     static func types(for service: ServiceType) -> [SearchType] {
         switch service {
-            case .vk:
-                return []
             case .yandexMusic:
-                var types: [SearchType] = [.tracks]
+                let types: [SearchType] = [.tracks]
                 return types
-            case .spotify:
-                return []
-            case .deezer:
-                return []
             case .soundcloud:
                 var soundcloudTypes: [SearchType] = [.tracks]
                 if service.source == .soundcloud,
@@ -76,7 +70,9 @@ enum SearchType {
                 }
                 
                 return soundcloudTypes
-            case .none:
+            case .deezer:
+                return [.tracks]
+            default:
                 return []
         }
     }
@@ -84,13 +80,13 @@ enum SearchType {
     var title: String {
         switch self {
             case .tracks:
-                return "Tracks"
+                return Localization.Words.tracks.localization
             case .albums:
-                return "Albums"
+                return Localization.Words.albums.localization
             case .artists:
-                return "Artists"
+                return Localization.Words.artists.localization
             case .playlists:
-                return "Playlists"
+                return Localization.Words.playlists.localization
             case .none:
                 return ""
         }

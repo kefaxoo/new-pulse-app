@@ -22,6 +22,7 @@ final class PlaylistViewController: BaseUIViewController {
         tableView.delegate = self
         tableView.sectionHeaderHeight = UITableView.automaticDimension
         tableView.tableHeaderView = playlistTableHeaderView
+        tableView.footerHeight = NowPlayingView.height
         return tableView
     }()
     
@@ -52,10 +53,16 @@ extension PlaylistViewController {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.prefersLargeTitles = false
         AudioPlayer.shared.tableViewDelegate = self
+        self.applyColor()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        self.navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.label
+        ]
+        
         self.navigationController?.navigationBar.prefersLargeTitles = true
     }
 }
@@ -82,8 +89,13 @@ extension PlaylistViewController {
     private func setupNavigationController() {
         self.navigationItem.title = self.playlist.title
         self.navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.clear.withAlphaComponent(0)
+            NSAttributedString.Key.foregroundColor: UIColor.clear
         ]
+    }
+    
+    func applyColor() {
+        self.playlistTableHeaderView.changeColor()
+        self.playlistTableView.visibleCells.forEach({ ($0 as? TrackTableViewCell)?.changeColor() })
     }
 }
 
@@ -108,7 +120,7 @@ extension PlaylistViewController: PlaylistPresenterDelegate {
     
     func changeNavigationTitleAlpha(_ alpha: CGFloat) {
         self.navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.clear.withAlphaComponent(alpha)
+            NSAttributedString.Key.foregroundColor: UIColor.label.withAlphaComponent(alpha)
         ]
     }
 }

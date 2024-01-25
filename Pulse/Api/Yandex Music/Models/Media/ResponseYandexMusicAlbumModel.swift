@@ -17,7 +17,7 @@ final class ResponseYandexMusicAlbumModel: Decodable {
     let artists      : [YandexMusicArtist]
     let labels       : [YandexMusicAlbumLabel]
     let isAvailable  : Bool
-    let trackPosition: YandexMusicTrackPosition
+    let trackPosition: YandexMusicTrackPosition?
     let isExplicit   : Bool
     
     func coverLink(for size: YandexMusicCoverType) -> String {
@@ -50,7 +50,7 @@ final class ResponseYandexMusicAlbumModel: Decodable {
         self.artists = try container.decode([YandexMusicArtist].self, forKey: .artists)
         self.labels = try container.decode([YandexMusicAlbumLabel].self, forKey: .labels)
         self.isAvailable = try container.decode(Bool.self, forKey: .isAvailable)
-        self.trackPosition = try container.decode(YandexMusicTrackPosition.self, forKey: .trackPosition)
+        self.trackPosition = try container.decodeIfPresent(YandexMusicTrackPosition.self, forKey: .trackPosition)
         if let isExplicit = try? container.decodeIfPresent(String.self, forKey: .isExplicit) {
             self.isExplicit = Bool(isExplicit) ?? false
         } else {

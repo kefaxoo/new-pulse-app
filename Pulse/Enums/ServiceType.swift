@@ -8,12 +8,16 @@
 import UIKit
 
 enum ServiceType: String {
-    case vk          = "vk"
-    case yandexMusic = "yandexMusic"
-    case spotify     = "spotify"
-    case deezer      = "deezer"
-    case soundcloud  = "soundcloud"
-    case none        = ""
+    case vk           = "vk"
+    case yandexMusic  = "yandexMusic"
+    case spotify      = "spotify"
+    case deezer       = "deezer"
+    case soundcloud   = "soundcloud"
+    case appleMusic   = "appleMusic"
+    case youtube      = "youtube"
+    case youtubeMusic = "youtubeMusic"
+    case none         = ""
+    case pulse        = "pulse"
     
     var muffonApi: String {
         switch self {
@@ -27,16 +31,19 @@ enum ServiceType: String {
                 return "deezer"
             case .soundcloud:
                 return "soundcloud"
-            case .none:
+            default:
                 return ""
         }
     }
     
     static var searchController: [ServiceType] {
         var services: [ServiceType] = [.soundcloud]
-        if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.muffonYandex?.prod ?? false {
+        if SettingsManager.shared.yandexMusic.isSigned,
+           SettingsManager.shared.yandexMusic.hasPlus {
             services.append(.yandexMusic)
         }
+        
+        services.append(.deezer)
         
         return services
     }
@@ -44,16 +51,24 @@ enum ServiceType: String {
     var title: String {
         switch self {
             case .vk:
-                return "Vk"
+                return Localization.Words.vk.localization
             case .yandexMusic:
-                return "Yandex Music"
+                return Localization.Words.yandexMusic.localization
             case .spotify:
                 return "Spotify"
             case .deezer:
                 return "Deezer"
             case .soundcloud:
                 return "Soundcloud"
+            case .appleMusic:
+                return "Apple Music"
+            case .youtube:
+                return "Youtube"
+            case .youtubeMusic:
+                return "Youtube Music"
             case .none:
+                return ""
+            case .pulse:
                 return ""
         }
     }
@@ -64,6 +79,8 @@ enum ServiceType: String {
                 return .soundcloud
             case "yandexmusic":
                 return .yandexMusic
+            case "deezer":
+                return .deezer
             default:
                 return .none
         }
@@ -75,6 +92,18 @@ enum ServiceType: String {
                 return Constants.Images.soundcloudLogo.image
             case .yandexMusic:
                 return Constants.Images.yandexMusicLogo.image
+            case .pulse:
+                return Constants.Images.pulseLogo.image
+            case .deezer:
+                return Constants.Images.deezerLogo.image
+            case .appleMusic:
+                return Constants.Images.appleMusicLogo.image
+            case .spotify:
+                return Constants.Images.spotifyLogo.image
+            case .youtube:
+                return Constants.Images.youtubeLogo.image
+            case .youtubeMusic:
+                return Constants.Images.youtubeMusicLogo.image
             default:
                 return nil
         }
@@ -86,6 +115,8 @@ enum ServiceType: String {
                 return SourceType.soundcloudService(SettingsManager.shared.soundcloud.currentSource)
             case .yandexMusic:
                 return SourceType.yandexMusicService(SettingsManager.shared.yandexMusic.currentSource)
+            case .deezer:
+                return .muffon
             default:
                 return .none
         }
@@ -108,6 +139,46 @@ enum ServiceType: String {
                 return [.user, .liked]
             default:
                 return []
+        }
+    }
+    
+    var odesliApi: String {
+        switch self {
+            case .yandexMusic:
+                return "yandex"
+            case .spotify:
+                return "spotify"
+            case .deezer:
+                return "deezer"
+            case .soundcloud:
+                return "soundcloud"
+            case .appleMusic:
+                return "appleMusic"
+            case .youtube:
+                return "youtube"
+            case .youtubeMusic:
+                return "youtubeMusic"
+            default:
+                return ""
+        }
+    }
+    
+    var odesliReplacePart: String {
+        switch self {
+            case .yandexMusic:
+                return "YANDEX_SONG::"
+            case .spotify:
+                return "SPOTIFY_SONG::"
+            case .deezer:
+                return "DEEZER_SONG::"
+            case .soundcloud:
+                return "SOUNDCLOUD_SONG::"
+            case .appleMusic:
+                return "ITUNES_SONG::"
+            case .youtube, .youtubeMusic:
+                return "YOUTUBE_VIDEO::"
+            default:
+                return ""
         }
     }
 }

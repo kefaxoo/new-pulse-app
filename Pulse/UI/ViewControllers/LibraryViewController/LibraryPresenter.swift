@@ -59,7 +59,7 @@ extension LibraryPresenter: BaseTableViewPresenter {
                 MainCoordinator.shared.pushPlaylistsViewController(type: controllerType)
             case .tracks:
                 MainCoordinator.shared.pushTracksViewController(type: controllerType)
-            case .soundcloud:
+            case .soundcloud, .yandexMusic:
                 MainCoordinator.shared.pushLibraryController(type: controllerType, service: libraryType.service)
         }
     }

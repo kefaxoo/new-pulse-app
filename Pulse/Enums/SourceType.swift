@@ -12,6 +12,7 @@ enum SourceType: String {
     case soundcloud  = "soundcloud"
     case none        = ""
     case yandexMusic = "yandexmusic"
+    case pulse       = "pulse"
     
     static func soundcloudService(_ service: SoundcloudSourceType) -> SourceType {
         switch service {
@@ -32,6 +33,28 @@ enum SourceType: String {
                 return .yandexMusic
             case .none:
                 return .none
+        }
+    }
+    
+    var soundcloudService: SoundcloudSourceType {
+        return switch self {
+            case .muffon:
+                .muffon
+            case .soundcloud:
+                .soundcloud
+            default:
+                .none
+        }
+    }
+    
+    var yandexMusicService: YandexMusicSourceType {
+        return switch self {
+            case .muffon:
+                .muffon
+            case .yandexMusic:
+                .yandexMusic
+            default:
+                .none
         }
     }
 }

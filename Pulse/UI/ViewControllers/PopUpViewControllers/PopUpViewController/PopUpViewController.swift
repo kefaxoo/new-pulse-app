@@ -67,7 +67,7 @@ class PopUpViewController: BaseUIViewController {
 extension PopUpViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.observeKeyboard(view: self.mainView, defaultOffset: 20)
+        self.configureKeyboardObservating(observeView: self.mainView, movingOffset: 20)
     }
     
     override func viewDidAppear(_ animated: Bool) {

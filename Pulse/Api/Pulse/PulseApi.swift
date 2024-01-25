@@ -21,6 +21,7 @@ enum PulseApi {
     case loginUserV3(credentials: Credentials, signMethod: SignMethodType)
     case resetPasswordV3(credentials: Credentials)
     case accessTokenV3
+    case isUserBlocked
     
     // Covers
     case topCovers(country: String? = nil)
@@ -49,17 +50,43 @@ enum PulseApi {
     case soundcloudPlaylistArtworkV2(id: String)
     
     case features
+    
+    // Main screen
+    case mainScreen
+    case exclusiveTracks(offset: Int)
+    case exclusiveTrack(trackId: String)
+    case exclusivePlaylist(playlistId: Int, offset: Int)
+    
+    // Stories
+    case markStoryAsWatched(storyId: Int)
+    
+    case spotifyCanvas(track: TrackModel)
+    case pulseCanvas(track: TrackModel)
+    
+    // Settings
+    case fetchSettings
+    case updateSettings
 }
 
 extension PulseApi: BaseRestApiEnum {
     var baseUrl: String {
-        switch AppEnvironment.current {
-            case .local:
-                return "\(Constants.localPulseBaseUrl)/api"
-            case .test:
-                return "https://test-pulse-api.fly.dev/api"
+        switch self {
+            case .mainScreen, .exclusiveTracks, .exclusiveTrack:
+                switch AppEnvironment.current {
+                    case .local:
+                        return "\(Constants.localPulseBaseUrl)/api"
+                    default:
+                        return "https://prod-pulse-api.fly.dev/api"
+                }
             default:
-                return "https://prod-pulse-api.fly.dev/api"
+                switch AppEnvironment.current {
+                    case .local:
+                        return "\(Constants.localPulseBaseUrl)/api"
+                    case .test:
+                        return "https://test-pulse-api.fly.dev/api"
+                    default:
+                        return "https://prod-pulse-api.fly.dev/api"
+                }
         }
     }
     
@@ -105,17 +132,35 @@ extension PulseApi: BaseRestApiEnum {
                 return "/v2/soundcloud/playlist/artwork"
             case .soundcloudArtworkV2:
                 return "/v2/soundcloud/artwork"
+            case .mainScreen:
+                return "/screen/main"
+            case .spotifyCanvas:
+                return "/v2/spotify/canvas"
+            case .exclusiveTracks:
+                return "/exclusive/tracks"
+            case .pulseCanvas:
+                return "/exclusive/canvas/externalServices"
+            case .exclusiveTrack:
+                return "/exclusive/track/info"
+            case .markStoryAsWatched:
+                return "/story/markAsWatched"
+            case .fetchSettings, .updateSettings:
+                return "/user/settings"
+            case .isUserBlocked:
+                return "/user/checkBlock"
+            case .exclusivePlaylist:
+                return "/exclusive/playlist"
         }
     }
     
     var method: FriendlyURLSession.HTTPMethod {
         switch self {
             case .createUser, .log, .syncTrack, .features, .createUserV3, .externalSign, .syncTracks, .likeTrack,
-                    .incrementListenCount:
+                    .incrementListenCount, .markStoryAsWatched:
                 return .post
             case .removeTrack, .dislikeTrack:
                 return .delete
-            case .resetPasswordV3:
+            case .resetPasswordV3, .updateSettings:
                 return .patch
             default:
                 return .get
@@ -142,7 +187,9 @@ extension PulseApi: BaseRestApiEnum {
                 if let refreshToken = SettingsManager.shared.pulse.refreshToken {
                     headers["X-Pulse-Refresh-Token"] = refreshToken
                 }
-            case .syncTracks, .likeTrack, .dislikeTrack, .incrementListenCount, .fetchDislikedTracks, .soundcloudArtworkV2:
+            case .syncTracks, .likeTrack, .dislikeTrack, .incrementListenCount, .fetchDislikedTracks, .soundcloudArtworkV2, .mainScreen, 
+                    .spotifyCanvas, .exclusiveTracks, .pulseCanvas, .exclusiveTrack, .markStoryAsWatched, .fetchSettings, .updateSettings, 
+                    .isUserBlocked, .exclusivePlaylist:
                 if let accessToken = SettingsManager.shared.pulse.accessToken {
                     headers["X-Pulse-Token"] = accessToken
                 }
@@ -194,6 +241,21 @@ extension PulseApi: BaseRestApiEnum {
             case .fetchDislikedTracks(let offset):
                 parameters["offset"] = offset
                 parameters["limit"]  = 20
+            case .spotifyCanvas(let track), .pulseCanvas(let track):
+                parameters["track_id"] = "\(track.id)"
+                parameters["track_service"] = track.service.rawValue
+            case .exclusiveTracks(let offset):
+                parameters["offset"] = offset
+            case .exclusiveTrack(let trackId):
+                parameters["track_id"] = trackId
+            case .markStoryAsWatched(let storyId):
+                parameters["story_id"] = storyId
+            case .isUserBlocked:
+                parameters["udid"] = SettingsManager.shared.udid
+            case .exclusivePlaylist(let playlistId, let offset):
+                parameters["playlist_id"] = playlistId
+                parameters["show_tracks"] = true
+                parameters["offset"]      = offset
             default:
                 return nil
         }
@@ -213,6 +275,25 @@ extension PulseApi: BaseRestApiEnum {
                 return ["tracks": RealmManager<LibraryTrackModel>().read().compactMap({ TrackModel($0).newJson })]
             case .likeTrack(let track), .incrementListenCount(let track):
                 return track.newJson
+            case .updateSettings:
+                return [
+                    "autoDownload": SettingsManager.shared.autoDownload,
+                    "isCanvasEnabled": SettingsManager.shared.isCanvasesEnabled,
+                    "color": SettingsManager.shared.color.rawValue,
+                    "appearance": SettingsManager.shared.appearance.rawValue,
+                    "soundcloud": [
+                        "like": SettingsManager.shared.soundcloudLike,
+                        "source": SettingsManager.shared.soundcloud.currentSource.rawValue
+                    ],
+                    "yandexMusic": [
+                        "like": SettingsManager.shared.yandexMusicLike,
+                        "source": SettingsManager.shared.yandexMusic.currentSource.rawValue,
+                        "quality": [
+                            "streaming": SettingsManager.shared.yandexMusic.streamingQuality.rawValue,
+                            "download": SettingsManager.shared.yandexMusic.downloadQuality.rawValue
+                        ]
+                    ]
+                ]
             default:
                 return nil
         }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PulseUIComponents
 
 class CoversViewController: BaseUIViewController {
     lazy var firstCoversLine = CoversScrollingView()

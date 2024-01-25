@@ -6,6 +6,13 @@
 //
 
 import UIKit
+import PulseUIComponents
+
+protocol SettingsView: AnyObject {
+    func reloadData()
+    func reloadCells(at indexPaths: [IndexPath])
+    func reloadCells(at section: Int)
+}
 
 class SettingsViewController: BaseUIViewController {
     private lazy var settingsTableView: BaseUITableView = {
@@ -20,20 +27,17 @@ class SettingsViewController: BaseUIViewController {
         )
         
         tableView.delegate = self
+        tableView.footerHeight = NowPlayingView.height
         return tableView
     }()
     
-    private var closure: (() -> ())
-    private lazy var presenter: SettingsPresenter = {
-        let presenter = SettingsPresenter(closure: self.closure)
-        presenter.delegate = self
-        return presenter
-    }()
+    private let presenter: SettingsPresenterProtocol
     
     init(closure: @escaping(() -> ())) {
-        self.closure = closure
+        self.presenter = SettingsPresenter(closure: closure)
         
         super.init(nibName: nil, bundle: nil)
+        self.presenter.setView(self)
     }
     
     required init?(coder: NSCoder) {
@@ -58,7 +62,12 @@ extension SettingsViewController {
     }
     
     private func setupNavigationController() {
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sign Out", style: .plain, target: self, action: #selector(signOutAction))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: Localization.Words.signOut.localization,
+            style: .plain,
+            target: self,
+            action: #selector(signOutAction)
+        )
     }
 }
 
@@ -82,7 +91,7 @@ extension SettingsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return self.presenter.headerTitle(in: section)
+        return self.presenter.headerTitle(for: section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -100,8 +109,16 @@ extension SettingsViewController: UITableViewDelegate {
 
 // MARK: -
 // MARK: SettingsPresenterDelegate
-extension SettingsViewController: SettingsPresenterDelegate {
+extension SettingsViewController: SettingsView {
     func reloadData() {
         self.settingsTableView.reloadData()
+    }
+    
+    func reloadCells(at indexPaths: [IndexPath]) {
+        self.settingsTableView.reloadRows(at: indexPaths, with: .automatic)
+    }
+    
+    func reloadCells(at section: Int) {
+        self.settingsTableView.reloadSections(IndexSet(integer: section), with: .automatic)
     }
 }

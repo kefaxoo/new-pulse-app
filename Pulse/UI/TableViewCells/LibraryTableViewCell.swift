@@ -70,4 +70,8 @@ extension LibraryTableViewCell {
         spacer.snp.makeConstraints({ $0.height.equalTo(1) })
         titleLabel.snp.makeConstraints({ $0.centerY.equalToSuperview() })
     }
+    
+    func changeColor() {
+        self.iconImageView.tintColor = SettingsManager.shared.color.color
+    }
 }

@@ -16,8 +16,6 @@ final class ServicesManager {
         if SettingsManager.shared.soundcloud.isSigned {   
             SoundcloudProvider.shared.refreshToken { tokens in
                 SettingsManager.shared.soundcloud.updateTokens(tokens)
-            } failure: { _ in
-                _ = SettingsManager.shared.soundcloud.signOut()
             }
         }
     }

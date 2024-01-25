@@ -37,9 +37,36 @@ typealias PulseVerifyUserV3      = ResponsePulseVerifyUserV3Model
 typealias PulseResetPasswordV3   = ResponsePulseResetPasswordV3Model
 typealias PulseAddTracksModels   = ResponsePulseAddTracksModel
 typealias PulseImagesModel       = ResponsePulseImagesModel
+typealias PulseIsBlocked         = ResponsePulseIsBlockedModel
 
 // Models V3
 typealias PulseServerTrack = ResponsePulseServerTrackModel
+
+// Widgets
+typealias PulseWidgetsRoot        = ResponsePulseWidgetsRootModel
+typealias PulseWidgets            = ResponsePulseWidgetsModel
+typealias PulseExclusiveTrack     = ResponsePulseExclusiveTrackModel
+typealias PulseExclusiveArtist    = ResponsePulseExclusiveArtistModel
+typealias PulseExclusiveAlbum     = ResponsePulseExclusiveAlbumModel
+typealias PulseWidget             = ResponsePulseWidgetModel
+typealias PulseWidgetRoot         = ResponsePulseWidgetRootModel
+typealias PulseExclusiveTrackInfo = ResponsePulseExclusiveTrackInfoModel
+typealias PulsePlaylist           = ResponsePulsePlaylistModel
+typealias PulsePlaylistRoot       = ResponsePulsePlaylistRootModel
+
+// Stories
+typealias PulseStoryTrack = ResponsePulseStoryTrackModel
+typealias PulseStoryType  = ResponsePulseStoryTypeModel
+typealias PulseStory      = ResponsePulseStoryModel
+
+// Settings
+typealias PulseServiceSettings = ResponsePulseServiceSettingsModel
+typealias PulseSettings        = ResponsePulseSettingsModel
+typealias PulseSettingsRoot    = ResponsePulseSettingsRootModel
+typealias PulseQualitySettings = ResponsePulseQualitySettingsModel
+
+typealias PulseSpotifyCanvas = ResponsePulseSpotifyCanvasModel
+typealias PulseCanvas        = ResponsePulseCanvasModel
 
 // MARK: -
 // MARK: Closures

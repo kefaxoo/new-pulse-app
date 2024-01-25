@@ -88,7 +88,7 @@ final class MuffonProvider: BaseRestApiProvider {
     }
     
     func trackInfo(
-        id: Int,
+        id: String,
         service: ServiceType,
         shouldCancelTask: Bool = true,
         success: @escaping((MuffonTrack) -> ()),

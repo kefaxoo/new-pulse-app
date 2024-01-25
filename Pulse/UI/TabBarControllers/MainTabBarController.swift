@@ -47,6 +47,12 @@ final class MainTabBarController: UITabBarController {
         self.configureTabBar()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.selectedIndex = SettingsManager.shared.lastTabBarIndex
+    }
+    
     private func configureTabBar() {
         self.tabBar.backgroundColor = .clear
         
@@ -79,23 +85,31 @@ final class MainTabBarController: UITabBarController {
             self?.tabBar.tintColor = SettingsManager.shared.color.color
         }
         
-        settingsVC.tabBarItem = UITabBarItem(title: "Settings", image: Constants.Images.settings.image, tag: 1000)
+        settingsVC.tabBarItem = UITabBarItem(title: Localization.Words.settings.localization, image: Constants.Images.settings.image, tag: 1000)
         
         let searchVC = SearchViewController()
-        searchVC.tabBarItem = UITabBarItem(title: "Search", image: Constants.Images.search.image, tag: 1001)
+        searchVC.tabBarItem = UITabBarItem(title: Localization.Words.search.localization, image: Constants.Images.search.image, tag: 1001)
         
         let libraryVC = LibraryViewController(type: .library, service: .none)
         libraryVC.tabBarItem = UITabBarItem(
-            title: "Library",
+            title: Localization.Words.library.localization,
             image: Constants.Images.libraryNonSelected.image,
             selectedImage: Constants.Images.librarySelected.image
         )
         
+        let mainVC = MainFeedViewController()
+        mainVC.tabBarItem = UITabBarItem(
+            title: Localization.Words.main.localization,
+            image: Constants.Images.mainNonSelected.image,
+            selectedImage: Constants.Images.mainSelected.image
+        )
+        
         self.tabBar.tintColor = SettingsManager.shared.color.color
         self.viewControllers = [
-            libraryVC.configureNavigationController(title: "Library"),
-            searchVC.configureNavigationController(title: "Search"),
-            settingsVC.configureNavigationController(title: "Settings")
+            mainVC.configureNavigationController(title: Localization.Words.main.localization),
+            libraryVC.configureNavigationController(title: Localization.Words.library.localization),
+            searchVC.configureNavigationController(title: Localization.Words.search.localization),
+            settingsVC.configureNavigationController(title: Localization.Words.settings.localization)
         ]
     }
     

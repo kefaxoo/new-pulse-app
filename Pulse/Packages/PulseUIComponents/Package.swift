@@ -18,14 +18,16 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/SnapKit/SnapKit", exact: "5.6.0"),
-        .package(url: "https://github.com/kefaxoo/ESTMusicIndicator", branch: "main")
+        .package(url: "https://github.com/kefaxoo/ESTMusicIndicator", branch: "main"),
+        .package(url: "https://github.com/SDWebImage/SDWebImage", exact: "5.18.0"),
+        .package(path: "../PulseMedia")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "PulseUIComponents",
-            dependencies: ["ESTMusicIndicator", "SnapKit"]
+            dependencies: ["ESTMusicIndicator", "SnapKit", "SDWebImage", "PulseMedia"]
         )
     ]
 )

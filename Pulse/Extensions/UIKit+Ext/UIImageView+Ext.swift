@@ -8,19 +8,25 @@
 import UIKit
 
 extension UIImageView {
-    func setImage(from link: String?) {
+    func setImage(from link: String?, completion: (() -> ())? = nil) {
         DispatchQueue.global(qos: .background).async { [weak self] in
             ImageManager.shared.image(from: link) { [weak self] image, shouldAnimate in
                 DispatchQueue.main.async { [weak self] in
                     self?.image = image
+                    completion?()
                     guard shouldAnimate else { return }
                     
-                    self?.alpha = 0
-                    UIView.animate(withDuration: 0.2, delay: 0, options: .allowUserInteraction) {
-                        self?.alpha = 1
-                    }
+                    self?.setImage(image)
                 }
             }
+        }
+    }
+    
+    func setImage(_ image: UIImage?) {
+        self.image = image
+        self.alpha = 0
+        UIView.animate(withDuration: 0.2, delay: 0, options: .allowUserInteraction) { [weak self] in
+            self?.alpha = 1
         }
     }
     
@@ -47,5 +53,12 @@ extension UIImageView {
     
     func setImage(_ type: Constants.Images) {
         self.image = type.image
+    }
+    
+    static func imageView(forLabel label: TrackModel.Labels) -> UIImageView {
+        let imageView = Self.default
+        imageView.setImage(label.image)
+        imageView.tintColor = .label
+        return imageView
     }
 }

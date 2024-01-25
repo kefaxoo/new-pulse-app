@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PulseUIComponents
 
 final class LibraryViewController: BaseUIViewController {
     private lazy var libraryTableView: UITableView = {
@@ -56,6 +57,10 @@ extension LibraryViewController {
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(10)
         }
+    }
+    
+    func applyColor() {
+        self.libraryTableView.visibleCells.forEach({ ($0 as? LibraryTableViewCell)?.changeColor() })
     }
 }
 

@@ -22,10 +22,10 @@ enum SoundcloudApi {
     case userPlaylists(cursor: String?)
     
     // MARK: Track
-    case trackInfo(id: Int)
-    case playableLink(id: Int)
-    case likeTrack(id: Int)
-    case removeLikeTrack(id: Int)
+    case trackInfo(id: String)
+    case playableLink(id: String)
+    case likeTrack(id: String)
+    case removeLikeTrack(id: String)
     
     // MARK: Search
     case search(type: SearchType, query: String, offset: Int)

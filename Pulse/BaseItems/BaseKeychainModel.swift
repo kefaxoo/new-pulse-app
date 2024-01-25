@@ -63,7 +63,7 @@ class BaseKeychainModel {
         return SecItemUpdate(query as CFDictionary, attributes as CFDictionary) == noErr
     }
     
-    func deleteAccount(username: String) -> Bool {
+    @discardableResult func deleteAccount(username: String) -> Bool {
         let query: [String: Any] = [
             kSecClass as String      : kSecClassGenericPassword,
             kSecAttrService as String: self.service,

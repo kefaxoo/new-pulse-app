@@ -17,13 +17,18 @@ enum YandexMusicApi {
     case search(query: String, page: Int, type: SearchType)
     
     // MARK: - Audio link
-    case fetchAudioLinkStep1(trackId: Int)
+    case fetchAudioLinkStep1(trackId: String)
     case fetchAudioLinkStep2(components: URLComponents)
     
     // MARK: - Media
-    case track(trackId: Int)
+    case track(trackId: String)
+    case tracks(trackIds: [String])
     case likeTrack(track: TrackModel)
     case removeLikeTrack(track: TrackModel)
+    case artist(artist: ArtistModel)
+    
+    // MARK: - Library
+    case likedTracks
 }
 
 extension YandexMusicApi: BaseRestApiEnum {
@@ -56,12 +61,18 @@ extension YandexMusicApi: BaseRestApiEnum {
                 return "/users/\(SettingsManager.shared.yandexMusic.id)/likes/tracks/add-multiple"
             case .removeLikeTrack:
                 return "/users/\(SettingsManager.shared.yandexMusic.id)/likes/tracks/remove"
+            case .likedTracks:
+                return "/users/\(SettingsManager.shared.yandexMusic.id)/likes/tracks"
+            case .tracks:
+                return "/tracks"
+            case .artist(let artist):
+                return "/artists/\(artist.id)/brief-info"
         }
     }
     
     var method: FriendlyURLSession.HTTPMethod {
         switch self {
-            case .likeTrack, .removeLikeTrack:
+            case .likeTrack, .removeLikeTrack, .tracks:
                 return .post
             default:
                 return .get
@@ -89,6 +100,9 @@ extension YandexMusicApi: BaseRestApiEnum {
             case .fetchAudioLinkStep2(let components):
                 parameters["format"] = "json"
                 components.queryItems?.forEach({ parameters[$0.name] = $0.value })
+            case .artist:
+                parameters["discographyBlockEnabled"] = true
+                parameters["useClipDataFormat"]       = true
             default:
                 break
         }
@@ -103,6 +117,10 @@ extension YandexMusicApi: BaseRestApiEnum {
                 if let artistId = track.artist?.id {
                     body["track-ids"] = "\(track.id):\(artistId)"
                 }
+                
+            case .tracks(let trackIds):
+                body["track_ids"]       = trackIds.joined(separator: ",")
+                body["with-all-albums"] = true
             default:
                 return nil
         }
@@ -112,7 +130,7 @@ extension YandexMusicApi: BaseRestApiEnum {
     
     var bodyType: BodyType? {
         switch self {
-            case .likeTrack, .removeLikeTrack:
+            case .likeTrack, .removeLikeTrack, .tracks:
                 return .urlEncoded
             default:
                 return nil

@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 final class DownloadQueueTrackModel: Object {
-    @Persisted dynamic var id      = -1
+    @Persisted dynamic var id      = ""
     @Persisted dynamic var service = ""
     @Persisted dynamic var source  = ""
     

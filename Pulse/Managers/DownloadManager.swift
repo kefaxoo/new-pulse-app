@@ -227,6 +227,22 @@ fileprivate extension DownloadManager {
                         })
                     }
                 }
+            case .pulse:
+                PulseProvider.shared.exclusiveTrackInfo(byId: obj.id) { [weak self] track in
+                    let filename = TrackModel(track).libraryTrackFilename
+                    self?.downloadTrack(from: track.playableLink, to: URL(filename: filename, path: .documentDirectory), completion: { url in
+                        guard url != nil else {
+                            completion(nil)
+                            return
+                        }
+                        
+                        obj.filename = filename
+                        completion(obj)
+                    })
+                } failure: { _, _ in
+                    completion(nil)
+                }
+
             default:
                 completion(nil)
         }

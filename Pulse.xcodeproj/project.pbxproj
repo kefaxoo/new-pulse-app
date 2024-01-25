@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -59,7 +59,6 @@
 		70017F242AEEDB34001E1C02 /* NowPlayingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E522AEEDB34001E1C02 /* NowPlayingViewController.swift */; };
 		70017F252AEEDB34001E1C02 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E542AEEDB34001E1C02 /* SearchViewController.swift */; };
 		70017F262AEEDB34001E1C02 /* SearchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E552AEEDB34001E1C02 /* SearchPresenter.swift */; };
-		70017F272AEEDB34001E1C02 /* StaticGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E572AEEDB34001E1C02 /* StaticGradientView.swift */; };
 		70017F282AEEDB34001E1C02 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E582AEEDB34001E1C02 /* AlertView.swift */; };
 		70017F292AEEDB34001E1C02 /* NowPlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E592AEEDB34001E1C02 /* NowPlayingView.swift */; };
 		70017F2A2AEEDB34001E1C02 /* ScrollingCoverCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E5B2AEEDB34001E1C02 /* ScrollingCoverCollectionViewCell.swift */; };
@@ -113,8 +112,6 @@
 		70017F5C2AEEDB34001E1C02 /* AudioPlayerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E962AEEDB34001E1C02 /* AudioPlayerItem.swift */; };
 		70017F5D2AEEDB34001E1C02 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E972AEEDB34001E1C02 /* Device.swift */; };
 		70017F5E2AEEDB34001E1C02 /* BaseUITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E9A2AEEDB34001E1C02 /* BaseUITableViewCell.swift */; };
-		70017F5F2AEEDB34001E1C02 /* BaseUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E9B2AEEDB34001E1C02 /* BaseUIViewController.swift */; };
-		70017F602AEEDB34001E1C02 /* BaseUITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E9C2AEEDB34001E1C02 /* BaseUITableView.swift */; };
 		70017F612AEEDB34001E1C02 /* BaseUICollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E9D2AEEDB34001E1C02 /* BaseUICollectionViewCell.swift */; };
 		70017F622AEEDB34001E1C02 /* BaseKeychainModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E9E2AEEDB34001E1C02 /* BaseKeychainModel.swift */; };
 		70017F632AEEDB34001E1C02 /* BasePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E9F2AEEDB34001E1C02 /* BasePresenter.swift */; };
@@ -186,6 +183,24 @@
 		7013E34C2B0D58F90038A600 /* MPVolumeView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7013E34B2B0D58F90038A600 /* MPVolumeView+Ext.swift */; };
 		70174C532B00F04D00E7DA0D /* ResponsePulseAddTracksModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70174C522B00F04D00E7DA0D /* ResponsePulseAddTracksModel.swift */; };
 		70174C552B00F08500E7DA0D /* ResponsePulseServerTrackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70174C542B00F08500E7DA0D /* ResponsePulseServerTrackModel.swift */; };
+		701B75C02B4962300090FACB /* ResponsePulseStoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701B75BF2B4962300090FACB /* ResponsePulseStoryModel.swift */; };
+		701B75C22B4962430090FACB /* ResponsePulseStoryTrackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701B75C12B4962430090FACB /* ResponsePulseStoryTrackModel.swift */; };
+		701B75C42B4962850090FACB /* ResponsePulseStoryTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701B75C32B4962850090FACB /* ResponsePulseStoryTypeModel.swift */; };
+		701B75C72B496F430090FACB /* StoryTrackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701B75C62B496F430090FACB /* StoryTrackViewController.swift */; };
+		701D04802B2F8E2A0082FA44 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701D047F2B2F8E2A0082FA44 /* CanvasView.swift */; };
+		701D04822B2F8F380082FA44 /* CanvasManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701D04812B2F8F380082FA44 /* CanvasManager.swift */; };
+		7024E2072B3DF24D00CD57D5 /* ResponseYandexMusicArtistRootModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7024E2062B3DF24D00CD57D5 /* ResponseYandexMusicArtistRootModel.swift */; };
+		7024E2092B3DF4A400CD57D5 /* ResponseYandexMusicPlaylistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7024E2082B3DF4A400CD57D5 /* ResponseYandexMusicPlaylistModel.swift */; };
+		7024E20C2B3DF7EC00CD57D5 /* ArtistViewScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7024E20B2B3DF7EC00CD57D5 /* ArtistViewScheme.swift */; };
+		7024E20E2B3DFAEE00CD57D5 /* ButtonTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7024E20D2B3DFAEE00CD57D5 /* ButtonTableHeaderView.swift */; };
+		702D77342B45666F00F1B541 /* MainFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 702D77332B45666F00F1B541 /* MainFeedViewController.swift */; };
+		702D77362B45667800F1B541 /* MainFeedPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 702D77352B45667800F1B541 /* MainFeedPresenter.swift */; };
+		702D773D2B457EB100F1B541 /* ResponsePulseExclusiveArtistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 702D773C2B457EB100F1B541 /* ResponsePulseExclusiveArtistModel.swift */; };
+		702D773F2B457ED700F1B541 /* ResponsePulseExclusiveAlbumModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 702D773E2B457ED700F1B541 /* ResponsePulseExclusiveAlbumModel.swift */; };
+		702D77412B457F0A00F1B541 /* ResponsePulseExclusiveTrackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 702D77402B457F0A00F1B541 /* ResponsePulseExclusiveTrackModel.swift */; };
+		702D77432B457F6600F1B541 /* ResponsePulseWidgetsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 702D77422B457F6600F1B541 /* ResponsePulseWidgetsModel.swift */; };
+		702D77472B4580EC00F1B541 /* ResponsePulseWidgetsRootModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 702D77462B4580EC00F1B541 /* ResponsePulseWidgetsRootModel.swift */; };
+		70364A592B584ED90067C740 /* ResponsePulsePlaylistRootModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70364A582B584ED90067C740 /* ResponsePulsePlaylistRootModel.swift */; };
 		703E65692AFA663C001A62FA /* LocalizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703E65682AFA663C001A62FA /* LocalizationManager.swift */; };
 		704240D12B2B9F7D00B7F0AD /* ResponseYandexMusicSearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704240D02B2B9F7D00B7F0AD /* ResponseYandexMusicSearchModel.swift */; };
 		704240D42B2B9FA200B7F0AD /* ResponseYandexMusicTracksModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704240D32B2B9FA200B7F0AD /* ResponseYandexMusicTracksModel.swift */; };
@@ -201,6 +216,17 @@
 		704240ED2B2BAD2600B7F0AD /* URLComponents+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704240EC2B2BAD2600B7F0AD /* URLComponents+Ext.swift */; };
 		704240EF2B2BAEF100B7F0AD /* ResponseYandexMusicFileDownloadInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704240EE2B2BAEF100B7F0AD /* ResponseYandexMusicFileDownloadInfoModel.swift */; };
 		7044731D2B0882F900B3FB98 /* UIStoryboard+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7044731C2B0882F900B3FB98 /* UIStoryboard+Ext.swift */; };
+		70512A782B5D324400D8095D /* HPParallaxHeader in Frameworks */ = {isa = PBXBuildFile; productRef = 70512A772B5D324400D8095D /* HPParallaxHeader */; };
+		705EC83A2B40A63A00CFA3C4 /* OpenInServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705EC8392B40A63A00CFA3C4 /* OpenInServiceViewController.swift */; };
+		705EC83C2B40A7AB00CFA3C4 /* OpenInServicePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705EC83B2B40A7AB00CFA3C4 /* OpenInServicePresenter.swift */; };
+		705EC83F2B40A8D000CFA3C4 /* OdesliApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705EC83E2B40A8D000CFA3C4 /* OdesliApi.swift */; };
+		705EC8422B40AB5000CFA3C4 /* ResponseOdesliRootModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705EC8412B40AB5000CFA3C4 /* ResponseOdesliRootModel.swift */; };
+		705EC8442B40AB9800CFA3C4 /* ResponseOdesliLinksModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705EC8432B40AB9800CFA3C4 /* ResponseOdesliLinksModel.swift */; };
+		705EC8462B40ABA500CFA3C4 /* OdesliTypealias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705EC8452B40ABA500CFA3C4 /* OdesliTypealias.swift */; };
+		705EC8482B40ABC200CFA3C4 /* ResponseOdesliServiceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705EC8472B40ABC200CFA3C4 /* ResponseOdesliServiceModel.swift */; };
+		705EC84A2B40AD1800CFA3C4 /* OdesliProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705EC8492B40AD1800CFA3C4 /* OdesliProvider.swift */; };
+		705EC84C2B40AEA700CFA3C4 /* ServiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705EC84B2B40AEA700CFA3C4 /* ServiceTableViewCell.swift */; };
+		705EC84E2B40BA9800CFA3C4 /* OpenInServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705EC84D2B40BA9800CFA3C4 /* OpenInServiceView.swift */; };
 		706974C32B055B500093D1FB /* PlaylistTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706974C22B055B500093D1FB /* PlaylistTableHeaderView.swift */; };
 		706CB6D62B210E8900B966EE /* AVPlayer+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706CB6D52B210E8900B966EE /* AVPlayer+Ext.swift */; };
 		7072CC062AF8F43500E51E0A /* SignMethodType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7072CC052AF8F43500E51E0A /* SignMethodType.swift */; };
@@ -211,12 +237,32 @@
 		7072CC172AF8FA7D00E51E0A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7072CC192AF8FA7D00E51E0A /* Localizable.strings */; };
 		7072CC1B2AF8FCE000E51E0A /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7072CC1A2AF8FCE000E51E0A /* Localization.swift */; };
 		7072CC212AF905BC00E51E0A /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 7072CC202AF905BC00E51E0A /* GoogleSignIn */; };
-		7072CC232AF9062600E51E0A /* credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7072CC222AF9062600E51E0A /* credentials.plist */; };
 		7072CC252AF9857C00E51E0A /* ResponsePulseLoginUserV3Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7072CC242AF9857C00E51E0A /* ResponsePulseLoginUserV3Model.swift */; };
 		7072CC272AF9865D00E51E0A /* ResponsePulseAuthorizationInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7072CC262AF9865D00E51E0A /* ResponsePulseAuthorizationInfoModel.swift */; };
 		7072CC292AF987C600E51E0A /* ResponsePulseVerifyUserV3Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7072CC282AF987C600E51E0A /* ResponsePulseVerifyUserV3Model.swift */; };
-		7074CD092B0E6BA100143D92 /* ImportLibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7074CD082B0E6BA100143D92 /* ImportLibraryViewController.swift */; };
+		707C044E2B40CC06000B91BF /* ApplicationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707C044D2B40CC06000B91BF /* ApplicationStyle.swift */; };
+		707C579A2B49B65B0069D3CF /* ResponsePulseSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707C57992B49B65B0069D3CF /* ResponsePulseSettingsModel.swift */; };
+		707C579C2B49B6730069D3CF /* ResponsePulseSettingsRootModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707C579B2B49B6730069D3CF /* ResponsePulseSettingsRootModel.swift */; };
+		707C579E2B49B6BB0069D3CF /* ResponsePulseServiceSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707C579D2B49B6BB0069D3CF /* ResponsePulseServiceSettingsModel.swift */; };
+		708290D02B432634007E1DB4 /* PulseMedia in Resources */ = {isa = PBXBuildFile; fileRef = 708290CF2B432634007E1DB4 /* PulseMedia */; };
+		708290D32B432648007E1DB4 /* PulseMedia in Frameworks */ = {isa = PBXBuildFile; productRef = 708290D22B432648007E1DB4 /* PulseMedia */; };
 		709507982B2A526600C73909 /* YandexMusicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709507972B2A526600C73909 /* YandexMusicModel.swift */; };
+		70962F932B38DC2F00A9BBDE /* ResponseYandexMusicLibraryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70962F922B38DC2F00A9BBDE /* ResponseYandexMusicLibraryModel.swift */; };
+		70962F952B38DC9200A9BBDE /* ResponseYandexMusicShortTrackInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70962F942B38DC9200A9BBDE /* ResponseYandexMusicShortTrackInfoModel.swift */; };
+		70962F972B38E00400A9BBDE /* ResponseYandexMusicLibraryRootModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70962F962B38E00400A9BBDE /* ResponseYandexMusicLibraryRootModel.swift */; };
+		709A7F112B38EE1D001D4AF1 /* NowPlayingArtistInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709A7F102B38EE1D001D4AF1 /* NowPlayingArtistInfoView.swift */; };
+		709A91882B5429EA00D1E693 /* AccountBlockedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709A91872B5429EA00D1E693 /* AccountBlockedViewController.swift */; };
+		709A918A2B545DE500D1E693 /* ResponsePulseIsBlockedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709A91892B545DE500D1E693 /* ResponsePulseIsBlockedModel.swift */; };
+		709A91902B55326100D1E693 /* PlaylistsCollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709A918F2B55326100D1E693 /* PlaylistsCollectionTableViewCell.swift */; };
+		709A91922B5532A700D1E693 /* ResponsePulsePlaylistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709A91912B5532A700D1E693 /* ResponsePulsePlaylistModel.swift */; };
+		709A91942B55349B00D1E693 /* PlaylistCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709A91932B55349B00D1E693 /* PlaylistCollectionViewCell.swift */; };
+		709F4BC02B3C625A0016C454 /* ArtistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709F4BBF2B3C625A0016C454 /* ArtistViewController.swift */; };
+		709F4BC22B3C62600016C454 /* ArtistPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709F4BC12B3C62600016C454 /* ArtistPresenter.swift */; };
+		709F4BC42B3C634E0016C454 /* ArtistTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709F4BC32B3C634E0016C454 /* ArtistTableHeaderView.swift */; };
+		70C0E18D2B6198920078C13B /* NSNotification.Name+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C0E18C2B6198920078C13B /* NSNotification.Name+Ext.swift */; };
+		70D49FE62B4AA39B0058FA0A /* UserDefaults+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D49FE52B4AA39B0058FA0A /* UserDefaults+Ext.swift */; };
+		70D49FE82B4AAAE10058FA0A /* ResponsePulseQualitySettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D49FE72B4AAAE10058FA0A /* ResponsePulseQualitySettingsModel.swift */; };
+		70DB1BDC2B4767E60002D045 /* ResponsePulseSpotifyCanvasModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DB1BDB2B4767E60002D045 /* ResponsePulseSpotifyCanvasModel.swift */; };
 		70DC852E2AFC340600C63F46 /* UIWindow+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DC852D2AFC340600C63F46 /* UIWindow+Ext.swift */; };
 		70E560972B0173A80000E26F /* ResponsePulseBaseContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E560962B0173A80000E26F /* ResponsePulseBaseContentModel.swift */; };
 		70E5609B2B017E390000E26F /* ResponsePulseImagesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E5609A2B017E390000E26F /* ResponsePulseImagesModel.swift */; };
@@ -228,6 +274,12 @@
 		70E6A5992B2A641400700471 /* YandexMusicTypealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E6A5982B2A641400700471 /* YandexMusicTypealiases.swift */; };
 		70E6A59B2B2A64B300700471 /* YandexMusicProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E6A59A2B2A64B300700471 /* YandexMusicProvider.swift */; };
 		70EE30C72AFBF7AF0037DB1E /* ResponsePulseResetPasswordV3Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EE30C62AFBF7AF0037DB1E /* ResponsePulseResetPasswordV3Model.swift */; };
+		70F9F85E2B480C38006CD1AA /* ResponsePulseWidgetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F85D2B480C38006CD1AA /* ResponsePulseWidgetModel.swift */; };
+		70F9F8602B482C16006CD1AA /* ResponsePulseWidgetRootModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F85F2B482C16006CD1AA /* ResponsePulseWidgetRootModel.swift */; };
+		70F9F8622B487B55006CD1AA /* ResponsePulseCanvasModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F8612B487B55006CD1AA /* ResponsePulseCanvasModel.swift */; };
+		70F9F8642B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F8632B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift */; };
+		70F9F8692B48DB94006CD1AA /* StoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F8682B48DB94006CD1AA /* StoryCollectionViewCell.swift */; };
+		70F9F86B2B48DE68006CD1AA /* StoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -285,7 +337,6 @@
 		70017E522AEEDB34001E1C02 /* NowPlayingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingViewController.swift; sourceTree = "<group>"; };
 		70017E542AEEDB34001E1C02 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		70017E552AEEDB34001E1C02 /* SearchPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPresenter.swift; sourceTree = "<group>"; };
-		70017E572AEEDB34001E1C02 /* StaticGradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticGradientView.swift; sourceTree = "<group>"; };
 		70017E582AEEDB34001E1C02 /* AlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		70017E592AEEDB34001E1C02 /* NowPlayingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingView.swift; sourceTree = "<group>"; };
 		70017E5B2AEEDB34001E1C02 /* ScrollingCoverCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollingCoverCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -339,8 +390,6 @@
 		70017E962AEEDB34001E1C02 /* AudioPlayerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayerItem.swift; sourceTree = "<group>"; };
 		70017E972AEEDB34001E1C02 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		70017E9A2AEEDB34001E1C02 /* BaseUITableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseUITableViewCell.swift; sourceTree = "<group>"; };
-		70017E9B2AEEDB34001E1C02 /* BaseUIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseUIViewController.swift; sourceTree = "<group>"; };
-		70017E9C2AEEDB34001E1C02 /* BaseUITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseUITableView.swift; sourceTree = "<group>"; };
 		70017E9D2AEEDB34001E1C02 /* BaseUICollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseUICollectionViewCell.swift; sourceTree = "<group>"; };
 		70017E9E2AEEDB34001E1C02 /* BaseKeychainModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseKeychainModel.swift; sourceTree = "<group>"; };
 		70017E9F2AEEDB34001E1C02 /* BasePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasePresenter.swift; sourceTree = "<group>"; };
@@ -403,6 +452,24 @@
 		7013E34B2B0D58F90038A600 /* MPVolumeView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MPVolumeView+Ext.swift"; sourceTree = "<group>"; };
 		70174C522B00F04D00E7DA0D /* ResponsePulseAddTracksModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseAddTracksModel.swift; sourceTree = "<group>"; };
 		70174C542B00F08500E7DA0D /* ResponsePulseServerTrackModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseServerTrackModel.swift; sourceTree = "<group>"; };
+		701B75BF2B4962300090FACB /* ResponsePulseStoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseStoryModel.swift; sourceTree = "<group>"; };
+		701B75C12B4962430090FACB /* ResponsePulseStoryTrackModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseStoryTrackModel.swift; sourceTree = "<group>"; };
+		701B75C32B4962850090FACB /* ResponsePulseStoryTypeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseStoryTypeModel.swift; sourceTree = "<group>"; };
+		701B75C62B496F430090FACB /* StoryTrackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryTrackViewController.swift; sourceTree = "<group>"; };
+		701D047F2B2F8E2A0082FA44 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
+		701D04812B2F8F380082FA44 /* CanvasManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasManager.swift; sourceTree = "<group>"; };
+		7024E2062B3DF24D00CD57D5 /* ResponseYandexMusicArtistRootModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicArtistRootModel.swift; sourceTree = "<group>"; };
+		7024E2082B3DF4A400CD57D5 /* ResponseYandexMusicPlaylistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicPlaylistModel.swift; sourceTree = "<group>"; };
+		7024E20B2B3DF7EC00CD57D5 /* ArtistViewScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistViewScheme.swift; sourceTree = "<group>"; };
+		7024E20D2B3DFAEE00CD57D5 /* ButtonTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTableHeaderView.swift; sourceTree = "<group>"; };
+		702D77332B45666F00F1B541 /* MainFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFeedViewController.swift; sourceTree = "<group>"; };
+		702D77352B45667800F1B541 /* MainFeedPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFeedPresenter.swift; sourceTree = "<group>"; };
+		702D773C2B457EB100F1B541 /* ResponsePulseExclusiveArtistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseExclusiveArtistModel.swift; sourceTree = "<group>"; };
+		702D773E2B457ED700F1B541 /* ResponsePulseExclusiveAlbumModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseExclusiveAlbumModel.swift; sourceTree = "<group>"; };
+		702D77402B457F0A00F1B541 /* ResponsePulseExclusiveTrackModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseExclusiveTrackModel.swift; sourceTree = "<group>"; };
+		702D77422B457F6600F1B541 /* ResponsePulseWidgetsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseWidgetsModel.swift; sourceTree = "<group>"; };
+		702D77462B4580EC00F1B541 /* ResponsePulseWidgetsRootModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseWidgetsRootModel.swift; sourceTree = "<group>"; };
+		70364A582B584ED90067C740 /* ResponsePulsePlaylistRootModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulsePlaylistRootModel.swift; sourceTree = "<group>"; };
 		703E65682AFA663C001A62FA /* LocalizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationManager.swift; sourceTree = "<group>"; };
 		704240D02B2B9F7D00B7F0AD /* ResponseYandexMusicSearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicSearchModel.swift; sourceTree = "<group>"; };
 		704240D32B2B9FA200B7F0AD /* ResponseYandexMusicTracksModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicTracksModel.swift; sourceTree = "<group>"; };
@@ -418,6 +485,16 @@
 		704240EC2B2BAD2600B7F0AD /* URLComponents+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLComponents+Ext.swift"; sourceTree = "<group>"; };
 		704240EE2B2BAEF100B7F0AD /* ResponseYandexMusicFileDownloadInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicFileDownloadInfoModel.swift; sourceTree = "<group>"; };
 		7044731C2B0882F900B3FB98 /* UIStoryboard+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Ext.swift"; sourceTree = "<group>"; };
+		705EC8392B40A63A00CFA3C4 /* OpenInServiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenInServiceViewController.swift; sourceTree = "<group>"; };
+		705EC83B2B40A7AB00CFA3C4 /* OpenInServicePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenInServicePresenter.swift; sourceTree = "<group>"; };
+		705EC83E2B40A8D000CFA3C4 /* OdesliApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OdesliApi.swift; sourceTree = "<group>"; };
+		705EC8412B40AB5000CFA3C4 /* ResponseOdesliRootModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseOdesliRootModel.swift; sourceTree = "<group>"; };
+		705EC8432B40AB9800CFA3C4 /* ResponseOdesliLinksModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseOdesliLinksModel.swift; sourceTree = "<group>"; };
+		705EC8452B40ABA500CFA3C4 /* OdesliTypealias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OdesliTypealias.swift; sourceTree = "<group>"; };
+		705EC8472B40ABC200CFA3C4 /* ResponseOdesliServiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseOdesliServiceModel.swift; sourceTree = "<group>"; };
+		705EC8492B40AD1800CFA3C4 /* OdesliProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OdesliProvider.swift; sourceTree = "<group>"; };
+		705EC84B2B40AEA700CFA3C4 /* ServiceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceTableViewCell.swift; sourceTree = "<group>"; };
+		705EC84D2B40BA9800CFA3C4 /* OpenInServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenInServiceView.swift; sourceTree = "<group>"; };
 		706974C22B055B500093D1FB /* PlaylistTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistTableHeaderView.swift; sourceTree = "<group>"; };
 		706CB6D52B210E8900B966EE /* AVPlayer+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVPlayer+Ext.swift"; sourceTree = "<group>"; };
 		7072CC052AF8F43500E51E0A /* SignMethodType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignMethodType.swift; sourceTree = "<group>"; };
@@ -430,13 +507,32 @@
 		7072CC1C2AF8FE7E00E51E0A /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
 		7072CC1D2AF8FE7E00E51E0A /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		7072CC1E2AF8FE7E00E51E0A /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
-		7072CC222AF9062600E51E0A /* credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = credentials.plist; path = ../../../../Downloads/credentials.plist; sourceTree = "<group>"; };
 		7072CC242AF9857C00E51E0A /* ResponsePulseLoginUserV3Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseLoginUserV3Model.swift; sourceTree = "<group>"; };
 		7072CC262AF9865D00E51E0A /* ResponsePulseAuthorizationInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseAuthorizationInfoModel.swift; sourceTree = "<group>"; };
 		7072CC282AF987C600E51E0A /* ResponsePulseVerifyUserV3Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseVerifyUserV3Model.swift; sourceTree = "<group>"; };
 		7072CC2A2AF98D0100E51E0A /* Pulse.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pulse.entitlements; sourceTree = "<group>"; };
-		7074CD082B0E6BA100143D92 /* ImportLibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportLibraryViewController.swift; sourceTree = "<group>"; };
+		707C044D2B40CC06000B91BF /* ApplicationStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationStyle.swift; sourceTree = "<group>"; };
+		707C57992B49B65B0069D3CF /* ResponsePulseSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseSettingsModel.swift; sourceTree = "<group>"; };
+		707C579B2B49B6730069D3CF /* ResponsePulseSettingsRootModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseSettingsRootModel.swift; sourceTree = "<group>"; };
+		707C579D2B49B6BB0069D3CF /* ResponsePulseServiceSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseServiceSettingsModel.swift; sourceTree = "<group>"; };
+		708290CF2B432634007E1DB4 /* PulseMedia */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PulseMedia; sourceTree = "<group>"; };
 		709507972B2A526600C73909 /* YandexMusicModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMusicModel.swift; sourceTree = "<group>"; };
+		70962F922B38DC2F00A9BBDE /* ResponseYandexMusicLibraryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicLibraryModel.swift; sourceTree = "<group>"; };
+		70962F942B38DC9200A9BBDE /* ResponseYandexMusicShortTrackInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicShortTrackInfoModel.swift; sourceTree = "<group>"; };
+		70962F962B38E00400A9BBDE /* ResponseYandexMusicLibraryRootModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicLibraryRootModel.swift; sourceTree = "<group>"; };
+		709A7F102B38EE1D001D4AF1 /* NowPlayingArtistInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingArtistInfoView.swift; sourceTree = "<group>"; };
+		709A91872B5429EA00D1E693 /* AccountBlockedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountBlockedViewController.swift; sourceTree = "<group>"; };
+		709A91892B545DE500D1E693 /* ResponsePulseIsBlockedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseIsBlockedModel.swift; sourceTree = "<group>"; };
+		709A918F2B55326100D1E693 /* PlaylistsCollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistsCollectionTableViewCell.swift; sourceTree = "<group>"; };
+		709A91912B5532A700D1E693 /* ResponsePulsePlaylistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulsePlaylistModel.swift; sourceTree = "<group>"; };
+		709A91932B55349B00D1E693 /* PlaylistCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistCollectionViewCell.swift; sourceTree = "<group>"; };
+		709F4BBF2B3C625A0016C454 /* ArtistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistViewController.swift; sourceTree = "<group>"; };
+		709F4BC12B3C62600016C454 /* ArtistPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistPresenter.swift; sourceTree = "<group>"; };
+		709F4BC32B3C634E0016C454 /* ArtistTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistTableHeaderView.swift; sourceTree = "<group>"; };
+		70C0E18C2B6198920078C13B /* NSNotification.Name+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification.Name+Ext.swift"; sourceTree = "<group>"; };
+		70D49FE52B4AA39B0058FA0A /* UserDefaults+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Ext.swift"; sourceTree = "<group>"; };
+		70D49FE72B4AAAE10058FA0A /* ResponsePulseQualitySettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseQualitySettingsModel.swift; sourceTree = "<group>"; };
+		70DB1BDB2B4767E60002D045 /* ResponsePulseSpotifyCanvasModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseSpotifyCanvasModel.swift; sourceTree = "<group>"; };
 		70DC852D2AFC340600C63F46 /* UIWindow+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+Ext.swift"; sourceTree = "<group>"; };
 		70E560962B0173A80000E26F /* ResponsePulseBaseContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseBaseContentModel.swift; sourceTree = "<group>"; };
 		70E5609A2B017E390000E26F /* ResponsePulseImagesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseImagesModel.swift; sourceTree = "<group>"; };
@@ -448,6 +544,12 @@
 		70E6A5982B2A641400700471 /* YandexMusicTypealiases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMusicTypealiases.swift; sourceTree = "<group>"; };
 		70E6A59A2B2A64B300700471 /* YandexMusicProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMusicProvider.swift; sourceTree = "<group>"; };
 		70EE30C62AFBF7AF0037DB1E /* ResponsePulseResetPasswordV3Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseResetPasswordV3Model.swift; sourceTree = "<group>"; };
+		70F9F85D2B480C38006CD1AA /* ResponsePulseWidgetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseWidgetModel.swift; sourceTree = "<group>"; };
+		70F9F85F2B482C16006CD1AA /* ResponsePulseWidgetRootModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseWidgetRootModel.swift; sourceTree = "<group>"; };
+		70F9F8612B487B55006CD1AA /* ResponsePulseCanvasModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseCanvasModel.swift; sourceTree = "<group>"; };
+		70F9F8632B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseExclusiveTrackInfoModel.swift; sourceTree = "<group>"; };
+		70F9F8682B48DB94006CD1AA /* StoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCollectionViewCell.swift; sourceTree = "<group>"; };
+		70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -461,7 +563,9 @@
 				7002A98B2AEEE1350017698B /* SDWebImage in Frameworks */,
 				7002A9882AEEE1020017698B /* AlertKit in Frameworks */,
 				7072CC212AF905BC00E51E0A /* GoogleSignIn in Frameworks */,
+				70512A782B5D324400D8095D /* HPParallaxHeader in Frameworks */,
 				7002A97A2AEEDEB00017698B /* Realm in Frameworks */,
+				708290D32B432648007E1DB4 /* PulseMedia in Frameworks */,
 				7002A97F2AEEE02A0017698B /* FriendlyURLSession in Frameworks */,
 				70017FAB2AEEDB71001E1C02 /* PulseUIComponents in Frameworks */,
 				7002A9822AEEE0450017698B /* InfiniteScrolling-SPM in Frameworks */,
@@ -510,7 +614,6 @@
 				70017E012AEEDABB001E1C02 /* Assets.xcassets */,
 				70017E032AEEDABB001E1C02 /* LaunchScreen.storyboard */,
 				70017E062AEEDABB001E1C02 /* Info.plist */,
-				7072CC222AF9062600E51E0A /* credentials.plist */,
 			);
 			path = Pulse;
 			sourceTree = "<group>";
@@ -553,6 +656,7 @@
 		70017E1B2AEEDB34001E1C02 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				70F9F8672B48DB8A006CD1AA /* CollectionViewCells */,
 				70017E1E2AEEDB34001E1C02 /* TableViewCells */,
 				70017E2B2AEEDB34001E1C02 /* ViewControllers */,
 				70017E562AEEDB34001E1C02 /* Views */,
@@ -573,6 +677,9 @@
 				70017E262AEEDB34001E1C02 /* LibraryTableViewCell.swift */,
 				70017E272AEEDB34001E1C02 /* ButtonTableViewCell.swift */,
 				70017E282AEEDB34001E1C02 /* SwitchTableViewCell.swift */,
+				705EC84B2B40AEA700CFA3C4 /* ServiceTableViewCell.swift */,
+				70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */,
+				709A918F2B55326100D1E693 /* PlaylistsCollectionTableViewCell.swift */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -580,7 +687,11 @@
 		70017E2B2AEEDB34001E1C02 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				7074CD072B0E6B9400143D92 /* ImportLibraryViewController */,
+				709A91862B5429DD00D1E693 /* AccountBlockedViewController */,
+				701B75C52B496F350090FACB /* StoryTrackViewController */,
+				702D77322B45665800F1B541 /* MainFeedViewController */,
+				705EC82D2B4030D600CFA3C4 /* OpenInServiceViewController */,
+				709F4BBE2B3C62510016C454 /* ArtistViewController */,
 				70017E2C2AEEDB34001E1C02 /* CoversViewController */,
 				70017E2F2AEEDB34001E1C02 /* LibraryViewController */,
 				70017E322AEEDB34001E1C02 /* WebViewController */,
@@ -736,10 +847,12 @@
 			isa = PBXGroup;
 			children = (
 				706974C12B055B420093D1FB /* TableHeaderViews */,
-				70017E572AEEDB34001E1C02 /* StaticGradientView.swift */,
+				70017E5A2AEEDB34001E1C02 /* CoversScrollingView */,
 				70017E582AEEDB34001E1C02 /* AlertView.swift */,
 				70017E592AEEDB34001E1C02 /* NowPlayingView.swift */,
-				70017E5A2AEEDB34001E1C02 /* CoversScrollingView */,
+				701D047F2B2F8E2A0082FA44 /* CanvasView.swift */,
+				709A7F102B38EE1D001D4AF1 /* NowPlayingArtistInfoView.swift */,
+				705EC84D2B40BA9800CFA3C4 /* OpenInServiceView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -777,6 +890,8 @@
 				7013E34B2B0D58F90038A600 /* MPVolumeView+Ext.swift */,
 				706CB6D52B210E8900B966EE /* AVPlayer+Ext.swift */,
 				704240EC2B2BAD2600B7F0AD /* URLComponents+Ext.swift */,
+				70D49FE52B4AA39B0058FA0A /* UserDefaults+Ext.swift */,
+				70C0E18C2B6198920078C13B /* NSNotification.Name+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -816,6 +931,7 @@
 				70017E812AEEDB34001E1C02 /* LogManager.swift */,
 				70017E822AEEDB34001E1C02 /* SessionCacheManager.swift */,
 				70017E832AEEDB34001E1C02 /* SettingsManager.swift */,
+				701D04812B2F8F380082FA44 /* CanvasManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -887,8 +1003,6 @@
 			isa = PBXGroup;
 			children = (
 				70017E9A2AEEDB34001E1C02 /* BaseUITableViewCell.swift */,
-				70017E9B2AEEDB34001E1C02 /* BaseUIViewController.swift */,
-				70017E9C2AEEDB34001E1C02 /* BaseUITableView.swift */,
 				70017E9D2AEEDB34001E1C02 /* BaseUICollectionViewCell.swift */,
 			);
 			path = UI;
@@ -897,6 +1011,7 @@
 		70017EA12AEEDB34001E1C02 /* Api */ = {
 			isa = PBXGroup;
 			children = (
+				705EC83D2B40A8BA00CFA3C4 /* Odesli */,
 				70E6A58B2B2A623900700471 /* Yandex Music */,
 				70017EA22AEEDB34001E1C02 /* Muffon */,
 				70017EAD2AEEDB34001E1C02 /* NetworkApi */,
@@ -990,6 +1105,7 @@
 		70017EB92AEEDB34001E1C02 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				702D77372B45695300F1B541 /* Widgets */,
 				70AEDE752B0573A100BCC72C /* V1 */,
 				7072CC082AF8F4B200E51E0A /* V3 */,
 				70017EBD2AEEDB34001E1C02 /* ResponsePulseCoverModel.swift */,
@@ -1000,6 +1116,12 @@
 				70017ECB2AEEDB34001E1C02 /* ResponsePulseCoverInfoModel.swift */,
 				70017ECD2AEEDB34001E1C02 /* ResponsePulseFeatureModel.swift */,
 				70017ECE2AEEDB34001E1C02 /* ResponsePulseSuccessModel.swift */,
+				70DB1BDB2B4767E60002D045 /* ResponsePulseSpotifyCanvasModel.swift */,
+				70F9F8612B487B55006CD1AA /* ResponsePulseCanvasModel.swift */,
+				707C57992B49B65B0069D3CF /* ResponsePulseSettingsModel.swift */,
+				707C579B2B49B6730069D3CF /* ResponsePulseSettingsRootModel.swift */,
+				707C579D2B49B6BB0069D3CF /* ResponsePulseServiceSettingsModel.swift */,
+				709A91892B545DE500D1E693 /* ResponsePulseIsBlockedModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1033,6 +1155,7 @@
 		70017EE02AEEDB34001E1C02 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
+				7024E20A2B3DF7E700CD57D5 /* Media */,
 				70017EE12AEEDB34001E1C02 /* CellType.swift */,
 				70017EE22AEEDB34001E1C02 /* ServiceType.swift */,
 				70017EE32AEEDB34001E1C02 /* ColorType.swift */,
@@ -1046,6 +1169,7 @@
 				70017EEB2AEEDB34001E1C02 /* SettingsSectionType.swift */,
 				70017EEC2AEEDB34001E1C02 /* AppEnvironment.swift */,
 				7072CC052AF8F43500E51E0A /* SignMethodType.swift */,
+				707C044D2B40CC06000B91BF /* ApplicationStyle.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -1053,6 +1177,7 @@
 		70017EED2AEEDB34001E1C02 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
+				708290CF2B432634007E1DB4 /* PulseMedia */,
 				70017EEE2AEEDB34001E1C02 /* PulseUIComponents */,
 			);
 			path = Packages;
@@ -1063,6 +1188,52 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		701B75C52B496F350090FACB /* StoryTrackViewController */ = {
+			isa = PBXGroup;
+			children = (
+				701B75C62B496F430090FACB /* StoryTrackViewController.swift */,
+			);
+			path = StoryTrackViewController;
+			sourceTree = "<group>";
+		};
+		7024E20A2B3DF7E700CD57D5 /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				7024E20B2B3DF7EC00CD57D5 /* ArtistViewScheme.swift */,
+			);
+			path = Media;
+			sourceTree = "<group>";
+		};
+		702D77322B45665800F1B541 /* MainFeedViewController */ = {
+			isa = PBXGroup;
+			children = (
+				702D77332B45666F00F1B541 /* MainFeedViewController.swift */,
+				702D77352B45667800F1B541 /* MainFeedPresenter.swift */,
+			);
+			path = MainFeedViewController;
+			sourceTree = "<group>";
+		};
+		702D77372B45695300F1B541 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				702D773C2B457EB100F1B541 /* ResponsePulseExclusiveArtistModel.swift */,
+				702D773E2B457ED700F1B541 /* ResponsePulseExclusiveAlbumModel.swift */,
+				702D77402B457F0A00F1B541 /* ResponsePulseExclusiveTrackModel.swift */,
+				702D77422B457F6600F1B541 /* ResponsePulseWidgetsModel.swift */,
+				702D77462B4580EC00F1B541 /* ResponsePulseWidgetsRootModel.swift */,
+				70F9F85D2B480C38006CD1AA /* ResponsePulseWidgetModel.swift */,
+				70F9F85F2B482C16006CD1AA /* ResponsePulseWidgetRootModel.swift */,
+				70F9F8632B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift */,
+				701B75BF2B4962300090FACB /* ResponsePulseStoryModel.swift */,
+				701B75C12B4962430090FACB /* ResponsePulseStoryTrackModel.swift */,
+				701B75C32B4962850090FACB /* ResponsePulseStoryTypeModel.swift */,
+				70D49FE72B4AAAE10058FA0A /* ResponsePulseQualitySettingsModel.swift */,
+				709A91912B5532A700D1E693 /* ResponsePulsePlaylistModel.swift */,
+				70364A582B584ED90067C740 /* ResponsePulsePlaylistRootModel.swift */,
+			);
+			path = Widgets;
 			sourceTree = "<group>";
 		};
 		704240D22B2B9F9500B7F0AD /* Search */ = {
@@ -1086,14 +1257,49 @@
 				704240E62B2BA2CB00B7F0AD /* ResponseYandexMusicLyricsInfoModel.swift */,
 				704240E82B2BAA4700B7F0AD /* ResponseYandexMusicDownloadInfoModel.swift */,
 				704240EE2B2BAEF100B7F0AD /* ResponseYandexMusicFileDownloadInfoModel.swift */,
+				70962F942B38DC9200A9BBDE /* ResponseYandexMusicShortTrackInfoModel.swift */,
+				7024E2062B3DF24D00CD57D5 /* ResponseYandexMusicArtistRootModel.swift */,
+				7024E2082B3DF4A400CD57D5 /* ResponseYandexMusicPlaylistModel.swift */,
 			);
 			path = Media;
+			sourceTree = "<group>";
+		};
+		705EC82D2B4030D600CFA3C4 /* OpenInServiceViewController */ = {
+			isa = PBXGroup;
+			children = (
+				705EC8392B40A63A00CFA3C4 /* OpenInServiceViewController.swift */,
+				705EC83B2B40A7AB00CFA3C4 /* OpenInServicePresenter.swift */,
+			);
+			path = OpenInServiceViewController;
+			sourceTree = "<group>";
+		};
+		705EC83D2B40A8BA00CFA3C4 /* Odesli */ = {
+			isa = PBXGroup;
+			children = (
+				705EC8402B40AB3F00CFA3C4 /* Models */,
+				705EC83E2B40A8D000CFA3C4 /* OdesliApi.swift */,
+				705EC8452B40ABA500CFA3C4 /* OdesliTypealias.swift */,
+				705EC8492B40AD1800CFA3C4 /* OdesliProvider.swift */,
+			);
+			path = Odesli;
+			sourceTree = "<group>";
+		};
+		705EC8402B40AB3F00CFA3C4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				705EC8412B40AB5000CFA3C4 /* ResponseOdesliRootModel.swift */,
+				705EC8432B40AB9800CFA3C4 /* ResponseOdesliLinksModel.swift */,
+				705EC8472B40ABC200CFA3C4 /* ResponseOdesliServiceModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		706974C12B055B420093D1FB /* TableHeaderViews */ = {
 			isa = PBXGroup;
 			children = (
 				706974C22B055B500093D1FB /* PlaylistTableHeaderView.swift */,
+				709F4BC32B3C634E0016C454 /* ArtistTableHeaderView.swift */,
+				7024E20D2B3DFAEE00CD57D5 /* ButtonTableHeaderView.swift */,
 			);
 			path = TableHeaderViews;
 			sourceTree = "<group>";
@@ -1135,12 +1341,30 @@
 			path = Localization;
 			sourceTree = "<group>";
 		};
-		7074CD072B0E6B9400143D92 /* ImportLibraryViewController */ = {
+		70962F912B38DC2600A9BBDE /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				7074CD082B0E6BA100143D92 /* ImportLibraryViewController.swift */,
+				70962F922B38DC2F00A9BBDE /* ResponseYandexMusicLibraryModel.swift */,
+				70962F962B38E00400A9BBDE /* ResponseYandexMusicLibraryRootModel.swift */,
 			);
-			path = ImportLibraryViewController;
+			path = Library;
+			sourceTree = "<group>";
+		};
+		709A91862B5429DD00D1E693 /* AccountBlockedViewController */ = {
+			isa = PBXGroup;
+			children = (
+				709A91872B5429EA00D1E693 /* AccountBlockedViewController.swift */,
+			);
+			path = AccountBlockedViewController;
+			sourceTree = "<group>";
+		};
+		709F4BBE2B3C62510016C454 /* ArtistViewController */ = {
+			isa = PBXGroup;
+			children = (
+				709F4BBF2B3C625A0016C454 /* ArtistViewController.swift */,
+				709F4BC12B3C62600016C454 /* ArtistPresenter.swift */,
+			);
+			path = ArtistViewController;
 			sourceTree = "<group>";
 		};
 		70AEDE752B0573A100BCC72C /* V1 */ = {
@@ -1169,6 +1393,7 @@
 		70E6A58E2B2A62C900700471 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				70962F912B38DC2600A9BBDE /* Library */,
 				704240D52B2B9FBD00B7F0AD /* Media */,
 				704240D22B2B9F9500B7F0AD /* Search */,
 				70E6A58F2B2A62CE00700471 /* Profile */,
@@ -1185,6 +1410,15 @@
 				70E6A5962B2A63FC00700471 /* ResponseYandexMusicAccountStatusModel.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		70F9F8672B48DB8A006CD1AA /* CollectionViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				70F9F8682B48DB94006CD1AA /* StoryCollectionViewCell.swift */,
+				709A91932B55349B00D1E693 /* PlaylistCollectionViewCell.swift */,
+			);
+			path = CollectionViewCells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1215,6 +1449,8 @@
 				7002A98A2AEEE1350017698B /* SDWebImage */,
 				7002A98C2AEEE1350017698B /* SDWebImageMapKit */,
 				7072CC202AF905BC00E51E0A /* GoogleSignIn */,
+				708290D22B432648007E1DB4 /* PulseMedia */,
+				70512A772B5D324400D8095D /* HPParallaxHeader */,
 			);
 			productName = Pulse;
 			productReference = 70017DF52AEEDABA001E1C02 /* Pulse.app */;
@@ -1253,6 +1489,8 @@
 				7002A9862AEEE1020017698B /* XCRemoteSwiftPackageReference "AlertKit" */,
 				7002A9892AEEE1350017698B /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				7072CC1F2AF905BC00E51E0A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				708290D12B432648007E1DB4 /* XCLocalSwiftPackageReference "Pulse/Packages/PulseMedia" */,
+				70512A762B5D324400D8095D /* XCRemoteSwiftPackageReference "HPParallaxHeader" */,
 			);
 			productRefGroup = 70017DF62AEEDABA001E1C02 /* Products */;
 			projectDirPath = "";
@@ -1269,7 +1507,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7072CC172AF8FA7D00E51E0A /* Localizable.strings in Resources */,
-				7072CC232AF9062600E51E0A /* credentials.plist in Resources */,
+				708290D02B432634007E1DB4 /* PulseMedia in Resources */,
 				70017E052AEEDABB001E1C02 /* LaunchScreen.storyboard in Resources */,
 				70017E022AEEDABB001E1C02 /* Assets.xcassets in Resources */,
 				70017FA32AEEDB34001E1C02 /* PulseUIComponents in Resources */,
@@ -1306,15 +1544,18 @@
 			files = (
 				70017F122AEEDB34001E1C02 /* SignUpViewController.swift in Sources */,
 				704240E72B2BA2CB00B7F0AD /* ResponseYandexMusicLyricsInfoModel.swift in Sources */,
+				701D04802B2F8E2A0082FA44 /* CanvasView.swift in Sources */,
 				70017EF52AEEDB34001E1C02 /* SearchResponse.swift in Sources */,
+				70F9F86B2B48DE68006CD1AA /* StoriesTableViewCell.swift in Sources */,
 				704240E92B2BAA4700B7F0AD /* ResponseYandexMusicDownloadInfoModel.swift in Sources */,
 				70017F402AEEDB34001E1C02 /* UIView+Ext.swift in Sources */,
-				7074CD092B0E6BA100143D92 /* ImportLibraryViewController.swift in Sources */,
 				70017F5D2AEEDB34001E1C02 /* Device.swift in Sources */,
 				70017F932AEEDB34001E1C02 /* ResponseSoundcloudPlayableLinksModel.swift in Sources */,
 				70017F2D2AEEDB34001E1C02 /* MainTabBarController.swift in Sources */,
+				709A7F112B38EE1D001D4AF1 /* NowPlayingArtistInfoView.swift in Sources */,
 				70017F942AEEDB34001E1C02 /* SoundcloudTypealiases.swift in Sources */,
 				70017F422AEEDB34001E1C02 /* NSRegularExpression+Ext.swift in Sources */,
+				705EC8482B40ABC200CFA3C4 /* ResponseOdesliServiceModel.swift in Sources */,
 				70017F712AEEDB34001E1C02 /* ResponseIpApiModel.swift in Sources */,
 				70017F532AEEDB34001E1C02 /* LibraryPlaylistTrackModel.swift in Sources */,
 				70017F522AEEDB34001E1C02 /* LibraryPlaylistModel.swift in Sources */,
@@ -1322,15 +1563,15 @@
 				70017F8A2AEEDB34001E1C02 /* PulseApi.swift in Sources */,
 				70017F592AEEDB34001E1C02 /* Constants.swift in Sources */,
 				70017F9D2AEEDB34001E1C02 /* LibraryControllerType.swift in Sources */,
-				70017F602AEEDB34001E1C02 /* BaseUITableView.swift in Sources */,
 				70E6A59B2B2A64B300700471 /* YandexMusicProvider.swift in Sources */,
 				70017F462AEEDB34001E1C02 /* ActionsManager.swift in Sources */,
 				70017F692AEEDB34001E1C02 /* ResponseMuffonSearchModel.swift in Sources */,
 				70017F322AEEDB34001E1C02 /* String+Ext.swift in Sources */,
+				707C044E2B40CC06000B91BF /* ApplicationStyle.swift in Sources */,
+				705EC84E2B40BA9800CFA3C4 /* OpenInServiceView.swift in Sources */,
 				70017F9E2AEEDB34001E1C02 /* SettingType.swift in Sources */,
 				70017F542AEEDB34001E1C02 /* LibraryPlaylistArtistModel.swift in Sources */,
 				70017F4D2AEEDB34001E1C02 /* SessionCacheManager.swift in Sources */,
-				70017F272AEEDB34001E1C02 /* StaticGradientView.swift in Sources */,
 				70017F3C2AEEDB34001E1C02 /* UIButton+Ext.swift in Sources */,
 				70017EF92AEEDB34001E1C02 /* SoundcloudModel.swift in Sources */,
 				70017F752AEEDB34001E1C02 /* ResponsePulseErrorModel.swift in Sources */,
@@ -1338,19 +1579,23 @@
 				70017F212AEEDB34001E1C02 /* AuthViewController.swift in Sources */,
 				70017F792AEEDB34001E1C02 /* ResponsePulseFeaturesModel.swift in Sources */,
 				7072CC252AF9857C00E51E0A /* ResponsePulseLoginUserV3Model.swift in Sources */,
+				70F9F85E2B480C38006CD1AA /* ResponsePulseWidgetModel.swift in Sources */,
 				70017F0C2AEEDB34001E1C02 /* CoversViewController.swift in Sources */,
 				70017F092AEEDB34001E1C02 /* ButtonTableViewCell.swift in Sources */,
 				704240E52B2BA23700B7F0AD /* ResponseYandexMusicTrackPositionModel.swift in Sources */,
 				70017F2B2AEEDB34001E1C02 /* CoversScrollingView.swift in Sources */,
 				70017F242AEEDB34001E1C02 /* NowPlayingViewController.swift in Sources */,
 				70017F732AEEDB34001E1C02 /* IpApi.swift in Sources */,
+				705EC83C2B40A7AB00CFA3C4 /* OpenInServicePresenter.swift in Sources */,
+				70D49FE82B4AAAE10058FA0A /* ResponsePulseQualitySettingsModel.swift in Sources */,
 				70017F1C2AEEDB34001E1C02 /* TracksPresenter.swift in Sources */,
 				70017F412AEEDB34001E1C02 /* Int+Ext.swift in Sources */,
 				70017F902AEEDB34001E1C02 /* ResponseSoundcloudUserInfoModel.swift in Sources */,
 				70017F4A2AEEDB34001E1C02 /* ServicesManager.swift in Sources */,
-				70017F5F2AEEDB34001E1C02 /* BaseUIViewController.swift in Sources */,
 				70017F702AEEDB34001E1C02 /* IpifyProvider.swift in Sources */,
 				70017F3F2AEEDB34001E1C02 /* UIViewController+Ext.swift in Sources */,
+				707C579C2B49B6730069D3CF /* ResponsePulseSettingsRootModel.swift in Sources */,
+				709F4BC42B3C634E0016C454 /* ArtistTableHeaderView.swift in Sources */,
 				70017F892AEEDB34001E1C02 /* PulseProvider.swift in Sources */,
 				70017F9A2AEEDB34001E1C02 /* LibraryPlaylistType.swift in Sources */,
 				70017F0E2AEEDB34001E1C02 /* LibraryViewController.swift in Sources */,
@@ -1359,6 +1604,9 @@
 				70017FA12AEEDB34001E1C02 /* SettingsSectionType.swift in Sources */,
 				70017F2E2AEEDB34001E1C02 /* Float+Ext.swift in Sources */,
 				704240DD2B2BA01F00B7F0AD /* ResponseYandexMusicCoverModel.swift in Sources */,
+				705EC8442B40AB9800CFA3C4 /* ResponseOdesliLinksModel.swift in Sources */,
+				70962F932B38DC2F00A9BBDE /* ResponseYandexMusicLibraryModel.swift in Sources */,
+				705EC84C2B40AEA700CFA3C4 /* ServiceTableViewCell.swift in Sources */,
 				70017F1D2AEEDB34001E1C02 /* TracksViewController.swift in Sources */,
 				70017F992AEEDB34001E1C02 /* ColorType.swift in Sources */,
 				70017F082AEEDB34001E1C02 /* LibraryTableViewCell.swift in Sources */,
@@ -1369,14 +1617,19 @@
 				70017F392AEEDB34001E1C02 /* UITextField+Ext.swift in Sources */,
 				7072CC292AF987C600E51E0A /* ResponsePulseVerifyUserV3Model.swift in Sources */,
 				70017EFC2AEEDB34001E1C02 /* TrackModel.swift in Sources */,
+				709A918A2B545DE500D1E693 /* ResponsePulseIsBlockedModel.swift in Sources */,
+				7024E20E2B3DFAEE00CD57D5 /* ButtonTableHeaderView.swift in Sources */,
 				70017DF92AEEDABA001E1C02 /* AppDelegate.swift in Sources */,
+				702D773D2B457EB100F1B541 /* ResponsePulseExclusiveArtistModel.swift in Sources */,
 				70017F302AEEDB34001E1C02 /* Failure+Ext.swift in Sources */,
+				705EC8462B40ABA500CFA3C4 /* OdesliTypealias.swift in Sources */,
 				70017F612AEEDB34001E1C02 /* BaseUICollectionViewCell.swift in Sources */,
 				70017F372AEEDB34001E1C02 /* UICollectionView+Ext.swift in Sources */,
 				70017EF82AEEDB34001E1C02 /* Credentials.swift in Sources */,
 				70017F3B2AEEDB34001E1C02 /* UISegmentedControl+Ext.swift in Sources */,
 				70017F872AEEDB34001E1C02 /* ResponsePulseSuccessModel.swift in Sources */,
 				70017F042AEEDB34001E1C02 /* ColorSettingTableViewCell.swift in Sources */,
+				709F4BC22B3C62600016C454 /* ArtistPresenter.swift in Sources */,
 				70017F952AEEDB34001E1C02 /* SoundcloudProvider.swift in Sources */,
 				70017EFE2AEEDB34001E1C02 /* PlaylistModel.swift in Sources */,
 				70017F782AEEDB34001E1C02 /* ResponsePulseVerificationCodeModel.swift in Sources */,
@@ -1390,14 +1643,21 @@
 				70017F152AEEDB34001E1C02 /* PlaylistsPresenter.swift in Sources */,
 				70017F492AEEDB34001E1C02 /* AudioManager.swift in Sources */,
 				70174C552B00F08500E7DA0D /* ResponsePulseServerTrackModel.swift in Sources */,
+				701B75C02B4962300090FACB /* ResponsePulseStoryModel.swift in Sources */,
 				70017F682AEEDB34001E1C02 /* ResponseMuffonTrackModel.swift in Sources */,
+				70F9F8622B487B55006CD1AA /* ResponsePulseCanvasModel.swift in Sources */,
 				70017F112AEEDB34001E1C02 /* WebViewController.swift in Sources */,
+				702D77432B457F6600F1B541 /* ResponsePulseWidgetsModel.swift in Sources */,
 				704240D12B2B9F7D00B7F0AD /* ResponseYandexMusicSearchModel.swift in Sources */,
 				70017F9B2AEEDB34001E1C02 /* SourceType.swift in Sources */,
 				70017F0A2AEEDB34001E1C02 /* SwitchTableViewCell.swift in Sources */,
+				709A91902B55326100D1E693 /* PlaylistsCollectionTableViewCell.swift in Sources */,
 				70E5609B2B017E390000E26F /* ResponsePulseImagesModel.swift in Sources */,
 				70017F282AEEDB34001E1C02 /* AlertView.swift in Sources */,
+				701B75C72B496F430090FACB /* StoryTrackViewController.swift in Sources */,
 				7072CC0A2AF8F4BB00E51E0A /* ResponsePulseBaseModel.swift in Sources */,
+				70962F952B38DC9200A9BBDE /* ResponseYandexMusicShortTrackInfoModel.swift in Sources */,
+				702D773F2B457ED700F1B541 /* ResponsePulseExclusiveAlbumModel.swift in Sources */,
 				70017F292AEEDB34001E1C02 /* NowPlayingView.swift in Sources */,
 				70017F132AEEDB34001E1C02 /* SignUpPresenter.swift in Sources */,
 				7072CC062AF8F43500E51E0A /* SignMethodType.swift in Sources */,
@@ -1411,9 +1671,14 @@
 				70017F3A2AEEDB34001E1C02 /* UITableView+Ext.swift in Sources */,
 				70017F5C2AEEDB34001E1C02 /* AudioPlayerItem.swift in Sources */,
 				70E6A5992B2A641400700471 /* YandexMusicTypealiases.swift in Sources */,
+				709A91942B55349B00D1E693 /* PlaylistCollectionViewCell.swift in Sources */,
+				701B75C42B4962850090FACB /* ResponsePulseStoryTypeModel.swift in Sources */,
+				7024E20C2B3DF7EC00CD57D5 /* ArtistViewScheme.swift in Sources */,
 				70017EF72AEEDB34001E1C02 /* VerificationCode.swift in Sources */,
 				70017F2F2AEEDB34001E1C02 /* Date+Ext.swift in Sources */,
+				702D77412B457F0A00F1B541 /* ResponsePulseExclusiveTrackModel.swift in Sources */,
 				70017F452AEEDB34001E1C02 /* ImageManager.swift in Sources */,
+				705EC8422B40AB5000CFA3C4 /* ResponseOdesliRootModel.swift in Sources */,
 				703E65692AFA663C001A62FA /* LocalizationManager.swift in Sources */,
 				70017F8D2AEEDB34001E1C02 /* ResponseSoundcloudMainModel.swift in Sources */,
 				70017F1A2AEEDB34001E1C02 /* SettingsPresenter.swift in Sources */,
@@ -1429,32 +1694,46 @@
 				70017EF62AEEDB34001E1C02 /* LogModel.swift in Sources */,
 				70174C532B00F04D00E7DA0D /* ResponsePulseAddTracksModel.swift in Sources */,
 				70017F4B2AEEDB34001E1C02 /* DownloadManager.swift in Sources */,
+				70DB1BDC2B4767E60002D045 /* ResponsePulseSpotifyCanvasModel.swift in Sources */,
 				70017F182AEEDB34001E1C02 /* PlaylistPresenter.swift in Sources */,
 				70E6A5932B2A637800700471 /* ResponseYandexPlusInfoModel.swift in Sources */,
 				70017F622AEEDB34001E1C02 /* BaseKeychainModel.swift in Sources */,
 				70017F062AEEDB34001E1C02 /* TrackTableViewCell.swift in Sources */,
+				709A91922B5532A700D1E693 /* ResponsePulsePlaylistModel.swift in Sources */,
+				707C579E2B49B6BB0069D3CF /* ResponsePulseServiceSettingsModel.swift in Sources */,
 				704240D42B2B9FA200B7F0AD /* ResponseYandexMusicTracksModel.swift in Sources */,
 				70017F6D2AEEDB34001E1C02 /* MuffonTypealias.swift in Sources */,
 				70017F6F2AEEDB34001E1C02 /* ResponseIpifyModel.swift in Sources */,
 				70017FA02AEEDB34001E1C02 /* WebViewType.swift in Sources */,
+				70F9F8692B48DB94006CD1AA /* StoryCollectionViewCell.swift in Sources */,
+				70D49FE62B4AA39B0058FA0A /* UserDefaults+Ext.swift in Sources */,
 				709507982B2A526600C73909 /* YandexMusicModel.swift in Sources */,
+				70962F972B38E00400A9BBDE /* ResponseYandexMusicLibraryRootModel.swift in Sources */,
+				70F9F8642B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift in Sources */,
 				70017F6A2AEEDB34001E1C02 /* ResponseMuffonSourceModel.swift in Sources */,
 				7072CC272AF9865D00E51E0A /* ResponsePulseAuthorizationInfoModel.swift in Sources */,
 				70E6A58D2B2A624300700471 /* YandexMusicApi.swift in Sources */,
 				70017F4F2AEEDB34001E1C02 /* AudioPlayer.swift in Sources */,
 				70017F6B2AEEDB34001E1C02 /* ResponseMuffonImageModel.swift in Sources */,
 				70017F552AEEDB34001E1C02 /* DownloadQueueTrackModel.swift in Sources */,
+				705EC84A2B40AD1800CFA3C4 /* OdesliProvider.swift in Sources */,
 				70017F9F2AEEDB34001E1C02 /* LibraryType.swift in Sources */,
+				70364A592B584ED90067C740 /* ResponsePulsePlaylistRootModel.swift in Sources */,
 				70017F252AEEDB34001E1C02 /* SearchViewController.swift in Sources */,
+				705EC83F2B40A8D000CFA3C4 /* OdesliApi.swift in Sources */,
 				70017DFB2AEEDABA001E1C02 /* SceneDelegate.swift in Sources */,
 				70017F632AEEDB34001E1C02 /* BasePresenter.swift in Sources */,
 				7072CC0E2AF8F56600E51E0A /* ResponsePulseBaseErrorModel.swift in Sources */,
 				70017F6C2AEEDB34001E1C02 /* MuffonApi.swift in Sources */,
 				70017F972AEEDB34001E1C02 /* CellType.swift in Sources */,
+				709F4BC02B3C625A0016C454 /* ArtistViewController.swift in Sources */,
 				706CB6D62B210E8900B966EE /* AVPlayer+Ext.swift in Sources */,
+				701D04822B2F8F380082FA44 /* CanvasManager.swift in Sources */,
+				70F9F8602B482C16006CD1AA /* ResponsePulseWidgetRootModel.swift in Sources */,
 				70017F962AEEDB34001E1C02 /* ApiTypealiases.swift in Sources */,
 				70017F842AEEDB34001E1C02 /* ResponsePulseCoverInfoModel.swift in Sources */,
 				70017EFA2AEEDB34001E1C02 /* PulseModel.swift in Sources */,
+				7024E2072B3DF24D00CD57D5 /* ResponseYandexMusicArtistRootModel.swift in Sources */,
 				704240ED2B2BAD2600B7F0AD /* URLComponents+Ext.swift in Sources */,
 				70017F172AEEDB34001E1C02 /* SignInViewController.swift in Sources */,
 				70017F882AEEDB34001E1C02 /* PulseTypealiases.swift in Sources */,
@@ -1464,11 +1743,14 @@
 				70017F442AEEDB34001E1C02 /* URL+Ext.swift in Sources */,
 				706974C32B055B500093D1FB /* PlaylistTableHeaderView.swift in Sources */,
 				704240DF2B2BA0BB00B7F0AD /* YandexMusicCoverType.swift in Sources */,
+				7024E2092B3DF4A400CD57D5 /* ResponseYandexMusicPlaylistModel.swift in Sources */,
 				70017F662AEEDB34001E1C02 /* ResponseMuffonLinksModel.swift in Sources */,
 				70017F012AEEDB34001E1C02 /* ServiceSignTableViewCell.swift in Sources */,
+				701B75C22B4962430090FACB /* ResponsePulseStoryTrackModel.swift in Sources */,
 				70017F562AEEDB34001E1C02 /* LibaryTrackModel.swift in Sources */,
 				70017F572AEEDB34001E1C02 /* LocalFeaturesModel.swift in Sources */,
 				70017F162AEEDB34001E1C02 /* SignInPresenter.swift in Sources */,
+				702D77472B4580EC00F1B541 /* ResponsePulseWidgetsRootModel.swift in Sources */,
 				70017F482AEEDB34001E1C02 /* NetworkManager.swift in Sources */,
 				70017F052AEEDB34001E1C02 /* ChevronTableViewCell.swift in Sources */,
 				7072CC112AF8F5C200E51E0A /* ResponsePulseCreateUserV3Model.swift in Sources */,
@@ -1479,6 +1761,7 @@
 				704240D92B2B9FF300B7F0AD /* ResponseYandexMusicArtistModel.swift in Sources */,
 				704240E32B2BA1F000B7F0AD /* ResponseYandexMusicAlbumLabelModel.swift in Sources */,
 				70017F642AEEDB34001E1C02 /* BaseTableViewPresenter.swift in Sources */,
+				702D77362B45667800F1B541 /* MainFeedPresenter.swift in Sources */,
 				70017F3E2AEEDB34001E1C02 /* UICollectionViewCell+Ext.swift in Sources */,
 				70017F832AEEDB34001E1C02 /* ResponsePulseLoginWithCodeModel.swift in Sources */,
 				70017F4C2AEEDB34001E1C02 /* LogManager.swift in Sources */,
@@ -1495,12 +1778,17 @@
 				70017F512AEEDB34001E1C02 /* RealmManager.swift in Sources */,
 				70017EFB2AEEDB34001E1C02 /* PlayableLinkModel.swift in Sources */,
 				704240E12B2BA17900B7F0AD /* ResponseYandexMusicAlbumModel.swift in Sources */,
+				709A91882B5429EA00D1E693 /* AccountBlockedViewController.swift in Sources */,
 				70017F502AEEDB34001E1C02 /* LocalFeatureModel.swift in Sources */,
 				70017F742AEEDB34001E1C02 /* ResponsePulseCreateUserModel.swift in Sources */,
 				70017F0D2AEEDB34001E1C02 /* CoversPresenter.swift in Sources */,
+				707C579A2B49B65B0069D3CF /* ResponsePulseSettingsModel.swift in Sources */,
 				70017F912AEEDB34001E1C02 /* ResponseSoundcloudTokenModel.swift in Sources */,
+				70C0E18D2B6198920078C13B /* NSNotification.Name+Ext.swift in Sources */,
 				70017F0F2AEEDB34001E1C02 /* LibraryPresenter.swift in Sources */,
 				70017F982AEEDB34001E1C02 /* ServiceType.swift in Sources */,
+				702D77342B45666F00F1B541 /* MainFeedViewController.swift in Sources */,
+				705EC83A2B40A63A00CFA3C4 /* OpenInServiceViewController.swift in Sources */,
 				70017F862AEEDB34001E1C02 /* ResponsePulseFeatureModel.swift in Sources */,
 				70017F722AEEDB34001E1C02 /* IpApiProvider.swift in Sources */,
 				70017F652AEEDB34001E1C02 /* MuffonProvider.swift in Sources */,
@@ -1668,7 +1956,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pulse/Pulse.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 27;
+				CURRENT_PROJECT_VERSION = 28;
 				DEVELOPMENT_TEAM = 3SYA5J8W7U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pulse/Info.plist;
@@ -1704,7 +1992,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pulse/Pulse.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 27;
+				CURRENT_PROJECT_VERSION = 28;
 				DEVELOPMENT_TEAM = 3SYA5J8W7U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pulse/Info.plist;
@@ -1801,7 +2089,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pulse/Pulse.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 27;
+				CURRENT_PROJECT_VERSION = 28;
 				DEVELOPMENT_TEAM = 3SYA5J8W7U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pulse/Info.plist;
@@ -1898,7 +2186,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pulse/Pulse.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 27;
+				CURRENT_PROJECT_VERSION = 28;
 				DEVELOPMENT_TEAM = 3SYA5J8W7U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pulse/Info.plist;
@@ -1995,7 +2283,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pulse/Pulse.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 27;
+				CURRENT_PROJECT_VERSION = 28;
 				DEVELOPMENT_TEAM = 3SYA5J8W7U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pulse/Info.plist;
@@ -2087,7 +2375,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pulse/Pulse.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 27;
+				CURRENT_PROJECT_VERSION = 28;
 				DEVELOPMENT_TEAM = 3SYA5J8W7U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pulse/Info.plist;
@@ -2147,6 +2435,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		708290D12B432648007E1DB4 /* XCLocalSwiftPackageReference "Pulse/Packages/PulseMedia" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Pulse/Packages/PulseMedia;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		7002A9782AEEDEB00017698B /* XCRemoteSwiftPackageReference "realm-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -2194,6 +2489,14 @@
 			requirement = {
 				kind = exactVersion;
 				version = 5.18.0;
+			};
+		};
+		70512A762B5D324400D8095D /* XCRemoteSwiftPackageReference "HPParallaxHeader" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ngochiencse/HPParallaxHeader";
+			requirement = {
+				kind = exactVersion;
+				version = 1.1.8;
 			};
 		};
 		7072CC1F2AF905BC00E51E0A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
@@ -2251,10 +2554,19 @@
 			package = 7002A9892AEEE1350017698B /* XCRemoteSwiftPackageReference "SDWebImage" */;
 			productName = SDWebImageMapKit;
 		};
+		70512A772B5D324400D8095D /* HPParallaxHeader */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 70512A762B5D324400D8095D /* XCRemoteSwiftPackageReference "HPParallaxHeader" */;
+			productName = HPParallaxHeader;
+		};
 		7072CC202AF905BC00E51E0A /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7072CC1F2AF905BC00E51E0A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignIn;
+		};
+		708290D22B432648007E1DB4 /* PulseMedia */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PulseMedia;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

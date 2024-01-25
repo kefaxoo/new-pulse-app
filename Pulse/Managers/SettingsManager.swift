@@ -48,9 +48,18 @@ final class SettingsManager {
         }
     }
     
+    var lastTabBarIndex: Int {
+        get {
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.lastTabBarIndex.rawValue) as? Int ?? 1
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.lastTabBarIndex.rawValue)
+        }
+    }
+    
     // MARK: Realm configuration
     var realmConfiguration: Realm.Configuration {
-        let configuration = Realm.Configuration(schemaVersion: 11) { migration, oldSchemaVersion in
+        let configuration = Realm.Configuration(schemaVersion: 14) { migration, oldSchemaVersion in
             if oldSchemaVersion < 2 {
                 migration.enumerateObjects(ofType: LibraryTrackModel.className()) { _, newObject in
                     newObject?["shareLink"] = ""
@@ -110,6 +119,37 @@ final class SettingsManager {
                     newObject?["muffonYandex"] = LocalFeatureModel(prod: false, debug: false)
                 }
             }
+            
+            if oldSchemaVersion < 12 {
+                migration.enumerateObjects(ofType: LibraryTrackModel.className()) { _, newObject in
+                    newObject?["subtitle"] = ""
+                }
+            }
+            
+            if oldSchemaVersion < 13 {
+                migration.enumerateObjects(ofType: LibraryTrackModel.className()) { _, newObject in
+                    newObject?["isExplicit"] = false
+                    newObject?["labels"]     = List<String>()
+                }
+            }
+            
+            if oldSchemaVersion < 14 {
+                migration.enumerateObjects(ofType: LibraryTrackModel.className()) { oldObject, newObject in
+                    if let id = oldObject?["id"] {
+                        newObject?["id"] = "\(id)"
+                    } else {
+                        newObject?["id"] = ""
+                    }
+                }
+                
+                migration.enumerateObjects(ofType: LibraryTrackModel.className()) { oldObject, newObject in
+                    if let id = oldObject?["id"] {
+                        newObject?["id"] = "\(id)"
+                    } else {
+                        newObject?["id"] = ""
+                    }
+                }
+            }
         }
         
         return configuration
@@ -144,6 +184,21 @@ final class SettingsManager {
             guard newValue else { return }
             
             RealmManager<LibraryTrackModel>().read().map({ TrackModel($0) }).forEach({ DownloadManager.shared.addTrackToQueue($0) })
+        }
+    }
+    
+    var appearance: ApplicationStyle {
+        get {
+            return ApplicationStyle(
+                rawValue: UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.appearance.rawValue) as? String ?? ""
+            ) ?? .system
+        }
+        set {
+            UserDefaults.standard.setValue(newValue.rawValue, forKey: Constants.UserDefaultsKeys.appearance.rawValue)
+            guard let window = MainCoordinator.shared.window else { return }
+            UIView.transition(with: window, duration: 0.2, options: .transitionCrossDissolve) {
+                window.overrideUserInterfaceStyle = newValue.userIntefaceStyle
+            }
         }
     }
     
@@ -231,10 +286,18 @@ extension SettingsManager {
         isCanvasesEnabled = false
         soundcloudLike = false
         
-        _ = pulse.signOut()
-        _ = soundcloud.signOut()
-        _ = yandexMusic.signOut()
+        pulse.signOut()
+        soundcloud.signOut()
+        yandexMusic.signOut()
         
         return true
+    }
+}
+
+// MARK: -
+// MARK: Unique Device ID
+extension SettingsManager {
+    var udid: String? {
+        return UIDevice.current.identifierForVendor?.uuidString
     }
 }

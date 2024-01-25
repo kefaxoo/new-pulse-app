@@ -79,20 +79,11 @@ final class SignUpViewController: CoversViewController {
 }
 
 // MARK: -
-// MARK: Life cycle
-extension SignUpViewController {
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        self.removeKeyboardObservers()
-    }
-}
-
-// MARK: -
 // MARK: Setup interface methods
 extension SignUpViewController {
     override func setupInterface() {
         super.setupInterface()
-        self.observeKeyboard(view: bottomStackView, defaultOffset: 30)
+        self.configureKeyboardObservating(observeView: bottomStackView, movingOffset: 30)
     }
     
     override func setupLayout() {

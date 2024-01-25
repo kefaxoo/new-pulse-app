@@ -27,7 +27,7 @@ final class VerifyPulseAccountPopUpViewController: PopUpViewController {
         let button = UIButton()
         button.configuration = UIButton.Configuration.filled()
         button.tintColor = SettingsManager.shared.color.color
-        button.setTitle("Open Telegram Bot", for: .normal)
+        button.setTitle(Localization.PopUp.VerifyPulseAccount.Buttons.openTelegramBot.localization, for: .normal)
         button.addTarget(self, action: #selector(openTelegramBotAction), for: .touchUpInside)
         return button
     }()
@@ -50,7 +50,7 @@ final class VerifyPulseAccountPopUpViewController: PopUpViewController {
 extension VerifyPulseAccountPopUpViewController {
     override func setupInterface() {
         super.setupInterface()
-        self.titleLabel.text = "Verification Code"
+        self.titleLabel.text = Localization.PopUp.VerifyPulseAccount.Lables.verificationCode.localization
     }
     
     override func setupLayout() {

@@ -15,12 +15,7 @@ final class ImageManager {
     
     func image(from link: String?, imageClosure: @escaping((_ image: UIImage?, _ shouldAnimate: Bool) -> ()), errorClosure: (() -> ())? = nil) {
         guard let link else {
-            if let errorClosure {
-                errorClosure()
-            } else {
-                imageClosure(Constants.Images.warning.image, false)
-            }
-            
+            errorClosure?()
             return
         }
         
@@ -35,26 +30,10 @@ final class ImageManager {
             return
         }
         
-        SDWebImageManager.shared.loadImage(with: URL(string: link), progress: nil) { [weak self] image, _, error, _, _, _ in
-            if error == nil {
-                self?.downloadImage(from: link) { image in
-                    guard image != nil else {
-                        if let errorClosure {
-                            errorClosure()
-                        } else {
-                            imageClosure(Constants.Images.warning.image, false)
-                        }
-                        
-                        return
-                    }
-                    
-                    imageClosure(image, true)
-                }
-                
-                return
-            }
+        SDWebImageManager.shared.loadImage(with: URL(string: link), progress: nil) { image, _, error, cacheType, _, _ in
+            guard error == nil else { return }
             
-            imageClosure(image, true)
+            imageClosure(image, cacheType == .none)
         }
     }
     
@@ -78,6 +57,10 @@ final class ImageManager {
                 filename = "Covers/soundcloud-\(track.id).png"
             case .yandexMusic:
                 filename = "Covers/yandexMusic-\(track.id).png"
+            case .pulse:
+                filename = "Covers/pulse-\(track.id).png"
+            case .deezer:
+                filename = "Covers/deezer-\(track.id).png"
             default:
                 completion(nil)
                 return
@@ -126,6 +109,14 @@ final class ImageManager {
                         } errorClosure: {
                             completion(nil)
                         }
+                    }
+                case .pulse:
+                    PulseProvider.shared.exclusiveTrackInfo(track) { [weak self] track in
+                        self?.image(from: track.album?.coverLink, imageClosure: { image, _ in
+                            self?.saveImage(image, filename: filename, completion: completion)
+                        }, errorClosure: {
+                            completion(nil)
+                        })
                     }
                 default:
                     completion(nil)

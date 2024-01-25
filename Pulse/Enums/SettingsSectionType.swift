@@ -31,26 +31,26 @@ enum SettingSectionType {
     var title: String {
         switch self {
             case .general:
-                return "General"
+                return Localization.Words.general.localization
             case .appearance:
-                return "Appearance"
+                return Localization.Words.appearance.localization
             case .soundcloud:
                 return "Soundcloud"
             case .help:
-                return "Help"
+                return Localization.Words.help.localization
             case .debug:
                 return "Debug"
             case .yandexMusic:
-                return "Yandex Music"
+                return Localization.Words.yandexMusic.localization
         }
     }
     
     var settings: [SettingType] {
         switch self {
             case .general:
-                return [.autoDownload]
+                return [.autoDownload, .canvasEnabled]
             case .appearance:
-                return [.accentColor]
+                return [.accentColor, .appearance]
             case .soundcloud:
                 var array: [SettingType] = [.soundcloudSign]
                 if SettingsManager.shared.soundcloud.isSigned {
@@ -68,6 +68,8 @@ enum SettingSectionType {
                 if SettingsManager.shared.yandexMusic.isSigned {
                     array.append(.yandexMusicLike)
                     array.append(.yandexMusicSource)
+                    array.append(.yandexMusicStreamingQuality)
+                    array.append(.yandexMusicDownloadQuality)
                 }
                 
                 return array

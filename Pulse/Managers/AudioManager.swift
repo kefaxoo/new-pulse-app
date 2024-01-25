@@ -32,12 +32,31 @@ final class AudioManager {
             return
         }
         
-        self.updatePlayableLink(for: track, success: success, failure: failure)
+        if track.needFetchingPlayableLinks {
+            self.updatePlayableLink(for: track, success: success, failure: failure)
+        } else {
+            success(UpdatedTrack(track: track, response: nil))
+        }
     }
     
     func updatePlayableLink(for track: TrackModel, success: @escaping((UpdatedTrack) -> ()), failure: (() -> ())? = nil) {
         switch track.source {
             case .muffon:
+                if track.service == .yandexMusic,
+                   SettingsManager.shared.yandexMusic.isSigned {
+                    YandexMusicProvider.shared.fetchAudioLink(for: track, shouldCancelTask: false) { link in
+                        guard let link else {
+                            failure?()
+                            return
+                        }
+                        
+                        track.playableLinks = PlayableLinkModel(link)
+                        success(UpdatedTrack(track: track, response: nil))
+                    }
+                    
+                    return
+                }
+                        
                 MuffonProvider.shared.trackInfo(track, shouldCancelTask: false) { muffonTrack in
                     let track = TrackModel(muffonTrack)
                     success(UpdatedTrack(track: track, response: muffonTrack))
@@ -68,6 +87,7 @@ final class AudioManager {
                             return
                         }
                         
+                        track.extension = SettingsManager.shared.yandexMusic.streamingQuality.fileExtension
                         track.playableLinks = PlayableLinkModel(link)
                         success(UpdatedTrack(track: track, response: nil))
                     }
@@ -79,7 +99,13 @@ final class AudioManager {
                         failure?()
                     }
                 }
-            case .none:
+            case .pulse:
+                PulseProvider.shared.exclusiveTrackInfo(track) { track in
+                    success(UpdatedTrack(track: TrackModel(track), response: track))
+                } failure: { _, _ in
+                    failure?()
+                }
+            default:
                 failure?()
         }
     }
@@ -96,6 +122,10 @@ final class AudioManager {
                 return playlist.map({ TrackModel($0) })
             case .yandexMusic:
                 guard let playlist = playlist as? [YandexMusicTrack] else { return nil }
+                
+                return playlist.map({ TrackModel($0) })
+            case .pulse:
+                guard let playlist = playlist as? [PulseExclusiveTrack] else { return nil }
                 
                 return playlist.map({ TrackModel($0) })
             default:

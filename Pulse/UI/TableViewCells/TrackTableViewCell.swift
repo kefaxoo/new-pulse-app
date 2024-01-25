@@ -15,20 +15,30 @@ final class TrackTableViewCell: BaseUITableViewCell {
         return imageView
     }()
     
-    private lazy var trackInfoStackView: UIStackView = {
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 13, weight: .semibold)
+        return label
+    }()
+    
+    private lazy var subtitleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 11, weight: .light)
+        label.textColor = .systemGray2
+        return label
+    }()
+    
+    private lazy var trackInfoTopStackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        stackView.distribution = .fillEqually
+        stackView.axis = .horizontal
+        stackView.spacing = 6
+        stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(subtitleLabel)
+        stackView.addArrangedSubview(.newSpacer)
         return stackView
     }()
     
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-        label.text = "Title"
-        return label
-    }()
+    private lazy var labelsImageView = [UIImageView]()
     
     private lazy var serviceImageView: UIImageView = {
         let imageView = UIImageView.default
@@ -36,38 +46,37 @@ final class TrackTableViewCell: BaseUITableViewCell {
         return imageView
     }()
     
-    private lazy var explicitAndArtistStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 6
-        return stackView
-    }()
-    
-    private lazy var explicitImageView: UIImageView = {
-        let imageView = UIImageView.explicitImageView
-        imageView.isHidden = true
-        return imageView
-    }()
+    private lazy var explicitImageView = UIImageView.explicitImageView
     
     private lazy var artistLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = .systemFont(ofSize: 12)
         label.textColor = UIColor(hex: "#848484")
-        label.text = "Artist"
         return label
     }()
     
-    private lazy var rightStackView: UIStackView = {
+    private lazy var trackInfoBottomStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = 12
+        stackView.spacing = 6
+        stackView.addArrangedSubview(serviceImageView)
+        stackView.addArrangedSubview(explicitImageView)
+        stackView.addArrangedSubview(artistLabel)
+        return stackView
+    }()
+    
+    private lazy var trackInfoStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.distribution = .equalSpacing
+        stackView.addArrangedSubview(trackInfoTopStackView)
+        stackView.addArrangedSubview(trackInfoBottomStackView)
         return stackView
     }()
     
     private lazy var libraryImageView: UIImageView = {
         let imageView = UIImageView.default
         imageView.tintColor = SettingsManager.shared.color.color
-        imageView.isHidden = true
         return imageView
     }()
     
@@ -79,10 +88,13 @@ final class TrackTableViewCell: BaseUITableViewCell {
         return button
     }()
     
-    private lazy var unavailableView: UIView = {
-        let view = UIView(with: .label.withAlphaComponent(0.5))
-        view.isHidden = true
-        return view
+    private lazy var rightStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 12
+        stackView.addArrangedSubview(libraryImageView)
+        stackView.addArrangedSubview(actionsButton)
+        return stackView
     }()
     
     private lazy var actionsManager: ActionsManager = {
@@ -91,7 +103,67 @@ final class TrackTableViewCell: BaseUITableViewCell {
     
     private var track: TrackModel?
     private var isLibraryController = false
+}
+
+// MARK: -
+// MARK: Lifecycle
+extension TrackTableViewCell {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.coverImageView.reset()
+        self.coverImageView.sd_cancelCurrentImageLoad()
+        
+        self.titleLabel.text = nil
+        self.subtitleLabel.text = nil
+        
+        self.labelsImageView.forEach({ $0.removeFromSuperview() })
+        self.labelsImageView.removeAll()
+        self.serviceImageView.image = nil
+        self.artistLabel.text = nil
+        self.libraryImageView.image = nil
+        self.actionsButton.menu = nil
+    }
+}
+
+// MARK: -
+// MARK: Setup inteface methods
+extension TrackTableViewCell {
+    override func setupLayout() {
+        self.contentView.addSubview(coverImageView)
+        self.contentView.addSubview(trackInfoStackView)
+        self.contentView.addSubview(rightStackView)
+    }
     
+    override func setupConstraints() {
+        coverImageView.snp.makeConstraints { make in
+            make.top.bottom.leading.equalToSuperview().inset(UIEdgeInsets(horizontal: 20, vertical: 10))
+            make.height.width.equalTo(42)
+        }
+        
+        serviceImageView.snp.makeConstraints({ $0.width.equalTo(16) })
+        
+        explicitImageView.snp.makeConstraints({ $0.width.equalTo(16) })
+        
+        trackInfoStackView.snp.makeConstraints { make in
+            make.top.bottom.equalTo(coverImageView)
+            make.leading.equalTo(coverImageView.snp.trailing).offset(12)
+            make.trailing.equalTo(rightStackView.snp.leading).offset(-12)
+        }
+        
+        libraryImageView.snp.makeConstraints({ $0.width.equalTo(25) })
+        actionsButton.snp.makeConstraints({ $0.width.equalTo(25) })
+        
+        rightStackView.snp.makeConstraints { make in
+            make.top.bottom.equalTo(coverImageView)
+            make.trailing.equalToSuperview().offset(-20)
+        }
+    }
+}
+
+// MARK: -
+// MARK: Public methods
+extension TrackTableViewCell {
     func setupCell(_ track: TrackModel, state: CoverImageViewState, isSearchController: Bool = false, isLibraryController: Bool = false) {
         self.track = track
         self.isLibraryController = isLibraryController
@@ -99,96 +171,43 @@ final class TrackTableViewCell: BaseUITableViewCell {
         self.coverImageView.setImage(from: track.image?.small)
         self.coverImageView.state = state
         
-        self.titleLabel.text  = track.title
-        self.artistLabel.text = track.artistText
-        self.serviceImageView.isHidden = isSearchController
+        self.titleLabel.text = track.title
+        self.subtitleLabel.text = track.subtitle
+        
+        track.labels.forEach({ labelsImageView.append(.imageView(forLabel: $0)) })
+        self.labelsImageView.forEach { imageView in
+            imageView.snp.makeConstraints({ $0.height.width.equalTo(16) })
+            trackInfoBottomStackView.insertArrangedSubview(imageView, at: 0)
+        }
+        
         self.serviceImageView.image = track.service.image
-        self.explicitImageView.isHidden = true
-        self.actionsButton.menu = actionsManager.trackActions(track)
+        self.explicitImageView.isHidden = !track.isExplicit
         
-        self.libraryImageView.image = track.libraryState.image
-        self.libraryImageView.isHidden = !((track.libraryState == .added && !isLibraryController) || track.libraryState == .downloaded)
+        self.artistLabel.text = track.artistText
         
-        self.unavailableView.isHidden = track.isAvailable
-        self.setupConstraints()
+        track.libraryState { [weak self] state in
+            DispatchQueue.main.async {
+                self?.libraryImageView.setImage(state.image)
+                self?.libraryImageView.isHidden = !((state == .added && !isLibraryController) || state == .downloaded)
+            }
+        }
+        
+        self.actionsManager.trackActions(for: track) { [weak self] menu in
+            DispatchQueue.main.async {
+                self?.actionsButton.menu = menu
+            }
+        }
     }
     
     func changeState(_ state: CoverImageViewState) {
         self.coverImageView.state = state
     }
-}
-
-// MARK: -
-// MARK: Lifecycle methods
-extension TrackTableViewCell {
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        self.coverImageView.reset()
-        self.titleLabel.text = nil
-        self.serviceImageView.image = nil
-        self.artistLabel.text = nil
-        self.actionsButton.menu = nil
-        self.libraryImageView.image = nil
-        self.libraryImageView.isHidden = true
-        self.unavailableView.isHidden = true
-        
-        let color = SettingsManager.shared.color.color
-        self.actionsButton.tintColor = color
-        self.libraryImageView.tintColor = color
-    }
-}
-
-// MARK: -
-// MARK: Setup interface methods
-extension TrackTableViewCell {
-    override func setupInterface() {
-        self.setupLayout()
-    }
     
-    override func setupLayout() {
-        self.contentView.addSubview(coverImageView)
-        self.contentView.addSubview(trackInfoStackView)
-        trackInfoStackView.addArrangedSubview(titleLabel)
-        trackInfoStackView.addArrangedSubview(explicitAndArtistStackView)
-        explicitAndArtistStackView.addArrangedSubview(serviceImageView)
-        explicitAndArtistStackView.addArrangedSubview(explicitImageView)
-        explicitAndArtistStackView.addArrangedSubview(artistLabel)
-    
-        self.contentView.addSubview(rightStackView)
-        rightStackView.addArrangedSubview(libraryImageView)
-        rightStackView.addArrangedSubview(actionsButton)
-        
-        self.contentView.addSubview(unavailableView)
-    }
-    
-    override func setupConstraints() {
-        coverImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(10)
-            make.leading.equalToSuperview().offset(20)
-            make.bottom.equalToSuperview().inset(10)
-            make.height.width.equalTo(42)
-        }
-        
-        rightStackView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
-            make.trailing.equalToSuperview().inset(20)
-        }
-        
-        actionsButton.snp.makeConstraints({ $0.width.equalTo(20) })
-        libraryImageView.snp.makeConstraints({ $0.width.equalTo(20) })
-        
-        self.layoutIfNeeded()
-        
-        trackInfoStackView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(12)
-            make.bottom.equalToSuperview().inset(12)
-            make.leading.equalTo(self.coverImageView.snp.trailing).offset(12)
-            make.trailing.equalTo(self.rightStackView.snp.leading).offset(-12)
-        }
-        
-        serviceImageView.snp.makeConstraints({ $0.height.width.equalTo(self.explicitAndArtistStackView.snp.height) })
-        unavailableView.snp.makeConstraints({ $0.edges.equalToSuperview() })
+    func changeColor() {
+        self.coverImageView.tintColor = SettingsManager.shared.color.color
+        self.explicitImageView.tintColor = SettingsManager.shared.color.color
+        self.libraryImageView.tintColor = SettingsManager.shared.color.color
+        self.actionsButton.tintColor = SettingsManager.shared.color.color
     }
 }
 
@@ -202,7 +221,7 @@ extension TrackTableViewCell: ActionsManagerDelegate {
     func updateButtonMenu() {
         guard let track else { return }
         
-        actionsButton.menu = actionsManager.trackActions(track)
+        self.actionsButton.menu = actionsManager.trackActions(track)
     }
     
     func reloadData() {

@@ -11,15 +11,18 @@ enum LibraryType {
     case playlists
     case tracks
     case soundcloud
+    case yandexMusic
     
     var title: String {
         switch self {
             case .playlists:
-                return "Playlists"
+                return Localization.Words.playlists.localization
             case .tracks:
-                return "Tracks"
+                return Localization.Words.tracks.localization
             case .soundcloud:
                 return "Soundcloud"
+            case .yandexMusic:
+                return Localization.Words.yandexMusic.localization
         }
     }
     
@@ -31,6 +34,8 @@ enum LibraryType {
                 return Constants.Images.tracks.image
             case .soundcloud:
                 return Constants.Images.soundcloudLogo.image
+            case .yandexMusic:
+                return Constants.Images.yandexMusicLogo.image
         }
     }
     
@@ -40,10 +45,16 @@ enum LibraryType {
             case .soundcloud:
                 types.append(.playlists)
                 types.append(.tracks)
+            case .yandexMusic:
+                types.append(.tracks)
             case .none:
                 types.append(.tracks)
                 if SettingsManager.shared.soundcloud.isSigned {
                     types.append(.soundcloud)
+                }
+                
+                if SettingsManager.shared.yandexMusic.isSigned {
+                    types.append(.yandexMusic)
                 }
             default:
                 break
@@ -60,6 +71,8 @@ enum LibraryType {
                         return .soundcloud
                     case .none:
                         return .library
+                    case .yandexMusic:
+                        return .yandexMusic
                     default:
                         return .none
                 }
@@ -72,6 +85,8 @@ enum LibraryType {
                 }
             case .soundcloud:
                 return .soundcloud
+            case .yandexMusic:
+                return .yandexMusic
         }
     }
     
@@ -83,6 +98,8 @@ enum LibraryType {
                 return .none
             case .soundcloud:
                 return .soundcloud
+            case .yandexMusic:
+                return .yandexMusic
         }
     }
 }

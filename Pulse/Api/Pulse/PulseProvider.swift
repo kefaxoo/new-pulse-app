@@ -278,6 +278,169 @@ final class PulseProvider: BaseRestApiProvider {
         }
     }
     
+    func mainScreen(success: @escaping((PulseWidgets) -> ()), failure: @escaping PulseDefaultErrorV3Closure) {
+        self.urlSession.dataTask(with: URLRequest(type: PulseApi.mainScreen, shouldPrintLog: self.shouldPrintLog)) { [weak self] response in
+            switch response {
+                case .success(let response):
+                    guard let widgets = response.data?.map(to: PulseWidgetsRoot.self) else {
+                        failure(nil, nil)
+                        return
+                    }
+                    
+                    success(widgets.widgets)
+                case .failure(let response):
+                    self?.parseError(response: response, closure: failure)
+            }
+        }
+    }
+    
+    func exclusiveTracks(
+        offset: Int = 0,
+        success: @escaping((PulseWidget<PulseExclusiveTrack>) -> ()),
+        failure: @escaping PulseDefaultErrorV3Closure
+    ) {
+        self.urlSession.dataTask(
+            with: URLRequest(type: PulseApi.exclusiveTracks(offset: offset), shouldPrintLog: self.shouldPrintLog)
+        ) { [weak self] response in
+            switch response {
+                case .success(let response):
+                    guard let widget = response.data?.map(to: PulseWidgetRoot<PulseExclusiveTrack>.self) else {
+                        failure(nil, nil)
+                        return
+                    }
+                    
+                    success(widget.widget)
+                case .failure(let response):
+                    self?.parseError(response: response, closure: failure)
+            }
+        }
+    }
+    
+    func spotifyCanvas(track: TrackModel, success: @escaping((PulseSpotifyCanvas) -> ())) {
+        self.urlSession.dataTask(with: URLRequest(type: PulseApi.spotifyCanvas(track: track), shouldPrintLog: self.shouldPrintLog)) { response in
+            switch response {
+                case .success(let response):
+                    guard let response = response.data?.map(to: PulseSpotifyCanvas.self) else { return }
+                    
+                    success(response)
+                case .failure:
+                    break
+            }
+        }
+    }
+    
+    func pulseCanvas(track: TrackModel, success: @escaping((PulseCanvas) -> ()), failure: @escaping(() -> ())) {
+        self.urlSession.dataTask(with: URLRequest(type: PulseApi.pulseCanvas(track: track), shouldPrintLog: self.shouldPrintLog)) { response in
+            switch response {
+                case .success(let response):
+                    guard let response = response.data?.map(to: PulseCanvas.self) else {
+                        failure()
+                        return
+                    }
+                    
+                    success(response)
+                case .failure:
+                    failure()
+            }
+        }
+    }
+    
+    func exclusiveTrackInfo(_ track: TrackModel, success: @escaping((PulseExclusiveTrack) -> ()), failure: PulseDefaultErrorV3Closure? = nil) {
+        self.exclusiveTrackInfo(byId: track.id, success: success, failure: failure)
+    }
+    
+    func exclusiveTrackInfo(byId id: String, success: @escaping((PulseExclusiveTrack) -> ()), failure: PulseDefaultErrorV3Closure? = nil) {
+        self.urlSession.dataTask(
+            with: URLRequest(type: PulseApi.exclusiveTrack(trackId: id), shouldPrintLog: self.shouldPrintLog)
+        ) { [weak self] response in
+            switch response {
+                case .success(let response):
+                    guard let response = response.data?.map(to: PulseExclusiveTrackInfo.self) else {
+                        failure?(nil, nil)
+                        return
+                    }
+                    
+                    success(response.exclusiveTrack)
+                case .failure(let response):
+                    self?.parseError(response: response, closure: failure)
+            }
+        }
+    }
+    
+    func markStoryAsWatched(storyId: Int) {
+        self.urlSession.dataTask(
+            with: URLRequest(type: PulseApi.markStoryAsWatched(storyId: storyId), shouldPrintLog: self.shouldPrintLog),
+            response: { _ in }
+        )
+    }
+    
+    func fetchSettings() {
+        self.urlSession.dataTask(with: URLRequest(type: PulseApi.fetchSettings, shouldPrintLog: self.shouldPrintLog)) { response in
+            switch response {
+                case .success(let response):
+                    guard let response = response.data?.map(to: PulseSettingsRoot.self) else { return }
+                    
+                    let settings = response.settings
+                    SettingsManager.shared.autoDownload = settings.autoDownload
+                    SettingsManager.shared.isCanvasesEnabled = settings.isCanvasEnabled
+                    SettingsManager.shared.color = settings.color
+                    SettingsManager.shared.soundcloudLike = settings.soundcloud.like
+                    SettingsManager.shared.soundcloud.currentSource = settings.soundcloud.source.soundcloudService
+                    SettingsManager.shared.yandexMusicLike = settings.yandexMusic.like
+                    SettingsManager.shared.yandexMusic.currentSource = settings.yandexMusic.source.yandexMusicService
+                    if let quality = settings.yandexMusic.quality,
+                       let streaming = YandexMusicModel.Quality(rawValue: quality.streaming),
+                       let download = YandexMusicModel.Quality(rawValue: quality.download) {
+                        SettingsManager.shared.yandexMusic.streamingQuality = streaming
+                        SettingsManager.shared.yandexMusic.downloadQuality = download
+                    }
+                case .failure:
+                    break
+            }
+        }
+    }
+    
+    func updateSettings() {
+        self.urlSession.dataTask(with: URLRequest(type: PulseApi.updateSettings, shouldPrintLog: self.shouldPrintLog), response: { _ in })
+    }
+    
+    func isUserBlocked(completion: @escaping((_ isUserBlocked: Bool) -> ())) {
+        self.urlSession.dataTask(with: URLRequest(type: PulseApi.isUserBlocked, shouldPrintLog: self.shouldPrintLog)) { response in
+            switch response {
+                case .success(let response):
+                    guard let isBlocked = response.data?.map(to: PulseIsBlocked.self) else {
+                        completion(false)
+                        return
+                    }
+                    
+                    completion(isBlocked.isBlocked)
+                case .failure:
+                    completion(false)
+            }
+        }
+    }
+    
+    func exclusivePlaylist(id: Int, offset: Int = 0, success: @escaping((PulsePlaylist) -> ()), failure: @escaping PulseDefaultErrorV3Closure) {
+        self.urlSession.dataTask(
+            with: URLRequest(
+                type: PulseApi.exclusivePlaylist(playlistId: id, offset: offset),
+                shouldPrintLog: self.shouldPrintLog
+            )
+        ) { [weak self] response in
+            switch response {
+                case .success(let response):
+                    guard let playlist = response.data?.map(to: PulsePlaylistRoot.self) else {
+                        failure(nil, nil)
+                        return
+                    }
+                    
+                    success(playlist.playlist)
+                case .failure(let response):
+                    self?.parseError(response: response, closure: failure)
+            }
+        }
+    }
+    
     func cancelTask() {
         task?.cancel()
     }
@@ -452,9 +615,7 @@ extension PulseProvider {
                     tracks.toAdd.forEach { track in
                         switch track.source {
                             case .muffon:
-                                guard let id = Int(track.id) else { return }
-                                
-                                MuffonProvider.shared.trackInfo(id: id, service: track.service, shouldCancelTask: false) { muffonTrack in
+                                MuffonProvider.shared.trackInfo(id: track.id, service: track.service, shouldCancelTask: false) { muffonTrack in
                                     let appTrackObj = TrackModel(muffonTrack)
                                     appTrackObj.dateAdded = track.dateAdded
                                     DispatchQueue.main.async {
@@ -464,11 +625,9 @@ extension PulseProvider {
                                     }
                                 }
                             case .soundcloud:
-                                guard SettingsManager.shared.soundcloud.isSigned,
-                                      let id = Int(track.id)
-                                else { return }
+                                guard SettingsManager.shared.soundcloud.isSigned else { return }
                                 
-                                SoundcloudProvider.shared.trackInfo(id: id) { soundcloudTrack in
+                                SoundcloudProvider.shared.trackInfo(id: track.id) { soundcloudTrack in
                                     let appTrackObj = TrackModel(soundcloudTrack)
                                     appTrackObj.dateAdded = track.dateAdded
                                     DispatchQueue.main.async {

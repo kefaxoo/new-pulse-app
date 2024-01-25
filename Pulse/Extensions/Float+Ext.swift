@@ -9,6 +9,10 @@ import Foundation
 
 extension Float {
     var toMinuteAndSeconds: String {
+        guard !self.isNaN,
+              !self.isInfinite
+        else { return "00:00" }
+        
         let totalSeconds = Int(self)
         let minutes = totalSeconds / 60
         let minutesString = minutes < 10 ? "0\(minutes)" : "\(minutes)"

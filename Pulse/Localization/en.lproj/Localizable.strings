@@ -8,10 +8,38 @@
 
 // MARK: -
 // MARK: Words
-"words.sign.in"  = "Sign in";
-"words.sign.up"  = "Sign up";
-"words.email"    = "Email";
-"words.password" = "Password";
+"words.sign.in"     = "Sign in";
+"words.sign.up"     = "Sign up";
+"words.email"       = "Email";
+"words.password"    = "Password";
+"words.library"     = "Library";
+"words.search"      = "Search";
+"words.settings"    = "Settings";
+"words.share"       = "Share";
+"words.error"       = "Error";
+"words.tracks"      = "Tracks";
+"words.yandexMusic" = "Yandex Music";
+"words.signOut"     = "Sign out";
+"words.playlists"   = "Playlists";
+"words.menu"        = "Menu";
+"words.vk"          = "VK";
+"words.blue"        = "Blue";
+"words.cyan"        = "Cyan";
+"words.green"       = "Green";
+"words.indigo"      = "Indigo";
+"words.mint"        = "Mint";
+"words.orange"      = "Orange";
+"words.pink"        = "Pink";
+"words.purple"      = "Purple";
+"words.red"         = "Red";
+"words.teal"        = "Teal";
+"words.yellow"      = "Yellow";
+"words.albums"      = "Albums";
+"words.artists"     = "Artists";
+"words.general"     = "General";
+"words.appearance"  = "Appearance";
+"words.help"        = "Help";
+"words.main"        = "Main";
 
 // MARK: -
 // MARK: Controllers
@@ -23,6 +51,45 @@
 // MARK: Sign in controller
 // MARK: Buttons
 "controller.signIn.button.forget.password" = "Forget password?";
+
+// MARK: Playlists controller
+// MARK: Search controllers
+"controller.playlists.searchController.typeQuery" = "Type playlist name...";
+
+// MARK: Tracks controller
+// MARK: Search controllers
+"controller.tracks.searchController.typeQuery" = "Type track...";
+
+// MARK: Content Unavailable Views
+"controller.search.contentUnavailableView.noContent" = "There is no content";
+
+// MARK: Search controller
+// MARK: Search controllers
+"controller.search.searchController.typeQuery" = "Type track, playlist...";
+
+// MARK: Content Unavailable Views
+"controller.search.contentUnavailableView.typeQuery" = "Type query in search bar";
+
+// MARK: -
+// MARK: Pop Up
+// MARK: Verify Pulse Account Pop Up
+"popUp.verifyPulseAccount.description" = "To verify account, go to Telegrm bot and send \\verify %@";
+
+// MARK: Buttons
+"popUp.verifyPulseAccount.buttons.openTelegramBot" = "Open Telegram Bot";
+
+// MARK: Labels
+"popUp.verifyPulseAccount.labels.verificationCode" = "Verification Code";
+
+// MARK: -
+// MARK: Views
+// MARK: Now playing view
+// MARK: Labels
+"view.nowPlaying.label.notPlaying" = "Not playing";
+
+// MARK: Open in service view
+// MARK: Buttons
+"view.openInService.button.copyUrl" = "Copy URL";
 
 // MARK: -
 // MARK: Server localization
@@ -37,8 +104,79 @@
 "word.email" = "Email";
 "word.user"  = "User";
 
+// MARK: Widgets
+"server.widgets.exclusiveTracks"           = "Exclusive Tracks";
+"server.widgets.button.exclusiveTracks"    = "More";
+"server.widgets.exclusivePlaylists"        = "Exclusive Playlists";
+"server.widgets.button.exclusivePlaylists" = "More";
+
 // MARK: -
 // MARK: Lines
 "lines.unknown.error"                     = "Unknown %@ error";
 "lines.password.doesnt.meet.requirements" = "Password doesn't meet requirements";
 "lines.text.in.textfield.is.empty"        = "Text in %@ is empty";
+"lines.refreshToken"                      = "Refresh token";
+"lines.successRefreshToken"               = "Success refresh %@ token";
+"lines.successSignIn"                     = "Success sign in %@";
+"lines.playingLast"                       = "Playing last";
+"lines.playingNext"                       = "Playing next";
+"lines.currentSource"                     = "Current source: %@";
+"lines.currentCountry"                    = "Current country: %@";
+"lines.yourPlaylists"                     = "Your playlists";
+"lines.likedPlaylists"                    = "Liked playlists";
+"lines.user"                              = "User: %@";
+"lines.signIn"                            = "Sign in %@";
+"lines.likeTrackIn"                       = "Like track in %@";
+"lines.appInfo"                           = "App version: %@";
+"lines.likeTrackInDescription"            = "All tracks that have been added to the library will be added to the %@ library";
+"lines.buildNumber"                       = "Build number: %@";
+
+// MARK: -
+// MARK: Actions
+// MARK: Title
+"action.title.playLast"         = "Play last";
+"action.title.playNext"         = "Play next";
+"action.title.openIn"           = "Open in";
+"action.title.shareTrackAsFile" = "Share track as file";
+"action.title.shareTrackAsLink" = "Share track as link";
+"action.title.downloadTrack"    = "Download track";
+
+// MARK: Share track as link action
+"action.shareTrackAsLink.text" = "Listen to %@ by %@\n%@";
+
+// MARK: -
+// MARK: Enums
+// MARK: Media
+// MARK: ArtistViewScheme
+// MARK: Header Title
+"enum.media.artistViewScheme.headerTitle.popularTracks" = "Popular tracks";
+
+// MARK: SettingType
+// MARK: Title
+"enum.settingType.title.adultContent"     = "Limit access to content";
+"enum.settingType.title.import"           = "Import your media library";
+"enum.settingType.title.canvasEnabled"    = "Canvas in the app";
+"enum.settingType.title.autoDownload"     = "Auto-download tracks";
+"enum.settingType.title.about"            = "About";
+"enum.settingType.title.accentColor"      = "Color of the app";
+"enum.settingType.title.appEnvironment"   = "App Environment Mode";
+"enum.settingType.title.streamingQuality" = "Streaming quality";
+"enum.settingType.title.downloadQuality"  = "Download quality";
+
+// MARK: Description
+"enum.settingType.description.adultContent" = "We won't play tracks, which has explicit content";
+"enum.settingType.description.import" = "Move your library from other services to Pulse";
+"enum.settingType.description.canvasEnabled" = "Canvases are shown in the player where artists' photos, cover art and videos come to life";
+"enum.settingType.description.autoDownload" = "Tracks you liked are immediately downloaded so you can listen offline";
+"enum.settingType.description.accentColor" = "Choose the color of the application based on your mood";
+
+// MARK: ApplicationStyle
+// MARK: Title
+"enum.applicationStyle.title.light"  = "Light";
+"enum.applicationStyle.title.dark"   = "Dark";
+"enum.applicationStyle.title.system" = "System";
+
+// MARK: YandexMusicQuality
+"enum.ymQuality.lq" = "Low quality";
+"enum.ymQuality.mq" = "Medium quality";
+"enum.ymQuality.hq" = "High quality";

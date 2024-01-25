@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PulseUIComponents
 
 enum TrackLibraryState {
     case added
@@ -28,22 +29,45 @@ enum TrackLibraryState {
 }
 
 final class TrackModel {
-    let id         : Int
+    enum Labels: String {
+        case dolbyAtmos
+        case lossless
+        case none = ""
+        
+        var image: UIImage? {
+            switch self {
+                case .dolbyAtmos:
+                    return Constants.Images.dolbyAtmosLogo.image
+                case .lossless:
+                    return Constants.Images.losslessLogo.image
+                case .none:
+                    return nil
+            }
+        }
+    }
+    
+    let id         : String
     let title      : String
     let artist     : ArtistModel?
     let artists    : [ArtistModel]
     let service    : ServiceType
     let artistText : String
     let shareLink  : String
-    let `extension`: String
     let source     : SourceType
     let isAvailable: Bool
     
+    var `extension`    = "mp3"
     var dateAdded      : Int
     var image          : ImageModel?
     var playableLinks  : PlayableLinkModel?
     var cachedFilename = ""
     var isSynced       = false
+    var subtitle       : String?
+    var yandexMusicId  : Int?
+    var spotifyId      : String?
+    var canvasLink     : String?
+    var labels         = [Labels]()
+    var isExplicit     = false
     var libraryTrackFilename: String {
         return "Tracks/\(self.trackFilename)"
     }
@@ -62,8 +86,24 @@ final class TrackModel {
         return .none
     }
     
+    func libraryState(_ completion: @escaping((TrackLibraryState) -> ())) {
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard let self else { return }
+            
+            if LibraryManager.shared.isTrackDownloaded(self) {
+                completion(.downloaded)
+                return
+            } else if LibraryManager.shared.isTrackInLibrary(self) {
+                completion(.added)
+                return
+            }
+            
+            completion(.none)
+        }
+    }
+    
     init(_ track: MuffonTrack) {
-        self.id            = track.source.id
+        self.id            = "\(track.source.id)"
         self.title         = track.title
         self.image         = ImageModel(track.image)
         self.playableLinks = PlayableLinkModel(track.audio)
@@ -110,10 +150,23 @@ final class TrackModel {
         if !track.trackFilename.isEmpty {
             self.playableLinks = PlayableLinkModel(URL(filename: track.trackFilename, path: .documentDirectory)?.absoluteString ?? "")
         }
+        
+        switch self.service {
+            case .yandexMusic:
+                YandexMusicProvider.shared.trackInfo(id: track.id) { [weak self] yandexMusicTrack in
+                    self?.artist?.image = ImageModel(yandexMusicTrack.artists.first?.cover)
+                }
+            default:
+                break
+        }
+        
+        self.isExplicit = track.isExplicit
+        self.subtitle   = track.subtitle
+        self.labels     = track.labels.map({ Labels(rawValue: $0) ?? .none }).filter({ $0 != .none })
     }
     
     init(_ track: SoundcloudTrack) {
-        self.id            = track.id
+        self.id            = "\(track.id)"
         self.title         = track.title
         self.image         = ImageModel(track.coverLink ?? "")
         self.service       = .soundcloud
@@ -140,11 +193,39 @@ final class TrackModel {
         self.service     = .yandexMusic
         self.artistText  = track.artists.map({ $0.name }).joined(separator: ", ")
         self.shareLink   = "https://song.link/ya/\(track.id)"
-        self.`extension` = "mp3"
         self.source      = .yandexMusic
         self.isAvailable = track.isAvailable
-        self.image = ImageModel(small: track.coverLink(for: .small), original: track.coverLink(for: .xl))
+        self.image       = ImageModel(small: track.coverLink(for: .small), original: track.coverLink(for: .xl))
+        self.dateAdded   = Int(Date().timeIntervalSince1970)
+        self.isExplicit  = track.isExplicit
+    }
+    
+    init(_ track: PulseExclusiveTrack) {
+        self.id = "\(track.id)"
+        self.title = track.title
+        self.artists = track.artists?.map({ ArtistModel($0) }) ?? []
+        self.artist = self.artists.first
+        self.service = .pulse
+        self.artistText = self.artists.compactMap({ $0.name }).joined(separator: ", ")
+        self.`extension` = track.trackExtension
+        self.source = .pulse
+        self.isAvailable = true
         self.dateAdded = Int(Date().timeIntervalSince1970)
+        self.playableLinks = PlayableLinkModel(track.playableLink)
+        self.image = ImageModel(track.album?.coverLink)
+        self.subtitle = track.subtitle
+        self.yandexMusicId = track.yandexMusicId
+        self.spotifyId = track.spotifyId
+        self.canvasLink = track.canvasLink
+        self.labels = track.labels.map({ $0.trackLabel })
+        self.isExplicit = track.isExplicit
+        if let spotifyId = track.spotifyId {
+            self.shareLink = "https://song.link/s/\(spotifyId)"
+        } else if let yandexMusicId = track.yandexMusicId {
+            self.shareLink = "https://song.link/ya/\(yandexMusicId)"
+        } else {   
+            self.shareLink = ""
+        }
     }
     
     var json: [String: Any] {

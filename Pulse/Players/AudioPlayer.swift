@@ -20,11 +20,19 @@ protocol AudioPlayerCommonDelegate: AnyObject {
 protocol AudioPlayerViewDelegate: AudioPlayerCommonDelegate {
     func updateDuration(_ duration: Float)
     func changeState(isPlaying: Bool)
+    func resetView()
 }
 
 protocol AudioPlayerControllerDelegate: AudioPlayerCommonDelegate {
     func updateDuration(_ duration: Float, currentTime: Float)
     func updateVolume(_ volume: Float)
+    func shouldFetchCanvas()
+    func trackIsReadyToPlay()
+    func trackDidFinishPlaying()
+}
+
+extension AudioPlayerControllerDelegate {
+    func trackDidFinishPlaying() {}
 }
 
 protocol AudioPlayerTableViewDelegate: AnyObject {
@@ -54,16 +62,21 @@ final class AudioPlayer: NSObject {
         return player
     }()
     
-    private var playlist            = [TrackModel]()
-    private var position            = 0
-    private var observer            : Any?
-    private var nowPlayingInfo      = [String: Any]()
-    private var outputVolumeObserver: Any?
+    private var playlist                 = [TrackModel]()
+    private var position                 = 0
+    private var observer                 : Any?
+    private var nowPlayingInfo           = [String: Any]()
+    private var outputVolumeObserver     : Any?
+    private var currentItemStatusObserver: Any?
+    private var previousTaps             = 0
+    private var currentState             : CoverImageViewState = .stopped
+    private var likeTarget               : Any?
     
     private(set) var track: TrackModel?
     private(set) var cover: UIImage?
     
     private var durationWhenPaused: Double?
+    private var currentTimeWhenPaused: Double?
     
     private let commandCenter = MPRemoteCommandCenter.shared()
     
@@ -74,8 +87,16 @@ final class AudioPlayer: NSObject {
         return self.player.rate == 0 ? self.durationWhenPaused : self.player.currentItem?.duration.seconds
     }
     
+    var currentTime: Double? {
+        return self.player.rate == 0 ? self.currentTimeWhenPaused : self.player.currentTime().seconds
+    }
+    
     var isPlaying: Bool {
         return self.player.rate != 0
+    }
+    
+    var isTrackLoaded: Bool {
+        return self.player.currentItem?.status == .readyToPlay
     }
     
     weak var viewDelegate      : AudioPlayerViewDelegate?
@@ -97,7 +118,7 @@ final class AudioPlayer: NSObject {
             guard let playerItem,
                   let self
             else {
-                _ = self?.nextTrack()
+                self?.nextTrack()
                 return
             }
             
@@ -109,13 +130,26 @@ final class AudioPlayer: NSObject {
                 name: .AVPlayerItemDidPlayToEndTime,
                 object: self.player.currentItem
             )
+            
+            self.currentItemStatusObserver = self.player.currentItem?.observe(\.status, options: .new, changeHandler: { [weak self] playerItem, _ in
+                guard playerItem.status == .readyToPlay else { return }
+                
+                self?.controllerDelegate?.trackIsReadyToPlay()
+            })
         }
         
         self.tableViewDelegate?.changeStateImageView(.loading, for: track)
         self.setupTrackInfoInDelegates()
         self.setupCover()
         self.setupObserver()
-        self.updatePlayableLink(at: self.nextPosition)
+        self.updatePlayableLink(at: self.nextPosition) { [weak self] in
+            guard let nextPosition = self?.nextPosition,
+                  let track = self?.playlist[nextPosition]
+            else { return }
+            
+            SessionCacheManager.shared.addTrackToQueue(track)
+        }
+        
         self.setupTrackNowPlayingCommands()
     }
     
@@ -131,9 +165,11 @@ final class AudioPlayer: NSObject {
     
     func cleanPlayer(isNewPlaylist: Bool = true) {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: self.player.currentItem)
+        self.currentItemStatusObserver = nil
         self.player.replaceCurrentItem(with: nil)
         self.cover = nil
         self.viewDelegate?.changeState(isPlaying: false)
+        self.previousTaps = 0
         if let track {
             self.tableViewDelegate?.changeStateImageView(.stopped, for: track)
         }
@@ -141,6 +177,19 @@ final class AudioPlayer: NSObject {
         guard isNewPlaylist else { return }
         
         SessionCacheManager.shared.cleanAllCache()
+    }
+    
+    func cleanPlayerFromStory() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: self.player.currentItem)
+        self.currentItemStatusObserver = nil
+        self.player.replaceCurrentItem(with: nil)
+        self.cover = nil
+        self.track = nil
+        self.playlist.removeAll()
+        SessionCacheManager.shared.cleanAllCache()
+        self.viewDelegate?.resetView()
+        self.viewDelegate?.changeState(isPlaying: false)
+        self.viewDelegate?.updateDuration(0)
     }
 }
 
@@ -187,11 +236,17 @@ fileprivate extension AudioPlayer {
                 
                 guard let track else { return }
                 
+                let state: CoverImageViewState
                 if self.player.currentItem?.status == .readyToPlay {
-                    self.tableViewDelegate?.changeStateImageView(self.player.rate == 0 ? .paused : .playing, for: track)
+                    state = self.player.rate == 0 ? .paused : .playing
                 } else {
-                    self.tableViewDelegate?.changeStateImageView(.loading, for: track)
+                    state = .loading
                 }
+                
+                guard state != self.currentState else { return }
+                
+                self.currentState = state
+                self.tableViewDelegate?.changeStateImageView(state, for: track)
             }
         )
     }
@@ -221,6 +276,8 @@ fileprivate extension AudioPlayer {
                             self.playlist[self.position].image = ImageModel(cover)
                         }
                     }
+                case .pulse:
+                    self.fetchCover(from: coverModel.original)
                 default:
                     break
             }
@@ -247,6 +304,8 @@ fileprivate extension AudioPlayer {
                 self?.playlist[position] = updatedTrack.track
                 completion?()
             }
+        } else {
+            completion?()
         }
     }
     
@@ -270,27 +329,6 @@ fileprivate extension AudioPlayer {
             }
             
             return .success
-        }
-    }
-    
-    func setupTrackNowPlayingCommands() {
-        if #available(iOS 17.0, *) {
-            guard let track else { return }
-            
-            commandCenter.likeCommand.isActive = LibraryManager.shared.isTrackInLibrary(track)
-            
-            commandCenter.likeCommand.addTarget { [weak self] _ in
-                guard let self else { return .commandFailed }
-                
-                if self.commandCenter.likeCommand.isActive {
-                    LibraryManager.shared.dislikeTrack(track)
-                } else {
-                    LibraryManager.shared.likeTrack(track)
-                }
-                
-                self.commandCenter.likeCommand.isActive.toggle()
-                return .success
-            }
         }
     }
     
@@ -349,6 +387,39 @@ fileprivate extension AudioPlayer {
     }
 }
 
+extension AudioPlayer {
+    func setupTrackNowPlayingCommands() {
+        if #available(iOS 17.0, *) {
+            guard let track else { return }
+            
+            commandCenter.likeCommand.removeTarget(likeTarget)
+            
+            commandCenter.likeCommand.isActive = LibraryManager.shared.isTrackInLibrary(track)
+            
+            self.likeTarget = commandCenter.likeCommand.addTarget { [track, weak self] _ in
+                guard let self else { return .commandFailed }
+                
+                let state: TrackLibraryState
+                if self.commandCenter.likeCommand.isActive {
+                    LibraryManager.shared.dislikeTrack(track)
+                    state = .none
+                } else {
+                    LibraryManager.shared.likeTrack(track)
+                    state = .added
+                }
+                
+                NotificationCenter.default.post(name: .updateLibraryState, object: nil, userInfo: [
+                    "track": track,
+                    "state": state
+                ])
+                
+                self.commandCenter.likeCommand.isActive.toggle()
+                return .success
+            }
+        }
+    }
+}
+
 // MARK: -
 // MARK: Computed variables
 extension AudioPlayer {
@@ -370,10 +441,12 @@ extension AudioPlayer {
 // MARK: -
 // MARK: Control player methods
 extension AudioPlayer {
-    @objc func playPause() -> MPRemoteCommandHandlerStatus {
+    @discardableResult @objc func playPause() -> MPRemoteCommandHandlerStatus {
         if self.player.rate == 0 {
             self.player.play()
         } else {
+            self.durationWhenPaused = self.player.currentItem?.duration.seconds
+            self.currentTimeWhenPaused = self.player.currentTime().seconds
             self.player.pause()
         }
         
@@ -386,12 +459,20 @@ extension AudioPlayer {
         return .success
     }
     
-    @objc func nextTrack() -> MPRemoteCommandHandlerStatus {
+    @discardableResult @objc func nextTrack() -> MPRemoteCommandHandlerStatus {
         self.play(from: self.playlist[self.nextPosition], position: self.nextPosition)
         return .success
     }
     
-    @objc func previousTrack() -> MPRemoteCommandHandlerStatus {
+    @discardableResult @objc func previousTrack() -> MPRemoteCommandHandlerStatus {
+        if self.player.currentTime().seconds > 5 {
+            self.previousTaps += 1
+            if self.previousTaps < 2 {
+                self.player.seek(to: .zero)
+                return .success
+            }
+        }
+        
         self.play(from: self.playlist[self.previousPosition], position: self.previousPosition)
         return .success
     }
@@ -415,7 +496,7 @@ extension AudioPlayer {
             type = .done
         }
         
-        AlertView.shared.present(title: "Playing next", alertType: type, system: .iOS17AppleMusic)
+        AlertView.shared.present(title: Localization.Lines.playingNext.localization, alertType: type, system: .iOS17AppleMusic)
     }
     
     func playLast(_ track: TrackModel) {
@@ -427,7 +508,7 @@ extension AudioPlayer {
             type = .done
         }
         
-        AlertView.shared.present(title: "Playing last", alertType: type, system: .iOS17AppleMusic)
+        AlertView.shared.present(title: Localization.Lines.playingLast.localization, alertType: type, system: .iOS17AppleMusic)
     }
 }
 
@@ -457,31 +538,32 @@ extension AudioPlayer {
 
 // MARK: -
 // MARK: Observable methods
-fileprivate extension AudioPlayer {
-    @objc func playerDidFinishPlaying() {
+extension AudioPlayer {
+    @objc fileprivate func playerDidFinishPlaying() {
         if let track,
            LibraryManager.shared.isTrackInLibrary(track) {
             PulseProvider.shared.incrementCountListen(for: track)
         }
         
-        _ = self.nextTrack()
+        self.controllerDelegate?.trackDidFinishPlaying()
+        self.nextTrack()
     }
     
-    @objc private func handleInterruptions(_ notification: NSNotification) {
+    @objc fileprivate func handleInterruptions(_ notification: NSNotification) {
         guard let info = notification.userInfo,
               let typeValue = info[AVAudioSessionInterruptionTypeKey] as? UInt,
               let type = AVAudioSession.InterruptionType(rawValue: typeValue)
         else { return }
         
         if type == .began {
-            _ = self.playPause()
+            self.playPause()
             self.viewDelegate?.changeState(isPlaying: false)
         } else if type == .ended {
             guard let optionsValue = info[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
             
             let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
             if options.contains(.shouldResume) {
-                _ = self.playPause()
+                self.playPause()
                 self.viewDelegate?.changeState(isPlaying: true)
             }
         }

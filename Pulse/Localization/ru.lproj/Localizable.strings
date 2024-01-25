@@ -1,5 +1,26 @@
 
 /*  */
+"action.shareTrackAsLink.text" = "Слушайте %@ от %@\n%@";
+
+/*  */
+"action.title.downloadTrack" = "Скачать песню";
+
+/*  */
+"action.title.openIn" = "Открыть в";
+
+/*  */
+"action.title.playLast" = "Проиграть последним";
+
+/*  */
+"action.title.playNext" = "Проиграть следующим";
+
+/*  */
+"action.title.shareTrackAsFile" = "Поделиться треком как файлом";
+
+/*  */
+"action.title.shareTrackAsLink" = "Поделиться треком как ссылкой";
+
+/*  */
 "alert.password.doesnt.meet.requirements" = "Пароль не соответствует требованиям";
 
 /*  */
@@ -9,7 +30,85 @@
 "controller.auth.button.continue.with.google" = "Продолжить через Google";
 
 /*  */
+"controller.playlists.searchController.typeQuery" = "Введите незвание плейлиста...";
+
+/*  */
+"controller.search.contentUnavailableView.noContent" = "Нет контента";
+
+/*  */
+"controller.search.contentUnavailableView.typeQuery" = "Введите запрос в поисковом поле";
+
+/*  */
+"controller.search.searchController.typeQuery" = "Введите песню, плейлист...";
+
+/*  */
 "controller.signIn.button.forget.password" = "Забыли пароль?";
+
+/*  */
+"controller.tracks.searchController.typeQuery" = "Введите песню...";
+
+/*  */
+"enum.applicationStyle.title.dark" = "Темная";
+
+/*  */
+"enum.applicationStyle.title.light" = "Светлая";
+
+/*  */
+"enum.applicationStyle.title.system" = "Системная";
+
+/*  */
+"enum.media.artistViewScheme.headerTitle.popularTracks" = "Популярные треки";
+
+/*  */
+"enum.settingType.description.accentColor" = "Выберите цвет приложения в зависимости от вашего настроения";
+
+/*  */
+"enum.settingType.description.adultContent" = "Приложение не будет воспроизводить треки без цензуры";
+
+/*  */
+"enum.settingType.description.autoDownload" = "Треки, которые вы лайкаете, будут немедленно скачаны, чтобы вы могли их слушать без интернета";
+
+/*  */
+"enum.settingType.description.canvasEnabled" = "Показываются видео в плеере, оживают фото исполнителей и обложки";
+
+/*  */
+"enum.settingType.description.import" = "Переместите вашу библиотеку из другого сервиса в Pulse";
+
+/*  */
+"enum.settingType.title.about" = "О приложении";
+
+/*  */
+"enum.settingType.title.accentColor" = "Цвет приложения";
+
+/*  */
+"enum.settingType.title.adultContent" = "Ограничить доступ к контенту";
+
+/*  */
+"enum.settingType.title.appEnvironment" = "App Environment Mode";
+
+/*  */
+"enum.settingType.title.autoDownload" = "Авто-скачивание треков";
+
+/*  */
+"enum.settingType.title.canvasEnabled" = "Видео в приложении";
+
+/*  */
+"enum.settingType.title.downloadQuality" = "Качество оффлайн треков";
+
+/*  */
+"enum.settingType.title.import" = "Импорт вашей библиотеки в приложение";
+
+/*  */
+"enum.settingType.title.streamingQuality" = "Качество онлайн треков";
+
+/*  */
+"enum.ymQuality.hq" = "Высокое качество";
+
+/*  */
+"enum.ymQuality.lq" = "Низкое качество";
+
+/*  */
+"enum.ymQuality.mq" = "Среднее качество";
 
 /*  */
 "error.exception" = "Ошибка сервера (исключение)";
@@ -21,10 +120,52 @@
 "error.something.is.incorrect" = "%@ неверно";
 
 /*  */
+"error.something.not.found" = "%@ не найден";
+
+/*  */
 "error.try.another.sign.method" = "Попробуйте другой способ входа";
 
 /*  */
+"lines.appInfo" = "Версия приложения: %@";
+
+/*  */
+"lines.buildNumber" = "Номер сборки: %@";
+
+/*  */
+"lines.currentCountry" = "Текущая страна: %@";
+
+/*  */
+"lines.currentSource" = "Текущий источник: %@";
+
+/*  */
+"lines.likeTrackIn" = "Добавление трека в %@";
+
+/*  */
+"lines.likeTrackInDescription" = "Все треки, которые были добавленыы в библиотеку, будут добавлены в библиотеку %@";
+
+/*  */
+"lines.likedPlaylists" = "Лайкнутые плейлисты";
+
+/*  */
 "lines.password.doesnt.meet.requirements" = "Пароль не соответствует требованиям";
+
+/*  */
+"lines.playingLast" = "Проигрывается последним";
+
+/*  */
+"lines.playingNext" = "Проигрывается следующим";
+
+/*  */
+"lines.refreshToken" = "Обновить токен";
+
+/*  */
+"lines.signIn" = "Войти в %@";
+
+/*  */
+"lines.successRefreshToken" = "Успешное обновление %@ токена";
+
+/*  */
+"lines.successSignIn" = "Успешный вход в %@";
 
 /*  */
 "lines.text.in.textfield.is.empty" = "Текст в %@ пустой";
@@ -33,19 +174,136 @@
 "lines.unknown.error" = "Неизвестная %@ ошибка";
 
 /*  */
+"lines.user" = "Пользователь: %@";
+
+/*  */
+"lines.yourPlaylists" = "Ваши плейлисты";
+
+/*  */
+"popUp.verifyPulseAccount.buttons.openTelegramBot" = "Открыть Telegram бота";
+
+/*  */
+"popUp.verifyPulseAccount.description" = "Чтобы подтвердить аккаунт, перейдите в Telgram бота и отправьте \verify %@";
+
+/*  */
+"popUp.verifyPulseAccount.labels.verificationCode" = "Код подтверждения";
+
+/*  */
+"server.widgets.button.exclusivePlaylists" = "Больше";
+
+/*  */
+"server.widgets.button.exclusiveTracks" = "Больше";
+
+/*  */
+"server.widgets.exclusivePlaylists" = "Эксклюзивные плейлисты";
+
+/*  */
+"server.widgets.exclusiveTracks" = "Эксклюзивные треки";
+
+/*  */
+"view.nowPlaying.label.notPlaying" = "Не воспроизводится";
+
+/*  */
+"view.openInService.button.copyUrl" = "Скопировать ссылку";
+
+/*  */
 "word.email" = "Электронная почта";
 
 /*  */
 "word.user" = "Пользователь";
 
 /*  */
+"words.albums" = "Альбомы";
+
+/*  */
+"words.appearance" = "Внешний вид";
+
+/*  */
+"words.artists" = "Исполнители";
+
+/*  */
+"words.blue" = "Синий";
+
+/*  */
+"words.cyan" = "Голубой";
+
+/*  */
 "words.email" = "Электронная почта";
 
 /*  */
+"words.error" = "Ошибка";
+
+/*  */
+"words.general" = "Основные";
+
+/*  */
+"words.green" = "Зеленый";
+
+/*  */
+"words.help" = "Помощь";
+
+/*  */
+"words.indigo" = "Индиго";
+
+/*  */
+"words.library" = "Библиотека";
+
+/*  */
+"words.main" = "Главная";
+
+/*  */
+"words.menu" = "Меню";
+
+/*  */
+"words.mint" = "Мятный";
+
+/*  */
+"words.orange" = "Оранжевый";
+
+/*  */
 "words.password" = "Пароль";
+
+/*  */
+"words.pink" = "Розовый";
+
+/*  */
+"words.playlists" = "Плейлисты";
+
+/*  */
+"words.purple" = "Фиолетовый";
+
+/*  */
+"words.red" = "Красный";
+
+/*  */
+"words.search" = "Поиск";
+
+/*  */
+"words.settings" = "Настройки";
+
+/*  */
+"words.share" = "Поделиться";
 
 /*  */
 "words.sign.in" = "Войти";
 
 /*  */
 "words.sign.up" = "Зарегестрироваться";
+
+/*  */
+"words.signOut" = "Выйти";
+
+/*  */
+"words.teal" = "Бирюзовый";
+
+/*  */
+"words.tracks" = "Песни";
+
+/*  */
+"words.vk" = "ВК";
+
+/*  */
+"words.yandexMusic" = "Яндекс Музыка";
+
+/*  */
+"words.yellow" = "Желтый";

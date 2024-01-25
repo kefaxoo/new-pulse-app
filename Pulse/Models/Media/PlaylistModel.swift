@@ -35,4 +35,14 @@ final class PlaylistModel {
         self.trackIds    = []
         self.source      = .soundcloud
     }
+    
+    init(_ playlist: PulsePlaylist) {
+        self.id          = String(playlist.id)
+        self.title       = playlist.title
+        self.dateCreated = -1
+        self.source      = .pulse
+        self.dateUpdated = -1
+        self.trackIds    = playlist.tracks?.map({ $0.id }) ?? []
+        self.image       = ImageModel(playlist.coverLink)
+    }
 }

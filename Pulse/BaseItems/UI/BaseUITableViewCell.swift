@@ -9,6 +9,13 @@ import UIKit
 
 protocol TableViewCellDelegate: AnyObject {
     func reloadData()
+    func reloadCells(at indexPaths: [IndexPath])
+    func reloadCells(at section: Int)
+}
+
+extension TableViewCellDelegate {
+    func reloadCells(at indexPaths: [IndexPath]) {}
+    func reloadCells(at section: Int) {}
 }
 
 class BaseUITableViewCell: UITableViewCell {

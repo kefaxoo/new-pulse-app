@@ -9,12 +9,15 @@ import UIKit
 
 protocol TracksPresenterDelegate: AnyObject {
     func reloadData()
+    func setNavigationControllerTitle(_ title: String)
+    func appendNewCells(indexPaths: [IndexPath])
 }
 
 final class TracksPresenter: BasePresenter {
     private var tracks = [TrackModel]()
     private var showedTracks = [TrackModel]()
     private var type: LibraryControllerType = .none
+    private var scheme: PulseWidgetsScheme = .none
     
     private var isResultsLoading = false
     private var canLoadMore = true
@@ -22,6 +25,8 @@ final class TracksPresenter: BasePresenter {
     private var soundcloudCursor: String?
     
     private var didChangePlaylistInPlayer = false
+    
+    private var isFirstAppear = true
     
     private weak var delegate: TracksPresenterDelegate?
     
@@ -33,10 +38,18 @@ final class TracksPresenter: BasePresenter {
         return showedTracks.isEmpty
     }
     
-    init(type: LibraryControllerType, delegate: TracksPresenterDelegate?) {
+    init(type: LibraryControllerType, scheme: PulseWidgetsScheme, delegate: TracksPresenterDelegate?) {
         self.type = type
+        self.scheme = scheme
         self.delegate = delegate
         self.fetchTracks()
+    }
+    
+    private func setTracks(_ tracks: [TrackModel]) {
+        MainCoordinator.shared.currentViewController?.dismissSpinner()
+        self.tracks = tracks
+        self.showedTracks = tracks
+        self.delegate?.reloadData()
     }
     
     private func fetchTracks() {
@@ -47,18 +60,53 @@ final class TracksPresenter: BasePresenter {
             case .soundcloud:
                 MainCoordinator.shared.currentViewController?.presentSpinner()
                 SoundcloudProvider.shared.libraryTracks { [weak self] soundcloudTracks, cursor in
-                    MainCoordinator.shared.currentViewController?.dismissSpinner()
-                    let tracks = soundcloudTracks.map({ TrackModel($0) })
-                    self?.tracks = tracks
-                    self?.showedTracks = tracks
                     self?.soundcloudCursor = cursor
-                    self?.delegate?.reloadData()
+                    self?.setTracks(soundcloudTracks.map({ TrackModel($0) }))
                 } failure: { error in
                     MainCoordinator.shared.currentViewController?.dismissSpinner()
                     MainCoordinator.shared.popViewController()
-                    AlertView.shared.presentError(error: error?.message ?? "Unknown Soundcloud Error", system: .iOS16AppleMusic)
+                    AlertView.shared.presentError(
+                        error: error?.message ?? Localization.Lines.unknownError.localization(with: "Soundcloud"),
+                        system: .iOS16AppleMusic
+                    )
                 }
-            default:
+            case .yandexMusic:
+                MainCoordinator.shared.currentViewController?.presentSpinner()
+                YandexMusicProvider.shared.libraryTracks { [weak self] yandexMusicTracks in
+                    self?.setTracks(yandexMusicTracks.map({ TrackModel($0) }))
+                } failure: {
+                    MainCoordinator.shared.currentViewController?.dismissSpinner()
+                    MainCoordinator.shared.popViewController()
+                    AlertView.shared.presentError(
+                        error: Localization.Lines.unknownError.localization(with: Localization.Words.yandexMusic.localization),
+                        system: .iOS16AppleMusic
+                    )
+                }
+            case .none:
+                switch self.scheme {
+                    case .exclusiveSongs:
+                        PulseProvider.shared.exclusiveTracks { [weak self] widget in
+                            self?.setTracks(widget.content.map({ TrackModel($0) }))
+                            self?.delegate?.setNavigationControllerTitle(
+                                Localization.Server.Widgets(rawValue: widget.localizationKey)?.localization ?? widget.title
+                            )
+                        } failure: { serverError, internalError in
+                            MainCoordinator.shared.currentViewController?.dismissSpinner()
+                            MainCoordinator.shared.popViewController()
+                            AlertView.shared.presentError(
+                                error: LocalizationManager.shared.localizeError(
+                                    server: serverError,
+                                    internal: internalError,
+                                    default: Localization.Lines.unknownError.localization(with: "Pulse")
+                                ),
+                                system: .iOS16AppleMusic
+                            )
+                        }
+                    default:
+                        MainCoordinator.shared.popViewController()
+                        return
+                }
+            case .pulse:
                 MainCoordinator.shared.popViewController()
                 return
         }
@@ -85,7 +133,11 @@ final class TracksPresenter: BasePresenter {
 // MARK: Lifecycle
 extension TracksPresenter {
     func viewWillAppear() {
-        self.reloadData()
+        if !self.isFirstAppear {
+            self.reloadData()
+        }
+        
+        self.isFirstAppear = false
     }
 }
 
@@ -134,9 +186,7 @@ extension TracksPresenter: BaseTableViewPresenter {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard self.type != .library,
-              self.type != .none
-        else { return }
+        guard self.type != .library || self.scheme != .none else { return }
         
         if (scrollView.contentOffset.y + scrollView.frame.size.height) > scrollView.contentSize.height,
            !isResultsLoading,
@@ -147,24 +197,54 @@ extension TracksPresenter: BaseTableViewPresenter {
             switch self.type {
                 case .soundcloud:
                     SoundcloudProvider.shared.libraryTracks(cursor: self.soundcloudCursor) { [weak self] tracks, cursor in
-                        MainCoordinator.shared.currentViewController?.dismissSpinner()
                         self?.soundcloudCursor = cursor
-                        self?.tracks.append(contentsOf: tracks.map({ TrackModel($0) }))
-                        self?.showedTracks = self?.tracks ?? []
-                        self?.isResultsLoading = false
-                        self?.delegate?.reloadData()
-                        self?.canLoadMore = !tracks.isEmpty
+                        self?.addNewTracks(tracks.map({ TrackModel($0) }), canLoadMore: !tracks.isEmpty)
                     } failure: { [weak self] _ in
-                        MainCoordinator.shared.currentViewController?.dismissSpinner()
-                        self?.isResultsLoading = false
-                        self?.canLoadMore = false
+                        self?.setCannotLoadMore()
+                    }
+                case .yandexMusic:
+                    YandexMusicProvider.shared.libraryTracks(offset: self.tracks.count) { [weak self] tracks in
+                        self?.addNewTracks(tracks.map({ TrackModel($0) }), canLoadMore: !tracks.isEmpty)
+                    } failure: { [weak self] in
+                        self?.setCannotLoadMore()
+                    }
+                case .none:
+                    switch self.scheme {
+                        case .exclusiveSongs:
+                            PulseProvider.shared.exclusiveTracks(offset: self.tracks.count) { [weak self] widget in
+                                self?.addNewTracks(widget.content.map({ TrackModel($0) }), canLoadMore: !widget.content.isEmpty)
+                            } failure: { [weak self] _, _ in
+                                self?.setCannotLoadMore()
+                            }
+                        default:
+                            self.setCannotLoadMore()
                     }
                 default:
-                    MainCoordinator.shared.currentViewController?.dismissSpinner()
-                    self.isResultsLoading = false
-                    self.canLoadMore = false
+                    self.setCannotLoadMore()
             }
         }
+    }
+    
+    private func addNewTracks(_ tracks: [TrackModel], canLoadMore: Bool) {
+        MainCoordinator.shared.currentViewController?.dismissSpinner()
+        let begin = self.tracks.count
+        let end = begin + tracks.count
+        self.tracks.append(contentsOf: tracks)
+        self.showedTracks = self.tracks
+        self.isResultsLoading = false
+        var indexPaths = [IndexPath]()
+        for i in begin..<end {
+            indexPaths.append(IndexPath(row: i, section: 0))
+        }
+        
+        self.delegate?.appendNewCells(indexPaths: indexPaths)
+        self.canLoadMore = canLoadMore
+    }
+    
+    private func setCannotLoadMore() {
+        MainCoordinator.shared.currentViewController?.dismissSpinner()
+        self.isResultsLoading = false
+        self.canLoadMore = false
     }
 }
 
