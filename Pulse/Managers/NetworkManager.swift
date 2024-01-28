@@ -7,6 +7,7 @@
 
 import Foundation
 import Network
+import SystemConfiguration.CaptiveNetwork
 
 enum NetworkState {
     case hasInternet
@@ -30,6 +31,23 @@ final class NetworkManager {
     
     var isReachable: Bool {
         return self.status == .satisfied
+    }
+    
+    var isHomeWifi: Bool {
+        var ssid: String?
+        guard let interfaces: NSArray = CNCopySupportedInterfaces() else { return false }
+        
+        for interface in interfaces {
+            // swiftlint:disable force_cast
+            let cfInterface = interface as! CFString
+            // swiftlint:enable force_cast
+            guard let interfaceInfo: NSDictionary = CNCopyCurrentNetworkInfo(cfInterface) else { continue }
+            
+            ssid = interfaceInfo[kCNNetworkInfoKeySSID as String] as? String
+            break
+        }
+        
+        return ["TP-Link_5D85_5G", "TP-Link_5D85"].contains(ssid)
     }
     
     weak var delegate: NetworkManagerDelegate?

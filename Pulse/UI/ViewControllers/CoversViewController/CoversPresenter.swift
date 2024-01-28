@@ -17,7 +17,7 @@ class CoversPresenter<V: CoversViewController>: BasePresenter {
     weak var delegate: V?
     
     func viewDidLoad() {
-        guard covers.count != 30 else {
+        guard covers.isEmpty else {
             self.delegate?.setupCovers(covers: covers)
             return
         }

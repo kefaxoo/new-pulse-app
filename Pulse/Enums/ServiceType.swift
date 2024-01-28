@@ -38,11 +38,7 @@ enum ServiceType: String {
     
     static var searchController: [ServiceType] {
         var services: [ServiceType] = [.soundcloud]
-        if SettingsManager.shared.yandexMusic.isSigned,
-           SettingsManager.shared.yandexMusic.hasPlus {
-            services.append(.yandexMusic)
-        }
-        
+        services.append(.yandexMusic)
         services.append(.deezer)
         
         return services

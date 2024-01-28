@@ -107,6 +107,12 @@ final class StoryTrackViewController: BaseUIViewController {
     private let story: PulseStory
     private let completion: (() -> ())?
     
+    private lazy var player: AudioPlayer = {
+        let player = AudioPlayer()
+        player.controllerDelegate = self
+        return player
+    }()
+    
     init(track: TrackModel, story: PulseStory, completion: (() -> ())?) {
         self.track = track
         self.story = story
@@ -132,14 +138,14 @@ final class StoryTrackViewController: BaseUIViewController {
         }
         
         self.completion?()
-        AudioPlayer.shared.controllerDelegate = self
-        AudioPlayer.shared.play(from: self.track, playlist: [self.track], position: 0, isNewPlaylist: true)
+        AudioPlayer.shared.playPauseWith(isPlaying: false)
+        self.player.play(from: self.track, playlist: [self.track], position: 0, isNewPlaylist: true)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        AudioPlayer.shared.cleanPlayerFromStory()
+        self.player.cleanPlayerFromStory()
     }
     
     private func configureSwipe() {

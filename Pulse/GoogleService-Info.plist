@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>318233994372-q4t0k4v9k0bduu74bbbhgcjvp4pe2rj9.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.318233994372-q4t0k4v9k0bduu74bbbhgcjvp4pe2rj9</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBA1g0AIsyaeT-F7jHf_F3KSmk2sN-BVbo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>318233994372</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>by.kefaxoo.Pulse</string>
+	<key>PROJECT_ID</key>
+	<string>pulse-app-5cff8</string>
+	<key>STORAGE_BUCKET</key>
+	<string>pulse-app-5cff8.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:318233994372:ios:d52272e3b9fe16ebb30ed1</string>
+</dict>
+</plist>

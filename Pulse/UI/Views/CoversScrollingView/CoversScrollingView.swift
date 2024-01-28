@@ -7,89 +7,49 @@
 
 import UIKit
 import PulseUIComponents
-import InfiniteScrolling_SPM
 
 class CoversScrollingView: BaseUIView {
-    private lazy var coversCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 20
-        flowLayout.itemSize = CGSize(width: 150, height: 150)
-        flowLayout.scrollDirection = .horizontal
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.register(ScrollingCoverCollectionViewCell.self)
-        collectionView.isScrollEnabled = false
-        return collectionView
+    private lazy var coversStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 20
+        return stackView
     }()
     
-    private var infiniteScrollingBehaviour: InfiniteScrollingBehaviour?
+    private lazy var coversStackViewMarqueeView: MarqueeView = {
+        return coversStackView.wrapIntoMarquee()
+    }()
+    
     private var covers = [PulseCover]()
     private var startFrom = 0
-    private var timer: Timer?
     
     func setupCovers(covers: [PulseCover], start: Int = 0) {
         self.covers = covers
         self.startFrom = start
-        self.infiniteScrollingBehaviour?.reload(with: covers)
         
-        self.setupTimer()
-    }
-    
-    @objc private func newScrolling() {
-        var currentOffset = coversCollectionView.contentOffset
-        currentOffset = CGPoint(x: currentOffset.x + 5 * (self.startFrom % 2 == 0 ? 1 : -1), y: currentOffset.y)
-        
-        UIView.animate(withDuration: 0.1) { [weak self] in
-            self?.coversCollectionView.setContentOffset(currentOffset, animated: true)
+        covers.forEach { [weak self] cover in
+            let imageView = UIImageView.default
+            imageView.setImage(from: cover.xl)
+            imageView.layer.cornerRadius = 20
+            imageView.snp.makeConstraints({ $0.width.height.equalTo(150) })
+            self?.coversStackView.addArrangedSubview(imageView)
         }
         
-        currentOffset = CGPoint(x: 0, y: currentOffset.y)
-    }
-    
-    func setupTimer() {
-        self.coversCollectionView.setContentOffset(
-            CGPoint(
-                x: self.coversCollectionView.contentOffset.x + CGFloat(self.startFrom * 150),
-                y: self.coversCollectionView.contentOffset.y
-            ),
-            animated: false
+        self.coversStackView.frame = CGRect(
+            origin: .zero,
+            size: CGSize(width: CGFloat((covers.count * 150) + ((covers.count - 1) * 20)), height: 150)
         )
         
-        timer = Timer.scheduledTimer(
-            timeInterval: 0.1,
-            target: self,
-            selector: #selector(newScrolling),
-            userInfo: nil,
-            repeats: true
-        )
-        
-        timer?.fire()
-    }
-    
-    func removeTimer() {
-        timer?.invalidate()
-        timer = nil
+        self.coversStackViewMarqueeView.contentMargin = 0
+        self.coversStackViewMarqueeView.reloadData()
     }
 }
 
 // MARK: -
 // MARK: Setup interface methods
 extension CoversScrollingView {
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        guard self.infiniteScrollingBehaviour == nil else { return }
-        
-        let configuration = CollectionViewConfiguration(scrollingDirection: .horizontal, layoutType: .fixedSize(size: 150, lineSpacing: 20))
-        self.infiniteScrollingBehaviour = InfiniteScrollingBehaviour(
-            with: self.coversCollectionView,
-            and: covers,
-            delegate: self,
-            collectionConfiguration: configuration
-        )
-    }
-    
     override func setupLayout() {
-        self.addSubview(coversCollectionView)
+        self.addSubview(coversStackViewMarqueeView)
     }
     
     override func setupConstraints() {
@@ -98,23 +58,6 @@ extension CoversScrollingView {
             make.width.equalTo(UIScreen.main.bounds.width)
         }
         
-        self.coversCollectionView.snp.makeConstraints({ $0.edges.equalToSuperview() })
-    }
-}
-
-extension CoversScrollingView: InfiniteScrollingBehaviourDelegate {
-    func configuredCell(
-        forItemAt indexPath: IndexPath,
-        originallyAt index: Int,
-        and data: InfiniteScrollingData,
-        for behaviour: InfiniteScrollingBehaviour
-    ) -> UICollectionViewCell {
-        let cell = coversCollectionView.dequeueReusableCell(withReuseIdentifier: ScrollingCoverCollectionViewCell.id, for: indexPath)
-        guard let scrollingCoverCell = cell as? ScrollingCoverCollectionViewCell,
-              let cover = data as? PulseCover
-        else { return cell }
-        
-        scrollingCoverCell.setupImage(link: cover.medium)
-        return scrollingCoverCell
+        self.coversStackViewMarqueeView.snp.makeConstraints({ $0.edges.equalToSuperview() })
     }
 }

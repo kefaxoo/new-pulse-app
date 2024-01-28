@@ -314,8 +314,7 @@ extension NowPlayingViewController {
         
         guard AudioPlayer.shared.isTrackLoaded else { return }
         
-        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(shouldFetchCanvas), object: nil)
-        perform(#selector(shouldFetchCanvas))
+        shouldFetchCanvas()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -552,8 +551,7 @@ extension NowPlayingViewController: AudioPlayerControllerDelegate {
         }
     }
     
-    @objc func shouldFetchCanvas() {
-        self.canvasView.removeVideo()
+    func shouldFetchCanvas() {
         CanvasManager.shared.fetchCanvasForCurrentTrack { [weak self] link, canvasType in
             self?.canvasView.setCanvas(from: link, canvasType: canvasType)
         }
@@ -567,8 +565,7 @@ extension NowPlayingViewController: AudioPlayerControllerDelegate {
         )
         
         self.changeCoverSize(isSmall: !AudioPlayer.shared.isPlaying)
-        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(shouldFetchCanvas), object: nil)
-        perform(#selector(shouldFetchCanvas))
+        shouldFetchCanvas()
     }
 }
 

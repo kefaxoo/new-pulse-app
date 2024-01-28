@@ -42,7 +42,7 @@ protocol AudioPlayerTableViewDelegate: AnyObject {
 final class AudioPlayer: NSObject {
     static let shared = AudioPlayer()
     
-    fileprivate override init() {
+    override init() {
         super.init()
         self.setupRemoteControl()
     }
@@ -55,7 +55,7 @@ final class AudioPlayer: NSObject {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
-            print(error)
+            debugLog(error)
         }
         
         UIApplication.shared.beginReceivingRemoteControlEvents()
@@ -92,7 +92,7 @@ final class AudioPlayer: NSObject {
     }
     
     var isPlaying: Bool {
-        return self.player.rate != 0
+        return self.player.currentItem?.status == .readyToPlay ? self.player.rate != 0 : false
     }
     
     var isTrackLoaded: Bool {
@@ -170,6 +170,7 @@ final class AudioPlayer: NSObject {
         self.cover = nil
         self.viewDelegate?.changeState(isPlaying: false)
         self.previousTaps = 0
+        self.currentState = .loading
         if let track {
             self.tableViewDelegate?.changeStateImageView(.stopped, for: track)
         }
@@ -441,6 +442,22 @@ extension AudioPlayer {
 // MARK: -
 // MARK: Control player methods
 extension AudioPlayer {
+    func playPauseWith(isPlaying: Bool) {
+        if isPlaying {
+            self.player.play()
+        } else {
+            self.durationWhenPaused = self.player.currentItem?.duration.seconds
+            self.currentTimeWhenPaused = self.player.currentTime().seconds
+            self.player.pause()
+        }
+        
+        self.viewDelegate?.changeState(isPlaying: isPlaying)
+        if self.player.currentItem?.status == .readyToPlay,
+           let track {
+            self.tableViewDelegate?.changeStateImageView(self.player.coverState, for: track)
+        }
+    }
+    
     @discardableResult @objc func playPause() -> MPRemoteCommandHandlerStatus {
         if self.player.rate == 0 {
             self.player.play()

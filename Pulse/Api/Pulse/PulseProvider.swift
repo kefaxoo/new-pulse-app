@@ -394,6 +394,8 @@ final class PulseProvider: BaseRestApiProvider {
                         SettingsManager.shared.yandexMusic.streamingQuality = streaming
                         SettingsManager.shared.yandexMusic.downloadQuality = download
                     }
+                    
+                    NotificationCenter.default.post(name: .reloadSettings, object: nil)
                 case .failure:
                     break
             }

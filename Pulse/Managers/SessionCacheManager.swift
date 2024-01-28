@@ -62,7 +62,7 @@ final class SessionCacheManager {
     
     fileprivate init() {
         cachedTracks.itemLimit = 20
-        debugPrint(URL(filename: "", path: .cachesDirectory)?.absoluteString ?? "")
+        debugLog(URL(filename: "", path: .cachesDirectory)?.absoluteString)
     }
     
     func addTrackToQueue(_ track: TrackModel) {

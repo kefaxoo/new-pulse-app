@@ -16,9 +16,22 @@ final class SearchViewController: BaseUIViewController {
         return searchController
     }()
     
-    private lazy var serviceSegmentedControl: UISegmentedControl = {
-        let segmentedControl = UISegmentedControl()
-        segmentedControl.addTarget(self, action: #selector(serviceDidChange), for: .valueChanged)
+    private lazy var newServiceSegmentedControl: PinterestSegmentedControl = {
+        var style = PinterestSegmentStyle()
+        style.indicatorColor = SettingsManager.shared.color.color
+        style.titleMargin = 15
+        style.titlePendingHorizontal = 14
+        style.titlePendingVertical = 14
+        style.titleFont = .boldSystemFont(ofSize: 14)
+        style.normalTitleColor = .lightGray
+        style.selectedTitleColor = .label
+        
+        let segmentedControl = PinterestSegmentedControl(frame: .zero, segmentStyle: style, titles: [])
+        
+        segmentedControl.valueChange = { [weak self] index in
+            self?.presenter.serviceDidChange(index: index)
+        }
+        
         return segmentedControl
     }()
     
@@ -74,7 +87,7 @@ extension SearchViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.presenter.viewWillAppear(
-            self.serviceSegmentedControl.selectedSegmentIndex,
+            self.newServiceSegmentedControl.selectIndex,
             self.typeSegmentedControl.selectedSegmentIndex
         )
         
@@ -100,20 +113,21 @@ extension SearchViewController {
     }
     
     override func setupLayout() {
-        self.view.addSubview(serviceSegmentedControl)
+        self.view.addSubview(newServiceSegmentedControl)
         self.view.addSubview(typeSegmentedControl)
         self.view.addSubview(resultsTableView)
         self.view.addSubview(emptySearchQuerySearchContentView)
     }
     
     override func setupConstraints() {
-        serviceSegmentedControl.snp.makeConstraints { make in
+        newServiceSegmentedControl.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(10)
             make.leading.trailing.equalToSuperview().inset(UIEdgeInsets(horizontal: 20))
+            make.height.equalTo(40)
         }
         
         typeSegmentedControl.snp.makeConstraints { make in
-            make.top.equalTo(serviceSegmentedControl.snp.bottom).offset(10)
+            make.top.equalTo(newServiceSegmentedControl.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview().inset(UIEdgeInsets(horizontal: 20))
         }
         
@@ -138,15 +152,10 @@ extension SearchViewController {
 // MARK: SearchPresenterDelegate
 extension SearchViewController: SearchPresenterDelegate {
     func setupServiceSegmentedControl(items: [String], selectedIndex: Int) {
-        self.serviceSegmentedControl.removeAllSegments()
-        
-        items.enumerated().forEach { [weak self] index, item in
-            self?.serviceSegmentedControl.insertSegment(withTitle: item, at: index, animated: true)
-        }
-        
+        self.newServiceSegmentedControl.titles = items
         guard !items.isEmpty else { return }
         
-        self.serviceSegmentedControl.selectedSegmentIndex = selectedIndex
+        self.newServiceSegmentedControl.setSelectIndex(index: selectedIndex, animated: true)
     }
     
     func setupTypeSegmentedControl(items: [String], selectedIndex: Int) {

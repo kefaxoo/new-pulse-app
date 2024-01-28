@@ -30,16 +30,6 @@ extension CoversViewController {
         super.viewDidLoad()
         self.presenter.viewDidLoad()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.coversLines.forEach({ $0.setupTimer() })
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        self.coversLines.forEach({ $0.removeTimer() })
-    }
 }
 
 // MARK: -
@@ -76,10 +66,10 @@ extension CoversViewController {
 // MARK: Presenter methods
 extension CoversViewController: CoversPresenterDelegate {
     func setupCovers(covers: [PulseCover]) {
-        guard covers.count >= 30 else { return }
+        let coversCount = covers.count / 3
         
-        self.firstCoversLine.setupCovers(covers: Array(covers[0..<10]))
-        self.secondCoversLine.setupCovers(covers: Array(covers[10..<20]), start: 1)
-        self.thirdCoversLine.setupCovers(covers: Array(covers[20..<30]), start: 2)
+        self.firstCoversLine.setupCovers(covers: Array(covers[0..<coversCount]))
+        self.secondCoversLine.setupCovers(covers: Array(covers[(coversCount + 1)..<(coversCount * 2)]), start: 1)
+        self.thirdCoversLine.setupCovers(covers: Array(covers[(coversCount * 2) + 1..<(coversCount * 3)]), start: 2)
     }
 }

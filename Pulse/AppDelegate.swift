@@ -7,12 +7,19 @@
 
 import UIKit
 import PulseMedia
+import FirebaseCore
+import FirebasePerformance
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        debugLog(AppEnvironment.current)
+        FirebaseApp.configure()
+        let trace = Performance.startTrace(name: "app_launch_trace")
+        if !NetworkManager.shared.isHomeWifi {
+            AppEnvironment.current = AppEnvironment.environmentByScheme
+        }
         
+        debugLog(AppEnvironment.current)
         MainCoordinator.shared.makeLaunchScreenAsRoot()
         SettingsManager.shared.initRealmVariables()
         NetworkManager.shared.checkNetwork()
@@ -25,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             SettingsManager.shared.updateFeatures {
                 MainCoordinator.shared.firstLaunch {
                     LibraryManager.shared.initialSetup()
+                    trace?.stop()
                 }
             }
         }

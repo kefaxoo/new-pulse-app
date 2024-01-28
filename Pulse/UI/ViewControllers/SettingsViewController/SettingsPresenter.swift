@@ -25,6 +25,11 @@ final class SettingsPresenter: SettingsPresenterProtocol {
     
     init(closure: @escaping(() -> ())) {
         self.closure = closure
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: .reloadSettings, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .reloadSettings, object: nil)
     }
     
     var numberOfSections: Int {
@@ -92,7 +97,7 @@ extension SettingsPresenter {
 }
 
 extension SettingsPresenter: TableViewCellDelegate {
-    func reloadData() {
+    @objc func reloadData() {
         self.closure()
         self.view?.reloadData()
     }

@@ -9,4 +9,5 @@ import Foundation
 
 extension NSNotification.Name {
     static let updateLibraryState = NSNotification.Name("updateLibraryState")
+    static let reloadSettings = NSNotification.Name("reloadSettings")
 }

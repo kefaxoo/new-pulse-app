@@ -75,9 +75,7 @@ final class ArtistPresenter {
         }
     }
     
-    private func headerDidTap(scheme: ArtistViewScheme) {
-        
-    }
+    private func headerDidTap(scheme: ArtistViewScheme) {}
 }
 
 extension ArtistPresenter: ArtistPresenterProtocol {

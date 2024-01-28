@@ -175,7 +175,6 @@
 		7002A97A2AEEDEB00017698B /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 7002A9792AEEDEB00017698B /* Realm */; };
 		7002A97C2AEEDEB00017698B /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7002A97B2AEEDEB00017698B /* RealmSwift */; };
 		7002A97F2AEEE02A0017698B /* FriendlyURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = 7002A97E2AEEE02A0017698B /* FriendlyURLSession */; };
-		7002A9822AEEE0450017698B /* InfiniteScrolling-SPM in Frameworks */ = {isa = PBXBuildFile; productRef = 7002A9812AEEE0450017698B /* InfiniteScrolling-SPM */; };
 		7002A9852AEEE07C0017698B /* SliderControl in Frameworks */ = {isa = PBXBuildFile; productRef = 7002A9842AEEE07C0017698B /* SliderControl */; };
 		7002A9882AEEE1020017698B /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7002A9872AEEE1020017698B /* AlertKit */; };
 		7002A98B2AEEE1350017698B /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 7002A98A2AEEE1350017698B /* SDWebImage */; };
@@ -260,6 +259,9 @@
 		709F4BC02B3C625A0016C454 /* ArtistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709F4BBF2B3C625A0016C454 /* ArtistViewController.swift */; };
 		709F4BC22B3C62600016C454 /* ArtistPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709F4BC12B3C62600016C454 /* ArtistPresenter.swift */; };
 		709F4BC42B3C634E0016C454 /* ArtistTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709F4BC32B3C634E0016C454 /* ArtistTableHeaderView.swift */; };
+		70AC22832B63DC6600EB638E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 70AC22822B63DC6600EB638E /* GoogleService-Info.plist */; };
+		70AC22962B63DF3B00EB638E /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 70AC22952B63DF3B00EB638E /* FirebaseCrashlytics */; };
+		70AC22AE2B63DF3B00EB638E /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 70AC22AD2B63DF3B00EB638E /* FirebasePerformance */; };
 		70C0E18D2B6198920078C13B /* NSNotification.Name+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C0E18C2B6198920078C13B /* NSNotification.Name+Ext.swift */; };
 		70D49FE62B4AA39B0058FA0A /* UserDefaults+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D49FE52B4AA39B0058FA0A /* UserDefaults+Ext.swift */; };
 		70D49FE82B4AAAE10058FA0A /* ResponsePulseQualitySettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D49FE72B4AAAE10058FA0A /* ResponsePulseQualitySettingsModel.swift */; };
@@ -531,6 +533,7 @@
 		709F4BBF2B3C625A0016C454 /* ArtistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistViewController.swift; sourceTree = "<group>"; };
 		709F4BC12B3C62600016C454 /* ArtistPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistPresenter.swift; sourceTree = "<group>"; };
 		709F4BC32B3C634E0016C454 /* ArtistTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistTableHeaderView.swift; sourceTree = "<group>"; };
+		70AC22822B63DC6600EB638E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		70C0E18C2B6198920078C13B /* NSNotification.Name+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification.Name+Ext.swift"; sourceTree = "<group>"; };
 		70D49FE52B4AA39B0058FA0A /* UserDefaults+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Ext.swift"; sourceTree = "<group>"; };
 		70D49FE72B4AAAE10058FA0A /* ResponsePulseQualitySettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseQualitySettingsModel.swift; sourceTree = "<group>"; };
@@ -561,16 +564,17 @@
 			files = (
 				7002A97C2AEEDEB00017698B /* RealmSwift in Frameworks */,
 				7002A98D2AEEE1350017698B /* SDWebImageMapKit in Frameworks */,
+				70AC22962B63DF3B00EB638E /* FirebaseCrashlytics in Frameworks */,
 				7002A9852AEEE07C0017698B /* SliderControl in Frameworks */,
 				7002A98B2AEEE1350017698B /* SDWebImage in Frameworks */,
 				7002A9882AEEE1020017698B /* AlertKit in Frameworks */,
+				70AC22AE2B63DF3B00EB638E /* FirebasePerformance in Frameworks */,
 				7072CC212AF905BC00E51E0A /* GoogleSignIn in Frameworks */,
 				70512A782B5D324400D8095D /* HPParallaxHeader in Frameworks */,
 				7002A97A2AEEDEB00017698B /* Realm in Frameworks */,
 				708290D32B432648007E1DB4 /* PulseMedia in Frameworks */,
 				7002A97F2AEEE02A0017698B /* FriendlyURLSession in Frameworks */,
 				70017FAB2AEEDB71001E1C02 /* PulseUIComponents in Frameworks */,
-				7002A9822AEEE0450017698B /* InfiniteScrolling-SPM in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -616,6 +620,7 @@
 				70017E012AEEDABB001E1C02 /* Assets.xcassets */,
 				70017E032AEEDABB001E1C02 /* LaunchScreen.storyboard */,
 				70017E062AEEDABB001E1C02 /* Info.plist */,
+				70AC22822B63DC6600EB638E /* GoogleService-Info.plist */,
 			);
 			path = Pulse;
 			sourceTree = "<group>";
@@ -1446,7 +1451,6 @@
 				7002A9792AEEDEB00017698B /* Realm */,
 				7002A97B2AEEDEB00017698B /* RealmSwift */,
 				7002A97E2AEEE02A0017698B /* FriendlyURLSession */,
-				7002A9812AEEE0450017698B /* InfiniteScrolling-SPM */,
 				7002A9842AEEE07C0017698B /* SliderControl */,
 				7002A9872AEEE1020017698B /* AlertKit */,
 				7002A98A2AEEE1350017698B /* SDWebImage */,
@@ -1454,6 +1458,8 @@
 				7072CC202AF905BC00E51E0A /* GoogleSignIn */,
 				708290D22B432648007E1DB4 /* PulseMedia */,
 				70512A772B5D324400D8095D /* HPParallaxHeader */,
+				70AC22952B63DF3B00EB638E /* FirebaseCrashlytics */,
+				70AC22AD2B63DF3B00EB638E /* FirebasePerformance */,
 			);
 			productName = Pulse;
 			productReference = 70017DF52AEEDABA001E1C02 /* Pulse.app */;
@@ -1487,13 +1493,13 @@
 			packageReferences = (
 				7002A9782AEEDEB00017698B /* XCRemoteSwiftPackageReference "realm-swift" */,
 				7002A97D2AEEE02A0017698B /* XCRemoteSwiftPackageReference "friendly-urlsession" */,
-				7002A9802AEEE0450017698B /* XCRemoteSwiftPackageReference "InfiniteScrolling-SPM" */,
 				7002A9832AEEE07C0017698B /* XCRemoteSwiftPackageReference "slidercontrol" */,
 				7002A9862AEEE1020017698B /* XCRemoteSwiftPackageReference "AlertKit" */,
 				7002A9892AEEE1350017698B /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				7072CC1F2AF905BC00E51E0A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				708290D12B432648007E1DB4 /* XCLocalSwiftPackageReference "Pulse/Packages/PulseMedia" */,
 				70512A762B5D324400D8095D /* XCRemoteSwiftPackageReference "HPParallaxHeader" */,
+				70AC22842B63DF3B00EB638E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 70017DF62AEEDABA001E1C02 /* Products */;
 			projectDirPath = "";
@@ -1515,6 +1521,7 @@
 				70017E022AEEDABB001E1C02 /* Assets.xcassets in Resources */,
 				70017FA32AEEDB34001E1C02 /* PulseUIComponents in Resources */,
 				70017E002AEEDABA001E1C02 /* Main.storyboard in Resources */,
+				70AC22832B63DC6600EB638E /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2463,14 +2470,6 @@
 				kind = branch;
 			};
 		};
-		7002A9802AEEE0450017698B /* XCRemoteSwiftPackageReference "InfiniteScrolling-SPM" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kefaxoo/InfiniteScrolling-SPM.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		7002A9832AEEE07C0017698B /* XCRemoteSwiftPackageReference "slidercontrol" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kefaxoo/slidercontrol";
@@ -2511,6 +2510,14 @@
 				version = 7.0.0;
 			};
 		};
+		70AC22842B63DF3B00EB638E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = exactVersion;
+				version = 10.20.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -2532,11 +2539,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7002A97D2AEEE02A0017698B /* XCRemoteSwiftPackageReference "friendly-urlsession" */;
 			productName = FriendlyURLSession;
-		};
-		7002A9812AEEE0450017698B /* InfiniteScrolling-SPM */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7002A9802AEEE0450017698B /* XCRemoteSwiftPackageReference "InfiniteScrolling-SPM" */;
-			productName = "InfiniteScrolling-SPM";
 		};
 		7002A9842AEEE07C0017698B /* SliderControl */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -2571,6 +2573,16 @@
 		708290D22B432648007E1DB4 /* PulseMedia */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = PulseMedia;
+		};
+		70AC22952B63DF3B00EB638E /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 70AC22842B63DF3B00EB638E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		70AC22AD2B63DF3B00EB638E /* FirebasePerformance */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 70AC22842B63DF3B00EB638E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebasePerformance;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

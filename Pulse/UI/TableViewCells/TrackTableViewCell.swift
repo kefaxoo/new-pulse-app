@@ -68,7 +68,7 @@ final class TrackTableViewCell: BaseUITableViewCell {
     private lazy var trackInfoStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.distribution = .equalSpacing
+        stackView.distribution = .equalCentering
         stackView.addArrangedSubview(trackInfoTopStackView)
         stackView.addArrangedSubview(trackInfoBottomStackView)
         return stackView
