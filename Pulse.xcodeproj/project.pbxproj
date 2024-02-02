@@ -215,7 +215,6 @@
 		704240ED2B2BAD2600B7F0AD /* URLComponents+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704240EC2B2BAD2600B7F0AD /* URLComponents+Ext.swift */; };
 		704240EF2B2BAEF100B7F0AD /* ResponseYandexMusicFileDownloadInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704240EE2B2BAEF100B7F0AD /* ResponseYandexMusicFileDownloadInfoModel.swift */; };
 		7044731D2B0882F900B3FB98 /* UIStoryboard+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7044731C2B0882F900B3FB98 /* UIStoryboard+Ext.swift */; };
-		70512A782B5D324400D8095D /* HPParallaxHeader in Frameworks */ = {isa = PBXBuildFile; productRef = 70512A772B5D324400D8095D /* HPParallaxHeader */; };
 		705EC83A2B40A63A00CFA3C4 /* OpenInServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705EC8392B40A63A00CFA3C4 /* OpenInServiceViewController.swift */; };
 		705EC83C2B40A7AB00CFA3C4 /* OpenInServicePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705EC83B2B40A7AB00CFA3C4 /* OpenInServicePresenter.swift */; };
 		705EC83F2B40A8D000CFA3C4 /* OdesliApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705EC83E2B40A8D000CFA3C4 /* OdesliApi.swift */; };
@@ -570,7 +569,6 @@
 				7002A9882AEEE1020017698B /* AlertKit in Frameworks */,
 				70AC22AE2B63DF3B00EB638E /* FirebasePerformance in Frameworks */,
 				7072CC212AF905BC00E51E0A /* GoogleSignIn in Frameworks */,
-				70512A782B5D324400D8095D /* HPParallaxHeader in Frameworks */,
 				7002A97A2AEEDEB00017698B /* Realm in Frameworks */,
 				708290D32B432648007E1DB4 /* PulseMedia in Frameworks */,
 				7002A97F2AEEE02A0017698B /* FriendlyURLSession in Frameworks */,
@@ -1457,7 +1455,6 @@
 				7002A98C2AEEE1350017698B /* SDWebImageMapKit */,
 				7072CC202AF905BC00E51E0A /* GoogleSignIn */,
 				708290D22B432648007E1DB4 /* PulseMedia */,
-				70512A772B5D324400D8095D /* HPParallaxHeader */,
 				70AC22952B63DF3B00EB638E /* FirebaseCrashlytics */,
 				70AC22AD2B63DF3B00EB638E /* FirebasePerformance */,
 			);
@@ -1498,7 +1495,6 @@
 				7002A9892AEEE1350017698B /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				7072CC1F2AF905BC00E51E0A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				708290D12B432648007E1DB4 /* XCLocalSwiftPackageReference "Pulse/Packages/PulseMedia" */,
-				70512A762B5D324400D8095D /* XCRemoteSwiftPackageReference "HPParallaxHeader" */,
 				70AC22842B63DF3B00EB638E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 70017DF62AEEDABA001E1C02 /* Products */;
@@ -2494,14 +2490,6 @@
 				version = 5.18.0;
 			};
 		};
-		70512A762B5D324400D8095D /* XCRemoteSwiftPackageReference "HPParallaxHeader" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ngochiencse/HPParallaxHeader";
-			requirement = {
-				kind = exactVersion;
-				version = 1.1.8;
-			};
-		};
 		7072CC1F2AF905BC00E51E0A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
@@ -2559,11 +2547,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7002A9892AEEE1350017698B /* XCRemoteSwiftPackageReference "SDWebImage" */;
 			productName = SDWebImageMapKit;
-		};
-		70512A772B5D324400D8095D /* HPParallaxHeader */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 70512A762B5D324400D8095D /* XCRemoteSwiftPackageReference "HPParallaxHeader" */;
-			productName = HPParallaxHeader;
 		};
 		7072CC202AF905BC00E51E0A /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;

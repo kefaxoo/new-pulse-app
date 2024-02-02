@@ -7,7 +7,6 @@
 
 import UIKit
 import PulseUIComponents
-import HPParallaxHeader
 
 protocol ArtistView: AnyObject {
     func reloadData()
@@ -24,9 +23,6 @@ final class ArtistViewController: BaseUIViewController {
         tableView.delegate = self
         tableView.register(TrackTableViewCell.self)
         tableView.dataSource = self
-        tableView.parallaxHeader.view = self.artistTableHeaderView
-        tableView.parallaxHeader.height = UIScreen.main.bounds.width
-        tableView.parallaxHeader.mode = .fill
         tableView.footerHeight = NowPlayingView.height
         tableView.estimatedSectionHeaderHeight = UITableView.automaticDimension
         tableView.sectionHeaderHeight = 0
@@ -144,10 +140,10 @@ extension ArtistViewController: UITableViewDelegate {
         let scheme = self.presenter.scheme(inSection: section)
         
         switch scheme {
-            case .popularTracks:
-                return UITableView.automaticDimension
-            default:
-                return 0
+        case .popularTracks:
+            return UITableView.automaticDimension
+        default:
+            return 0
         }
     }
     

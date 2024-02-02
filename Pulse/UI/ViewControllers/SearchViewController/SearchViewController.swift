@@ -23,8 +23,8 @@ final class SearchViewController: BaseUIViewController {
         style.titlePendingHorizontal = 14
         style.titlePendingVertical = 14
         style.titleFont = .boldSystemFont(ofSize: 14)
-        style.normalTitleColor = .lightGray
-        style.selectedTitleColor = .label
+        style.normalTitleColor = .label.withAlphaComponent(0.5)
+        style.selectedTitleColor = .white
         
         let segmentedControl = PinterestSegmentedControl(frame: .zero, segmentStyle: style, titles: [])
         

@@ -574,14 +574,12 @@ extension AudioPlayer {
         
         if type == .began {
             self.playPause()
-            self.viewDelegate?.changeState(isPlaying: false)
         } else if type == .ended {
             guard let optionsValue = info[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
             
             let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
             if options.contains(.shouldResume) {
                 self.playPause()
-                self.viewDelegate?.changeState(isPlaying: true)
             }
         }
     }
