@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         debugLog(AppEnvironment.current)
-        MainCoordinator.shared.makeLaunchScreenAsRoot()
+        MainCoordinator.shared.makeSplashScreenAsRoot()
         SettingsManager.shared.initRealmVariables()
         NetworkManager.shared.checkNetwork()
         NetworkManager.shared.updateValues()

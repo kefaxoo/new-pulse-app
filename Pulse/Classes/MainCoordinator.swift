@@ -222,6 +222,11 @@ final class MainCoordinator: NSObject {
     func presentOpenInServiceViewController(track: TrackModel) {
         self.present(OpenInServiceViewController(track: track), animated: true)
     }
+    
+    func makeSplashScreenAsRoot() {
+        let vc = SplashScreenViewController()
+        self.makeRootVC(vc: vc, shouldUseTransition: false)
+    }
 }
 
 // MARK: -
