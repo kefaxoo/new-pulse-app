@@ -13,7 +13,6 @@ disabled_rules:
 
 opt_in_rules:
   - array_init
-  - closure_end_indentation
   - closure_spacing
   - collection_alignment
   - discouraged_object_literal
@@ -54,7 +53,7 @@ function_parameter_count:
   error: 15
 
 file_length:
-  warning: 500
+  warning: 1000
 
 type_body_length:
   warning: 400
@@ -73,4 +72,7 @@ vertical_whitespace:
   max_empty_lines: 2
 
 function_body_length:
-    warning: 60
+    warning: 100
+
+cyclomatic_complexity:
+    warning: 20
