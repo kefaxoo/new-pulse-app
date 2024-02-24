@@ -80,24 +80,15 @@ final class AudioManager {
                     }
                 }
             case .yandexMusic:
-                if SettingsManager.shared.yandexMusic.isSigned {
-                    YandexMusicProvider.shared.fetchAudioLink(for: track, shouldCancelTask: false) { link in
-                        guard let link else {
-                            failure?()
-                            return
-                        }
-                        
-                        track.extension = SettingsManager.shared.yandexMusic.streamingQuality.fileExtension
-                        track.playableLinks = PlayableLinkModel(link)
-                        success(UpdatedTrack(track: track, response: nil))
-                    }
-                } else {
-                    MuffonProvider.shared.trackInfo(track, shouldCancelTask: false) { muffonTrack in
-                        let track = TrackModel(muffonTrack)
-                        success(UpdatedTrack(track: track, response: muffonTrack))
-                    } failure: {
+                YandexMusicProvider.shared.fetchAudioLink(for: track, shouldCancelTask: false) { link in
+                    guard let link else {
                         failure?()
+                        return
                     }
+                    
+                    track.extension = SettingsManager.shared.yandexMusic.streamingQuality.fileExtension
+                    track.playableLinks = PlayableLinkModel(link)
+                    success(UpdatedTrack(track: track, response: nil))
                 }
             case .pulse:
                 PulseProvider.shared.exclusiveTrackInfo(track) { track in
