@@ -120,8 +120,7 @@ final class NowPlayingViewController: BaseUIViewController {
         slider.tag = 1001
         slider.defaultProgressColor = SettingsManager.shared.color.color
         slider.enlargedProgressColor = SettingsManager.shared.color.color
-        slider.value = Float((AudioPlayer.shared.currentTime ?? 0
-                             ) / (AudioPlayer.shared.duration ?? 0))
+        slider.value = 0
         return slider
     }()
     
