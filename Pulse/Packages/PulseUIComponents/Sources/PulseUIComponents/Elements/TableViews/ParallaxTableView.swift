@@ -49,7 +49,7 @@ open class ParallaxTableView: BaseUIView {
         }
     }
     
-    let topOffset: CGFloat = UIScreen.main.bounds.width + (UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0)
+    let topOffset: CGFloat = UIScreen.main.bounds.width + (UIApplication.shared.nonDeprecatedKeyWindow?.safeAreaInsets.top ?? 0)
     
     public weak var delegate: UITableViewDelegate?
     public weak var dataSource: UITableViewDataSource? {
@@ -102,7 +102,8 @@ extension ParallaxTableView {
         if let tableHeaderView {
             tableHeaderView.snp.makeConstraints { make in
                 make.height.equalTo(self.topOffset)
-                make.top.leading.trailing.equalToSuperview().inset(UIEdgeInsets(top: -(UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0)))
+                make.top.leading.trailing.equalToSuperview()
+                    .inset(UIEdgeInsets(top: -(UIApplication.shared.nonDeprecatedKeyWindow?.safeAreaInsets.top ?? 0)))
             }
             
             tableView.snp.makeConstraints { make in
