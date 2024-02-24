@@ -352,9 +352,8 @@ extension NowPlayingViewController {
         canvasSubstrateView.snp.makeConstraints({ $0.edges.equalToSuperview() })
         
         artistInfoView.snp.makeConstraints { make in
-            make.bottom.equalTo(MainCoordinator.shared.safeAreaInsets.bottom).offset(-30)
-            make.leading.trailing.equalToSuperview().inset(UIEdgeInsets(horizontal: 30))
-            make.height.equalTo(30)
+            make.bottom.leading.trailing.equalToSuperview()
+            make.height.equalTo(60 + MainCoordinator.shared.safeAreaInsets.bottom)
         }
         
         dismissButton.snp.makeConstraints { make in
@@ -449,6 +448,9 @@ extension NowPlayingViewController: NowPlayingPresenterDelegate {
         
         self.titleMarqueeView.reloadData()
         self.artistMarqueeView.reloadData()
+        
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(fetchArtistIfNeeded), object: nil)
+        perform(#selector(fetchArtistIfNeeded), with: nil)
     }
 }
 
@@ -536,6 +538,20 @@ extension NowPlayingViewController: AudioPlayerControllerDelegate {
         self.artistButton.setTitle(track.artistText, for: .normal)
         self.titleMarqueeView.reloadData()
         self.artistMarqueeView.reloadData()
+        
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(fetchArtistIfNeeded), object: nil)
+        perform(#selector(fetchArtistIfNeeded), with: nil)
+    }
+    
+    @objc func fetchArtistIfNeeded() {
+        guard let track = AudioPlayer.shared.track,
+              let artist = track.artist,
+              track.service == .deezer
+        else { return }
+        
+        DeezerProvider.shared.fetchArtistInfo(for: artist) { [weak self] artist in
+            self?.artistInfoView.artist = artist
+        }
     }
     
     func updateDuration(_ duration: Float, currentTime: Float) {
