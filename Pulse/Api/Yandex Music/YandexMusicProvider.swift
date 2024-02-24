@@ -87,7 +87,7 @@ final class YandexMusicProvider: BaseRestApiProvider {
                     guard let downloadInfo = response.data?.map(to: YandexMusicBaseResult<[YandexMusicDownloadInfo]>.self),
                           let downloadInfoWithBitrate = downloadInfo.result.first(where: {
                               $0.bitrate == SettingsManager.shared.yandexMusic.streamingQuality.rawValue
-                          }),
+                          }) ?? downloadInfo.result.first(where: { $0.bitrate == downloadInfo.result.map({ $0.bitrate }).max() ?? 128 }),
                           let urlComponents = URLComponents(string: downloadInfoWithBitrate.downloadInfoUrl)
                     else {
                         completion(nil)
@@ -190,6 +190,37 @@ final class YandexMusicProvider: BaseRestApiProvider {
                     success(artist)
                 case .failure:
                     failure?()
+            }
+        }
+    }
+    
+    func fetchSearchSuggestions(query: String, success: @escaping((SearchResponse) -> ())) {
+        task?.cancel()
+        
+        task = self.urlSession.returnDataTask(with: URLRequest(type: YandexMusicApi.searchSuggestions(query: query), shouldPrintLog: self.shouldPrintLog)
+        ) { response in
+            switch response {
+                case .success(let response):
+                    guard let suggestions = response.data?.map(to: YandexMusicBaseResult<YandexMusicSuggestions>.self)?.result.suggestions else {
+                        return
+                    }
+                    
+                    success(SearchResponse(results: suggestions, canLoadMore: false))
+                case .failure:
+                    break
+            }
+        }
+    }
+    
+    func fetchSearchHistory(type: SearchType, success: @escaping((SearchResponse) -> ())) {
+        self.urlSession.dataTask(with: URLRequest(type: YandexMusicApi.searchHistory(type: type), shouldPrintLog: self.shouldPrintLog)) { response in
+            switch response {
+                case .success(let response):
+                    guard let history = response.data?.map(to: YandexMusicBaseResult<[ResponseYandexMusicSearchHistoryModel]>.self)?.result else { return }
+                    
+                    success(SearchResponse(results: history, canLoadMore: false))
+                case .failure:
+                    break
             }
         }
     }
