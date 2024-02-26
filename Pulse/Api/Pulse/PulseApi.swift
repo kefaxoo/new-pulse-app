@@ -206,7 +206,6 @@ extension PulseApi: BaseRestApiEnum {
                     headers["X-Pulse-Token"] = accessToken
                 }
                 
-                headers["X-Locale"] = Locale.current.isoLanguageCode
                 headers["X-User-Current-Date"] = Date.currentDate(inFormat: "dd-MM-YYYY")
             default:
                 break
@@ -258,7 +257,7 @@ extension PulseApi: BaseRestApiEnum {
             case .markStoryAsWatched(let storyId):
                 parameters["story_id"] = storyId
             case .isUserBlocked:
-                parameters["udid"] = SettingsManager.shared.udid
+                parameters["udid"] = SettingsManager.shared.settings.udid
             case .exclusivePlaylist(let playlistId, let offset):
                 parameters["playlist_id"] = playlistId
                 parameters["show_tracks"] = true
@@ -277,7 +276,7 @@ extension PulseApi: BaseRestApiEnum {
             case .syncTrack(let track):
                 return track.json
             case .features:
-                return ["features": SettingsManager.shared.featuresKeys]
+                return ["features": SettingsManager.shared.settings.featuresKeys]
             case .syncTracks:
                 return ["tracks": RealmManager<LibraryTrackModel>().read().compactMap({ TrackModel($0).newJson })]
             case .likeTrack(let track), .incrementListenCount(let track):
@@ -293,7 +292,7 @@ extension PulseApi: BaseRestApiEnum {
                         "source": SettingsManager.shared.soundcloud.currentSource.rawValue
                     ],
                     "yandexMusic": [
-                        "like": SettingsManager.shared.yandexMusicLike,
+                        "like": SettingsManager.shared.settings.yandexMusicLike,
                         "source": SettingsManager.shared.yandexMusic.currentSource.rawValue,
                         "quality": [
                             "streaming": SettingsManager.shared.yandexMusic.streamingQuality.rawValue,

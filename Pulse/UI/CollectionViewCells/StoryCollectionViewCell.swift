@@ -133,8 +133,3 @@ extension StoryCollectionViewCell {
         contentVerticalStackView.snp.makeConstraints({ $0.edges.equalToSuperview().inset(UIEdgeInsets(vertical: 6)) })
     }
 }
-
-@available(iOS 17.0, *)
-#Preview {
-    return StoryCollectionViewCell()
-}

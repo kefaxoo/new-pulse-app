@@ -18,29 +18,26 @@ final class SettingsManager {
     func initRealmVariables() {
         DispatchQueue.main.async { [weak self] in
             if let model = RealmManager<LocalFeaturesModel>().read().first {
-                self?.localFeatures = model
+                self?.settings.localFeatures = model
             } else {
                 let model = LocalFeaturesModel()
-                self?.localFeatures = model
+                self?.settings.localFeatures = model
                 RealmManager<LocalFeaturesModel>().write(object: model)
             }
         }
     }
     
+    var settings = SettingsModel()
     var pulse = PulseModel()
     var soundcloud = SoundcloudModel()
     var yandexMusic = YandexMusicModel()
     
     var color: ColorType {
         get {
-            return ColorType(
-                rawValue: UserDefaults.standard.value(
-                    forKey: Constants.UserDefaultsKeys.colorType.rawValue
-                ) as? String ?? ""
-            ) ?? .purple
+            return ColorType(rawValue: UserDefaults.standard.value(forKey: .colorType) as? String ?? "") ?? .purple
         }
         set {
-            UserDefaults.standard.setValue(newValue.rawValue, forKey: Constants.UserDefaultsKeys.colorType.rawValue)
+            UserDefaults.standard.setValue(newValue.rawValue, forKey: .colorType)
             
             MainCoordinator.shared.mainTabBarController.viewControllers?.forEach({
                 ($0 as? UINavigationController)?.navigationBar.tintColor = newValue.color
@@ -50,16 +47,16 @@ final class SettingsManager {
     
     var lastTabBarIndex: Int {
         get {
-            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.lastTabBarIndex.rawValue) as? Int ?? 1
+            return UserDefaults.standard.value(forKey: .lastTabBarIndex) as? Int ?? 1
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.lastTabBarIndex.rawValue)
+            UserDefaults.standard.setValue(newValue, forKey: .lastTabBarIndex)
         }
     }
     
     // MARK: Realm configuration
     var realmConfiguration: Realm.Configuration {
-        let configuration = Realm.Configuration(schemaVersion: 14) { migration, oldSchemaVersion in
+        let configuration = Realm.Configuration(schemaVersion: 18) { migration, oldSchemaVersion in
             if oldSchemaVersion < 2 {
                 migration.enumerateObjects(ofType: LibraryTrackModel.className()) { _, newObject in
                     newObject?["shareLink"] = ""
@@ -150,6 +147,12 @@ final class SettingsManager {
                     }
                 }
             }
+            
+            if oldSchemaVersion < 18 {
+                migration.enumerateObjects(ofType: LocalFeaturesModel.className()) { _, newObject in
+                    newObject?["emptyFeatureObj"] = LocalFeatureModel()
+                }
+            }
         }
         
         return configuration
@@ -158,28 +161,28 @@ final class SettingsManager {
     // MARK: General settings
     var isAdultContentEnabled: Bool {
         get {
-            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.isAdultContentEnabled.rawValue) as? Bool ?? false
+            return UserDefaults.standard.value(forKey: .isAdultContentEnabled) as? Bool ?? false
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.isAdultContentEnabled.rawValue)
+            UserDefaults.standard.setValue(newValue, forKey: .isAdultContentEnabled)
         }
     }
     
     var isCanvasesEnabled: Bool {
         get {
-            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.isCanvasesEnabled.rawValue) as? Bool ?? false
+            return UserDefaults.standard.value(forKey: .isCanvasesEnabled) as? Bool ?? false
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.isCanvasesEnabled.rawValue)
+            UserDefaults.standard.setValue(newValue, forKey: .isCanvasesEnabled)
         }
     }
     
     var autoDownload: Bool {
         get {
-            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.autoDownload.rawValue) as? Bool ?? false
+            return UserDefaults.standard.value(forKey: .autoDownload) as? Bool ?? false
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.autoDownload.rawValue)
+            UserDefaults.standard.setValue(newValue, forKey: .autoDownload)
             
             guard newValue else { return }
             
@@ -189,12 +192,10 @@ final class SettingsManager {
     
     var appearance: ApplicationStyle {
         get {
-            return ApplicationStyle(
-                rawValue: UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.appearance.rawValue) as? String ?? ""
-            ) ?? .system
+            return ApplicationStyle(rawValue: UserDefaults.standard.value(forKey: .appearance) as? String ?? "") ?? .system
         }
         set {
-            UserDefaults.standard.setValue(newValue.rawValue, forKey: Constants.UserDefaultsKeys.appearance.rawValue)
+            UserDefaults.standard.setValue(newValue.rawValue, forKey: .appearance)
             guard let window = MainCoordinator.shared.window else { return }
             UIView.transition(with: window, duration: 0.2, options: .transitionCrossDissolve) {
                 window.overrideUserInterfaceStyle = newValue.userIntefaceStyle
@@ -205,42 +206,16 @@ final class SettingsManager {
     // MARK: - Soundcloud settings
     var soundcloudLike: Bool {
         get {
-            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.soundcloudLike.rawValue) as? Bool ?? false
-        } 
-        set {
-            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.soundcloudLike.rawValue)
-        }
-    }
-    
-    // MARK: - Yandex Music settings
-    var yandexMusicLike: Bool {
-        get {
-            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.yandexMusicLike.rawValue) as? Bool ?? false
+            return UserDefaults.standard.value(forKey: .soundcloudLike) as? Bool ?? false
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.yandexMusicLike.rawValue)
+            UserDefaults.standard.setValue(newValue, forKey: .soundcloudLike)
         }
     }
     
     // MARK: - Features
-    let featuresKeys = ["newSign", "newLibrary", "newSoundcloud", "nowPlayingVC", "searchSoundcloudPlaylists", "muffonYandex"]
-    var localFeatures = LocalFeaturesModel()
-    var featuresLastUpdate: Int {
-        get {
-            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.featuresLastUpdate.rawValue) as? Int ?? 0
-        } set {
-            UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.featuresLastUpdate.rawValue)
-        }
-    }
-    
-    var shouldUpdateFeatures: Bool {
-        guard AppEnvironment.current.isRelease else { return true }
-        
-        return Int(Date().timeIntervalSince1970) - self.featuresLastUpdate >= 86400
-    }
-    
     func updateFeatures(completion: @escaping(() -> ())) {
-        guard self.shouldUpdateFeatures else {
+        guard self.settings.shouldUpdateFeatures else {
             completion()
             return
         }
@@ -257,7 +232,7 @@ final class SettingsManager {
     }
     
     private func updateFeatures(features: PulseFeatures) {
-        self.featuresLastUpdate = Int(Date().timeIntervalSince1970)
+        self.settings.featuresLastUpdate = Int(Date().timeIntervalSince1970)
         DispatchQueue.main.async {
             RealmManager<LocalFeatureModel>().read().forEach { obj in
                 RealmManager<LocalFeatureModel>().delete(object: obj)
@@ -265,12 +240,7 @@ final class SettingsManager {
             
             RealmManager<LocalFeaturesModel>().update { realm in
                 try? realm.write {
-                    self.localFeatures.newSign                   = features.newSign?.toRealmModel
-                    self.localFeatures.newLibrary                = features.newLibrary?.toRealmModel
-                    self.localFeatures.newSoundcloud             = features.newSoundcloud?.toRealmModel
-                    self.localFeatures.nowPlayingVC              = features.nowPlayingVC?.toRealmModel
-                    self.localFeatures.searchSoundcloudPlaylists = features.searchSoundcloudPlaylists?.toRealmModel
-                    self.localFeatures.muffonYandex              = features.muffonYandex?.toRealmModel
+                    // Write fetched features to realm if needed
                 }
             }
         }
@@ -291,13 +261,5 @@ extension SettingsManager {
         yandexMusic.signOut()
         
         return true
-    }
-}
-
-// MARK: -
-// MARK: Unique Device ID
-extension SettingsManager {
-    var udid: String? {
-        return UIDevice.current.identifierForVendor?.uuidString
     }
 }

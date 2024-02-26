@@ -7,22 +7,25 @@
 
 import UIKit
 
-protocol LibraryPresenterDelegate: AnyObject {
-    func reloadData()
-    func setupNavigationTitle(_ title: String)
+protocol LibraryPresenterProtocol: BasePresenter, BaseTableViewPresenter {
+    var libraryTypesCount: Int { get }
+    
+    func setView(_ view: LibraryView?)
 }
 
-final class LibraryPresenter: BasePresenter {
+final class LibraryPresenter: LibraryPresenterProtocol {
     private var libraryTypes: [LibraryType]
     private var service: ServiceType
     private let libraryControllerType: LibraryControllerType
+    private let coordinator: LibraryCoordinator
     
-    weak var delegate: LibraryPresenterDelegate?
+    weak var view: LibraryView?
     
-    init(service: ServiceType, libraryControllerType: LibraryControllerType) {
+    init(service: ServiceType, libraryControllerType: LibraryControllerType, coordinator: LibraryCoordinator) {
         self.libraryTypes = LibraryType.allCases(by: service)
         self.service = service
         self.libraryControllerType = libraryControllerType
+        self.coordinator = coordinator
     }
     
     var libraryTypesCount: Int {
@@ -30,12 +33,16 @@ final class LibraryPresenter: BasePresenter {
     }
     
     func viewDidLoad() {
-        self.delegate?.setupNavigationTitle(self.libraryControllerType.title)
+        self.view?.setupNavigationTitle(self.libraryControllerType.title)
     }
     
     func viewWillAppear() {
         self.libraryTypes = LibraryType.allCases(by: service)
-        self.delegate?.reloadData()
+        self.view?.reloadData()
+    }
+    
+    func setView(_ view: LibraryView?) {
+        self.view = view
     }
 }
 
@@ -58,9 +65,9 @@ extension LibraryPresenter: BaseTableViewPresenter {
             case .playlists:
                 MainCoordinator.shared.pushPlaylistsViewController(type: controllerType)
             case .tracks:
-                MainCoordinator.shared.pushTracksViewController(type: controllerType)
+                self.coordinator.pushTracksViewController(withType: controllerType)
             case .soundcloud, .yandexMusic:
-                MainCoordinator.shared.pushLibraryController(type: controllerType, service: libraryType.service)
+                self.coordinator.pushLibraryViewController(withType: controllerType, service: libraryType.service)
         }
     }
 }

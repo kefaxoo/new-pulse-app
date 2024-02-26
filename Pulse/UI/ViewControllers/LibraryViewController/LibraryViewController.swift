@@ -8,6 +8,11 @@
 import UIKit
 import PulseUIComponents
 
+protocol LibraryView: AnyObject {
+    func reloadData()
+    func setupNavigationTitle(_ title: String)
+}
+
 final class LibraryViewController: BaseUIViewController {
     private lazy var libraryTableView: UITableView = {
         let tableView = UITableView()
@@ -17,12 +22,12 @@ final class LibraryViewController: BaseUIViewController {
         return tableView
     }()
     
-    private let presenter: LibraryPresenter
+    private let presenter: LibraryPresenterProtocol
     
-    init(type: LibraryControllerType = .none, service: ServiceType = .none) {
-        self.presenter = LibraryPresenter(service: service, libraryControllerType: type)
+    init(type: LibraryControllerType = .none, service: ServiceType = .none, coordinator: LibraryCoordinator) {
+        self.presenter = LibraryPresenter(service: service, libraryControllerType: type, coordinator: coordinator)
         super.init(nibName: nil, bundle: nil)
-        self.presenter.delegate = self
+        self.presenter.setView(self)
     }
     
     required init?(coder: NSCoder) {
@@ -86,8 +91,8 @@ extension LibraryViewController: UITableViewDelegate {
 }
 
 // MARK: -
-// MARK: LibraryPresenterDelegate
-extension LibraryViewController: LibraryPresenterDelegate {
+// MARK: LibraryView
+extension LibraryViewController: LibraryView {
     func reloadData() {
         self.libraryTableView.reloadData()
     }

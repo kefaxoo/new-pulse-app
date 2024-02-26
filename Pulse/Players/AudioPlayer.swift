@@ -258,24 +258,13 @@ fileprivate extension AudioPlayer {
            !coverModel.isImageLocal {
             switch self.track?.source {
                 case .soundcloud:
-                    if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSoundcloud?.prod ?? false {
-                        PulseProvider.shared.soundcloudArtworkV2(link: coverModel.original) { [weak self] cover in
-                            self?.track?.image = ImageModel(cover)
-                            self?.fetchCover(from: cover.xl)
-                            
-                            guard let self else { return }
-                            
-                            self.playlist[self.position].image = ImageModel(cover)
-                        }
-                    } else {
-                        PulseProvider.shared.soundcloudArtwork(exampleLink: coverModel.original) { [weak self] cover in
-                            self?.track?.image = ImageModel(cover)
-                            self?.fetchCover(from: cover.xl)
-                            
-                            guard let self else { return }
-                            
-                            self.playlist[self.position].image = ImageModel(cover)
-                        }
+                    PulseProvider.shared.soundcloudArtworkV2(link: coverModel.original) { [weak self] cover in
+                        self?.track?.image = ImageModel(cover)
+                        self?.fetchCover(from: cover.xl)
+                        
+                        guard let self else { return }
+                        
+                        self.playlist[self.position].image = ImageModel(cover)
                     }
                 case .pulse:
                     self.fetchCover(from: coverModel.original)

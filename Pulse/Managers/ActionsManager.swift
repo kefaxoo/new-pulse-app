@@ -118,11 +118,7 @@ final class ActionsManager {
                     "state": TrackLibraryState.added
                 ])
                 
-                if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSign?.prod ?? false {
-                    PulseProvider.shared.likeTrack(track)
-                } else {
-                    LibraryManager.shared.syncTrack(track)
-                }
+                PulseProvider.shared.likeTrack(track)
                 
                 switch track.service {
                     case .soundcloud:
@@ -131,7 +127,7 @@ final class ActionsManager {
                             SoundcloudProvider.shared.likeTrack(id: track.id)
                         }
                     case .yandexMusic:
-                        if SettingsManager.shared.yandexMusicLike,
+                        if SettingsManager.shared.settings.yandexMusicLike,
                            SettingsManager.shared.yandexMusic.isSigned {
                             YandexMusicProvider.shared.likeTrack(track)
                         }
@@ -191,15 +187,11 @@ final class ActionsManager {
             AudioPlayer.shared.setupTrackNowPlayingCommands()
             AlertView.shared.present(title: "Removed to library", alertType: .done, system: .iOS17AppleMusic)
             
-            if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newLibrary?.prod ?? false {
-                PulseProvider.shared.dislikeTrack(track)
-            } else {
-                LibraryManager.shared.removeTrack(track)
-            }
+            PulseProvider.shared.dislikeTrack(track)
             
             switch track.service {
                 case .yandexMusic:
-                    guard SettingsManager.shared.yandexMusicLike else { return }
+                    guard SettingsManager.shared.settings.yandexMusicLike else { return }
                     
                     YandexMusicProvider.shared.removeLikeTrack(track)
                 case .soundcloud:

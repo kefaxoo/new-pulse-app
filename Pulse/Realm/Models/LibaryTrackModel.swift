@@ -63,4 +63,8 @@ class LibraryTrackModel: Object {
             }
         }
     }
+    
+    var trackModel: TrackModel {
+        return TrackModel(self)
+    }
 }

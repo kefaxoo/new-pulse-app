@@ -48,9 +48,7 @@ final class YandexMusicProvider: BaseRestApiProvider {
     }
     
     func search(query: String, searchType: SearchType, page: Int = 0, success: @escaping((SearchResponse) -> ())) {
-        if shouldCancelTask {
-            task?.cancel()
-        }
+        task?.cancel()
         
         task = urlSession.returnDataTask(
             with: URLRequest(type: YandexMusicApi.search(query: query, page: page, type: searchType), shouldPrintLog: self.shouldPrintLog),

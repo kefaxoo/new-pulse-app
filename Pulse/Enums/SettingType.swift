@@ -160,7 +160,7 @@ enum SettingType {
             case .soundcloudLike:
                 return SettingsManager.shared.soundcloudLike
             case .yandexMusicLike:
-                return SettingsManager.shared.yandexMusicLike
+                return SettingsManager.shared.settings.yandexMusicLike
             default:
                 return nil
         }
@@ -177,7 +177,7 @@ enum SettingType {
             case .soundcloudLike:
                 SettingsManager.shared.soundcloudLike = state
             case .yandexMusicLike:
-                SettingsManager.shared.yandexMusicLike = state
+                SettingsManager.shared.settings.yandexMusicLike = state
             default:
                 return
         }

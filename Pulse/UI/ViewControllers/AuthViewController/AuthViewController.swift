@@ -33,7 +33,8 @@ final class AuthViewController: CoversViewController {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel(text: "Pulse")
-        label.font = UIFont.systemFont(ofSize: 50, weight: .bold)
+        label.font = UIFont(font: .krasnodarGroteskLatin, size: 50)
+//        label.font = UIFont.systemFont(ofSize: 50, weight: .bold)
         label.textAlignment = .center
         return label
     }()
@@ -145,8 +146,6 @@ extension AuthViewController {
     }
     
     @objc private func googleSignAction(_ sender: UIButton) {
-        guard AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSign?.prod ?? false else { return }
-        
         GIDSignIn.sharedInstance.signIn(withPresenting: self) { [weak self] signInResult, error in
             guard let email = signInResult?.user.profile?.email else {
                 AlertView.shared.presentError(
@@ -162,8 +161,6 @@ extension AuthViewController {
     }
     
     @objc private func appleSignAction(_ sender: UIButton) {
-        guard AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSign?.prod ?? false else { return }
-        
         self.presenter.appleSign()
     }
 }

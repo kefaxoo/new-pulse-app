@@ -24,6 +24,9 @@
 "alert.password.doesnt.meet.requirements" = "Пароль не соответствует требованиям";
 
 /*  */
+"controller.accountBlocked.label.description" = "Ваш аккаунт и устройство не имеет доступа к Pulse";
+
+/*  */
 "controller.auth.button.continue.with.apple" = "Продолжить через Apple";
 
 /*  */

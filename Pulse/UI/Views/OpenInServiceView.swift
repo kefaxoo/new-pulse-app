@@ -63,6 +63,10 @@ final class OpenInServiceView: BaseUIView {
         return stackView
     }()
     
+    var height: CGFloat {
+        return UIScreen.main.bounds.width + 16 + titleLabel.size().height + 8 + artistLabel.size().height + 16 + UIButton.defaultHeight
+    }
+    
     var track: TrackModel?
     
     @discardableResult func configure(track: TrackModel) -> OpenInServiceView {
