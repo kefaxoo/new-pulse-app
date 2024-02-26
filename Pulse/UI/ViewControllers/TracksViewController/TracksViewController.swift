@@ -37,6 +37,10 @@ final class TracksViewController: BaseUIViewController {
         return presenter
     }()
     
+    private lazy var actionsManager: ActionsManager = {
+        return ActionsManager(self)
+    }()
+    
     private let type: LibraryControllerType
     private let scheme: PulseWidgetsScheme
     
@@ -126,6 +130,21 @@ extension TracksViewController: UITableViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.presenter.scrollViewDidScroll(scrollView)
     }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        return ActionsManager(nil)
+            .trackSwipeActionsConfiguration(
+                for: self.presenter.track(at: indexPath),
+                swipeDirection: .leadingToTrailing
+            )
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        return self.actionsManager.trackSwipeActionsConfiguration(
+                for: self.presenter.track(at: indexPath),
+                swipeDirection: .trailingToLeading
+            )
+    }
 }
 
 // MARK: -
@@ -181,5 +200,18 @@ extension TracksViewController {
         else { return }
         
         (self.tracksTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? TrackTableViewCell)?.updateTrackState(state)
+    }
+}
+
+// MARK: -
+// MARK: ActionsManagerDelegate
+extension TracksViewController: ActionsManagerDelegate {
+    func removeTrack(_ track: TrackModel) {
+        guard let index = self.presenter.index(for: track),
+              self.type == .library
+        else { return }
+        
+        self.presenter.removeTrack(atIndex: index)
+        self.tracksTableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .fade)
     }
 }

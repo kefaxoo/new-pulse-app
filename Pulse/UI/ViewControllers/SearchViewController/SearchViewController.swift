@@ -95,12 +95,16 @@ extension SearchViewController {
         AudioPlayer.shared.tableViewDelegate = self
         
         self.searchController.view.addGestureRecognizer(self.dismissKeyboardGesture)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateLibraryState), name: .updateLibraryState, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         self.searchController.view.removeGestureRecognizer(self.dismissKeyboardGesture)
+        
+        NotificationCenter.default.removeObserver(self, name: .updateLibraryState, object: nil)
     }
 }
 
@@ -221,6 +225,16 @@ fileprivate extension SearchViewController {
     @objc func dismissKeyboardAction(_ sender: UITapGestureRecognizer) {
         self.searchController.searchBar.endEditing(true)
     }
+    
+    @objc func updateLibraryState(_ notification: Notification) {
+        guard self.presenter.currentType == .tracks,
+              let track = notification.userInfo?["track"] as? TrackModel,
+              let state = notification.userInfo?["state"] as? TrackLibraryState,
+              let index = self.presenter.trackIndex(for: track)
+        else { return }
+        
+        (self.resultsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? TrackTableViewCell)?.updateTrackState(state)
+    }
 }
 
 // MARK: -
@@ -245,6 +259,26 @@ extension SearchViewController: UITableViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.presenter.scrollViewDidScroll(scrollView)
+    }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard self.presenter.currentType == .tracks,
+              let track = self.presenter.track(at: indexPath)
+        else { return nil }
+        
+        return ActionsManager(nil)
+            .trackSwipeActionsConfiguration(
+                for: track,
+                swipeDirection: .leadingToTrailing
+            )
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard self.presenter.currentType == .tracks,
+              let track = self.presenter.track(at: indexPath)
+        else { return nil }
+        
+        return ActionsManager(nil).trackSwipeActionsConfiguration(for: track, swipeDirection: .trailingToLeading)
     }
 }
 

@@ -12,6 +12,7 @@ protocol ActionsManagerDelegate: AnyObject {
     func updatedTrack(_ track: TrackModel)
     func reloadData()
     func updateTrackState(_ state: TrackLibraryState)
+    func removeTrack(_ track: TrackModel)
 }
 
 extension ActionsManagerDelegate {
@@ -19,6 +20,7 @@ extension ActionsManagerDelegate {
     func updatedTrack(_ track: TrackModel) {}
     func reloadData() {}
     func updateTrackState(_ state: TrackLibraryState) {}
+    func removeTrack(_ track: TrackModel) {}
 }
 
 final class ActionsManager {
@@ -189,7 +191,7 @@ final class ActionsManager {
             self.delegate?.updateTrackState(.none)
             self.delegate?.reloadData()
             AudioPlayer.shared.setupTrackNowPlayingCommands()
-            AlertView.shared.present(title: "Removed to library", alertType: .done, system: .iOS17AppleMusic)
+            AlertView.shared.present(title: "Removed from library", alertType: .done, system: .iOS17AppleMusic)
             
             if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newLibrary?.prod ?? false {
                 PulseProvider.shared.dislikeTrack(track)
@@ -199,11 +201,11 @@ final class ActionsManager {
             
             switch track.service {
                 case .yandexMusic:
-                    guard SettingsManager.shared.yandexMusicLike else { return }
+                    guard SettingsManager.shared.yandexMusicLike else { break }
                     
                     YandexMusicProvider.shared.removeLikeTrack(track)
                 case .soundcloud:
-                    guard SettingsManager.shared.soundcloudLike else { return }
+                    guard SettingsManager.shared.soundcloudLike else { break }
                     
                     SoundcloudProvider.shared.removeLikeTrack(id: track.id)
                 default:
@@ -320,5 +322,203 @@ fileprivate extension ActionsManager {
         }
         
         return action
+    }
+}
+
+// MARK: -
+// MARK: UIContextualAction methods
+extension ActionsManager {
+    enum SwipeDirection {
+        case leadingToTrailing
+        case trailingToLeading
+    }
+    
+    func trackSwipeActionsConfiguration(for track: TrackModel, swipeDirection direction: SwipeDirection) -> UISwipeActionsConfiguration {
+        switch direction {
+            case .leadingToTrailing:
+                return UISwipeActionsConfiguration(actions: [self.playNextContextual(track), self.playLastContextual(track)])
+            case .trailingToLeading:
+                if LibraryManager.shared.isTrackInLibrary(track) {
+                    var actions = [self.removeFromLibraryContextual(track)]
+                    if !LibraryManager.shared.isTrackDownloaded(track) {
+                        actions.append(self.downloadTrackContextual(track))
+                    }
+                    
+                    return UISwipeActionsConfiguration(actions: actions)
+                } else {
+                    return UISwipeActionsConfiguration(actions: [self.addToLibraryContextual(track)])
+                }
+        }
+    }
+}
+
+private extension ActionsManager {
+    func playNextContextual(_ track: TrackModel) -> UIContextualAction {
+        let playNextAction = UIContextualAction(style: .normal, title: nil) { _, _, completion in
+            if SessionCacheManager.shared.isTrackInCache(track) || track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
+                AudioManager.shared.getPlayableLink(for: track) { updatedTrack in
+                    AudioPlayer.shared.playNext(updatedTrack.track)
+                }
+            } else {
+                AudioPlayer.shared.playNext(track)
+            }
+            
+            completion(true)
+        }
+        
+        playNextAction.image = Constants.Images.playNext.image
+        playNextAction.backgroundColor = UIColor(hex: "#5D5CE6")
+        return playNextAction
+    }
+    
+    func playLastContextual(_ track: TrackModel) -> UIContextualAction {
+        let playLastAction = UIContextualAction(style: .normal, title: nil) { _, _, completion in
+            if SessionCacheManager.shared.isTrackInCache(track) || track.playableLinks?.streamingLinkNeedsToRefresh ?? true {
+                AudioManager.shared.getPlayableLink(for: track) { updatedTrack in
+                    AudioPlayer.shared.playLast(updatedTrack.track)
+                }
+            } else {
+                AudioPlayer.shared.playLast(track)
+            }
+            
+            completion(true)
+        }
+        
+        playLastAction.image = Constants.Images.playLast.image
+        playLastAction.backgroundColor = UIColor(hex: "#FE9F0C")
+        return playLastAction
+    }
+    
+    func addToLibraryContextual(_ track: TrackModel) -> UIContextualAction {
+        let addToLibraryAction = UIContextualAction(style: .normal, title: nil) { _, _, completion in
+            AudioManager.shared.updatePlayableLink(for: track) { updatedTrack in
+                let track = updatedTrack.track
+                guard track.isAvailable else { 
+                    AlertView.shared.presentError(error: "Unavailable to add", system: .iOS16AppleMusic)
+                    return
+                }
+                
+                let libraryTrack = LibraryTrackModel(track)
+                RealmManager<LibraryTrackModel>().write(object: libraryTrack)
+                AudioPlayer.shared.setupTrackNowPlayingCommands()
+                AlertView.shared.present(title: "Added to library", alertType: .done, system: .iOS17AppleMusic)
+                track.image = ImageModel(libraryTrack.coverFilename)
+                NotificationCenter.default.post(name: .updateLibraryState, object: nil, userInfo: [
+                    "track": track,
+                    "state": TrackLibraryState.added
+                ])
+                
+                PulseProvider.shared.likeTrack(track)
+                switch track.service {
+                    case .soundcloud:
+                        if SettingsManager.shared.soundcloudLike,
+                           SettingsManager.shared.soundcloud.isSigned {
+                            SoundcloudProvider.shared.likeTrack(id: track.id)
+                        }
+                    case .yandexMusic:
+                        if SettingsManager.shared.yandexMusicLike,
+                           SettingsManager.shared.yandexMusic.isSigned {
+                            YandexMusicProvider.shared.likeTrack(track)
+                        }
+                    default:
+                        break
+                }
+                
+                guard SettingsManager.shared.autoDownload else { return }
+                
+                DownloadManager.shared.addTrackToQueue(track) {
+                    NotificationCenter.default.post(name: .updateLibraryState, object: nil, userInfo: [
+                        "track": track,
+                        "state": TrackLibraryState.added
+                    ])
+                }
+            }
+            
+            completion(true)
+        }
+        
+        addToLibraryAction.image = Constants.Images.inLibrary.image
+        addToLibraryAction.backgroundColor = SettingsManager.shared.color.color
+        return addToLibraryAction
+    }
+    
+    func removeFromLibraryContextual(_ track: TrackModel) -> UIContextualAction {
+        let removeFromLibraryAction = UIContextualAction(style: .destructive, title: nil) { [weak self] _, _, completion in
+            completion(true)
+            guard let libraryTrack = RealmManager<LibraryTrackModel>().read()
+                .first(where: { $0.id == track.id && $0.service == track.service.rawValue })
+            else { return }
+            
+            if !libraryTrack.coverFilename.isEmpty,
+               RealmManager<LibraryTrackModel>().read().filter({ track.image?.contains($0.coverFilename) ?? false }).count < 2 {
+                LibraryManager.shared.removeFile(URL(filename: libraryTrack.coverFilename, path: .documentDirectory))
+            }
+            
+            if !libraryTrack.trackFilename.isEmpty {
+                LibraryManager.shared.removeFile(URL(filename: libraryTrack.trackFilename, path: .documentDirectory))
+                
+                RealmManager<LibraryTrackModel>().update { realm in
+                    try? realm.write {
+                        libraryTrack.trackFilename = ""
+                    }
+                }
+            }
+            
+            let tracks = RealmManager<LibraryTrackModel>().read()
+                .filter({ $0.artistId == (track.artist?.id ?? -1) || $0.artistIds.contains(track.artist?.id ?? -1) })
+            
+            if tracks.count < 2,
+               let artist = RealmManager<LibraryArtistModel>().read().first(where: { $0.id == tracks[0].artistId }) {
+                RealmManager<LibraryArtistModel>().delete(object: artist)
+            }
+            
+            RealmManager<LibraryTrackModel>().delete(object: libraryTrack)
+            AudioPlayer.shared.setupTrackNowPlayingCommands()
+            AlertView.shared.present(title: "Removed from library", alertType: .done, system: .iOS17AppleMusic)
+            
+            PulseProvider.shared.dislikeTrack(track)
+            
+            switch track.service {
+                case .yandexMusic:
+                    guard SettingsManager.shared.yandexMusicLike,
+                          SettingsManager.shared.yandexMusic.isSigned
+                    else { break }
+                    
+                    YandexMusicProvider.shared.removeLikeTrack(track)
+                case .soundcloud:
+                    guard SettingsManager.shared.soundcloudLike,
+                          SettingsManager.shared.soundcloud.isSigned
+                    else { break }
+                    
+                    SoundcloudProvider.shared.removeLikeTrack(id: track.id)
+                default:
+                    break
+            }
+            
+            self?.delegate?.removeTrack(track)
+            NotificationCenter.default.post(name: .updateLibraryState, object: nil, userInfo: [
+                "track": track,
+                "state": TrackLibraryState.none
+            ])
+        }
+        
+        removeFromLibraryAction.image = Constants.Images.removeFromLibrary.image
+        return removeFromLibraryAction
+    }
+    
+    func downloadTrackContextual(_ track: TrackModel) -> UIContextualAction {
+        let downloadTrackAction = UIContextualAction(style: .normal, title: nil) { _, _, completion in
+            completion(true)
+            DownloadManager.shared.addTrackToQueue(track) {
+                NotificationCenter.default.post(name: .updateLibraryState, object: nil, userInfo: [
+                    "track": track,
+                    "state": TrackLibraryState.downloaded
+                ])
+            }
+        }
+        
+        downloadTrackAction.image = Constants.Images.download.image
+        downloadTrackAction.backgroundColor = UIColor(hex: "#0B84FE")
+        return downloadTrackAction
     }
 }

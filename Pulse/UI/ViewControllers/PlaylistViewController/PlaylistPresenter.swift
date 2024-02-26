@@ -136,6 +136,10 @@ final class PlaylistPresenter: BasePresenter {
             }
         }
     }
+    
+    func track(at indexPath: IndexPath) -> TrackModel {
+        return self.tracks[indexPath.row]
+    }
 }
 
 // MARK: -
