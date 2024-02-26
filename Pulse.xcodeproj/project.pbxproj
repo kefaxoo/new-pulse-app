@@ -102,7 +102,7 @@
 		70017F532AEEDB34001E1C02 /* LibraryPlaylistTrackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E8C2AEEDB34001E1C02 /* LibraryPlaylistTrackModel.swift */; };
 		70017F542AEEDB34001E1C02 /* LibraryPlaylistArtistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E8D2AEEDB34001E1C02 /* LibraryPlaylistArtistModel.swift */; };
 		70017F552AEEDB34001E1C02 /* DownloadQueueTrackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E8E2AEEDB34001E1C02 /* DownloadQueueTrackModel.swift */; };
-		70017F562AEEDB34001E1C02 /* LibaryTrackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E8F2AEEDB34001E1C02 /* LibaryTrackModel.swift */; };
+		70017F562AEEDB34001E1C02 /* LibraryTrackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E8F2AEEDB34001E1C02 /* LibraryTrackModel.swift */; };
 		70017F572AEEDB34001E1C02 /* LocalFeaturesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E902AEEDB34001E1C02 /* LocalFeaturesModel.swift */; };
 		70017F582AEEDB34001E1C02 /* LibraryArtistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E912AEEDB34001E1C02 /* LibraryArtistModel.swift */; };
 		70017F592AEEDB34001E1C02 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70017E932AEEDB34001E1C02 /* Constants.swift */; };
@@ -386,7 +386,7 @@
 		70017E8C2AEEDB34001E1C02 /* LibraryPlaylistTrackModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryPlaylistTrackModel.swift; sourceTree = "<group>"; };
 		70017E8D2AEEDB34001E1C02 /* LibraryPlaylistArtistModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryPlaylistArtistModel.swift; sourceTree = "<group>"; };
 		70017E8E2AEEDB34001E1C02 /* DownloadQueueTrackModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadQueueTrackModel.swift; sourceTree = "<group>"; };
-		70017E8F2AEEDB34001E1C02 /* LibaryTrackModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibaryTrackModel.swift; sourceTree = "<group>"; };
+		70017E8F2AEEDB34001E1C02 /* LibraryTrackModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryTrackModel.swift; sourceTree = "<group>"; };
 		70017E902AEEDB34001E1C02 /* LocalFeaturesModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalFeaturesModel.swift; sourceTree = "<group>"; };
 		70017E912AEEDB34001E1C02 /* LibraryArtistModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryArtistModel.swift; sourceTree = "<group>"; };
 		70017E932AEEDB34001E1C02 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -634,12 +634,12 @@
 		70017E0D2AEEDB33001E1C02 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				70017E152AEEDB33001E1C02 /* Media */,
+				70017E122AEEDB33001E1C02 /* Services */,
+				70017E112AEEDB33001E1C02 /* Credentials.swift */,
 				70017E0E2AEEDB33001E1C02 /* SearchResponse.swift */,
 				70017E0F2AEEDB33001E1C02 /* LogModel.swift */,
 				70017E102AEEDB33001E1C02 /* VerificationCode.swift */,
-				70017E112AEEDB33001E1C02 /* Credentials.swift */,
-				70017E122AEEDB33001E1C02 /* Services */,
-				70017E152AEEDB33001E1C02 /* Media */,
 				83A724A32B8C5CB10061F18D /* SettingsModel.swift */,
 			);
 			path = Models;
@@ -671,10 +671,10 @@
 			isa = PBXGroup;
 			children = (
 				70F9F8672B48DB8A006CD1AA /* CollectionViewCells */,
+				70017E5E2AEEDB34001E1C02 /* TabBarControllers */,
 				70017E1E2AEEDB34001E1C02 /* TableViewCells */,
 				70017E2B2AEEDB34001E1C02 /* ViewControllers */,
 				70017E562AEEDB34001E1C02 /* Views */,
-				70017E5E2AEEDB34001E1C02 /* TabBarControllers */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -682,18 +682,18 @@
 		70017E1E2AEEDB34001E1C02 /* TableViewCells */ = {
 			isa = PBXGroup;
 			children = (
-				70017E1F2AEEDB34001E1C02 /* ServiceSignTableViewCell.swift */,
-				70017E212AEEDB34001E1C02 /* PlaylistTableViewCell.swift */,
-				70017E222AEEDB34001E1C02 /* ColorSettingTableViewCell.swift */,
-				70017E232AEEDB34001E1C02 /* ChevronTableViewCell.swift */,
-				70017E242AEEDB34001E1C02 /* TrackTableViewCell.swift */,
-				70017E252AEEDB34001E1C02 /* TextTableViewCell.swift */,
-				70017E262AEEDB34001E1C02 /* LibraryTableViewCell.swift */,
 				70017E272AEEDB34001E1C02 /* ButtonTableViewCell.swift */,
-				70017E282AEEDB34001E1C02 /* SwitchTableViewCell.swift */,
+				70017E232AEEDB34001E1C02 /* ChevronTableViewCell.swift */,
+				70017E222AEEDB34001E1C02 /* ColorSettingTableViewCell.swift */,
+				70017E1F2AEEDB34001E1C02 /* ServiceSignTableViewCell.swift */,
+				70017E262AEEDB34001E1C02 /* LibraryTableViewCell.swift */,
+				70017E212AEEDB34001E1C02 /* PlaylistTableViewCell.swift */,
+				709A918F2B55326100D1E693 /* PlaylistsCollectionTableViewCell.swift */,
+				70017E252AEEDB34001E1C02 /* TextTableViewCell.swift */,
+				70017E242AEEDB34001E1C02 /* TrackTableViewCell.swift */,
 				705EC84B2B40AEA700CFA3C4 /* ServiceTableViewCell.swift */,
 				70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */,
-				709A918F2B55326100D1E693 /* PlaylistsCollectionTableViewCell.swift */,
+				70017E282AEEDB34001E1C02 /* SwitchTableViewCell.swift */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -702,23 +702,23 @@
 			isa = PBXGroup;
 			children = (
 				709A91862B5429DD00D1E693 /* AccountBlockedViewController */,
-				701B75C52B496F350090FACB /* StoryTrackViewController */,
-				702D77322B45665800F1B541 /* MainFeedViewController */,
-				705EC82D2B4030D600CFA3C4 /* OpenInServiceViewController */,
 				709F4BBE2B3C62510016C454 /* ArtistViewController */,
+				70017E4D2AEEDB34001E1C02 /* AuthViewController */,
 				70017E2C2AEEDB34001E1C02 /* CoversViewController */,
 				70017E2F2AEEDB34001E1C02 /* LibraryViewController */,
-				70017E322AEEDB34001E1C02 /* WebViewController */,
-				70017E352AEEDB34001E1C02 /* SignUpViewController */,
-				70017E382AEEDB34001E1C02 /* PlaylistsViewController */,
-				70017E3B2AEEDB34001E1C02 /* SignInViewController */,
-				70017E3E2AEEDB34001E1C02 /* PlaylistViewController */,
-				70017E412AEEDB34001E1C02 /* SettingsViewController */,
-				70017E442AEEDB34001E1C02 /* TracksViewController */,
-				70017E472AEEDB34001E1C02 /* PopUpViewControllers */,
-				70017E4D2AEEDB34001E1C02 /* AuthViewController */,
+				702D77322B45665800F1B541 /* MainFeedViewController */,
 				70017E502AEEDB34001E1C02 /* NowPlayingViewController */,
+				705EC82D2B4030D600CFA3C4 /* OpenInServiceViewController */,
+				70017E382AEEDB34001E1C02 /* PlaylistsViewController */,
+				70017E3E2AEEDB34001E1C02 /* PlaylistViewController */,
+				70017E472AEEDB34001E1C02 /* PopUpViewControllers */,
 				70017E532AEEDB34001E1C02 /* SearchViewController */,
+				70017E412AEEDB34001E1C02 /* SettingsViewController */,
+				70017E3B2AEEDB34001E1C02 /* SignInViewController */,
+				70017E352AEEDB34001E1C02 /* SignUpViewController */,
+				701B75C52B496F350090FACB /* StoryTrackViewController */,
+				70017E442AEEDB34001E1C02 /* TracksViewController */,
+				70017E322AEEDB34001E1C02 /* WebViewController */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -726,8 +726,8 @@
 		70017E2C2AEEDB34001E1C02 /* CoversViewController */ = {
 			isa = PBXGroup;
 			children = (
-				70017E2D2AEEDB34001E1C02 /* CoversViewController.swift */,
 				70017E2E2AEEDB34001E1C02 /* CoversPresenter.swift */,
+				70017E2D2AEEDB34001E1C02 /* CoversViewController.swift */,
 			);
 			path = CoversViewController;
 			sourceTree = "<group>";
@@ -735,9 +735,9 @@
 		70017E2F2AEEDB34001E1C02 /* LibraryViewController */ = {
 			isa = PBXGroup;
 			children = (
-				70017E302AEEDB34001E1C02 /* LibraryViewController.swift */,
-				70017E312AEEDB34001E1C02 /* LibraryPresenter.swift */,
 				83A724A12B8C55E50061F18D /* LibraryCoordinator.swift */,
+				70017E312AEEDB34001E1C02 /* LibraryPresenter.swift */,
+				70017E302AEEDB34001E1C02 /* LibraryViewController.swift */,
 			);
 			path = LibraryViewController;
 			sourceTree = "<group>";
@@ -754,8 +754,8 @@
 		70017E352AEEDB34001E1C02 /* SignUpViewController */ = {
 			isa = PBXGroup;
 			children = (
-				70017E362AEEDB34001E1C02 /* SignUpViewController.swift */,
 				70017E372AEEDB34001E1C02 /* SignUpPresenter.swift */,
+				70017E362AEEDB34001E1C02 /* SignUpViewController.swift */,
 			);
 			path = SignUpViewController;
 			sourceTree = "<group>";
@@ -763,8 +763,8 @@
 		70017E382AEEDB34001E1C02 /* PlaylistsViewController */ = {
 			isa = PBXGroup;
 			children = (
-				70017E392AEEDB34001E1C02 /* PlaylistsViewController.swift */,
 				70017E3A2AEEDB34001E1C02 /* PlaylistsPresenter.swift */,
+				70017E392AEEDB34001E1C02 /* PlaylistsViewController.swift */,
 			);
 			path = PlaylistsViewController;
 			sourceTree = "<group>";
@@ -825,8 +825,8 @@
 		70017E4A2AEEDB34001E1C02 /* VerifyPulseAccountPopUpViewController */ = {
 			isa = PBXGroup;
 			children = (
-				70017E4B2AEEDB34001E1C02 /* VerifyPulseAccountPopUpViewController.swift */,
 				70017E4C2AEEDB34001E1C02 /* VerifyPulseAccountPresenter.swift */,
+				70017E4B2AEEDB34001E1C02 /* VerifyPulseAccountPopUpViewController.swift */,
 			);
 			path = VerifyPulseAccountPopUpViewController;
 			sourceTree = "<group>";
@@ -834,8 +834,8 @@
 		70017E4D2AEEDB34001E1C02 /* AuthViewController */ = {
 			isa = PBXGroup;
 			children = (
-				70017E4E2AEEDB34001E1C02 /* AuthViewController.swift */,
 				70017E4F2AEEDB34001E1C02 /* AuthPresenter.swift */,
+				70017E4E2AEEDB34001E1C02 /* AuthViewController.swift */,
 			);
 			path = AuthViewController;
 			sourceTree = "<group>";
@@ -852,8 +852,8 @@
 		70017E532AEEDB34001E1C02 /* SearchViewController */ = {
 			isa = PBXGroup;
 			children = (
-				70017E542AEEDB34001E1C02 /* SearchViewController.swift */,
 				70017E552AEEDB34001E1C02 /* SearchPresenter.swift */,
+				70017E542AEEDB34001E1C02 /* SearchViewController.swift */,
 			);
 			path = SearchViewController;
 			sourceTree = "<group>";
@@ -861,13 +861,13 @@
 		70017E562AEEDB34001E1C02 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				706974C12B055B420093D1FB /* TableHeaderViews */,
 				70017E5A2AEEDB34001E1C02 /* CoversScrollingView */,
+				706974C12B055B420093D1FB /* TableHeaderViews */,
 				70017E582AEEDB34001E1C02 /* AlertView.swift */,
 				701D047F2B2F8E2A0082FA44 /* CanvasView.swift */,
 				709A7F102B38EE1D001D4AF1 /* NowPlayingArtistInfoView.swift */,
-				705EC84D2B40BA9800CFA3C4 /* OpenInServiceView.swift */,
 				83A7249F2B8B4B560061F18D /* NowPlayingView.swift */,
+				705EC84D2B40BA9800CFA3C4 /* OpenInServiceView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -964,8 +964,8 @@
 		70017E862AEEDB34001E1C02 /* Realm */ = {
 			isa = PBXGroup;
 			children = (
-				70017E882AEEDB34001E1C02 /* RealmManager.swift */,
 				70017E892AEEDB34001E1C02 /* Models */,
+				70017E882AEEDB34001E1C02 /* RealmManager.swift */,
 			);
 			path = Realm;
 			sourceTree = "<group>";
@@ -973,13 +973,13 @@
 		70017E892AEEDB34001E1C02 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				70017E872AEEDB34001E1C02 /* LocalFeatureModel.swift */,
-				70017E8A2AEEDB34001E1C02 /* LibraryPlaylistModel.swift */,
 				70017E8B2AEEDB34001E1C02 /* LibraryPlaylistModels */,
 				70017E8E2AEEDB34001E1C02 /* DownloadQueueTrackModel.swift */,
-				70017E8F2AEEDB34001E1C02 /* LibaryTrackModel.swift */,
-				70017E902AEEDB34001E1C02 /* LocalFeaturesModel.swift */,
 				70017E912AEEDB34001E1C02 /* LibraryArtistModel.swift */,
+				70017E8A2AEEDB34001E1C02 /* LibraryPlaylistModel.swift */,
+				70017E8F2AEEDB34001E1C02 /* LibraryTrackModel.swift */,
+				70017E872AEEDB34001E1C02 /* LocalFeatureModel.swift */,
+				70017E902AEEDB34001E1C02 /* LocalFeaturesModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -987,8 +987,8 @@
 		70017E8B2AEEDB34001E1C02 /* LibraryPlaylistModels */ = {
 			isa = PBXGroup;
 			children = (
-				70017E8C2AEEDB34001E1C02 /* LibraryPlaylistTrackModel.swift */,
 				70017E8D2AEEDB34001E1C02 /* LibraryPlaylistArtistModel.swift */,
+				70017E8C2AEEDB34001E1C02 /* LibraryPlaylistTrackModel.swift */,
 			);
 			path = LibraryPlaylistModels;
 			sourceTree = "<group>";
@@ -1227,8 +1227,8 @@
 		702D77322B45665800F1B541 /* MainFeedViewController */ = {
 			isa = PBXGroup;
 			children = (
-				702D77332B45666F00F1B541 /* MainFeedViewController.swift */,
 				702D77352B45667800F1B541 /* MainFeedPresenter.swift */,
+				702D77332B45666F00F1B541 /* MainFeedViewController.swift */,
 			);
 			path = MainFeedViewController;
 			sourceTree = "<group>";
@@ -1285,8 +1285,8 @@
 		705EC82D2B4030D600CFA3C4 /* OpenInServiceViewController */ = {
 			isa = PBXGroup;
 			children = (
-				705EC8392B40A63A00CFA3C4 /* OpenInServiceViewController.swift */,
 				705EC83B2B40A7AB00CFA3C4 /* OpenInServicePresenter.swift */,
+				705EC8392B40A63A00CFA3C4 /* OpenInServiceViewController.swift */,
 			);
 			path = OpenInServiceViewController;
 			sourceTree = "<group>";
@@ -1379,8 +1379,8 @@
 		709F4BBE2B3C62510016C454 /* ArtistViewController */ = {
 			isa = PBXGroup;
 			children = (
-				709F4BBF2B3C625A0016C454 /* ArtistViewController.swift */,
 				709F4BC12B3C62600016C454 /* ArtistPresenter.swift */,
+				709F4BBF2B3C625A0016C454 /* ArtistViewController.swift */,
 			);
 			path = ArtistViewController;
 			sourceTree = "<group>";
@@ -1433,8 +1433,8 @@
 		70F9F8672B48DB8A006CD1AA /* CollectionViewCells */ = {
 			isa = PBXGroup;
 			children = (
-				70F9F8682B48DB94006CD1AA /* StoryCollectionViewCell.swift */,
 				709A91932B55349B00D1E693 /* PlaylistCollectionViewCell.swift */,
+				70F9F8682B48DB94006CD1AA /* StoryCollectionViewCell.swift */,
 			);
 			path = CollectionViewCells;
 			sourceTree = "<group>";
@@ -1770,7 +1770,7 @@
 				70017F662AEEDB34001E1C02 /* ResponseMuffonLinksModel.swift in Sources */,
 				70017F012AEEDB34001E1C02 /* ServiceSignTableViewCell.swift in Sources */,
 				701B75C22B4962430090FACB /* ResponsePulseStoryTrackModel.swift in Sources */,
-				70017F562AEEDB34001E1C02 /* LibaryTrackModel.swift in Sources */,
+				70017F562AEEDB34001E1C02 /* LibraryTrackModel.swift in Sources */,
 				70017F572AEEDB34001E1C02 /* LocalFeaturesModel.swift in Sources */,
 				70017F162AEEDB34001E1C02 /* SignInPresenter.swift in Sources */,
 				702D77472B4580EC00F1B541 /* ResponsePulseWidgetsRootModel.swift in Sources */,
