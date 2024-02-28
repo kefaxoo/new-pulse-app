@@ -9,6 +9,7 @@ import UIKit
 import PulseMedia
 import FirebaseCore
 import FirebasePerformance
+import CallStackParserSPM
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {

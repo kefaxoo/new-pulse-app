@@ -13,6 +13,13 @@ final class SettingsManager {
     
     fileprivate init() {
         debugLog("Realm DB Location:", Realm.Configuration.defaultConfiguration.fileURL?.absoluteString ?? "")
+        if NetworkManager.shared.isReachable {
+            PulseProvider.shared.deviceInfo { [weak self] deviceInfo in
+                guard let deviceInfo else { return }
+                
+                self?.deviceModel = deviceInfo.model
+            }
+        }
     }
     
     func initRealmVariables() {
@@ -295,9 +302,18 @@ extension SettingsManager {
 }
 
 // MARK: -
-// MARK: Unique Device ID
+// MARK: Device Info
 extension SettingsManager {
     var udid: String? {
         return UIDevice.current.identifierForVendor?.uuidString
+    }
+    
+    var deviceModel: String {
+        get {
+            return UserDefaults.standard.value(forKey: .deviceModel) as? String ?? UIDevice.current.deviceIdentifier
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: .deviceModel)
+        }
     }
 }

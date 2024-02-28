@@ -797,6 +797,34 @@ extension PulseProvider {
     }
 }
 
+// MARK: -
+// MARK: Device
+extension PulseProvider {
+    func deviceInfo(completion: @escaping((_ deviceInfo: PulseDeviceInfo?) -> ())) {
+        self.urlSession.dataTask(with: URLRequest(type: PulseApi.model, shouldPrintLog: self.shouldPrintLog)) { response in
+            switch response {
+                case .success(let response):
+                    guard let deviceInfo = response.data?.map(to: PulseDeviceInfo.self) else {
+                        completion(nil)
+                        return
+                    }
+                    
+                    completion(deviceInfo)
+                case .failure(let response):
+                    completion(nil)
+            }
+        }
+    }
+}
+
+// MARK: -
+// MARK: Log
+extension PulseProvider {
+    func sendNewLog(_ log: NewLogModel) {
+        self.urlSession.dataTask(with: URLRequest(type: PulseApi.newLog(log: log), shouldPrintLog: self.shouldPrintLog), response: { _ in })
+    }
+}
+
 fileprivate extension PulseProvider {
     func parseError(response: Failure, closure: PulseDefaultErrorV3Closure?, retryClosure: (() -> ())? = nil) {
         response.sendLog()
