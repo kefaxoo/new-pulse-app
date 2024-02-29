@@ -298,6 +298,7 @@
 		834F70E32B8FC9DB00E34A3C /* String+Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834F70DB2B8FC9DB00E34A3C /* String+Padding.swift */; };
 		834F70E42B8FC9DB00E34A3C /* Collection+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834F70DC2B8FC9DB00E34A3C /* Collection+Safe.swift */; };
 		834F70E52B8FC9DB00E34A3C /* CallStackParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834F70DD2B8FC9DB00E34A3C /* CallStackParser.swift */; };
+		83E824392B91347B00EB6B2E /* LogError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E824382B91347B00EB6B2E /* LogError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -620,6 +621,7 @@
 		834F70DB2B8FC9DB00E34A3C /* String+Padding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Padding.swift"; sourceTree = "<group>"; };
 		834F70DC2B8FC9DB00E34A3C /* Collection+Safe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+Safe.swift"; sourceTree = "<group>"; };
 		834F70DD2B8FC9DB00E34A3C /* CallStackParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallStackParser.swift; sourceTree = "<group>"; };
+		83E824382B91347B00EB6B2E /* LogError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1246,6 +1248,7 @@
 				70017EEC2AEEDB34001E1C02 /* AppEnvironment.swift */,
 				7072CC052AF8F43500E51E0A /* SignMethodType.swift */,
 				707C044D2B40CC06000B91BF /* ApplicationStyle.swift */,
+				83E824382B91347B00EB6B2E /* LogError.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -1959,6 +1962,7 @@
 				70017F222AEEDB34001E1C02 /* AuthPresenter.swift in Sources */,
 				70017F472AEEDB34001E1C02 /* LibraryManager.swift in Sources */,
 				70017F6E2AEEDB34001E1C02 /* IpifyApi.swift in Sources */,
+				83E824392B91347B00EB6B2E /* LogError.swift in Sources */,
 				70017F672AEEDB34001E1C02 /* ResponseMuffonArtistModel.swift in Sources */,
 				7013E34C2B0D58F90038A600 /* MPVolumeView+Ext.swift in Sources */,
 				70017F8C2AEEDB34001E1C02 /* ResponseSoundcloudTrackModel.swift in Sources */,

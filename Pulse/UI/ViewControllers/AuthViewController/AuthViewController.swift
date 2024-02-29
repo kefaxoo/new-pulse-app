@@ -149,10 +149,24 @@ extension AuthViewController {
         
         GIDSignIn.sharedInstance.signIn(withPresenting: self) { [weak self] signInResult, error in
             guard let email = signInResult?.user.profile?.email else {
-                AlertView.shared.presentError(
-                    error: error?.localizedDescription ?? Localization.Lines.unknownError.localization(with: "Google"),
-                    system: .iOS16AppleMusic
-                )
+                if (error as? GIDSignInError)?.code != GIDSignInError.canceled {
+                    let error = error?.localizedDescription ?? Localization.Lines.unknownError.localization(with: "Google")
+                    PulseProvider.shared.sendNewLog(
+                        NewLogModel(
+                            screenId: self?.screenIdUrl,
+                            errorType: .request,
+                            trace: Thread.simpleCallStackSymbols,
+                            additionalParameters: [
+                                "error": error
+                            ]
+                        )
+                    )
+                    
+                    AlertView.shared.presentError(
+                        error: error,
+                        system: .iOS16AppleMusic
+                    )
+                }
                 
                 return
             }
@@ -172,7 +186,18 @@ extension AuthViewController {
 // MARK: ASAuthorizationControllerDelegate
 extension AuthViewController: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-        guard let appleIdCredentials = authorization.credential as? ASAuthorizationAppleIDCredential else { return }
+        guard let appleIdCredentials = authorization.credential as? ASAuthorizationAppleIDCredential else { 
+            PulseProvider.shared.sendNewLog(
+                NewLogModel(
+                    screenId: self.screenIdUrl,
+                    errorType: .request,
+                    trace: Thread.simpleCallStackSymbols,
+                    logError: .appleSignError
+                )
+            )
+            
+            return
+        }
         
         if let email = appleIdCredentials.email {
             self.presenter.signWithExternalMethod(email: email, signMethod: .apple)

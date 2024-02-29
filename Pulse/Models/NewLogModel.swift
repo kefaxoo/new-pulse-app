@@ -15,17 +15,18 @@ struct NewLogModel {
         case crash
     }
     
-    let screenId            : URL
+    let screenId            : URL?
     let errorType           : LogErrorType
-    let trace               : String
+    let trace               : [String]
     var cURL                : String?
     var additionalParameters: [String: Any]?
+    var logError            : LogError = .none
     
     var json: [String: Any] {
         var parameters: [String: Any] = [
             "appVersion": Bundle.main.releaseVersion as Any,
             "buildNumber": Bundle.main.buildVersion as Any,
-            "screenId": self.screenId.absoluteString,
+            "screenId": self.screenId?.absoluteString,
             "deviceModel": SettingsManager.shared.deviceModel,
             "deviceType": UIDevice.current.isSimulator ? "Simulator" : "Device",
             "errorType": self.errorType.rawValue,
@@ -52,8 +53,17 @@ struct NewLogModel {
             parameters["networkCountry"] = NetworkManager.shared.countryCode
         }
         
+        var additionalParameters = self.additionalParameters
+        if self.logError != .none {
+            if additionalParameters == nil {
+                additionalParameters = [:]
+            }
+            
+            additionalParameters?["error"] = self.logError.rawValue
+        }
+        
         if let additionalParameters {
-            parameters["additionalParameters"] = parameters
+            parameters["additionalParameters"] = additionalParameters
         }
         
         return parameters

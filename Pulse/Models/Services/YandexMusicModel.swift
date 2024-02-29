@@ -154,7 +154,7 @@ final class YandexMusicModel {
     @discardableResult func signOut() -> Bool {
         accessTokenKeychainModel.deleteAccount(username: Self.keychainService)
         
-        id            = 0
+        id            = -1
         accessToken   = nil
         currentSource = .muffon
         hasPlus       = false

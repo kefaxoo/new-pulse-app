@@ -174,7 +174,7 @@ final class SettingsManager {
     
     var isCanvasesEnabled: Bool {
         get {
-            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.isCanvasesEnabled.rawValue) as? Bool ?? false
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.isCanvasesEnabled.rawValue) as? Bool ?? true
         }
         set {
             UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.isCanvasesEnabled.rawValue)
@@ -290,12 +290,19 @@ extension SettingsManager {
     func signOut() -> Bool {
         autoDownload = false
         isAdultContentEnabled = false
-        isCanvasesEnabled = false
+        isCanvasesEnabled = true
         soundcloudLike = false
+        yandexMusicLike = false
+        color = .purple
+        appearance = .system
+        lastTabBarIndex = MainTabBarController.ViewController.library.rawValue
         
         pulse.signOut()
         soundcloud.signOut()
         yandexMusic.signOut()
+        
+        LibraryManager.shared.cleanLibrary()
+        LibraryManager.shared.removeTemporaryCache()
         
         return true
     }

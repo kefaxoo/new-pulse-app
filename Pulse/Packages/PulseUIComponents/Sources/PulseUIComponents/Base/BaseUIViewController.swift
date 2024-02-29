@@ -8,6 +8,8 @@
 import UIKit
 
 open class BaseUIViewController: UIViewController {
+    public var screenIdUrl: URL?
+    
     open override func viewDidLoad() {
         super.viewDidLoad()
         self.setupInterface()
