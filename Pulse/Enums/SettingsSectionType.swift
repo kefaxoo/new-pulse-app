@@ -16,10 +16,7 @@ enum SettingSectionType {
     case yandexMusic
     
     static var allCases: [SettingSectionType] {
-        var allCases: [SettingSectionType] = [.general, .appearance, .soundcloud]
-        if AppEnvironment.current.isDebug {
-            allCases.append(.yandexMusic)
-        }
+        var allCases: [SettingSectionType] = [.general, .appearance, .soundcloud, .yandexMusic]
         
 #if !RELEASE_P
         allCases.append(.debug)

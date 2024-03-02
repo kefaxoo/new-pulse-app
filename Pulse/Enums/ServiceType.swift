@@ -38,7 +38,10 @@ enum ServiceType: String {
     
     static var searchController: [ServiceType] {
         var services: [ServiceType] = [.soundcloud]
-        services.append(.yandexMusic)
+        if SettingsManager.shared.yandexMusic.isSigned {
+            services.append(.yandexMusic)
+        }
+        
         services.append(.deezer)
         
         return services
@@ -175,6 +178,15 @@ enum ServiceType: String {
                 return "YOUTUBE_VIDEO::"
             default:
                 return ""
+        }
+    }
+    
+    var isHistoryAvailable: Bool {
+        switch self {
+            case .yandexMusic:
+                return true
+            default:
+                return false
         }
     }
 }

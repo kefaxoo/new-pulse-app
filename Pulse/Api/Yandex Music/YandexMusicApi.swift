@@ -15,6 +15,8 @@ enum YandexMusicApi {
     
     // MARK: - Search
     case search(query: String, page: Int, type: SearchType)
+    case searchSuggestions(query: String)
+    case searchHistory(type: SearchType)
     
     // MARK: - Audio link
     case fetchAudioLinkStep1(trackId: String)
@@ -67,6 +69,10 @@ extension YandexMusicApi: BaseRestApiEnum {
                 return "/tracks"
             case .artist(let artist):
                 return "/artists/\(artist.id)/brief-info"
+            case .searchSuggestions:
+                return "/search/suggest"
+            case .searchHistory:
+                return "/users/\(SettingsManager.shared.yandexMusic.id)/search-history"
         }
     }
     
@@ -85,6 +91,7 @@ extension YandexMusicApi: BaseRestApiEnum {
             headers["Authorization"] = "OAuth \(accessToken)"
         }
         
+        headers["X-Yandex-Music-Client"] = "YandexMusicAndroid/24023131"
         return headers
     }
     
@@ -103,6 +110,10 @@ extension YandexMusicApi: BaseRestApiEnum {
             case .artist:
                 parameters["discographyBlockEnabled"] = true
                 parameters["useClipDataFormat"]       = true
+            case .searchSuggestions(let query):
+                parameters["part"] = query
+            case .searchHistory(let type):
+                parameters["supportedTypes"] = type.yandexMusicApi
             default:
                 break
         }

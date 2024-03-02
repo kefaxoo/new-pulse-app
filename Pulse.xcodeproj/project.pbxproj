@@ -282,6 +282,9 @@
 		70F9F8642B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F8632B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift */; };
 		70F9F8692B48DB94006CD1AA /* StoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F8682B48DB94006CD1AA /* StoryCollectionViewCell.swift */; };
 		70F9F86B2B48DE68006CD1AA /* StoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */; };
+		83319C912B8A840000CA930E /* ResponseYandexMusicSuggestionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83319C902B8A840000CA930E /* ResponseYandexMusicSuggestionsModel.swift */; };
+		83319C932B8A847700CA930E /* SearchSuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83319C922B8A847700CA930E /* SearchSuggestionTableViewCell.swift */; };
+		83319C952B8A8C3700CA930E /* ResponseYandexMusicSearchHistoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83319C942B8A8C3700CA930E /* ResponseYandexMusicSearchHistoryModel.swift */; };
 		8348BB282B93565500458B8D /* TextFieldButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8348BB272B93565500458B8D /* TextFieldButtonTableViewCell.swift */; };
 		8362BD462B939BCC00BCA128 /* LogoutPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8362BD452B939BCC00BCA128 /* LogoutPopUpViewController.swift */; };
 /* End PBXBuildFile section */
@@ -556,6 +559,9 @@
 		70F9F8632B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseExclusiveTrackInfoModel.swift; sourceTree = "<group>"; };
 		70F9F8682B48DB94006CD1AA /* StoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesTableViewCell.swift; sourceTree = "<group>"; };
+		83319C902B8A840000CA930E /* ResponseYandexMusicSuggestionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicSuggestionsModel.swift; sourceTree = "<group>"; };
+		83319C922B8A847700CA930E /* SearchSuggestionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionTableViewCell.swift; sourceTree = "<group>"; };
+		83319C942B8A8C3700CA930E /* ResponseYandexMusicSearchHistoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicSearchHistoryModel.swift; sourceTree = "<group>"; };
 		8348BB272B93565500458B8D /* TextFieldButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldButtonTableViewCell.swift; sourceTree = "<group>"; };
 		8362BD452B939BCC00BCA128 /* LogoutPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutPopUpViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -689,6 +695,7 @@
 				705EC84B2B40AEA700CFA3C4 /* ServiceTableViewCell.swift */,
 				70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */,
 				709A918F2B55326100D1E693 /* PlaylistsCollectionTableViewCell.swift */,
+				83319C922B8A847700CA930E /* SearchSuggestionTableViewCell.swift */,
 				8348BB272B93565500458B8D /* TextFieldButtonTableViewCell.swift */,
 			);
 			path = TableViewCells;
@@ -1253,6 +1260,8 @@
 			children = (
 				704240D02B2B9F7D00B7F0AD /* ResponseYandexMusicSearchModel.swift */,
 				704240D32B2B9FA200B7F0AD /* ResponseYandexMusicTracksModel.swift */,
+				83319C902B8A840000CA930E /* ResponseYandexMusicSuggestionsModel.swift */,
+				83319C942B8A8C3700CA930E /* ResponseYandexMusicSearchHistoryModel.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -1604,6 +1613,7 @@
 				7072CC252AF9857C00E51E0A /* ResponsePulseLoginUserV3Model.swift in Sources */,
 				70F9F85E2B480C38006CD1AA /* ResponsePulseWidgetModel.swift in Sources */,
 				70017F0C2AEEDB34001E1C02 /* CoversViewController.swift in Sources */,
+				83319C912B8A840000CA930E /* ResponseYandexMusicSuggestionsModel.swift in Sources */,
 				70017F092AEEDB34001E1C02 /* ButtonTableViewCell.swift in Sources */,
 				704240E52B2BA23700B7F0AD /* ResponseYandexMusicTrackPositionModel.swift in Sources */,
 				70017F2B2AEEDB34001E1C02 /* CoversScrollingView.swift in Sources */,
@@ -1626,6 +1636,7 @@
 				7072CC1B2AF8FCE000E51E0A /* Localization.swift in Sources */,
 				70017FA12AEEDB34001E1C02 /* SettingsSectionType.swift in Sources */,
 				70017F2E2AEEDB34001E1C02 /* Float+Ext.swift in Sources */,
+				83319C952B8A8C3700CA930E /* ResponseYandexMusicSearchHistoryModel.swift in Sources */,
 				704240DD2B2BA01F00B7F0AD /* ResponseYandexMusicCoverModel.swift in Sources */,
 				705EC8442B40AB9800CFA3C4 /* ResponseOdesliLinksModel.swift in Sources */,
 				70962F932B38DC2F00A9BBDE /* ResponseYandexMusicLibraryModel.swift in Sources */,
@@ -1647,6 +1658,7 @@
 				70017F302AEEDB34001E1C02 /* Failure+Ext.swift in Sources */,
 				705EC8462B40ABA500CFA3C4 /* OdesliTypealias.swift in Sources */,
 				70017F612AEEDB34001E1C02 /* BaseUICollectionViewCell.swift in Sources */,
+				83319C932B8A847700CA930E /* SearchSuggestionTableViewCell.swift in Sources */,
 				70017F372AEEDB34001E1C02 /* UICollectionView+Ext.swift in Sources */,
 				70017EF82AEEDB34001E1C02 /* Credentials.swift in Sources */,
 				70017F3B2AEEDB34001E1C02 /* UISegmentedControl+Ext.swift in Sources */,
