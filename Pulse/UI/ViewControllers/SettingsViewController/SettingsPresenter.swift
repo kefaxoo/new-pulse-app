@@ -88,6 +88,9 @@ extension SettingsPresenter {
             case .service:
                 (cell as? ServiceSignTableViewCell)?.setupCell(type: setting, section: indexPath.section)
                 (cell as? ServiceSignTableViewCell)?.delegate = self
+            case .textFieldButton:
+                (cell as? TextFieldButtonTableViewCell)?.setupCell(type: setting)
+                (cell as? TextFieldButtonTableViewCell)?.delegate = self
             default:
                 break
         }

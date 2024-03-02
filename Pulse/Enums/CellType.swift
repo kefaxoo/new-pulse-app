@@ -14,4 +14,5 @@ enum CellType {
     case service
     case none
     case tintedButton
+    case textFieldButton
 }

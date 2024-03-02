@@ -26,6 +26,7 @@ enum SettingType {
     case yandexMusicStreamingQuality
     case yandexMusicDownloadQuality
     case appearance
+    case yandexMusicToken
     
     var cellType: CellType {
         switch self {
@@ -42,6 +43,8 @@ enum SettingType {
                 return .service
             case .soundcloudLike, .yandexMusicLike:
                 return .switch
+            case .yandexMusicToken:
+                return .textFieldButton
             case .none:
                 return .none
         }
@@ -93,6 +96,8 @@ enum SettingType {
                 return Localization.Enums.SettingType.Title.streamingQuality.localization
             case .yandexMusicDownloadQuality:
                 return Localization.Enums.SettingType.Title.downloadQuality.localization
+            case .yandexMusicToken:
+                return "Yandex Music Token"
         }
     }
     
@@ -144,6 +149,8 @@ enum SettingType {
                 return ServiceSignTableViewCell.id
             case .tintedButton:
                 return ButtonTableViewCell.id
+            case .textFieldButton:
+                return TextFieldButtonTableViewCell.id
             case .none:
                 return ""
         }
@@ -220,8 +227,28 @@ enum SettingType {
                 return SettingsManager.shared.yandexMusic.streamingQuality.title
             case .yandexMusicDownloadQuality:
                 return SettingsManager.shared.yandexMusic.downloadQuality.title
+            case .yandexMusicToken:
+                return "Set token"
             default:
                 return ""
+        }
+    }
+    
+    var textFieldPlaceholder: String? {
+        switch self {
+            case .yandexMusicToken:
+                return "Enter yandex music token"
+            default:
+                return nil
+        }
+    }
+    
+    var textFieldText: String? {
+        switch self {
+            case .yandexMusicToken:
+                return SettingsManager.shared.yandexMusic.accessToken
+            default:
+                return nil
         }
     }
 }

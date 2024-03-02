@@ -151,6 +151,12 @@ final class YandexMusicModel {
         self.accessToken = token
     }
     
+    func updateToken(_ token: String) {
+        guard self.accessTokenKeychainModel.updatePassword(credentials: Credentials(service: Self.keychainService, accessToken: token)) else { return }
+        
+        self.accessToken = token
+    }
+    
     @discardableResult func signOut() -> Bool {
         accessTokenKeychainModel.deleteAccount(username: Self.keychainService)
         
