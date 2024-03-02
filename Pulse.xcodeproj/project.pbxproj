@@ -283,6 +283,7 @@
 		70F9F8692B48DB94006CD1AA /* StoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F8682B48DB94006CD1AA /* StoryCollectionViewCell.swift */; };
 		70F9F86B2B48DE68006CD1AA /* StoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */; };
 		8348BB282B93565500458B8D /* TextFieldButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8348BB272B93565500458B8D /* TextFieldButtonTableViewCell.swift */; };
+		8362BD462B939BCC00BCA128 /* LogoutPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8362BD452B939BCC00BCA128 /* LogoutPopUpViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -556,6 +557,7 @@
 		70F9F8682B48DB94006CD1AA /* StoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesTableViewCell.swift; sourceTree = "<group>"; };
 		8348BB272B93565500458B8D /* TextFieldButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldButtonTableViewCell.swift; sourceTree = "<group>"; };
+		8362BD452B939BCC00BCA128 /* LogoutPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutPopUpViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -801,6 +803,7 @@
 		70017E472AEEDB34001E1C02 /* PopUpViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				8362BD442B939BB800BCA128 /* LogoutPopUpViewController */,
 				70017E482AEEDB34001E1C02 /* PopUpViewController */,
 				70017E4A2AEEDB34001E1C02 /* VerifyPulseAccountPopUpViewController */,
 			);
@@ -1430,6 +1433,14 @@
 			path = CollectionViewCells;
 			sourceTree = "<group>";
 		};
+		8362BD442B939BB800BCA128 /* LogoutPopUpViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8362BD452B939BCC00BCA128 /* LogoutPopUpViewController.swift */,
+			);
+			path = LogoutPopUpViewController;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1685,6 +1696,7 @@
 				70E6A5992B2A641400700471 /* YandexMusicTypealiases.swift in Sources */,
 				709A91942B55349B00D1E693 /* PlaylistCollectionViewCell.swift in Sources */,
 				701B75C42B4962850090FACB /* ResponsePulseStoryTypeModel.swift in Sources */,
+				8362BD462B939BCC00BCA128 /* LogoutPopUpViewController.swift in Sources */,
 				7024E20C2B3DF7EC00CD57D5 /* ArtistViewScheme.swift in Sources */,
 				70017EF72AEEDB34001E1C02 /* VerificationCode.swift in Sources */,
 				70017F2F2AEEDB34001E1C02 /* Date+Ext.swift in Sources */,

@@ -45,6 +45,7 @@ extension Localization {
         case appearance  = "words.appearance"
         case help        = "words.help"
         case main        = "words.main"
+        case cancel      = "words.cancel"
         
         var localization: String {
             return self.rawValue.localized
@@ -145,6 +146,14 @@ extension Localization {
             
             func localization(with parameter: String) -> String {
                 return self.rawValue.localized(parameters: [parameter])
+            }
+        }
+        
+        enum Logout: String {
+            case title = "popUp.logout.title"
+            
+            var localization: String {
+                return self.rawValue.localized
             }
         }
     }

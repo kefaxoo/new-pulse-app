@@ -180,6 +180,9 @@
 "lines.yourPlaylists" = "Ваши плейлисты";
 
 /*  */
+"popUp.logout.title" = "Вы уверены, что хотите выйти?";
+
+/*  */
 "popUp.verifyPulseAccount.buttons.openTelegramBot" = "Открыть Telegram бота";
 
 /*  */
@@ -223,6 +226,9 @@
 
 /*  */
 "words.blue" = "Синий";
+
+/*  */
+"words.cancel" = "Отмена";
 
 /*  */
 "words.cyan" = "Голубой";
