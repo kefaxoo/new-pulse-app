@@ -12,13 +12,16 @@ class LocalizationManager {
     
     func localizeError(server serverError: PulseBaseErrorModel?, internal internalError: Error?, default defaultError: String? = nil) -> String {
         var error = ""
-        if let serverError,
-           let localizationType = Localization.Server.Keys(rawValue: serverError.localizationKey) {
-            if let parameter = serverError.localizationParameter,
-               let parameterType = Localization.Server.Words(rawValue: parameter) {
-                error = localizationType.localization(with: parameterType.localization)
-            } else {
-                error = localizationType.localization
+        if let serverError {
+            if let localizedMessage = serverError.localizedMessage {
+                error = localizedMessage
+            } else if let localizationType = Localization.Server.Keys(rawValue: serverError.localizationKey) {
+                if let parameter = serverError.localizationParameter,
+                   let parameterType = Localization.Server.Words(rawValue: parameter) {
+                    error = localizationType.localization(with: parameterType.localization)
+                } else {
+                    error = localizationType.localization
+                }
             }
         } else if let internalError {
             error = internalError.localizedDescription

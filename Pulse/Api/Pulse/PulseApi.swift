@@ -170,6 +170,7 @@ extension PulseApi: BaseRestApiEnum {
     var headers: FriendlyURLSession.Headers? {
         var headers = Headers()
         headers["User-Agent"] = NetworkManager.shared.userAgent
+        headers["X-Locale"] = Locale.current.isoLanguageCode
         switch self {
             case .syncTrack, .fetchTracks, .removeTrack, .soundcloudArtwork:
                 guard let accessToken = SettingsManager.shared.pulse.accessToken else { break }
@@ -206,7 +207,6 @@ extension PulseApi: BaseRestApiEnum {
                     headers["X-Pulse-Token"] = accessToken
                 }
                 
-                headers["X-Locale"] = Locale.current.isoLanguageCode
                 headers["X-User-Current-Date"] = Date.currentDate(inFormat: "dd-MM-YYYY")
             default:
                 break
