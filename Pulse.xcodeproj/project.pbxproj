@@ -282,6 +282,7 @@
 		70F9F8642B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F8632B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift */; };
 		70F9F8692B48DB94006CD1AA /* StoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F8682B48DB94006CD1AA /* StoryCollectionViewCell.swift */; };
 		70F9F86B2B48DE68006CD1AA /* StoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */; };
+		8348BB282B93565500458B8D /* TextFieldButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8348BB272B93565500458B8D /* TextFieldButtonTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -554,6 +555,7 @@
 		70F9F8632B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseExclusiveTrackInfoModel.swift; sourceTree = "<group>"; };
 		70F9F8682B48DB94006CD1AA /* StoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesTableViewCell.swift; sourceTree = "<group>"; };
+		8348BB272B93565500458B8D /* TextFieldButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldButtonTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -685,6 +687,7 @@
 				705EC84B2B40AEA700CFA3C4 /* ServiceTableViewCell.swift */,
 				70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */,
 				709A918F2B55326100D1E693 /* PlaylistsCollectionTableViewCell.swift */,
+				8348BB272B93565500458B8D /* TextFieldButtonTableViewCell.swift */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -1585,6 +1588,7 @@
 				70017F752AEEDB34001E1C02 /* ResponsePulseErrorModel.swift in Sources */,
 				70017EFF2AEEDB34001E1C02 /* ArtistModel.swift in Sources */,
 				70017F212AEEDB34001E1C02 /* AuthViewController.swift in Sources */,
+				8348BB282B93565500458B8D /* TextFieldButtonTableViewCell.swift in Sources */,
 				70017F792AEEDB34001E1C02 /* ResponsePulseFeaturesModel.swift in Sources */,
 				7072CC252AF9857C00E51E0A /* ResponsePulseLoginUserV3Model.swift in Sources */,
 				70F9F85E2B480C38006CD1AA /* ResponsePulseWidgetModel.swift in Sources */,

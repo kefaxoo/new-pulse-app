@@ -62,7 +62,7 @@ enum SettingSectionType {
             case .help:
                 return [.about]
             case .debug:
-                return [.appEnvironment, .appInfo]
+                return [.yandexMusicToken, .appEnvironment, .appInfo]
             case .yandexMusic:
                 var array: [SettingType] = [.yandexMusicSign]
                 if SettingsManager.shared.yandexMusic.isSigned {

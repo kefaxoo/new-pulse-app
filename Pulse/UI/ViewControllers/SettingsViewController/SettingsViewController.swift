@@ -23,7 +23,8 @@ class SettingsViewController: BaseUIViewController {
             TextTableViewCell.self,
             ChevronTableViewCell.self,
             ServiceSignTableViewCell.self,
-            ButtonTableViewCell.self
+            ButtonTableViewCell.self,
+            TextFieldButtonTableViewCell.self
         )
         
         tableView.delegate = self
