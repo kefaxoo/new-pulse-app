@@ -49,11 +49,7 @@ final class SettingsPresenter: SettingsPresenterProtocol {
     }
     
     func signOut() {
-        guard SettingsManager.shared.signOut(),
-              LibraryManager.shared.cleanLibrary()
-        else { return }
-                
-        MainCoordinator.shared.makeAuthViewControllerAsRoot()
+        LogoutPopUpViewController().present()
     }
 }
 

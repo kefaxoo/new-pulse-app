@@ -111,6 +111,11 @@ extension PopUpViewController {
 // MARK: -
 // MARK: Setup interface methods
 extension PopUpViewController {
+    override func setupInterface() {
+        super.setupInterface()
+        self.view.backgroundColor = .clear
+    }
+    
     override func setupLayout() {
         super.setupLayout()
         self.view.addSubview(mainView)

@@ -40,6 +40,7 @@
 "words.appearance"  = "Appearance";
 "words.help"        = "Help";
 "words.main"        = "Main";
+"words.cancel"      = "Cancel";
 
 // MARK: -
 // MARK: Controllers
@@ -74,6 +75,9 @@
 // MARK: Pop Up
 // MARK: Verify Pulse Account Pop Up
 "popUp.verifyPulseAccount.description" = "To verify account, go to Telegrm bot and send \\verify %@";
+
+// MARK: Logout Pop Up
+"popUp.logout.title" = "Are you sure to log out?";
 
 // MARK: Buttons
 "popUp.verifyPulseAccount.buttons.openTelegramBot" = "Open Telegram Bot";
