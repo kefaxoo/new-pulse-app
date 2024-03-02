@@ -153,7 +153,8 @@ extension NowPlayingView {
             make.width.equalTo(30)
         }
         
-        titleMarqueeView.snp.makeConstraints({ $0.height.equalTo(titleLabel.textSize.height).priority(.high) })
+        titleLabel.snp.makeConstraints({ $0.height.equalTo(titleLabel.textSize.height).priority(.required) })
+        titleMarqueeView.snp.makeConstraints({ $0.height.equalTo(titleLabel.textSize.height).priority(.required) })
         
         self.layoutIfNeeded()
         
