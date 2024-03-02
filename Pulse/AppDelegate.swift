@@ -25,9 +25,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NetworkManager.shared.checkNetwork()
         NetworkManager.shared.updateValues()
         ServicesManager.shared.refreshTokens()
-        SettingsManager.shared.yandexMusic.checkPlusSubscription()
+        if SettingsManager.shared.yandexMusic.isSigned {
+            SettingsManager.shared.yandexMusic.checkPlusSubscription()
+        }
+        
         LibraryManager.shared.removeTemporaryCache()
-        PulseProvider.shared.fetchSettings()
+        if SettingsManager.shared.pulse.isSignedIn {
+            PulseProvider.shared.fetchSettings()
+        }
+        
         SettingsManager.shared.pulse.isUserBlocked {
             SettingsManager.shared.updateFeatures {
                 MainCoordinator.shared.firstLaunch {
