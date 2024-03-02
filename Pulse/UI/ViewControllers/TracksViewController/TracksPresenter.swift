@@ -125,6 +125,15 @@ final class TracksPresenter: BasePresenter {
     func index(for track: TrackModel) -> Int? {
         return self.tracks.firstIndex(where: { $0 == track })
     }
+    
+    func track(at indexPath: IndexPath) -> TrackModel {
+        return self.tracks[indexPath.row]
+    }
+    
+    func removeTrack(atIndex index: Int) {
+        self.tracks.remove(at: index)
+        self.showedTracks.remove(at: index)
+    }
 }
 
 // MARK: -

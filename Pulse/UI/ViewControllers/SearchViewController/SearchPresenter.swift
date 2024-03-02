@@ -312,6 +312,41 @@ final class SearchPresenter: NSObject, BasePresenter {
         
         return indexPaths
     }
+    
+    func track(at indexPath: IndexPath) -> TrackModel? {
+        guard self.currentType == .tracks,
+              let result = self.searchResponse?.results[indexPath.row]
+        else { return nil }
+        
+        let track: TrackModel?
+        switch self.currentService.source {
+            case .muffon:
+                guard let muffonTrack = result as? MuffonTrack else {
+                    track = nil
+                    break
+                }
+                
+                track = TrackModel(muffonTrack)
+            case .soundcloud:
+                guard let soundcloudTrack = result as? SoundcloudTrack else {
+                    track = nil
+                    break
+                }
+                
+                track = TrackModel(soundcloudTrack)
+            case .yandexMusic:
+                guard let yandexMusicTrack = result as? YandexMusicTrack else {
+                    track = nil
+                    break
+                }
+                
+                track = TrackModel(yandexMusicTrack)
+            default:
+                track = nil
+        }
+        
+        return track
+    }
 }
 
 // MARK: -
