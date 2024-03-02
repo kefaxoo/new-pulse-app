@@ -311,6 +311,7 @@ extension NowPlayingViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        self.durationSlider.isUserInteractionEnabled = AudioPlayer.shared.isTrackLoaded
         guard AudioPlayer.shared.isTrackLoaded else { return }
         
         shouldFetchCanvas()
@@ -484,6 +485,7 @@ extension NowPlayingViewController {
     
     @objc private func previousTrackAction(_ sender: UIButton) {
         AudioPlayer.shared.previousTrack()
+        self.trackDidChanged()
     }
     
     @objc private func playPauseAction(_ sender: UIButton) {
@@ -499,6 +501,7 @@ extension NowPlayingViewController {
     
     @objc private func nextTrackAction(_ sender: UIButton) {
         AudioPlayer.shared.nextTrack()
+        self.trackDidChanged()
     }
     
     @objc private func didTapAction(_ sender: UITapGestureRecognizer) {
@@ -510,6 +513,13 @@ extension NowPlayingViewController {
         self.contentVerticalStackView.smoothIsHiddenAfterAlpha.toggle()
         self.canvasSubstrateView.smoothIsHidden.toggle()
         self.artistInfoView.smoothIsHidden.toggle()
+    }
+    
+    func trackDidChanged() {
+        self.durationSlider.isUserInteractionEnabled = false
+        self.durationSlider.value = 0
+        self.leftTimeLabel.text = "--:--"
+        self.currentTimeLabel.text = "--:--"
     }
 }
 
@@ -526,6 +536,7 @@ extension NowPlayingViewController: AudioPlayerControllerDelegate {
         self.artistInfoView.smoothIsHidden = true
         self.contentVerticalStackView.smoothIsHiddenAfterAlpha = false
         self.coverImageView.smoothIsHiddenWithAlpha = false
+        self.trackDidChanged()
         self.removeTap()
         self.canvasView.removeVideo()
         self.overrideUserInterfaceStyle = SettingsManager.shared.appearance.userIntefaceStyle
@@ -563,6 +574,7 @@ extension NowPlayingViewController: AudioPlayerControllerDelegate {
             for: .normal
         )
         
+        self.durationSlider.isUserInteractionEnabled = true
         self.changeCoverSize(isSmall: !AudioPlayer.shared.isPlaying)
         shouldFetchCanvas()
     }
