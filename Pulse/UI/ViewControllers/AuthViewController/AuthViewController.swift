@@ -33,8 +33,7 @@ final class AuthViewController: CoversViewController {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel(text: "Pulse")
-        label.font = UIFont(font: .krasnodarGroteskLatin, size: 50)
-//        label.font = UIFont.systemFont(ofSize: 50, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 50, weight: .bold)
         label.textAlignment = .center
         return label
     }()
