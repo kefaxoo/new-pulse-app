@@ -9,8 +9,7 @@ import UIKit
 
 extension UIView: MarqueeViewCopyable {
     @objc func copyMarqueeView() -> UIView? {
-        let archivedData = NSKeyedArchiver.archivedData(withRootObject: self)
-        let copyView = NSKeyedUnarchiver.unarchiveObject(with: archivedData) as? UIView
-        return copyView
+        guard let archivedData = try? NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false) else { return nil }
+        return try? NSKeyedUnarchiver.unarchivedObject(ofClass: Self.self, from: archivedData)
     }
 }

@@ -7,13 +7,14 @@
 
 import UIKit
 import AlertKit
-
-fileprivate struct UIViewControllerStoredVariables {
-    static var spinnerAlert: AlertAppleMusic16View?
-    static var isSpinnerPresented = false
-}
+import PulseUIComponents
 
 extension UIViewController {
+    fileprivate struct UIViewControllerStoredVariables {
+        static var spinnerAlert: AlertAppleMusic16View?
+        static var isSpinnerPresented = false
+    }
+    
     private var spinnerAlert: AlertAppleMusic16View? {
         get {
             return UIViewControllerStoredVariables.spinnerAlert
