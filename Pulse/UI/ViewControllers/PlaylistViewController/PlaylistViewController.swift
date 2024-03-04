@@ -54,6 +54,8 @@ extension PlaylistViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = false
         AudioPlayer.shared.tableViewDelegate = self
         self.applyColor()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateLibraryState), name: .updateLibraryState, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -64,6 +66,8 @@ extension PlaylistViewController {
         ]
         
         self.navigationController?.navigationBar.prefersLargeTitles = true
+        
+        NotificationCenter.default.removeObserver(self, name: .updateLibraryState, object: nil)
     }
 }
 
@@ -136,6 +140,14 @@ extension PlaylistViewController: UITableViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.presenter.scrollViewDidScroll(scrollView)
     }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        return ActionsManager(nil).trackSwipeActionsConfiguration(for: self.presenter.track(at: indexPath), swipeDirection: .leadingToTrailing)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        return ActionsManager(nil).trackSwipeActionsConfiguration(for: self.presenter.track(at: indexPath), swipeDirection: .trailingToLeading)
+    }
 }
 
 // MARK: -
@@ -158,5 +170,18 @@ extension PlaylistViewController: PlaylistTableHeaderViewDelegate {
     
     func shuffle() {
         self.presenter.shuffle()
+    }
+}
+
+// MARK: -
+// MARK: Actions
+private extension PlaylistViewController {
+    @objc func updateLibraryState(_ notification: Notification) {
+        guard let track = notification.userInfo?["track"] as? TrackModel,
+              let state = notification.userInfo?["state"] as? TrackLibraryState,
+              let index = self.presenter.index(for: track)
+        else { return }
+        
+        (self.playlistTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? TrackTableViewCell)?.updateTrackState(state)
     }
 }
