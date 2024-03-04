@@ -89,4 +89,8 @@ extension UIViewController {
     var topScreenInset: CGFloat {
         return -(UIApplication.shared.statusBarFrame.height + (self.navigationController?.navigationBar.frame.height ?? 0))
     }
+    
+    static var safeAreaInsets: UIEdgeInsets? {
+         return UIApplication.shared.keyWindow?.safeAreaInsets
+     }
 }

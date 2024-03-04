@@ -27,7 +27,7 @@ fileprivate final class NowPlayingTabBar: UITabBar {
 
 final class MainTabBarController: UITabBarController {
     private lazy var nowPlayingView = NowPlayingView()
-    private lazy var blurBackgroundView: UIVisualEffectView = {
+    private lazy var topBlurBackgroundView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: self.traitCollection.userInterfaceStyle == .dark ? .dark : .light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         return blurEffectView
@@ -62,7 +62,7 @@ final class MainTabBarController: UITabBarController {
     }
     
     private func setupLayout() {
-        self.tabBar.addSubview(blurBackgroundView)
+        self.tabBar.addSubview(topBlurBackgroundView)
         self.tabBar.addSubview(nowPlayingView)
     }
     
@@ -70,13 +70,32 @@ final class MainTabBarController: UITabBarController {
         nowPlayingView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(self.tabBar.snp.top)
-            make.height.equalTo(NowPlayingView.height)
+            make.height.equalTo(nowPlayingView.height)
         }
         
-        blurBackgroundView.snp.makeConstraints { make in
+        topBlurBackgroundView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
             make.top.equalTo(nowPlayingView.snp.top)
         }
+        
+        topBlurBackgroundView.layoutIfNeeded()
+        
+        let gradient = CAGradientLayer()
+        gradient.frame = CGRect(
+            origin: .zero,
+            size: CGSize(
+                width: UIScreen.main.bounds.width,
+                height: nowPlayingView.height + self.tabBar.frame.height + (Self.safeAreaInsets?.bottom ?? 0)
+            )
+        )
+        
+        gradient.colors = [
+            UIColor.systemBackground.withAlphaComponent(0).cgColor,
+            UIColor.systemBackground.cgColor
+        ]
+        
+        gradient.locations = [0, 0.3]
+        self.topBlurBackgroundView.layer.mask = gradient
     }
     
     private func setupItems() {
@@ -114,6 +133,7 @@ final class MainTabBarController: UITabBarController {
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        blurBackgroundView.effect = UIBlurEffect(style: self.traitCollection.userInterfaceStyle == .dark ? .dark : .light)
+        let effect = UIBlurEffect(style: self.traitCollection.userInterfaceStyle == .dark ? .dark : .light)
+        topBlurBackgroundView.effect = effect
     }
 }

@@ -2,57 +2,46 @@
 //  NowPlayingView.swift
 //  Pulse
 //
-//  Created by Bahdan Piatrouski on 2.09.23.
+//  Created by Bahdan Piatrouski on 25.02.24.
 //
 
 import UIKit
 import PulseUIComponents
 
 final class NowPlayingView: BaseUIView {
-    static let height: CGFloat = 55
+    static var height: CGFloat {
+        return 62
+    }
     
-    private lazy var contentView: UIView = {
-        let view = UIView(with: .clear)
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(presentNowPlayingVC)))
-        return view
-    }()
+    var height: CGFloat {
+        return Self.height
+    }
     
     private lazy var coverImageView: UIImageView = {
-        let coverImageView = UIImageView.default
-        coverImageView.layer.cornerRadius = 10
-        return coverImageView
+        let imageView = UIImageView.default
+        imageView.layer.cornerRadius = 10
+        return imageView
     }()
     
-    private lazy var trackInfoStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        return stackView
+    private lazy var durationProgressView: UIProgressView = {
+        let progressView = UIProgressView()
+        progressView.progressViewStyle = .bar
+        progressView.tintColor = SettingsManager.shared.color.color
+        return progressView
     }()
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        label.font = .systemFont(ofSize: 13, weight: .semibold)
         label.text = Localization.Views.NowPlaying.Label.notPlaying.localization
         label.baselineAdjustment = .none
         return label
     }()
     
     private lazy var titleMarqueeView: MarqueeView = {
-        let view = MarqueeView()
-        view.contentView = self.titleLabel
+        let view = titleLabel.wrapIntoMarquee()
         view.contentMargin = 10
-        view.pointsPerFrame = 0.1
-        view.marqueeType = .reverse
         return view
-    }()
-    
-    private lazy var explicitAndArtistStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 6
-        stackView.isHidden = true
-        return stackView
     }()
     
     private lazy var explicitImageView: UIImageView = {
@@ -63,9 +52,28 @@ final class NowPlayingView: BaseUIView {
     
     private lazy var artistLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = .systemFont(ofSize: 12)
         label.textColor = UIColor(hex: "#848484")
         return label
+    }()
+    
+    private lazy var explicitAndArtistStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 6
+        stackView.isHidden = true
+        stackView.addArrangedSubview(explicitImageView)
+        stackView.addArrangedSubview(artistLabel)
+        return stackView
+    }()
+    
+    private lazy var trackInfoStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.distribution = .equalSpacing
+        stackView.addArrangedSubview(titleMarqueeView)
+        stackView.addArrangedSubview(explicitAndArtistStackView)
+        return stackView
     }()
     
     private lazy var playPauseButton: PlayPauseButton = {
@@ -82,128 +90,115 @@ final class NowPlayingView: BaseUIView {
         return button
     }()
     
-    private lazy var durationProgressView: UIProgressView = {
-        let progressView = UIProgressView()
-        progressView.progressViewStyle = .bar
-        progressView.tintColor = SettingsManager.shared.color.color
-        return progressView
+    private lazy var roundedContentView: UIVisualEffectView = {
+        let view = UIVisualEffectView(effect: UIBlurEffect(style: self.traitCollection.userInterfaceStyle == .dark ? .dark : .light))
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = 10
+        view.contentView.addSubview(coverImageView)
+        view.contentView.addSubview(durationProgressView)
+        view.contentView.addSubview(trackInfoStackView)
+        view.contentView.addSubview(playPauseButton)
+        view.contentView.addSubview(nextTrackButton)
+        return view
+    }()
+    
+    private lazy var contentView: UIView = {
+        let view = UIView(with: .clear)
+        view.addSubview(roundedContentView)
+        return view
     }()
     
     override var tintColor: UIColor! {
         didSet {
-            explicitImageView.tintColor = self.tintColor
-            playPauseButton.tintColor = self.tintColor
-            nextTrackButton.tintColor = self.tintColor
             durationProgressView.tintColor = self.tintColor
         }
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        self.setupDelegate()
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        
-        self.setupDelegate()
-    }
-    
-    private func setupDelegate() {
-        AudioPlayer.shared.viewDelegate = self
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        self.roundedContentView.effect = UIBlurEffect(style: self.traitCollection.userInterfaceStyle == .dark ? .dark : .light)
     }
 }
 
 // MARK: -
 // MARK: Setup interface methods
 extension NowPlayingView {
+    override func setupInterface() {
+        super.setupInterface()
+        
+        AudioPlayer.shared.viewDelegate = self
+        self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(presentNowPlayingController)))
+    }
+    
     override func setupLayout() {
         self.addSubview(contentView)
-        contentView.addSubview(coverImageView)
-        contentView.addSubview(trackInfoStackView)
-        trackInfoStackView.addArrangedSubview(titleMarqueeView)
-        trackInfoStackView.addArrangedSubview(explicitAndArtistStackView)
-        explicitAndArtistStackView.addArrangedSubview(explicitImageView)
-        explicitAndArtistStackView.addArrangedSubview(artistLabel)
-        
-        contentView.addSubview(playPauseButton)
-        contentView.addSubview(nextTrackButton)
-        contentView.addSubview(durationProgressView)
     }
     
     override func setupConstraints() {
-        contentView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            make.height.equalTo(NowPlayingView.height)
-            make.width.equalTo(UIScreen.main.bounds.width)
+        contentView.snp.makeConstraints({ $0.edges.equalToSuperview() })
+        
+        roundedContentView.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().inset(10)
+            make.leading.trailing.top.equalToSuperview().inset(UIEdgeInsets(horizontal: 10))
+            make.height.equalTo(52)
         }
         
         coverImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(6)
-            make.leading.equalToSuperview().offset(18)
-            make.bottom.equalToSuperview().inset(6)
-            make.height.width.equalTo(42)
-        }
-        
-        nextTrackButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(18)
-            make.top.equalToSuperview().offset(18)
-            make.bottom.equalToSuperview().inset(18)
-            make.width.equalTo(30)
-        }
-        
-        titleLabel.snp.makeConstraints({ $0.height.equalTo(titleLabel.textSize.height).priority(.required) })
-        titleMarqueeView.snp.makeConstraints({ $0.height.equalTo(titleLabel.textSize.height).priority(.required) })
-        
-        self.layoutIfNeeded()
-        
-        playPauseButton.snp.makeConstraints { make in
-            make.trailing.equalTo(nextTrackButton.snp.leading).offset(-18)
-            make.top.equalToSuperview().offset(18)
-            make.bottom.equalToSuperview().inset(18)
-            make.width.equalTo(16)
-            make.height.equalTo(nextTrackButton.imageView?.snp.height ?? nextTrackButton.snp.height)
-        }
-        
-        trackInfoStackView.snp.makeConstraints { make in
-            make.leading.equalTo(coverImageView.snp.trailing).offset(7)
-            make.trailing.equalTo(playPauseButton.snp.leading).offset(-7)
-            make.top.equalToSuperview().offset(10)
-            make.bottom.equalToSuperview().inset(10)
+            make.top.leading.bottom.equalToSuperview().inset(UIEdgeInsets(horizontal: 10, vertical: 6))
+            make.height.width.equalTo(40)
         }
         
         durationProgressView.snp.makeConstraints { make in
             make.height.equalTo(2)
             make.leading.trailing.bottom.equalToSuperview()
         }
+        
+        titleMarqueeView.snp.makeConstraints({ $0.height.equalTo(titleLabel.textSize.height).priority(.high) })
+        
+        explicitImageView.snp.makeConstraints({ $0.height.width.equalTo(explicitAndArtistStackView.snp.height) })
+        
+        explicitAndArtistStackView.snp.makeConstraints({ $0.height.equalTo(artistLabel.size().height) })
+        
+        trackInfoStackView.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview().inset(10)
+            make.leading.equalTo(coverImageView.snp.trailing).offset(10)
+            make.trailing.equalTo(playPauseButton.snp.leading).offset(-10)
+        }
+        
+        playPauseButton.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview().inset(6)
+            make.width.equalTo(40)
+            make.trailing.equalTo(nextTrackButton.snp.leading)
+        }
+        
+        nextTrackButton.snp.makeConstraints { make in
+            make.top.bottom.trailing.equalToSuperview().inset(UIEdgeInsets(horizontal: 18, vertical: 6))
+            make.width.equalTo(40)
+        }
     }
 }
 
 // MARK: -
 // MARK: Actions
-extension NowPlayingView {
-    @objc private func playPauseAction() {
-        if AudioPlayer.shared.track == nil {
-            let playlist = RealmManager<LibraryTrackModel>().read().map({ TrackModel($0) }).sorted
-            guard !playlist.isEmpty else { return }
-            
-            AudioPlayer.shared.play(from: playlist[0], playlist: playlist, position: 0, isNewPlaylist: true)
+private extension NowPlayingView {
+    @objc func playPauseAction(_ sender: PlayPauseButton) {
+        guard AudioPlayer.shared.track == nil else {
+            AudioPlayer.shared.playPause()
             return
         }
         
-        AudioPlayer.shared.playPause()
+        let playlist = RealmManager<LibraryTrackModel>().read().reversed().map({ TrackModel($0) })
+        guard !playlist.isEmpty else { return }
+        
+        AudioPlayer.shared.play(from: playlist[0], playlist: playlist, position: 0, isNewPlaylist: true)
     }
     
-    @objc private func nextTrackAction(_ sender: UIButton) {
+    @objc func nextTrackAction(_ sender: UIButton) {
         guard AudioPlayer.shared.track != nil else { return }
         
         AudioPlayer.shared.nextTrack()
     }
     
-    @objc private func presentNowPlayingVC() {
-        guard AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.nowPlayingVC?.prod ?? false else { return }
-        
+    @objc func presentNowPlayingController(_ sender: UITapGestureRecognizer) {
         MainCoordinator.shared.presentNowPlayingController()
     }
 }
@@ -211,17 +206,6 @@ extension NowPlayingView {
 // MARK: -
 // MARK: AudioPlayerViewDelegate
 extension NowPlayingView: AudioPlayerViewDelegate {
-    func setupTrackInfo(_ track: TrackModel) {
-        self.titleLabel.text = track.title
-        self.titleMarqueeView.reloadData()
-        self.artistLabel.text = track.artistText
-        self.explicitAndArtistStackView.isHidden = track.artistText.isEmpty
-    }
-    
-    func setupCover(_ cover: UIImage?) {
-        self.coverImageView.setImage(cover)
-    }
-    
     func updateDuration(_ duration: Float) {
         self.durationProgressView.progress = duration
     }
@@ -235,5 +219,18 @@ extension NowPlayingView: AudioPlayerViewDelegate {
         self.titleMarqueeView.reloadData()
         self.explicitAndArtistStackView.isHidden = true
         self.coverImageView.image = nil
+        self.explicitImageView.isHidden = true
+    }
+    
+    func setupCover(_ cover: UIImage?) {
+        self.coverImageView.image = cover
+    }
+    
+    func setupTrackInfo(_ track: TrackModel) {
+        self.titleLabel.text = track.title
+        self.titleMarqueeView.reloadData()
+        self.artistLabel.text = track.artistText
+        self.explicitAndArtistStackView.isHidden = track.artistText.isEmpty
+        self.explicitImageView.isHidden = !track.isExplicit
     }
 }
