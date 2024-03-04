@@ -13,6 +13,7 @@ protocol SearchPresenterDelegate: AnyObject {
     func reloadData(scrollToTop: Bool)
     func dismissKeyboard()
     func appendNewCells(indexPaths: [IndexPath])
+    func setQuery(_ query: String)
 }
 
 extension SearchPresenterDelegate {
@@ -30,7 +31,7 @@ final class SearchPresenter: NSObject, BasePresenter {
     private var currentTypes = [SearchType]()
     private var query = ""
     
-    private var currentService: ServiceType = .none
+    private(set) var currentService: ServiceType = .none
     private var currentSource: SourceType {
         return self.currentService.source
     }
@@ -44,6 +45,8 @@ final class SearchPresenter: NSObject, BasePresenter {
     private var isMovingFromNavigationController = false
     
     private var isQueryActive = false
+    
+    private var isSeachSuggestions = false
     
     weak var delegate: SearchPresenterDelegate?
     
@@ -75,13 +78,12 @@ final class SearchPresenter: NSObject, BasePresenter {
     }
     
     func textDidChange(_ text: String) {
+        if self.currentService == .yandexMusic {
+            self.isSeachSuggestions = true
+        }
+        
         if text.isEmpty {
-            self.searchResponse = nil
-            self.delegate?.reloadData()
-            MuffonProvider.shared.cancelTask()
-            SoundcloudProvider.shared.cancelTask()
-            YandexMusicProvider.shared.cancelTask()
-            MainCoordinator.shared.currentViewController?.dismissSpinner()
+            self.searchHistory()
             return
         }
         
@@ -113,6 +115,10 @@ final class SearchPresenter: NSObject, BasePresenter {
         self.currentService = services[index]
         self.setupSegmentedControls(index)
         self.textDidChange(self.query)
+        
+        if self.query.isEmpty {
+            self.searchHistory()
+        }
     }
     
     func typeDidChange(index: Int) {
@@ -132,7 +138,10 @@ final class SearchPresenter: NSObject, BasePresenter {
         }
         
         self.didChangePlaylistInPlayer = false
-        MainCoordinator.shared.currentViewController?.presentSpinner()
+        if !self.isSeachSuggestions {
+            MainCoordinator.shared.currentViewController?.presentSpinner()
+        }
+        
         switch self.currentService.source {
             case .muffon:
                 MuffonProvider.shared.search(query: query, in: self.currentService, type: self.currentType) { [weak self] response in
@@ -161,15 +170,46 @@ final class SearchPresenter: NSObject, BasePresenter {
                     self?.isQueryActive = false
                 }
             case .yandexMusic:
-                YandexMusicProvider.shared.search(query: query, searchType: self.currentType) { [weak self] response in
-                    MainCoordinator.shared.currentViewController?.dismissSpinner()
-                    self?.searchResponse = response
-                    self?.isQueryActive = false
-                    self?.delegate?.reloadData()
+                if self.isSeachSuggestions {
+                    YandexMusicProvider.shared.fetchSearchSuggestions(query: query) { [weak self] response in
+                        self?.searchResponse = response
+                        self?.isQueryActive = false
+                        self?.delegate?.reloadData(scrollToTop: true)
+                    }
+                } else {
+                    YandexMusicProvider.shared.search(query: query, searchType: self.currentType) { [weak self] response in
+                        MainCoordinator.shared.currentViewController?.dismissSpinner()
+                        self?.searchResponse = response
+                        self?.isQueryActive = false
+                        self?.delegate?.reloadData()
+                    }
                 }
             default:
                 self.isQueryActive = false
                 MainCoordinator.shared.currentViewController?.dismissSpinner()
+        }
+    }
+    
+    func searchHistory() {
+        self.searchResponse = nil
+        self.delegate?.reloadData()
+        MuffonProvider.shared.cancelTask()
+        SoundcloudProvider.shared.cancelTask()
+        YandexMusicProvider.shared.cancelTask()
+        MainCoordinator.shared.currentViewController?.dismissSpinner()
+        
+        self.isQueryActive = true
+        switch self.currentService {
+            case .yandexMusic:
+                self.isSeachSuggestions = false
+                YandexMusicProvider.shared.fetchSearchHistory(type: self.currentType) { [weak self] response in
+                    self?.searchResponse = response
+                    self?.isQueryActive = false
+                    self?.delegate?.reloadData(scrollToTop: true)
+                }
+            default:
+                self.isQueryActive = false
+                return
         }
     }
     
@@ -237,6 +277,19 @@ final class SearchPresenter: NSObject, BasePresenter {
     func trackIndex(for track: TrackModel) -> Int? {
         guard self.currentType == .tracks else { return nil }
         
+        if self.query.isEmpty,
+           self.currentService.isHistoryAvailable {
+            switch currentService {
+                case .yandexMusic:
+                    guard let yandexMusicTracks = self.searchResponse?.results(of: YandexMusicSearchHistory.self)?
+                        .compactMap({ $0.track }) else { return nil }
+                    
+                    return yandexMusicTracks.map({ TrackModel($0) }).firstIndex(where: { $0 == track })
+                default:
+                    return nil
+            }
+        }
+        
         switch self.currentService.source {
             case .muffon:
                 return self.searchResponse?.results(of: MuffonTrack.self)?.map({ TrackModel($0) }).firstIndex(where: { $0 == track })
@@ -265,11 +318,56 @@ final class SearchPresenter: NSObject, BasePresenter {
 // MARK: BaseTableViewPresenter
 extension SearchPresenter: BaseTableViewPresenter {
     func setupCell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
-        return self.setupCell(tableView.dequeueReusableCell(withIdentifier: self.currentType.id, for: indexPath), at: indexPath)
+        if self.query.isEmpty,
+           self.currentService.isHistoryAvailable {
+            switch self.currentService {
+                case .yandexMusic:
+                    guard let type = (self.searchResponse?.results[indexPath.item] as? YandexMusicSearchHistory)?
+                        .type else { return UITableViewCell() }
+                    
+                    return self.setupCell(tableView.dequeueReusableCell(withIdentifier: type.id, for: indexPath), at: indexPath)
+                default:
+                    return UITableViewCell()
+            }
+        }
+        
+        return self.setupCell(tableView.dequeueReusableCell(withIdentifier: self.isSeachSuggestions ? SearchSuggestionTableViewCell.id : self.currentType.id, for: indexPath), at: indexPath)
+    }
+    
+    func setupCellForHistory(_ cell: UITableViewCell, at indexPath: IndexPath) -> UITableViewCell {
+        switch self.currentService {
+            case .yandexMusic:
+                guard let historyItem = self.searchResponse?.results[indexPath.row] as? YandexMusicSearchHistory else { return UITableViewCell() }
+                
+                switch historyItem.type {
+                    case .tracks:
+                        guard let yandexMusicTrack = historyItem.track else { return UITableViewCell() }
+                        
+                        let track = TrackModel(yandexMusicTrack)
+                        (cell as? TrackTableViewCell)?.setupCell(track, state: AudioPlayer.shared.state(for: track), isSearchController: true)
+                    default:
+                        return UITableViewCell()
+                }
+                
+                return cell
+            default:
+                return UITableViewCell()
+        }
     }
     
     func setupCell(_ cell: UITableViewCell, at indexPath: IndexPath) -> UITableViewCell {
         guard self.currentType != .none else { return UITableViewCell() }
+        
+        if self.isSeachSuggestions {
+            guard let suggestion = self.searchResponse?.results[indexPath.item] as? String else { return UITableViewCell() }
+            
+            (cell as? SearchSuggestionTableViewCell)?.setText(suggestion)
+            return cell
+        }
+        
+        if self.query.isEmpty {
+            return self.setupCellForHistory(cell, at: indexPath)
+        }
         
         switch self.currentType {
             case .tracks:
@@ -316,8 +414,57 @@ extension SearchPresenter: BaseTableViewPresenter {
         return cell
     }
     
+    func didSelectRowHistory(at indexPath: IndexPath) {
+        switch self.currentService {
+            case .yandexMusic:
+                guard let historyItem = self.searchResponse?.results[indexPath.row] as? YandexMusicSearchHistory else { return }
+                
+                switch historyItem.type {
+                    case .tracks:
+                        guard let playlistRaw = (self.searchResponse?.results as? [YandexMusicSearchHistory])?
+                            .filter({ $0.type == .tracks }).map({ $0.track }),
+                              let playlist = AudioManager.shared.convertPlaylist(playlistRaw, source: self.currentSource),
+                              playlist.count == (self.searchResponse?.results.count ?? 0)
+                        else { return }
+                        
+                        let track = playlist[indexPath.item]
+                        if track.needFetchingPlayableLinks {
+                            AudioManager.shared.getPlayableLink(for: track) { [weak self] updatedTrack in
+                                self?.play(
+                                    from: updatedTrack.track,
+                                    in: playlist,
+                                    at: indexPath.row,
+                                    isNewPlaylist: !(self?.didChangePlaylistInPlayer ?? false)
+                                )
+                            }
+                        } else {
+                            self.play(from: track, in: playlist, at: indexPath.item, isNewPlaylist: !self.didChangePlaylistInPlayer)
+                        }
+                    default:
+                        break
+                }
+            default:
+                break
+        }
+    }
+    
     func didSelectRow(at indexPath: IndexPath) {
         self.delegate?.dismissKeyboard()
+        if self.currentService == .yandexMusic,
+           self.isSeachSuggestions {
+            self.isSeachSuggestions = false
+            if let suggestion = self.searchResponse?.results[indexPath.row] as? String {
+                self.delegate?.setQuery(suggestion)
+            }
+            
+            self.search()
+        }
+        
+        if self.query.isEmpty,
+           self.currentService.isHistoryAvailable {
+            self.didSelectRowHistory(at: indexPath)
+        }
+        
         switch self.currentType {
             case .tracks:
                 guard let playlist = AudioManager.shared.convertPlaylist(self.searchResponse?.results ?? [], source: self.currentSource),

@@ -13,8 +13,10 @@ typealias YandexPlusInfo           = ResponseYandexPlusInfoModel
 
 typealias YandexMusicBaseResult = ResponseYandexMusicBaseResultModel
 
-typealias YandexMusicSearch = ResponseYandexMusicSearchModel
-typealias YandexMusicTracks = ResponseYandexMusicTracksModel
+typealias YandexMusicSearch        = ResponseYandexMusicSearchModel
+typealias YandexMusicTracks        = ResponseYandexMusicTracksModel
+typealias YandexMusicSuggestions   = ResponseYandexMusicSuggestionsModel
+typealias YandexMusicSearchHistory = ResponseYandexMusicSearchHistoryModel
 
 typealias YandexMusicTrack            = ResponseYandexMusicTrackModel
 typealias YandexMusicArtist           = ResponseYandexMusicArtistModel

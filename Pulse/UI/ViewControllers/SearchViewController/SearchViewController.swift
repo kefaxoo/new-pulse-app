@@ -30,6 +30,12 @@ final class SearchViewController: BaseUIViewController {
         
         segmentedControl.valueChange = { [weak self] index in
             self?.presenter.serviceDidChange(index: index)
+            if self?.searchController.searchBar.text?.isEmpty ?? true,
+               !(self?.presenter.currentService.isHistoryAvailable ?? true) {
+                self?.emptySearchQuerySearchContentView.show()
+            } else {
+                self?.emptySearchQuerySearchContentView.hide()
+            }
         }
         
         return segmentedControl
@@ -44,7 +50,7 @@ final class SearchViewController: BaseUIViewController {
     private lazy var resultsTableView: BaseUITableView = {
         let tableView = BaseUITableView()
         tableView.dataSource = self
-        tableView.register(TrackTableViewCell.self, PlaylistTableViewCell.self)
+        tableView.register(TrackTableViewCell.self, PlaylistTableViewCell.self, SearchSuggestionTableViewCell.self)
         tableView.delegate = self
         tableView.footerHeight = NowPlayingView.height
         return tableView
@@ -171,6 +177,7 @@ extension SearchViewController: SearchPresenterDelegate {
     }
     
     func reloadData(scrollToTop: Bool) {
+        self.resultsTableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         self.resultsTableView.reloadData()
         guard scrollToTop else { return }
         
@@ -186,13 +193,18 @@ extension SearchViewController: SearchPresenterDelegate {
         self.resultsTableView.insertRows(at: indexPaths, with: .automatic)
         self.resultsTableView.endUpdates()
     }
+    
+    func setQuery(_ query: String) {
+        self.searchController.searchBar.text = query
+    }
 }
 
 // MARK: -
 // MARK: UISearchBarDelegate
 extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty {
+        if searchText.isEmpty,
+           !self.presenter.currentService.isHistoryAvailable {
             self.emptySearchQuerySearchContentView.show()
         } else {
             self.emptySearchQuerySearchContentView.hide()

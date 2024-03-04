@@ -102,4 +102,13 @@ enum SearchType {
                 return ""
         }
     }
+    
+    static func yandexMusicInit(rawValue: String) -> SearchType {
+        switch rawValue {
+            case "track":
+                return .tracks
+            default:
+                return .none
+        }
+    }
 }
