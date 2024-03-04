@@ -12,12 +12,14 @@ class ResponsePulseBaseModel: Decodable {
     let localizationKey      : String
     let localizationParameter: String?
     let message              : String?
+    let localizedMessage     : String?
     
-    enum CodingKeys: CodingKey {
+    enum CodingKeys: String, CodingKey {
         case image
         case localizationKey
         case localizationParameter
         case message
+        case localizedMessage = "localizable"
     }
     
     required init(from decoder: Decoder) throws {
@@ -27,5 +29,6 @@ class ResponsePulseBaseModel: Decodable {
         self.localizationKey = try container.decode(String.self, forKey: .localizationKey)
         self.localizationParameter = try container.decodeIfPresent(String.self, forKey: .localizationParameter)
         self.message = try container.decodeIfPresent(String.self, forKey: .message)
+        self.localizedMessage = try container.decodeIfPresent(String.self, forKey: .localizedMessage)
     }
 }
