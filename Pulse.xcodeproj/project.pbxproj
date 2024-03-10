@@ -281,12 +281,26 @@
 		70F9F8642B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F8632B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift */; };
 		70F9F8692B48DB94006CD1AA /* StoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F8682B48DB94006CD1AA /* StoryCollectionViewCell.swift */; };
 		70F9F86B2B48DE68006CD1AA /* StoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */; };
-		83B7210A2B826B6300BF56D1 /* SplashScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B721092B826B6300BF56D1 /* SplashScreenViewController.swift */; };
-		83B7210C2B826B9F00BF56D1 /* LogoColumnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B7210B2B826B9F00BF56D1 /* LogoColumnView.swift */; };
 		83319C912B8A840000CA930E /* ResponseYandexMusicSuggestionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83319C902B8A840000CA930E /* ResponseYandexMusicSuggestionsModel.swift */; };
 		83319C932B8A847700CA930E /* SearchSuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83319C922B8A847700CA930E /* SearchSuggestionTableViewCell.swift */; };
 		83319C952B8A8C3700CA930E /* ResponseYandexMusicSearchHistoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83319C942B8A8C3700CA930E /* ResponseYandexMusicSearchHistoryModel.swift */; };
 		8362BD462B939BCC00BCA128 /* LogoutPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8362BD452B939BCC00BCA128 /* LogoutPopUpViewController.swift */; };
+		838993BB2B9B99A100A639D4 /* PulseCore in Resources */ = {isa = PBXBuildFile; fileRef = 838993BA2B9B99A100A639D4 /* PulseCore */; };
+		838993BC2B9B99A100A639D4 /* PulseCore in Resources */ = {isa = PBXBuildFile; fileRef = 838993BA2B9B99A100A639D4 /* PulseCore */; };
+		838993BE2B9B9C8F00A639D4 /* PulseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 838993BD2B9B9C8F00A639D4 /* PulseCore */; };
+		838993C02B9B9DB700A639D4 /* PulseUICore in Resources */ = {isa = PBXBuildFile; fileRef = 838993BF2B9B9DB600A639D4 /* PulseUICore */; };
+		838993C12B9B9DB700A639D4 /* PulseUICore in Resources */ = {isa = PBXBuildFile; fileRef = 838993BF2B9B9DB600A639D4 /* PulseUICore */; };
+		838993C62B9BA23900A639D4 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838993C52B9BA23900A639D4 /* AppCoordinator.swift */; };
+		838993C82B9BA33800A639D4 /* PulseUICore in Frameworks */ = {isa = PBXBuildFile; productRef = 838993C72B9BA33800A639D4 /* PulseUICore */; };
+		83B5A6382B9B4F5C00183E56 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B5A6372B9B4F5C00183E56 /* AppDelegate.swift */; };
+		83B5A63D2B9B4F5C00183E56 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83B5A63B2B9B4F5C00183E56 /* Main.storyboard */; };
+		83B5A63F2B9B4F5D00183E56 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83B5A63E2B9B4F5D00183E56 /* Assets.xcassets */; };
+		83B5A6422B9B4F5D00183E56 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83B5A6402B9B4F5D00183E56 /* LaunchScreen.storyboard */; };
+		83B5A64F2B9B98A900183E56 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 83B5A64E2B9B98A900183E56 /* GoogleService-Info.plist */; };
+		83B5A6512B9B98DB00183E56 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 83B5A6502B9B98DB00183E56 /* FirebaseCrashlytics */; };
+		83B5A6532B9B98DB00183E56 /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 83B5A6522B9B98DB00183E56 /* FirebasePerformance */; };
+		83B7210A2B826B6300BF56D1 /* SplashScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B721092B826B6300BF56D1 /* SplashScreenViewController.swift */; };
+		83B7210C2B826B9F00BF56D1 /* LogoColumnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B7210B2B826B9F00BF56D1 /* LogoColumnView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -558,12 +572,21 @@
 		70F9F8632B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseExclusiveTrackInfoModel.swift; sourceTree = "<group>"; };
 		70F9F8682B48DB94006CD1AA /* StoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesTableViewCell.swift; sourceTree = "<group>"; };
-		83B721092B826B6300BF56D1 /* SplashScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenViewController.swift; sourceTree = "<group>"; };
-		83B7210B2B826B9F00BF56D1 /* LogoColumnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoColumnView.swift; sourceTree = "<group>"; };
 		83319C902B8A840000CA930E /* ResponseYandexMusicSuggestionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicSuggestionsModel.swift; sourceTree = "<group>"; };
 		83319C922B8A847700CA930E /* SearchSuggestionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionTableViewCell.swift; sourceTree = "<group>"; };
 		83319C942B8A8C3700CA930E /* ResponseYandexMusicSearchHistoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicSearchHistoryModel.swift; sourceTree = "<group>"; };
 		8362BD452B939BCC00BCA128 /* LogoutPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutPopUpViewController.swift; sourceTree = "<group>"; };
+		838993BA2B9B99A100A639D4 /* PulseCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PulseCore; sourceTree = "<group>"; };
+		838993BF2B9B9DB600A639D4 /* PulseUICore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PulseUICore; sourceTree = "<group>"; };
+		838993C52B9BA23900A639D4 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		83B5A6352B9B4F5C00183E56 /* Pulse-ATV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pulse-ATV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		83B5A6372B9B4F5C00183E56 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		83B5A63C2B9B4F5C00183E56 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		83B5A63E2B9B4F5D00183E56 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		83B5A6412B9B4F5D00183E56 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		83B5A64E2B9B98A900183E56 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		83B721092B826B6300BF56D1 /* SplashScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenViewController.swift; sourceTree = "<group>"; };
+		83B7210B2B826B9F00BF56D1 /* LogoColumnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoColumnView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -586,6 +609,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		83B5A6322B9B4F5C00183E56 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				838993BE2B9B9C8F00A639D4 /* PulseCore in Frameworks */,
+				83B5A6532B9B98DB00183E56 /* FirebasePerformance in Frameworks */,
+				83B5A6512B9B98DB00183E56 /* FirebaseCrashlytics in Frameworks */,
+				838993C82B9BA33800A639D4 /* PulseUICore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -593,6 +627,7 @@
 			isa = PBXGroup;
 			children = (
 				70017DF72AEEDABA001E1C02 /* Pulse */,
+				83B5A6362B9B4F5C00183E56 /* Pulse-ATV */,
 				70017DF62AEEDABA001E1C02 /* Products */,
 				70017FA92AEEDB71001E1C02 /* Frameworks */,
 			);
@@ -602,6 +637,7 @@
 			isa = PBXGroup;
 			children = (
 				70017DF52AEEDABA001E1C02 /* Pulse.app */,
+				83B5A6352B9B4F5C00183E56 /* Pulse-ATV.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1196,6 +1232,8 @@
 		70017EED2AEEDB34001E1C02 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
+				838993BF2B9B9DB600A639D4 /* PulseUICore */,
+				838993BA2B9B99A100A639D4 /* PulseCore */,
 				708290CF2B432634007E1DB4 /* PulseMedia */,
 				70017EEE2AEEDB34001E1C02 /* PulseUIComponents */,
 			);
@@ -1442,20 +1480,41 @@
 			path = CollectionViewCells;
 			sourceTree = "<group>";
 		};
-		83B721082B826B5700BF56D1 /* SplashScreenViewController */ = {
-			isa = PBXGroup;
-			children = (
-				83B721092B826B6300BF56D1 /* SplashScreenViewController.swift */,
-			);
-			path = SplashScreenViewController;
-			sourceTree = "<group>";
-		};
 		8362BD442B939BB800BCA128 /* LogoutPopUpViewController */ = {
 			isa = PBXGroup;
 			children = (
 				8362BD452B939BCC00BCA128 /* LogoutPopUpViewController.swift */,
 			);
 			path = LogoutPopUpViewController;
+			sourceTree = "<group>";
+		};
+		838993C42B9BA22D00A639D4 /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				838993C52B9BA23900A639D4 /* AppCoordinator.swift */,
+			);
+			path = Coordinators;
+			sourceTree = "<group>";
+		};
+		83B5A6362B9B4F5C00183E56 /* Pulse-ATV */ = {
+			isa = PBXGroup;
+			children = (
+				838993C42B9BA22D00A639D4 /* Coordinators */,
+				83B5A6372B9B4F5C00183E56 /* AppDelegate.swift */,
+				83B5A63B2B9B4F5C00183E56 /* Main.storyboard */,
+				83B5A63E2B9B4F5D00183E56 /* Assets.xcassets */,
+				83B5A6402B9B4F5D00183E56 /* LaunchScreen.storyboard */,
+				83B5A64E2B9B98A900183E56 /* GoogleService-Info.plist */,
+			);
+			path = "Pulse-ATV";
+			sourceTree = "<group>";
+		};
+		83B721082B826B5700BF56D1 /* SplashScreenViewController */ = {
+			isa = PBXGroup;
+			children = (
+				83B721092B826B6300BF56D1 /* SplashScreenViewController.swift */,
+			);
+			path = SplashScreenViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1493,6 +1552,29 @@
 			productReference = 70017DF52AEEDABA001E1C02 /* Pulse.app */;
 			productType = "com.apple.product-type.application";
 		};
+		83B5A6342B9B4F5C00183E56 /* Pulse-ATV */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 83B5A6492B9B4F5D00183E56 /* Build configuration list for PBXNativeTarget "Pulse-ATV" */;
+			buildPhases = (
+				83B5A6312B9B4F5C00183E56 /* Sources */,
+				83B5A6322B9B4F5C00183E56 /* Frameworks */,
+				83B5A6332B9B4F5C00183E56 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pulse-ATV";
+			packageProductDependencies = (
+				83B5A6502B9B98DB00183E56 /* FirebaseCrashlytics */,
+				83B5A6522B9B98DB00183E56 /* FirebasePerformance */,
+				838993BD2B9B9C8F00A639D4 /* PulseCore */,
+				838993C72B9BA33800A639D4 /* PulseUICore */,
+			);
+			productName = "Pulse-ATV";
+			productReference = 83B5A6352B9B4F5C00183E56 /* Pulse-ATV.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1500,11 +1582,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1420;
+				LastSwiftUpdateCheck = 1520;
 				LastUpgradeCheck = 1420;
 				TargetAttributes = {
 					70017DF42AEEDABA001E1C02 = {
 						CreatedOnToolsVersion = 14.2;
+					};
+					83B5A6342B9B4F5C00183E56 = {
+						CreatedOnToolsVersion = 15.2;
 					};
 				};
 			};
@@ -1533,6 +1618,7 @@
 			projectRoot = "";
 			targets = (
 				70017DF42AEEDABA001E1C02 /* Pulse */,
+				83B5A6342B9B4F5C00183E56 /* Pulse-ATV */,
 			);
 		};
 /* End PBXProject section */
@@ -1545,10 +1631,25 @@
 				7072CC172AF8FA7D00E51E0A /* Localizable.strings in Resources */,
 				708290D02B432634007E1DB4 /* PulseMedia in Resources */,
 				70017E052AEEDABB001E1C02 /* LaunchScreen.storyboard in Resources */,
+				838993BB2B9B99A100A639D4 /* PulseCore in Resources */,
 				70017E022AEEDABB001E1C02 /* Assets.xcassets in Resources */,
 				70017FA32AEEDB34001E1C02 /* PulseUIComponents in Resources */,
+				838993C02B9B9DB700A639D4 /* PulseUICore in Resources */,
 				70017E002AEEDABA001E1C02 /* Main.storyboard in Resources */,
 				70AC22832B63DC6600EB638E /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		83B5A6332B9B4F5C00183E56 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				83B5A6422B9B4F5D00183E56 /* LaunchScreen.storyboard in Resources */,
+				83B5A63F2B9B4F5D00183E56 /* Assets.xcassets in Resources */,
+				83B5A64F2B9B98A900183E56 /* GoogleService-Info.plist in Resources */,
+				838993C12B9B9DB700A639D4 /* PulseUICore in Resources */,
+				83B5A63D2B9B4F5C00183E56 /* Main.storyboard in Resources */,
+				838993BC2B9B99A100A639D4 /* PulseCore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1844,6 +1945,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		83B5A6312B9B4F5C00183E56 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				838993C62B9BA23900A639D4 /* AppCoordinator.swift in Sources */,
+				83B5A6382B9B4F5C00183E56 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
@@ -1872,6 +1982,22 @@
 				7072CC1E2AF8FE7E00E51E0A /* ru */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		83B5A63B2B9B4F5C00183E56 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				83B5A63C2B9B4F5C00183E56 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		83B5A6402B9B4F5D00183E56 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				83B5A6412B9B4F5D00183E56 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1935,6 +2061,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TVOS_DEPLOYMENT_TARGET = 15.0;
 			};
 			name = Debug;
 		};
@@ -1989,6 +2116,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TVOS_DEPLOYMENT_TARGET = 15.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -2123,6 +2251,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG LOCAL";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TVOS_DEPLOYMENT_TARGET = 15.0;
 			};
 			name = LocalServerDebug;
 		};
@@ -2220,6 +2349,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG TEST";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TVOS_DEPLOYMENT_TARGET = 15.0;
 			};
 			name = TestServerDebug;
 		};
@@ -2317,6 +2447,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG RELEASE RELEASE_D";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TVOS_DEPLOYMENT_TARGET = 15.0;
 			};
 			name = ReleaseServerDebug;
 		};
@@ -2408,6 +2539,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "RELEASE_P PROD RELEASE";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TVOS_DEPLOYMENT_TARGET = 15.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = ReleaseServerProd;
@@ -2448,6 +2580,205 @@
 			};
 			name = ReleaseServerProd;
 		};
+		83B5A6432B9B4F5D00183E56 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 52;
+				DEVELOPMENT_TEAM = 3SYA5J8W7U;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Pulse;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 0.3.1;
+				PRODUCT_BUNDLE_IDENTIFIER = by.kefaxoo.PulseATV;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 15.0;
+			};
+			name = Debug;
+		};
+		83B5A6442B9B4F5D00183E56 /* ReleaseServerDebug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 52;
+				DEVELOPMENT_TEAM = 3SYA5J8W7U;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Pulse;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 0.3.1;
+				PRODUCT_BUNDLE_IDENTIFIER = by.kefaxoo.PulseATV;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 15.0;
+			};
+			name = ReleaseServerDebug;
+		};
+		83B5A6452B9B4F5D00183E56 /* TestServerDebug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 52;
+				DEVELOPMENT_TEAM = 3SYA5J8W7U;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Pulse;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 0.3.1;
+				PRODUCT_BUNDLE_IDENTIFIER = by.kefaxoo.PulseATV;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 15.0;
+			};
+			name = TestServerDebug;
+		};
+		83B5A6462B9B4F5D00183E56 /* LocalServerDebug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 52;
+				DEVELOPMENT_TEAM = 3SYA5J8W7U;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Pulse;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 0.3.1;
+				PRODUCT_BUNDLE_IDENTIFIER = by.kefaxoo.PulseATV;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 15.0;
+			};
+			name = LocalServerDebug;
+		};
+		83B5A6472B9B4F5D00183E56 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 52;
+				DEVELOPMENT_TEAM = 3SYA5J8W7U;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Pulse;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 0.3.1;
+				PRODUCT_BUNDLE_IDENTIFIER = by.kefaxoo.PulseATV;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 15.0;
+			};
+			name = Release;
+		};
+		83B5A6482B9B4F5D00183E56 /* ReleaseServerProd */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 52;
+				DEVELOPMENT_TEAM = 3SYA5J8W7U;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Pulse;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 0.3.1;
+				PRODUCT_BUNDLE_IDENTIFIER = by.kefaxoo.PulseATV;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 15.0;
+			};
+			name = ReleaseServerProd;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2473,6 +2804,19 @@
 				70030C062AEEEC5200C3A69A /* LocalServerDebug */,
 				70017E0B2AEEDABB001E1C02 /* Release */,
 				70030C0C2AEEEC7400C3A69A /* ReleaseServerProd */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		83B5A6492B9B4F5D00183E56 /* Build configuration list for PBXNativeTarget "Pulse-ATV" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83B5A6432B9B4F5D00183E56 /* Debug */,
+				83B5A6442B9B4F5D00183E56 /* ReleaseServerDebug */,
+				83B5A6452B9B4F5D00183E56 /* TestServerDebug */,
+				83B5A6462B9B4F5D00183E56 /* LocalServerDebug */,
+				83B5A6472B9B4F5D00183E56 /* Release */,
+				83B5A6482B9B4F5D00183E56 /* ReleaseServerProd */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2600,6 +2944,24 @@
 			productName = FirebaseCrashlytics;
 		};
 		70AC22AD2B63DF3B00EB638E /* FirebasePerformance */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 70AC22842B63DF3B00EB638E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebasePerformance;
+		};
+		838993BD2B9B9C8F00A639D4 /* PulseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PulseCore;
+		};
+		838993C72B9BA33800A639D4 /* PulseUICore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PulseUICore;
+		};
+		83B5A6502B9B98DB00183E56 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 70AC22842B63DF3B00EB638E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		83B5A6522B9B98DB00183E56 /* FirebasePerformance */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 70AC22842B63DF3B00EB638E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebasePerformance;

@@ -1,55 +1,14 @@
 //
 //  LogoColumnView.swift
-//  Pulse
+//  
 //
-//  Created by Bahdan Piatrouski on 18.02.24.
+//  Created by Bahdan Piatrouski on 8.03.24.
 //
 
 import UIKit
-import PulseUIComponents
+import SnapKit
 
-final class LogoRowView: UIView {
-    fileprivate enum Row: CaseIterable {
-        case first
-        case second
-        case third
-        case fourth
-        case fifth
-        case sixth
-        case seventh
-        
-        var color: UIColor? {
-            return switch self {
-                case .first:
-                    UIColor(hex: "#FF4770")
-                case .second:
-                    UIColor(hex: "#FF6AAD")
-                case .third:
-                    UIColor(hex: "#FBD177")
-                case .fourth:
-                    UIColor(hex: "#FBCC68")
-                case .fifth:
-                    UIColor(hex: "#ACDE8E")
-                case .sixth:
-                    UIColor(hex: "#7FCC56")
-                case .seventh:
-                    UIColor(hex: "#5ABD26")
-            }
-        }
-    }
-    
-    fileprivate init(numberOfRow: Row) {
-        super.init(frame: .zero)
-        self.backgroundColor = numberOfRow.color
-        self.layer.cornerRadius = 5
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-final class LogoColumnView: UIView {
+open class LogoColumnView: UIView {
     enum Column: CaseIterable {
         case first
         case second
@@ -105,11 +64,19 @@ final class LogoColumnView: UIView {
         self.setupInterface()
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupInterface() {
+    deinit {
+        self.stopAnimation()
+    }
+}
+
+// MARK: -
+// MARK: Setup interface methods
+private extension LogoColumnView {
+    func setupInterface() {
         self.rows.enumerated().forEach { [weak self] index, rowView in
             guard let self else { return }
             
@@ -127,14 +94,18 @@ final class LogoColumnView: UIView {
             }
         }
     }
-    
-    func animate() {
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { [weak self] _ in
+}
+
+// MARK: -
+// MARK: Animation methods
+extension LogoColumnView {
+    public func animate() {
+        self.timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { [weak self] _ in
             self?.hideViews()
         })
     }
     
-    @objc func hideViews() {
+    private func hideViews() {
         var indexes = Array(0..<self.rows.count)
         if self.animationDirection == .up {
             indexes = indexes.map({ self.rows.count - 1 - $0 })
@@ -166,7 +137,7 @@ final class LogoColumnView: UIView {
         }
     }
     
-    func stopAnimation() {
+    public func stopAnimation() {
         self.timer?.invalidate()
         self.timer = nil
     }
