@@ -11,7 +11,8 @@ final class ResponsePulseExclusiveTrackModel: Decodable {
     enum Labels: String {
         case lossless
         case dolbyAtmos
-        case none
+        case hiResLossless
+        case none = ""
         
         var trackLabel: TrackModel.Labels {
             switch self {
@@ -19,27 +20,30 @@ final class ResponsePulseExclusiveTrackModel: Decodable {
                     return .lossless
                 case .dolbyAtmos:
                     return .dolbyAtmos
+                case .hiResLossless:
+                    return .hiResLossless
                 case .none:
                     return .none
             }
         }
     }
     
-    let id            : Int
-    let title         : String
-    let artists       : [ResponsePulseExclusiveArtistModel]?
-    let album         : ResponsePulseExclusiveAlbumModel?
-    let releaseDate   : String?
-    let trackNumber   : Int
-    let diskNumber    : Int
-    let isExplicit    : Bool
-    let subtitle      : String?
-    let playableLink  : String
-    let yandexMusicId : Int?
-    let spotifyId     : String?
-    let canvasLink    : String?
-    let trackExtension: String
-    let labels        : [Labels]
+    let id             : Int
+    let title          : String
+    let artists        : [ResponsePulseExclusiveArtistModel]?
+    let album          : ResponsePulseExclusiveAlbumModel?
+    let releaseDate    : String?
+    let trackNumber    : Int
+    let diskNumber     : Int
+    let isExplicit     : Bool
+    let subtitle       : String?
+    let playableLink   : String
+    let yandexMusicId  : Int?
+    let spotifyId      : String?
+    let canvasLink     : String?
+    let trackExtension : String
+    let labels         : [Labels]
+    let nowPlayingLabel: Labels?
     
     enum CodingKeys: CodingKey {
         case id
@@ -57,6 +61,7 @@ final class ResponsePulseExclusiveTrackModel: Decodable {
         case canvasLink
         case trackExtension
         case labels
+        case nowPlayingLabel
     }
     
     init(from decoder: Decoder) throws {
@@ -80,6 +85,12 @@ final class ResponsePulseExclusiveTrackModel: Decodable {
             self.labels = labelsRaw.map({ Labels(rawValue: $0) ?? .none }).filter({ $0 != .none })
         } else {
             self.labels = []
+        }
+        
+        if let nowPlayingLabelRaw = try? container.decode(String.self, forKey: .nowPlayingLabel) {
+            self.nowPlayingLabel = Labels(rawValue: nowPlayingLabelRaw)
+        } else {
+            self.nowPlayingLabel = nil
         }
     }
 }

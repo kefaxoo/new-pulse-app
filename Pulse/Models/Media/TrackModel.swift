@@ -32,14 +32,28 @@ final class TrackModel {
     enum Labels: String {
         case dolbyAtmos
         case lossless
+        case hiResLossless
         case none = ""
         
         var image: UIImage? {
             switch self {
                 case .dolbyAtmos:
                     return Constants.Images.dolbyAtmosLogo.image
-                case .lossless:
+                case .lossless, .hiResLossless:
                     return Constants.Images.losslessLogo.image
+                case .none:
+                    return nil
+            }
+        }
+        
+        var text: String? {
+            switch self {
+                case .dolbyAtmos:
+                    return "Dolby Atmos"
+                case .lossless:
+                    return "Lossless"
+                case .hiResLossless:
+                    return "Hi-Res Lossless"
                 case .none:
                     return nil
             }
@@ -67,6 +81,7 @@ final class TrackModel {
     var spotifyId      : String?
     var canvasLink     : String?
     var labels         = [Labels]()
+    var nowPlayingLabel: Labels?
     var isExplicit     = false
     var libraryTrackFilename: String {
         return "Tracks/\(self.trackFilename)"
@@ -218,6 +233,7 @@ final class TrackModel {
         self.spotifyId = track.spotifyId
         self.canvasLink = track.canvasLink
         self.labels = track.labels.map({ $0.trackLabel })
+        self.nowPlayingLabel = track.nowPlayingLabel?.trackLabel
         self.isExplicit = track.isExplicit
         if let spotifyId = track.spotifyId {
             self.shareLink = "https://song.link/s/\(spotifyId)"

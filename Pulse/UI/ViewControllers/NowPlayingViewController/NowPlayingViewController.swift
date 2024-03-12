@@ -131,6 +131,13 @@ final class NowPlayingViewController: BaseUIViewController {
         return label
     }()
     
+    private lazy var trackLabel: NowPlayingLabelView = {
+        let label = NowPlayingLabelView()
+        label.isHidden = true
+        label.alpha = 0
+        return label
+    }()
+    
     private lazy var leftTimeLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 13)
@@ -315,6 +322,7 @@ extension NowPlayingViewController {
         guard AudioPlayer.shared.isTrackLoaded else { return }
         
         shouldFetchCanvas()
+        self.trackLabel.updateLabel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -346,6 +354,7 @@ extension NowPlayingViewController {
         self.view.addSubview(artistInfoView)
         self.view.addSubview(dismissButton)
         self.view.addSubview(contentVerticalStackView)
+        self.view.addSubview(trackLabel)
     }
     
     override func setupConstraints() {
@@ -395,6 +404,11 @@ extension NowPlayingViewController {
         })
         
         durationStackView.snp.makeConstraints({ $0.height.equalTo(currentTimeLabel.textSize.height) })
+        
+        trackLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(durationStackView.snp.centerY)
+            make.centerX.equalToSuperview()
+        }
         
         volumeStackView.snp.makeConstraints({ $0.height.equalTo(20) })
         
@@ -513,6 +527,7 @@ extension NowPlayingViewController {
         self.contentVerticalStackView.smoothIsHiddenAfterAlpha.toggle()
         self.canvasSubstrateView.smoothIsHidden.toggle()
         self.artistInfoView.smoothIsHidden.toggle()
+        self.trackLabel.smoothIsHiddenAfterAlpha.toggle()
     }
     
     func trackDidChanged() {
@@ -547,6 +562,7 @@ extension NowPlayingViewController: AudioPlayerControllerDelegate {
         self.artistButton.setTitle(track.artistText, for: .normal)
         self.titleMarqueeView.reloadData()
         self.artistMarqueeView.reloadData()
+        self.trackLabel.smoothIsHiddenAfterAlpha = true
     }
     
     func updateDuration(_ duration: Float, currentTime: Float) {
@@ -577,6 +593,7 @@ extension NowPlayingViewController: AudioPlayerControllerDelegate {
         self.durationSlider.isUserInteractionEnabled = true
         self.changeCoverSize(isSmall: !AudioPlayer.shared.isPlaying)
         shouldFetchCanvas()
+        self.trackLabel.updateLabel()
     }
 }
 
