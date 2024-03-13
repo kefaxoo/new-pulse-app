@@ -57,6 +57,7 @@ enum Constants {
         case spotifyLogo
         case youtubeLogo
         case youtubeMusicLogo
+        case addToLibraryNowPlaying
         
         var image: UIImage? {
             let type: System
@@ -103,7 +104,7 @@ enum Constants {
                     type = .gear
                 case .search:
                     type = .magnifyingGlass
-                case .libraryNonSelected:
+                case .libraryNonSelected, .addToLibraryNowPlaying:
                     type = .heart
                 case .tracks:
                     type = .musicNote

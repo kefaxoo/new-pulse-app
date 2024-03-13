@@ -275,6 +275,11 @@ final class LibraryManager {
         DispatchQueue.main.async {
             let libraryTrack = LibraryTrackModel(track)
             RealmManager<LibraryTrackModel>().write(object: libraryTrack)
+            NotificationCenter.default.post(name: .updateLibraryState, object: nil, userInfo: [
+                "track": track,
+                "state": TrackLibraryState.added
+            ])
+            
             if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newLibrary?.prod ?? false {
                 PulseProvider.shared.likeTrack(track)
             } else {
@@ -328,6 +333,11 @@ final class LibraryManager {
             }
             
             RealmManager<LibraryTrackModel>().delete(object: libraryTrack)
+            NotificationCenter.default.post(name: .updateLibraryState, object: nil, userInfo: [
+                "track": track,
+                "state": TrackLibraryState.none
+            ])
+            
             if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newLibrary?.prod ?? false {
                 PulseProvider.shared.dislikeTrack(track)
             } else {
