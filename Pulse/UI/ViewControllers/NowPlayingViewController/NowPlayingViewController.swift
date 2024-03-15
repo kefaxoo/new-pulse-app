@@ -90,6 +90,31 @@ final class NowPlayingViewController: BaseUIViewController {
         return self.artistButton.wrapIntoMarquee()
     }()
     
+    private lazy var likeButton: LikeButton = {
+        let isLiked: Bool
+        if let track = AudioPlayer.shared.track {
+            isLiked = LibraryManager.shared.isTrackInLibrary(track)
+        } else {
+            isLiked = false
+        }
+        
+        let button = LikeButton(isLiked: isLiked) { [weak self] isLiked in
+            guard let track = AudioPlayer.shared.track else { return }
+            
+            if isLiked {
+                LibraryManager.shared.likeTrack(track)
+            } else {
+                LibraryManager.shared.dislikeTrack(track)
+            }
+        }
+        
+        var configuration = UIButton.Configuration.plain()
+        configuration.preferredSymbolConfigurationForImage = .init(font: .systemFont(ofSize: 17), scale: .large)
+        button.configuration = configuration
+        button.tintColor = SettingsManager.shared.color.color
+        return button
+    }()
+    
     private lazy var actionsButton: UIButton = {
         let button = UIButton()
         button.setImage(Constants.Images.actionsNowPlaying.image, for: .normal)
@@ -110,6 +135,7 @@ final class NowPlayingViewController: BaseUIViewController {
         let view = UIView(with: .clear)
         view.addSubview(titleMarqueeView)
         view.addSubview(artistMarqueeView)
+        view.addSubview(likeButton)
         view.addSubview(actionsButton)
         return view
     }()
@@ -383,15 +409,21 @@ extension NowPlayingViewController {
         
         titleMarqueeView.snp.makeConstraints { make in
             make.top.leading.equalToSuperview()
-            make.trailing.equalTo(actionsButton.snp.leading).offset(-20)
+            make.trailing.equalTo(likeButton.snp.leading).offset(-20)
             make.height.equalTo(titleLabel.textSize.height)
         }
         
         artistMarqueeView.snp.makeConstraints { make in
             make.bottom.leading.equalToSuperview()
             make.top.equalTo(titleMarqueeView.snp.bottom).offset(8)
-            make.trailing.equalTo(actionsButton.snp.leading).offset(-20)
+            make.trailing.equalTo(likeButton.snp.leading).offset(-20)
             make.height.equalTo(artistButton.titleLabel?.textSize.height ?? 0)
+        }
+        
+        likeButton.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.width.equalTo(trackInfoView.snp.height)
+            make.trailing.equalTo(actionsButton.snp.leading).offset(-10)
         }
         
         actionsButton.snp.makeConstraints { make in

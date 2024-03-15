@@ -287,6 +287,7 @@
 		8362BD462B939BCC00BCA128 /* LogoutPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8362BD452B939BCC00BCA128 /* LogoutPopUpViewController.swift */; };
 		83B7210A2B826B6300BF56D1 /* SplashScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B721092B826B6300BF56D1 /* SplashScreenViewController.swift */; };
 		83B7210C2B826B9F00BF56D1 /* LogoColumnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B7210B2B826B9F00BF56D1 /* LogoColumnView.swift */; };
+		83DF560D2BA2247F0079242D /* LikeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DF560C2BA2247F0079242D /* LikeButton.swift */; };
 		83DF560A2BA0C17E0079242D /* NowPlayingLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DF56092BA0C17E0079242D /* NowPlayingLabelView.swift */; };
 /* End PBXBuildFile section */
 
@@ -565,6 +566,7 @@
 		8362BD452B939BCC00BCA128 /* LogoutPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutPopUpViewController.swift; sourceTree = "<group>"; };
 		83B721092B826B6300BF56D1 /* SplashScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenViewController.swift; sourceTree = "<group>"; };
 		83B7210B2B826B9F00BF56D1 /* LogoColumnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoColumnView.swift; sourceTree = "<group>"; };
+		83DF560C2BA2247F0079242D /* LikeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButton.swift; sourceTree = "<group>"; };
 		83DF56092BA0C17E0079242D /* NowPlayingLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingLabelView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -673,6 +675,7 @@
 		70017E1B2AEEDB34001E1C02 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				83DF560B2BA224750079242D /* Buttons */,
 				70F9F8672B48DB8A006CD1AA /* CollectionViewCells */,
 				70017E1E2AEEDB34001E1C02 /* TableViewCells */,
 				70017E2B2AEEDB34001E1C02 /* ViewControllers */,
@@ -1461,6 +1464,22 @@
 			path = SplashScreenViewController;
 			sourceTree = "<group>";
 		};
+		83DF560B2BA224750079242D /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				83DF560C2BA2247F0079242D /* LikeButton.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		83B721082B826B5700BF56D1 /* SplashScreenViewController */ = {
+			isa = PBXGroup;
+			children = (
+				83B721092B826B6300BF56D1 /* SplashScreenViewController.swift */,
+			);
+			path = SplashScreenViewController;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1599,6 +1618,7 @@
 				705EC8482B40ABC200CFA3C4 /* ResponseOdesliServiceModel.swift in Sources */,
 				70017F712AEEDB34001E1C02 /* ResponseIpApiModel.swift in Sources */,
 				70017F532AEEDB34001E1C02 /* LibraryPlaylistTrackModel.swift in Sources */,
+				83DF560D2BA2247F0079242D /* LikeButton.swift in Sources */,
 				70017F522AEEDB34001E1C02 /* LibraryPlaylistModel.swift in Sources */,
 				70DC852E2AFC340600C63F46 /* UIWindow+Ext.swift in Sources */,
 				70017F8A2AEEDB34001E1C02 /* PulseApi.swift in Sources */,
