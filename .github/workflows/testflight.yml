@@ -24,33 +24,31 @@ jobs:
     runs-on: macos-latest
     needs: swiftlint
     steps:
-        - name: Install Bundler
-          uses: gem install bundler
-        - name: Install Dependencies for Bundler
-          uses: bundle install
+        - name: Install Fastlane
+          uses: brew install fastlane
         - name: Upload TestSchemeDebug Scheme
-          uses: bundle exec fastlane test
+          uses: fastlane test
 
-  release_server_debug:
-    name: Upload ReleaseServerDebug Scheme
-    runs-on: macos-latest
-    needs: swiftlint
-    steps:
-        - name: Install Bundler
-          uses: gem install bundler
-        - name: Install Dependencies for Bundler
-          uses: bundle install
-        - name: Upload TestSchemeDebug Scheme
-          uses: bundle exec fastlane release_debug
+#   release_server_debug:
+#     name: Upload ReleaseServerDebug Scheme
+#     runs-on: macos-latest
+#     needs: swiftlint
+#     steps:
+#         - name: Install Bundler
+#           uses: gem install bundler
+#         - name: Install Dependencies for Bundler
+#           uses: bundle install
+#         - name: Upload TestSchemeDebug Scheme
+#           uses: bundle exec fastlane release_debug
 
-  release_server_prod:
-    name: Upload ReleaseServerProd Scheme
-    runs-on: macos-latest
-    needs: swiftlint
-    steps:
-        - name: Install Bundler
-          uses: gem install bundler
-        - name: Install Dependencies for Bundler
-          uses: bundle install
-        - name: Upload TestSchemeDebug Scheme
-          uses: bundle exec fastlane release_prod
+#   release_server_prod:
+#     name: Upload ReleaseServerProd Scheme
+#     runs-on: macos-latest
+#     needs: swiftlint
+#     steps:
+#         - name: Install Bundler
+#           uses: gem install bundler
+#         - name: Install Dependencies for Bundler
+#           uses: bundle install
+#         - name: Upload TestSchemeDebug Scheme
+#           uses: bundle exec fastlane release_prod
