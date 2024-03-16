@@ -2,6 +2,11 @@ name: TestFlight
 
 on:
   workflow_dispatch:
+    inputs:
+      start:
+        required: true
+        type: boolean
+        default: true
 
 jobs:
   swiftlint:

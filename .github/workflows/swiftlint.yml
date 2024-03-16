@@ -1,0 +1,14 @@
+name: SwiftLint
+
+on: [push]
+
+jobs:
+  swiftlint:
+    name: SwiftLint Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: SwiftLint
+        uses: norio-nomura/action-swiftlint@3.2.1
