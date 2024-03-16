@@ -1,4 +1,4 @@
-name: Upload
+name: Testflight
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
         - name: Checkout repository
           uses: actions/checkout@v4
         - name: Upload TestSchemeDebug Scheme
-          uses: fastlane test
+          run: fastlane test
 
 #   release_server_debug:
 #     name: Upload ReleaseServerDebug Scheme
