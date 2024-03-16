@@ -1,11 +1,6 @@
 name: TestFlight
 
 on:
-  push:
-    paths:
-      - '.github/workflows/*.yml'
-      - '.swiftlint.yml'
-      - '**/*.swift'
   workflow_dispatch:
     inputs:
       kind_of_build:
