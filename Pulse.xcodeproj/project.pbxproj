@@ -281,18 +281,19 @@
 		70F9F8642B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F8632B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift */; };
 		70F9F8692B48DB94006CD1AA /* StoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F8682B48DB94006CD1AA /* StoryCollectionViewCell.swift */; };
 		70F9F86B2B48DE68006CD1AA /* StoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */; };
-		83B721002B825EC800BF56D1 /* DeezerApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B720FF2B825EC800BF56D1 /* DeezerApi.swift */; };
-		83B721032B825F4100BF56D1 /* ResponseDeezerArtistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B721022B825F4100BF56D1 /* ResponseDeezerArtistModel.swift */; };
-		83B721052B825F9A00BF56D1 /* DeezerTypealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B721042B825F9A00BF56D1 /* DeezerTypealiases.swift */; };
-		83B721072B825FF700BF56D1 /* DeezerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B721062B825FF700BF56D1 /* DeezerProvider.swift */; };
 		83319C912B8A840000CA930E /* ResponseYandexMusicSuggestionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83319C902B8A840000CA930E /* ResponseYandexMusicSuggestionsModel.swift */; };
 		83319C932B8A847700CA930E /* SearchSuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83319C922B8A847700CA930E /* SearchSuggestionTableViewCell.swift */; };
 		83319C952B8A8C3700CA930E /* ResponseYandexMusicSearchHistoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83319C942B8A8C3700CA930E /* ResponseYandexMusicSearchHistoryModel.swift */; };
 		8362BD462B939BCC00BCA128 /* LogoutPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8362BD452B939BCC00BCA128 /* LogoutPopUpViewController.swift */; };
+		8373DAE52BA58060001E9703 /* PulseMedia in Frameworks */ = {isa = PBXBuildFile; productRef = 8373DAE42BA58060001E9703 /* PulseMedia */; };
+		83B721002B825EC800BF56D1 /* DeezerApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B720FF2B825EC800BF56D1 /* DeezerApi.swift */; };
+		83B721032B825F4100BF56D1 /* ResponseDeezerArtistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B721022B825F4100BF56D1 /* ResponseDeezerArtistModel.swift */; };
+		83B721052B825F9A00BF56D1 /* DeezerTypealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B721042B825F9A00BF56D1 /* DeezerTypealiases.swift */; };
+		83B721072B825FF700BF56D1 /* DeezerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B721062B825FF700BF56D1 /* DeezerProvider.swift */; };
 		83B7210A2B826B6300BF56D1 /* SplashScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B721092B826B6300BF56D1 /* SplashScreenViewController.swift */; };
 		83B7210C2B826B9F00BF56D1 /* LogoColumnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B7210B2B826B9F00BF56D1 /* LogoColumnView.swift */; };
-		83DF560D2BA2247F0079242D /* LikeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DF560C2BA2247F0079242D /* LikeButton.swift */; };
 		83DF560A2BA0C17E0079242D /* NowPlayingLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DF56092BA0C17E0079242D /* NowPlayingLabelView.swift */; };
+		83DF560D2BA2247F0079242D /* LikeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DF560C2BA2247F0079242D /* LikeButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -564,18 +565,18 @@
 		70F9F8632B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseExclusiveTrackInfoModel.swift; sourceTree = "<group>"; };
 		70F9F8682B48DB94006CD1AA /* StoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesTableViewCell.swift; sourceTree = "<group>"; };
-		83B720FF2B825EC800BF56D1 /* DeezerApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeezerApi.swift; sourceTree = "<group>"; };
-		83B721022B825F4100BF56D1 /* ResponseDeezerArtistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseDeezerArtistModel.swift; sourceTree = "<group>"; };
-		83B721042B825F9A00BF56D1 /* DeezerTypealiases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeezerTypealiases.swift; sourceTree = "<group>"; };
-		83B721062B825FF700BF56D1 /* DeezerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeezerProvider.swift; sourceTree = "<group>"; };
 		83319C902B8A840000CA930E /* ResponseYandexMusicSuggestionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicSuggestionsModel.swift; sourceTree = "<group>"; };
 		83319C922B8A847700CA930E /* SearchSuggestionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionTableViewCell.swift; sourceTree = "<group>"; };
 		83319C942B8A8C3700CA930E /* ResponseYandexMusicSearchHistoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicSearchHistoryModel.swift; sourceTree = "<group>"; };
 		8362BD452B939BCC00BCA128 /* LogoutPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutPopUpViewController.swift; sourceTree = "<group>"; };
+		83B720FF2B825EC800BF56D1 /* DeezerApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeezerApi.swift; sourceTree = "<group>"; };
+		83B721022B825F4100BF56D1 /* ResponseDeezerArtistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseDeezerArtistModel.swift; sourceTree = "<group>"; };
+		83B721042B825F9A00BF56D1 /* DeezerTypealiases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeezerTypealiases.swift; sourceTree = "<group>"; };
+		83B721062B825FF700BF56D1 /* DeezerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeezerProvider.swift; sourceTree = "<group>"; };
 		83B721092B826B6300BF56D1 /* SplashScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenViewController.swift; sourceTree = "<group>"; };
 		83B7210B2B826B9F00BF56D1 /* LogoColumnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoColumnView.swift; sourceTree = "<group>"; };
-		83DF560C2BA2247F0079242D /* LikeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButton.swift; sourceTree = "<group>"; };
 		83DF56092BA0C17E0079242D /* NowPlayingLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingLabelView.swift; sourceTree = "<group>"; };
+		83DF560C2BA2247F0079242D /* LikeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -591,6 +592,7 @@
 				7002A9882AEEE1020017698B /* AlertKit in Frameworks */,
 				70AC22AE2B63DF3B00EB638E /* FirebasePerformance in Frameworks */,
 				7072CC212AF905BC00E51E0A /* GoogleSignIn in Frameworks */,
+				8373DAE52BA58060001E9703 /* PulseMedia in Frameworks */,
 				7002A97A2AEEDEB00017698B /* Realm in Frameworks */,
 				708290D32B432648007E1DB4 /* PulseMedia in Frameworks */,
 				7002A97F2AEEE02A0017698B /* FriendlyURLSession in Frameworks */,
@@ -1457,6 +1459,14 @@
 			path = CollectionViewCells;
 			sourceTree = "<group>";
 		};
+		8362BD442B939BB800BCA128 /* LogoutPopUpViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8362BD452B939BCC00BCA128 /* LogoutPopUpViewController.swift */,
+			);
+			path = LogoutPopUpViewController;
+			sourceTree = "<group>";
+		};
 		83B720FE2B825EC300BF56D1 /* Deezer */ = {
 			isa = PBXGroup;
 			children = (
@@ -1476,14 +1486,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		8362BD442B939BB800BCA128 /* LogoutPopUpViewController */ = {
-			isa = PBXGroup;
-			children = (
-				8362BD452B939BCC00BCA128 /* LogoutPopUpViewController.swift */,
-			);
-			path = LogoutPopUpViewController;
-			sourceTree = "<group>";
-		};
 		83B721082B826B5700BF56D1 /* SplashScreenViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1500,14 +1502,6 @@
 			path = Buttons;
 			sourceTree = "<group>";
 		};
-		83B721082B826B5700BF56D1 /* SplashScreenViewController */ = {
-			isa = PBXGroup;
-			children = (
-				83B721092B826B6300BF56D1 /* SplashScreenViewController.swift */,
-			);
-			path = SplashScreenViewController;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1518,7 +1512,7 @@
 				70017DF12AEEDABA001E1C02 /* Sources */,
 				70017DF22AEEDABA001E1C02 /* Frameworks */,
 				70017DF32AEEDABA001E1C02 /* Resources */,
-				70017E0C2AEEDAEB001E1C02 /* ShellScript */,
+				70017E0C2AEEDAEB001E1C02 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -1538,6 +1532,7 @@
 				708290D22B432648007E1DB4 /* PulseMedia */,
 				70AC22952B63DF3B00EB638E /* FirebaseCrashlytics */,
 				70AC22AD2B63DF3B00EB638E /* FirebasePerformance */,
+				8373DAE42BA58060001E9703 /* PulseMedia */,
 			);
 			productName = Pulse;
 			productReference = 70017DF52AEEDABA001E1C02 /* Pulse.app */;
@@ -1575,8 +1570,8 @@
 				7002A9862AEEE1020017698B /* XCRemoteSwiftPackageReference "AlertKit" */,
 				7002A9892AEEE1350017698B /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				7072CC1F2AF905BC00E51E0A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
-				708290D12B432648007E1DB4 /* XCLocalSwiftPackageReference "Pulse/Packages/PulseMedia" */,
 				70AC22842B63DF3B00EB638E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				8373DAE32BA58060001E9703 /* XCLocalSwiftPackageReference "Pulse/Packages/PulseMedia" */,
 			);
 			productRefGroup = 70017DF62AEEDABA001E1C02 /* Products */;
 			projectDirPath = "";
@@ -1605,7 +1600,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		70017E0C2AEEDAEB001E1C02 /* ShellScript */ = {
+		70017E0C2AEEDAEB001E1C02 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -1615,6 +1610,7 @@
 			);
 			inputPaths = (
 			);
+			name = SwiftLint;
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -2536,7 +2532,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		708290D12B432648007E1DB4 /* XCLocalSwiftPackageReference "Pulse/Packages/PulseMedia" */ = {
+		8373DAE32BA58060001E9703 /* XCLocalSwiftPackageReference "Pulse/Packages/PulseMedia" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Pulse/Packages/PulseMedia;
 		};
@@ -2659,6 +2655,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 70AC22842B63DF3B00EB638E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebasePerformance;
+		};
+		8373DAE42BA58060001E9703 /* PulseMedia */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PulseMedia;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
