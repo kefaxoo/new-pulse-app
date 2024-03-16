@@ -1,12 +1,11 @@
 name: TestFlight
 
 on:
-  workflow_dispatch:
-    inputs:
-      start:
-        required: true
-        type: boolean
-        default: true
+  push:
+    branches:
+      develop
+      main
+      feature/PIOS-68-add-workflows
 
 jobs:
   swiftlint:
