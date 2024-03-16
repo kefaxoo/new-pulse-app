@@ -172,6 +172,7 @@ platform :ios do
   desc "Upload dSYMs"
   lane :upload_dsyms do
     upload_symbols_to_crashlytics(dsym_path: "./Pulse.app.dSYM.zip")
+  end
 
   after_all do |lane|
     notification(subtitle: "Fastlane succeeded", message: "#{lane}")

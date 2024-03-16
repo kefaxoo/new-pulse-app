@@ -25,6 +25,8 @@ jobs:
           run: gem install bundler
         - name: Install Dependencies for Bundler
           run: bundle install
+        - name: Update fastlane
+          run: bundle update fastlane
         - name: Upload TestSchemeDebug Scheme
           run: bundle exec fastlane test
 
@@ -39,7 +41,9 @@ jobs:
           run: gem install bundler
         - name: Install Dependencies for Bundler
           run: bundle install
-        - name: Upload TestSchemeDebug Scheme
+        - name: Update fastlane
+          run: bundle update fastlane
+        - name: Upload ReleaseServerDebug Scheme
           run: bundle exec fastlane release_debug
 
   release_server_prod:
@@ -53,5 +57,7 @@ jobs:
           run: gem install bundler
         - name: Install Dependencies for Bundler
           run: bundle install
-        - name: Upload TestSchemeDebug Scheme
+        - name: Update fastlane
+          run: bundle update fastlane
+        - name: Upload ReleaseSchemeProd Scheme
           run: bundle exec fastlane release_prod
