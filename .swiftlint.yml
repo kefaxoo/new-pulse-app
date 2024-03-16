@@ -1,5 +1,8 @@
 included:
   - Pulse
+  
+excluded:
+  - Pulse/Packages/CallStackParserSPM
 
 disabled_rules:
   - trailing_whitespace

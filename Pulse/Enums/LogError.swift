@@ -10,4 +10,6 @@ import Foundation
 enum LogError: String {
     case appleSignError = "Apple Sign In | Authorization.Credentials is nil"
     case none = ""
+    case pulseExternalSign = "Pulse | External Sign"
+    case pulseSignIn = "Pulse | Sign In"
 }

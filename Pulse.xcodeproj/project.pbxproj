@@ -286,51 +286,9 @@
 		83175AE82B8FB155009E0A55 /* UIDevice+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83175AE72B8FB155009E0A55 /* UIDevice+Ext.swift */; };
 		83175AEB2B8FB717009E0A55 /* ResponsePulseDeviceInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83175AEA2B8FB717009E0A55 /* ResponsePulseDeviceInfoModel.swift */; };
 		834480942B8FD02500442416 /* CallStackParserSPM in Frameworks */ = {isa = PBXBuildFile; productRef = 834480932B8FD02500442416 /* CallStackParserSPM */; };
-		834F70602B8FC87500E34A3C /* .swift-version in Resources */ = {isa = PBXBuildFile; fileRef = 834F6F7E2B8FC87500E34A3C /* .swift-version */; };
-		834F70622B8FC87500E34A3C /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 834F6F802B8FC87500E34A3C /* LICENSE */; };
-		834F70B42B8FC87500E34A3C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 834F70092B8FC87500E34A3C /* README.md */; };
-		834F70B62B8FC87500E34A3C /* CallStackParser.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 834F700B2B8FC87500E34A3C /* CallStackParser.podspec */; };
-		834F70B72B8FC87500E34A3C /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 834F700C2B8FC87500E34A3C /* .gitignore */; };
-		834F70DF2B8FC9DB00E34A3C /* Thread+Simple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834F70D62B8FC9DB00E34A3C /* Thread+Simple.swift */; };
-		834F70E02B8FC9DB00E34A3C /* NSObject+Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834F70D72B8FC9DB00E34A3C /* NSObject+Logging.swift */; };
-		834F70E12B8FC9DB00E34A3C /* CwlDemangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834F70D82B8FC9DB00E34A3C /* CwlDemangle.swift */; };
-		834F70E22B8FC9DB00E34A3C /* String+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834F70DA2B8FC9DB00E34A3C /* String+Subscript.swift */; };
-		834F70E32B8FC9DB00E34A3C /* String+Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834F70DB2B8FC9DB00E34A3C /* String+Padding.swift */; };
-		834F70E42B8FC9DB00E34A3C /* Collection+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834F70DC2B8FC9DB00E34A3C /* Collection+Safe.swift */; };
-		834F70E52B8FC9DB00E34A3C /* CallStackParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834F70DD2B8FC9DB00E34A3C /* CallStackParser.swift */; };
+		8373DADA2BA4ACBF001E9703 /* CallStackParserSPM in Resources */ = {isa = PBXBuildFile; fileRef = 8373DAD92BA4ACBF001E9703 /* CallStackParserSPM */; };
 		83E824392B91347B00EB6B2E /* LogError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E824382B91347B00EB6B2E /* LogError.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		834F70462B8FC87500E34A3C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 834F6FDC2B8FC87500E34A3C /* CallStackParser.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A7A7A96E21BA3DBF0078304A;
-			remoteInfo = "CallStackParser-iOS";
-		};
-		834F70482B8FC87500E34A3C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 834F6FDC2B8FC87500E34A3C /* CallStackParser.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A7A7A98D21BA3E250078304A;
-			remoteInfo = "CallStackParser-tvOS";
-		};
-		834F704A2B8FC87500E34A3C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 834F6FDC2B8FC87500E34A3C /* CallStackParser.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A7A7A99A21BA3E460078304A;
-			remoteInfo = "CallStackParser-watchOS";
-		};
-		834F704C2B8FC87500E34A3C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 834F6FDC2B8FC87500E34A3C /* CallStackParser.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A7A7A9A721BA3E5A0078304A;
-			remoteInfo = "CallStackParser-macOS";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		70017DF52AEEDABA001E1C02 /* Pulse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pulse.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -605,22 +563,7 @@
 		83175AE52B8FAFF7009E0A55 /* NewLogModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLogModel.swift; sourceTree = "<group>"; };
 		83175AE72B8FB155009E0A55 /* UIDevice+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Ext.swift"; sourceTree = "<group>"; };
 		83175AEA2B8FB717009E0A55 /* ResponsePulseDeviceInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseDeviceInfoModel.swift; sourceTree = "<group>"; };
-		8344808F2B8FCF5600442416 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		834F6F7E2B8FC87500E34A3C /* .swift-version */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
-		834F6F802B8FC87500E34A3C /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		834F6FDC2B8FC87500E34A3C /* CallStackParser.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = CallStackParser.xcodeproj; sourceTree = "<group>"; };
-		834F70092B8FC87500E34A3C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		834F700B2B8FC87500E34A3C /* CallStackParser.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CallStackParser.podspec; sourceTree = "<group>"; };
-		834F700C2B8FC87500E34A3C /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		834F70D32B8FC9C500E34A3C /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
-		834F70D62B8FC9DB00E34A3C /* Thread+Simple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Thread+Simple.swift"; sourceTree = "<group>"; };
-		834F70D72B8FC9DB00E34A3C /* NSObject+Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+Logging.swift"; sourceTree = "<group>"; };
-		834F70D82B8FC9DB00E34A3C /* CwlDemangle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CwlDemangle.swift; sourceTree = "<group>"; };
-		834F70D92B8FC9DB00E34A3C /* CallStackParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallStackParser.h; sourceTree = "<group>"; };
-		834F70DA2B8FC9DB00E34A3C /* String+Subscript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Subscript.swift"; sourceTree = "<group>"; };
-		834F70DB2B8FC9DB00E34A3C /* String+Padding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Padding.swift"; sourceTree = "<group>"; };
-		834F70DC2B8FC9DB00E34A3C /* Collection+Safe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+Safe.swift"; sourceTree = "<group>"; };
-		834F70DD2B8FC9DB00E34A3C /* CallStackParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallStackParser.swift; sourceTree = "<group>"; };
+		8373DAD92BA4ACBF001E9703 /* CallStackParserSPM */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CallStackParserSPM; sourceTree = "<group>"; };
 		83E824382B91347B00EB6B2E /* LogError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1256,7 +1199,7 @@
 		70017EED2AEEDB34001E1C02 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				834F6F7D2B8FC87500E34A3C /* CallStackParserSPM */,
+				8373DAD92BA4ACBF001E9703 /* CallStackParserSPM */,
 				708290CF2B432634007E1DB4 /* PulseMedia */,
 				70017EEE2AEEDB34001E1C02 /* PulseUIComponents */,
 			);
@@ -1509,56 +1452,6 @@
 			path = Device;
 			sourceTree = "<group>";
 		};
-		834F6F7D2B8FC87500E34A3C /* CallStackParserSPM */ = {
-			isa = PBXGroup;
-			children = (
-				834F70D52B8FC9DB00E34A3C /* Sources */,
-				834F70D32B8FC9C500E34A3C /* Package.swift */,
-				834F6F7E2B8FC87500E34A3C /* .swift-version */,
-				834F6F802B8FC87500E34A3C /* LICENSE */,
-				834F6FDC2B8FC87500E34A3C /* CallStackParser.xcodeproj */,
-				834F70092B8FC87500E34A3C /* README.md */,
-				834F700B2B8FC87500E34A3C /* CallStackParser.podspec */,
-				834F700C2B8FC87500E34A3C /* .gitignore */,
-			);
-			path = CallStackParserSPM;
-			sourceTree = "<group>";
-		};
-		834F6FDD2B8FC87500E34A3C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				834F70472B8FC87500E34A3C /* CallStackParser.framework */,
-				834F70492B8FC87500E34A3C /* CallStackParser.framework */,
-				834F704B2B8FC87500E34A3C /* CallStackParser.framework */,
-				834F704D2B8FC87500E34A3C /* CallStackParser.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		834F70D52B8FC9DB00E34A3C /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				834F70E72B8FC9E000E34A3C /* CallStackParserSPM */,
-			);
-			path = Sources;
-			sourceTree = "<group>";
-		};
-		834F70E72B8FC9E000E34A3C /* CallStackParserSPM */ = {
-			isa = PBXGroup;
-			children = (
-				8344808F2B8FCF5600442416 /* Info.plist */,
-				834F70D62B8FC9DB00E34A3C /* Thread+Simple.swift */,
-				834F70D72B8FC9DB00E34A3C /* NSObject+Logging.swift */,
-				834F70D82B8FC9DB00E34A3C /* CwlDemangle.swift */,
-				834F70D92B8FC9DB00E34A3C /* CallStackParser.h */,
-				834F70DA2B8FC9DB00E34A3C /* String+Subscript.swift */,
-				834F70DB2B8FC9DB00E34A3C /* String+Padding.swift */,
-				834F70DC2B8FC9DB00E34A3C /* Collection+Safe.swift */,
-				834F70DD2B8FC9DB00E34A3C /* CallStackParser.swift */,
-			);
-			path = CallStackParserSPM;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1629,16 +1522,9 @@
 				7072CC1F2AF905BC00E51E0A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				708290D12B432648007E1DB4 /* XCLocalSwiftPackageReference "Pulse/Packages/PulseMedia" */,
 				70AC22842B63DF3B00EB638E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				834480922B8FD02500442416 /* XCLocalSwiftPackageReference "Pulse/Packages/CallStackParserSPM" */,
 			);
 			productRefGroup = 70017DF62AEEDABA001E1C02 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 834F6FDD2B8FC87500E34A3C /* Products */;
-					ProjectRef = 834F6FDC2B8FC87500E34A3C /* CallStackParser.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				70017DF42AEEDABA001E1C02 /* Pulse */,
@@ -1646,52 +1532,17 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXReferenceProxy section */
-		834F70472B8FC87500E34A3C /* CallStackParser.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = CallStackParser.framework;
-			remoteRef = 834F70462B8FC87500E34A3C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		834F70492B8FC87500E34A3C /* CallStackParser.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = CallStackParser.framework;
-			remoteRef = 834F70482B8FC87500E34A3C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		834F704B2B8FC87500E34A3C /* CallStackParser.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = CallStackParser.framework;
-			remoteRef = 834F704A2B8FC87500E34A3C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		834F704D2B8FC87500E34A3C /* CallStackParser.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = CallStackParser.framework;
-			remoteRef = 834F704C2B8FC87500E34A3C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
-
 /* Begin PBXResourcesBuildPhase section */
 		70017DF32AEEDABA001E1C02 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				7072CC172AF8FA7D00E51E0A /* Localizable.strings in Resources */,
-				834F70B72B8FC87500E34A3C /* .gitignore in Resources */,
+				8373DADA2BA4ACBF001E9703 /* CallStackParserSPM in Resources */,
 				708290D02B432634007E1DB4 /* PulseMedia in Resources */,
 				70017E052AEEDABB001E1C02 /* LaunchScreen.storyboard in Resources */,
-				834F70B42B8FC87500E34A3C /* README.md in Resources */,
 				70017E022AEEDABB001E1C02 /* Assets.xcassets in Resources */,
-				834F70622B8FC87500E34A3C /* LICENSE in Resources */,
-				834F70602B8FC87500E34A3C /* .swift-version in Resources */,
 				70017FA32AEEDB34001E1C02 /* PulseUIComponents in Resources */,
-				834F70B62B8FC87500E34A3C /* CallStackParser.podspec in Resources */,
 				70017E002AEEDABA001E1C02 /* Main.storyboard in Resources */,
 				70AC22832B63DC6600EB638E /* GoogleService-Info.plist in Resources */,
 			);
@@ -1730,7 +1581,6 @@
 				701D04802B2F8E2A0082FA44 /* CanvasView.swift in Sources */,
 				70017EF52AEEDB34001E1C02 /* SearchResponse.swift in Sources */,
 				70F9F86B2B48DE68006CD1AA /* StoriesTableViewCell.swift in Sources */,
-				834F70E42B8FC9DB00E34A3C /* Collection+Safe.swift in Sources */,
 				704240E92B2BAA4700B7F0AD /* ResponseYandexMusicDownloadInfoModel.swift in Sources */,
 				70017F402AEEDB34001E1C02 /* UIView+Ext.swift in Sources */,
 				70017F5D2AEEDB34001E1C02 /* Device.swift in Sources */,
@@ -1750,7 +1600,6 @@
 				70E6A59B2B2A64B300700471 /* YandexMusicProvider.swift in Sources */,
 				70017F462AEEDB34001E1C02 /* ActionsManager.swift in Sources */,
 				7093395A2B631CE10080125D /* Locale+Ext.swift in Sources */,
-				834F70E52B8FC9DB00E34A3C /* CallStackParser.swift in Sources */,
 				70017F692AEEDB34001E1C02 /* ResponseMuffonSearchModel.swift in Sources */,
 				70017F322AEEDB34001E1C02 /* String+Ext.swift in Sources */,
 				707C044E2B40CC06000B91BF /* ApplicationStyle.swift in Sources */,
@@ -1858,7 +1707,6 @@
 				70E6A5972B2A63FC00700471 /* ResponseYandexMusicAccountStatusModel.swift in Sources */,
 				70017F3A2AEEDB34001E1C02 /* UITableView+Ext.swift in Sources */,
 				70017F5C2AEEDB34001E1C02 /* AudioPlayerItem.swift in Sources */,
-				834F70E12B8FC9DB00E34A3C /* CwlDemangle.swift in Sources */,
 				70E6A5992B2A641400700471 /* YandexMusicTypealiases.swift in Sources */,
 				709A91942B55349B00D1E693 /* PlaylistCollectionViewCell.swift in Sources */,
 				701B75C42B4962850090FACB /* ResponsePulseStoryTypeModel.swift in Sources */,
@@ -1892,7 +1740,6 @@
 				707C579E2B49B6BB0069D3CF /* ResponsePulseServiceSettingsModel.swift in Sources */,
 				704240D42B2B9FA200B7F0AD /* ResponseYandexMusicTracksModel.swift in Sources */,
 				70017F6D2AEEDB34001E1C02 /* MuffonTypealias.swift in Sources */,
-				834F70DF2B8FC9DB00E34A3C /* Thread+Simple.swift in Sources */,
 				70017F6F2AEEDB34001E1C02 /* ResponseIpifyModel.swift in Sources */,
 				70017FA02AEEDB34001E1C02 /* WebViewType.swift in Sources */,
 				70F9F8692B48DB94006CD1AA /* StoryCollectionViewCell.swift in Sources */,
@@ -1906,7 +1753,6 @@
 				70017F4F2AEEDB34001E1C02 /* AudioPlayer.swift in Sources */,
 				70017F6B2AEEDB34001E1C02 /* ResponseMuffonImageModel.swift in Sources */,
 				70017F552AEEDB34001E1C02 /* DownloadQueueTrackModel.swift in Sources */,
-				834F70E32B8FC9DB00E34A3C /* String+Padding.swift in Sources */,
 				705EC84A2B40AD1800CFA3C4 /* OdesliProvider.swift in Sources */,
 				70017F9F2AEEDB34001E1C02 /* LibraryType.swift in Sources */,
 				70364A592B584ED90067C740 /* ResponsePulsePlaylistRootModel.swift in Sources */,
@@ -1969,10 +1815,8 @@
 				70E560972B0173A80000E26F /* ResponsePulseBaseContentModel.swift in Sources */,
 				70017F142AEEDB34001E1C02 /* PlaylistsViewController.swift in Sources */,
 				70017F512AEEDB34001E1C02 /* RealmManager.swift in Sources */,
-				834F70E22B8FC9DB00E34A3C /* String+Subscript.swift in Sources */,
 				70017EFB2AEEDB34001E1C02 /* PlayableLinkModel.swift in Sources */,
 				704240E12B2BA17900B7F0AD /* ResponseYandexMusicAlbumModel.swift in Sources */,
-				834F70E02B8FC9DB00E34A3C /* NSObject+Logging.swift in Sources */,
 				709A91882B5429EA00D1E693 /* AccountBlockedViewController.swift in Sources */,
 				70017F502AEEDB34001E1C02 /* LocalFeatureModel.swift in Sources */,
 				70017F742AEEDB34001E1C02 /* ResponsePulseCreateUserModel.swift in Sources */,
@@ -2634,10 +2478,6 @@
 		708290D12B432648007E1DB4 /* XCLocalSwiftPackageReference "Pulse/Packages/PulseMedia" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Pulse/Packages/PulseMedia;
-		};
-		834480922B8FD02500442416 /* XCLocalSwiftPackageReference "Pulse/Packages/CallStackParserSPM" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = Pulse/Packages/CallStackParserSPM;
 		};
 /* End XCLocalSwiftPackageReference section */
 

@@ -47,6 +47,10 @@ final class MainCoordinator: NSObject {
     }
     
     var currentBaseViewController: BaseUIViewController? {
+        if let navigationController = self.currentViewController as? UINavigationController {
+            return navigationController.viewControllers.last as? BaseUIViewController
+        }
+        
         return self.currentViewController as? BaseUIViewController
     }
     
@@ -148,6 +152,7 @@ final class MainCoordinator: NSObject {
     
     func pushSignUpViewController(covers: [PulseCover]) {
         let signUpVC = SignUpViewController(covers: covers)
+        signUpVC.screenIdUrl = self.currentBaseViewController?.screenIdUrl?.appendingPathComponent("signUp")
         self.pushViewController(vc: signUpVC)
     }
     
