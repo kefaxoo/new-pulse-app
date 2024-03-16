@@ -24,8 +24,8 @@ jobs:
     runs-on: macos-latest
     needs: swiftlint
     steps:
-        - name: Install Fastlane
-          uses: brew install fastlane
+        - name: Checkout repository
+          uses: actions/checkout@v4
         - name: Upload TestSchemeDebug Scheme
           uses: fastlane test
 
