@@ -1,9 +1,9 @@
-name: Testflight
+name: TestFlight
 
 on:
   push:
     paths:
-      - '.github/workflows/swiftlint.yml'
+      - '.github/workflows/*.yml'
       - '.swiftlint.yml'
       - '**/*.swift'
   workflow_dispatch:
