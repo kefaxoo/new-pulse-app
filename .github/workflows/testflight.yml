@@ -26,8 +26,12 @@ jobs:
     steps:
         - name: Checkout repository
           uses: actions/checkout@v4
+        - name: Install Bundler
+          run: gem install bundler
+        - name: Install Dependencies for Bundler
+          run: bundle install
         - name: Upload TestSchemeDebug Scheme
-          run: fastlane test
+          run: bundle exec fastlane test
 
 #   release_server_debug:
 #     name: Upload ReleaseServerDebug Scheme
