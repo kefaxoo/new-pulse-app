@@ -1,6 +1,8 @@
 name: SwiftLint
 
-on: [push]
+# on: [push]
+on:
+  workflow_dispatch:
 
 jobs:
   swiftlint:
@@ -8,7 +10,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Homebrew
         run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"

@@ -1,0 +1,56 @@
+name: Upload To TestFlight
+
+on:
+  push:
+    paths:
+      - '.github/workflows/swiftlint.yml'
+      - '.swiftlint.yml'
+      - '**/*.swift'
+  workflow_dispatch:
+
+jobs:
+  swiftlint:
+    name: SwiftLint Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: SwiftLint
+        uses: norio-nomura/action-swiftlint@3.2.1
+    
+  test_server_debug:
+    name: Upload TestServerDebug Scheme
+    runs-on: macos-latest
+    needs: swiftlint
+    steps:
+        - name: Install Bundler
+          uses: gem install bundler
+        - name: Install Dependencies for Bundler
+          uses: bundle install
+        - name: Upload TestSchemeDebug Scheme
+          uses: bundle exec fastlane test
+
+  release_server_debug:
+    name: Upload ReleaseServerDebug Scheme
+    runs-on: macos-latest
+    needs: swiftlint
+    steps:
+        - name: Install Bundler
+          uses: gem install bundler
+        - name: Install Dependencies for Bundler
+          uses: bundle install
+        - name: Upload TestSchemeDebug Scheme
+          uses: bundle exec fastlane release_debug
+
+  release_server_prod:
+    name: Upload ReleaseServerProd Scheme
+    runs-on: macos-latest
+    needs: swiftlint
+    steps:
+        - name: Install Bundler
+          uses: gem install bundler
+        - name: Install Dependencies for Bundler
+          uses: bundle install
+        - name: Upload TestSchemeDebug Scheme
+          uses: bundle exec fastlane release_prod
