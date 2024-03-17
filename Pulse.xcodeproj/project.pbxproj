@@ -281,6 +281,12 @@
 		70F9F8642B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F8632B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift */; };
 		70F9F8692B48DB94006CD1AA /* StoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F8682B48DB94006CD1AA /* StoryCollectionViewCell.swift */; };
 		70F9F86B2B48DE68006CD1AA /* StoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */; };
+		83175AE62B8FAFF7009E0A55 /* NewLogModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83175AE52B8FAFF7009E0A55 /* NewLogModel.swift */; };
+		83175AE82B8FB155009E0A55 /* UIDevice+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83175AE72B8FB155009E0A55 /* UIDevice+Ext.swift */; };
+		83175AEB2B8FB717009E0A55 /* ResponsePulseDeviceInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83175AEA2B8FB717009E0A55 /* ResponsePulseDeviceInfoModel.swift */; };
+		834480942B8FD02500442416 /* CallStackParserSPM in Frameworks */ = {isa = PBXBuildFile; productRef = 834480932B8FD02500442416 /* CallStackParserSPM */; };
+		8373DADA2BA4ACBF001E9703 /* CallStackParserSPM in Resources */ = {isa = PBXBuildFile; fileRef = 8373DAD92BA4ACBF001E9703 /* CallStackParserSPM */; };
+		83E824392B91347B00EB6B2E /* LogError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E824382B91347B00EB6B2E /* LogError.swift */; };
 		83319C912B8A840000CA930E /* ResponseYandexMusicSuggestionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83319C902B8A840000CA930E /* ResponseYandexMusicSuggestionsModel.swift */; };
 		83319C932B8A847700CA930E /* SearchSuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83319C922B8A847700CA930E /* SearchSuggestionTableViewCell.swift */; };
 		83319C952B8A8C3700CA930E /* ResponseYandexMusicSearchHistoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83319C942B8A8C3700CA930E /* ResponseYandexMusicSearchHistoryModel.swift */; };
@@ -570,6 +576,11 @@
 		70F9F8632B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseExclusiveTrackInfoModel.swift; sourceTree = "<group>"; };
 		70F9F8682B48DB94006CD1AA /* StoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesTableViewCell.swift; sourceTree = "<group>"; };
+		83175AE52B8FAFF7009E0A55 /* NewLogModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLogModel.swift; sourceTree = "<group>"; };
+		83175AE72B8FB155009E0A55 /* UIDevice+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Ext.swift"; sourceTree = "<group>"; };
+		83175AEA2B8FB717009E0A55 /* ResponsePulseDeviceInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseDeviceInfoModel.swift; sourceTree = "<group>"; };
+		8373DAD92BA4ACBF001E9703 /* CallStackParserSPM */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CallStackParserSPM; sourceTree = "<group>"; };
+		83E824382B91347B00EB6B2E /* LogError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogError.swift; sourceTree = "<group>"; };
 		83319C902B8A840000CA930E /* ResponseYandexMusicSuggestionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicSuggestionsModel.swift; sourceTree = "<group>"; };
 		83319C922B8A847700CA930E /* SearchSuggestionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionTableViewCell.swift; sourceTree = "<group>"; };
 		83319C942B8A8C3700CA930E /* ResponseYandexMusicSearchHistoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicSearchHistoryModel.swift; sourceTree = "<group>"; };
@@ -595,6 +606,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				834480942B8FD02500442416 /* CallStackParserSPM in Frameworks */,
 				7002A97C2AEEDEB00017698B /* RealmSwift in Frameworks */,
 				7002A98D2AEEE1350017698B /* SDWebImageMapKit in Frameworks */,
 				70AC22962B63DF3B00EB638E /* FirebaseCrashlytics in Frameworks */,
@@ -666,6 +678,7 @@
 				70017E112AEEDB33001E1C02 /* Credentials.swift */,
 				70017E122AEEDB33001E1C02 /* Services */,
 				70017E152AEEDB33001E1C02 /* Media */,
+				83175AE52B8FAFF7009E0A55 /* NewLogModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -961,6 +974,7 @@
 				70017E742AEEDB34001E1C02 /* UIView+Ext.swift */,
 				70DC852D2AFC340600C63F46 /* UIWindow+Ext.swift */,
 				7044731C2B0882F900B3FB98 /* UIStoryboard+Ext.swift */,
+				83175AE72B8FB155009E0A55 /* UIDevice+Ext.swift */,
 			);
 			path = "UIKit+Ext";
 			sourceTree = "<group>";
@@ -1155,6 +1169,7 @@
 		70017EB92AEEDB34001E1C02 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				83175AE92B8FB707009E0A55 /* Device */,
 				702D77372B45695300F1B541 /* Widgets */,
 				70AEDE752B0573A100BCC72C /* V1 */,
 				7072CC082AF8F4B200E51E0A /* V3 */,
@@ -1220,6 +1235,7 @@
 				70017EEC2AEEDB34001E1C02 /* AppEnvironment.swift */,
 				7072CC052AF8F43500E51E0A /* SignMethodType.swift */,
 				707C044D2B40CC06000B91BF /* ApplicationStyle.swift */,
+				83E824382B91347B00EB6B2E /* LogError.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -1227,6 +1243,7 @@
 		70017EED2AEEDB34001E1C02 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
+				8373DAD92BA4ACBF001E9703 /* CallStackParserSPM */,
 				708290CF2B432634007E1DB4 /* PulseMedia */,
 				70017EEE2AEEDB34001E1C02 /* PulseUIComponents */,
 			);
@@ -1473,6 +1490,14 @@
 			path = CollectionViewCells;
 			sourceTree = "<group>";
 		};
+		83175AE92B8FB707009E0A55 /* Device */ = {
+			isa = PBXGroup;
+			children = (
+				83175AEA2B8FB717009E0A55 /* ResponsePulseDeviceInfoModel.swift */,
+			);
+			path = Device;
+			sourceTree = "<group>";
+		};
 		8362BD442B939BB800BCA128 /* LogoutPopUpViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1564,6 +1589,7 @@
 				708290D22B432648007E1DB4 /* PulseMedia */,
 				70AC22952B63DF3B00EB638E /* FirebaseCrashlytics */,
 				70AC22AD2B63DF3B00EB638E /* FirebasePerformance */,
+				834480932B8FD02500442416 /* CallStackParserSPM */,
 			);
 			productName = Pulse;
 			productReference = 70017DF52AEEDABA001E1C02 /* Pulse.app */;
@@ -1619,6 +1645,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7072CC172AF8FA7D00E51E0A /* Localizable.strings in Resources */,
+				8373DADA2BA4ACBF001E9703 /* CallStackParserSPM in Resources */,
 				708290D02B432634007E1DB4 /* PulseMedia in Resources */,
 				70017E052AEEDABB001E1C02 /* LaunchScreen.storyboard in Resources */,
 				70017E022AEEDABB001E1C02 /* Assets.xcassets in Resources */,
@@ -1745,6 +1772,7 @@
 				7024E20E2B3DFAEE00CD57D5 /* ButtonTableHeaderView.swift in Sources */,
 				70017DF92AEEDABA001E1C02 /* AppDelegate.swift in Sources */,
 				702D773D2B457EB100F1B541 /* ResponsePulseExclusiveArtistModel.swift in Sources */,
+				83175AEB2B8FB717009E0A55 /* ResponsePulseDeviceInfoModel.swift in Sources */,
 				70017F302AEEDB34001E1C02 /* Failure+Ext.swift in Sources */,
 				705EC8462B40ABA500CFA3C4 /* OdesliTypealias.swift in Sources */,
 				70017F612AEEDB34001E1C02 /* BaseUICollectionViewCell.swift in Sources */,
@@ -1790,6 +1818,7 @@
 				70017F812AEEDB34001E1C02 /* ResponsePulseTrackModel.swift in Sources */,
 				70017F5B2AEEDB34001E1C02 /* MainCoordinator.swift in Sources */,
 				70017F332AEEDB34001E1C02 /* UILabel+Ext.swift in Sources */,
+				83175AE82B8FB155009E0A55 /* UIDevice+Ext.swift in Sources */,
 				70017F312AEEDB34001E1C02 /* Bundle+Ext.swift in Sources */,
 				70E6A5972B2A63FC00700471 /* ResponseYandexMusicAccountStatusModel.swift in Sources */,
 				70017F3A2AEEDB34001E1C02 /* UITableView+Ext.swift in Sources */,
@@ -1868,6 +1897,7 @@
 				7044731D2B0882F900B3FB98 /* UIStoryboard+Ext.swift in Sources */,
 				70017F1F2AEEDB34001E1C02 /* VerifyPulseAccountPopUpViewController.swift in Sources */,
 				70017F3D2AEEDB34001E1C02 /* UIColor+Ext.swift in Sources */,
+				83175AE62B8FAFF7009E0A55 /* NewLogModel.swift in Sources */,
 				70017F442AEEDB34001E1C02 /* URL+Ext.swift in Sources */,
 				83DF560A2BA0C17E0079242D /* NowPlayingLabelView.swift in Sources */,
 				706974C32B055B500093D1FB /* PlaylistTableHeaderView.swift in Sources */,
@@ -1900,6 +1930,7 @@
 				70017F472AEEDB34001E1C02 /* LibraryManager.swift in Sources */,
 				83B721002B825EC800BF56D1 /* DeezerApi.swift in Sources */,
 				70017F6E2AEEDB34001E1C02 /* IpifyApi.swift in Sources */,
+				83E824392B91347B00EB6B2E /* LogError.swift in Sources */,
 				70017F672AEEDB34001E1C02 /* ResponseMuffonArtistModel.swift in Sources */,
 				7013E34C2B0D58F90038A600 /* MPVolumeView+Ext.swift in Sources */,
 				70017F8C2AEEDB34001E1C02 /* ResponseSoundcloudTrackModel.swift in Sources */,
@@ -2691,6 +2722,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 70AC22842B63DF3B00EB638E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebasePerformance;
+		};
+		834480932B8FD02500442416 /* CallStackParserSPM */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CallStackParserSPM;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -216,6 +216,8 @@ enum Constants {
         case featuresLastUpdate = "featuresLastUpdate"
         
         case lastTabBarIndex = "lastTabBarIndex"
+        
+        case deviceModel = "device.model"
     }
     // swiftlint:enable redundant_string_enum_value
     

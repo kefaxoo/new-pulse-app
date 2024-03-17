@@ -162,7 +162,7 @@ final class LibraryManager {
         PulseProvider.shared.syncTracks()
     }
     
-    func cleanLibrary() -> Bool {
+    @discardableResult func cleanLibrary() -> Bool {
         LibraryManager.shared.removeFile(URL(filename: "Covers", path: .documentDirectory))
         LibraryManager.shared.removeFile(URL(filename: "Tracks", path: .documentDirectory))
         LibraryManager.shared.removeFile(URL(filename: "", path: .cachesDirectory))

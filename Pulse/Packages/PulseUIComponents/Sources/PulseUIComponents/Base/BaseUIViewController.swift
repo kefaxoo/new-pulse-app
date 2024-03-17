@@ -9,6 +9,8 @@ import UIKit
 
 open class BaseUIViewController: UIViewController {
     private var notificationNames = [Notification.Name]()
+
+    public var screenIdUrl: URL?
     
     open override func viewDidLoad() {
         super.viewDidLoad()

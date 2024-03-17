@@ -13,6 +13,13 @@ final class SettingsManager {
     
     fileprivate init() {
         debugLog("Realm DB Location:", Realm.Configuration.defaultConfiguration.fileURL?.absoluteString ?? "")
+        if NetworkManager.shared.isReachable {
+            PulseProvider.shared.deviceInfo { [weak self] deviceInfo in
+                guard let deviceInfo else { return }
+                
+                self?.deviceModel = deviceInfo.model
+            }
+        }
     }
     
     func initRealmVariables() {
@@ -167,7 +174,7 @@ final class SettingsManager {
     
     var isCanvasesEnabled: Bool {
         get {
-            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.isCanvasesEnabled.rawValue) as? Bool ?? false
+            return UserDefaults.standard.value(forKey: Constants.UserDefaultsKeys.isCanvasesEnabled.rawValue) as? Bool ?? true
         }
         set {
             UserDefaults.standard.setValue(newValue, forKey: Constants.UserDefaultsKeys.isCanvasesEnabled.rawValue)
@@ -283,21 +290,37 @@ extension SettingsManager {
     func signOut() -> Bool {
         autoDownload = false
         isAdultContentEnabled = false
-        isCanvasesEnabled = false
+        isCanvasesEnabled = true
         soundcloudLike = false
+        yandexMusicLike = false
+        color = .purple
+        appearance = .system
+        lastTabBarIndex = MainTabBarController.ViewController.library.rawValue
         
         pulse.signOut()
         soundcloud.signOut()
         yandexMusic.signOut()
+        
+        LibraryManager.shared.cleanLibrary()
+        LibraryManager.shared.removeTemporaryCache()
         
         return true
     }
 }
 
 // MARK: -
-// MARK: Unique Device ID
+// MARK: Device Info
 extension SettingsManager {
     var udid: String? {
         return UIDevice.current.identifierForVendor?.uuidString
+    }
+    
+    var deviceModel: String {
+        get {
+            return UserDefaults.standard.value(forKey: .deviceModel) as? String ?? UIDevice.current.deviceIdentifier
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: .deviceModel)
+        }
     }
 }

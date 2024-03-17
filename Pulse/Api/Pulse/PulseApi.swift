@@ -5,7 +5,7 @@
 //  Created by Bahdan Piatrouski on 28.08.23.
 //
 
-import Foundation
+import UIKit
 import FriendlyURLSession
 
 enum PulseApi {
@@ -66,12 +66,16 @@ enum PulseApi {
     // Settings
     case fetchSettings
     case updateSettings
+    
+    // Device
+    case model
+    case newLog(log: NewLogModel)
 }
 
 extension PulseApi: BaseRestApiEnum {
     var baseUrl: String {
         switch self {
-            case .mainScreen, .exclusiveTracks, .exclusiveTrack:
+            case .mainScreen, .exclusiveTracks, .exclusiveTrack, .model, .newLog:
                 switch AppEnvironment.current {
                     case .local:
                         return "\(Constants.localPulseBaseUrl)/api"
@@ -150,13 +154,17 @@ extension PulseApi: BaseRestApiEnum {
                 return "/user/checkBlock"
             case .exclusivePlaylist:
                 return "/exclusive/playlist"
+            case .model:
+                return "/device/model"
+            case .newLog:
+                return "/v2/log"
         }
     }
     
     var method: FriendlyURLSession.HTTPMethod {
         switch self {
             case .createUser, .log, .syncTrack, .features, .createUserV3, .externalSign, .syncTracks, .likeTrack,
-                    .incrementListenCount, .markStoryAsWatched:
+                    .incrementListenCount, .markStoryAsWatched, .newLog:
                 return .post
             case .removeTrack, .dislikeTrack:
                 return .delete
@@ -208,6 +216,12 @@ extension PulseApi: BaseRestApiEnum {
                 }
                 
                 headers["X-User-Current-Date"] = Date.currentDate(inFormat: "dd-MM-YYYY")
+            case .newLog:
+                if let accessToken = SettingsManager.shared.pulse.accessToken {
+                    headers["X-Pulse-Token"] = accessToken
+                }
+                
+                headers["X-Locale"] = Locale.current.isoLanguageCode
             default:
                 break
         }
@@ -263,6 +277,8 @@ extension PulseApi: BaseRestApiEnum {
                 parameters["playlist_id"] = playlistId
                 parameters["show_tracks"] = true
                 parameters["offset"]      = offset
+            case .model:
+                parameters["identifier"] = UIDevice.current.deviceIdentifier
             default:
                 return nil
         }
@@ -301,6 +317,8 @@ extension PulseApi: BaseRestApiEnum {
                         ]
                     ]
                 ]
+            case .newLog(let log):
+                return log.json
             default:
                 return nil
         }

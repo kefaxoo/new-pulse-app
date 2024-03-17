@@ -526,6 +526,10 @@ extension PulseProvider {
                     guard response.statusCode == 425,
                           let verifyUser = response.data?.map(to: PulseVerifyUserV3.self)
                     else {
+                        if ![406, 409].contains(response.statusCode) {
+                            self?.sendLog(response: response, logError: .pulseExternalSign)
+                        }
+                        
                         self?.parseError(response: response, closure: failure)
                         return
                     }
@@ -561,6 +565,10 @@ extension PulseProvider {
                     guard response.statusCode == 425,
                           let verifyUser = response.data?.map(to: PulseVerifyUserV3.self)
                     else {
+                        if ![404, 406].contains(response.statusCode) {
+                            self?.sendLog(response: response, logError: .pulseSignIn)
+                        }
+                        
                         self?.parseError(response: response, closure: failure)
                         return
                     }
@@ -797,6 +805,34 @@ extension PulseProvider {
     }
 }
 
+// MARK: -
+// MARK: Device
+extension PulseProvider {
+    func deviceInfo(completion: @escaping((_ deviceInfo: PulseDeviceInfo?) -> ())) {
+        self.urlSession.dataTask(with: URLRequest(type: PulseApi.model, shouldPrintLog: self.shouldPrintLog)) { response in
+            switch response {
+                case .success(let response):
+                    guard let deviceInfo = response.data?.map(to: PulseDeviceInfo.self) else {
+                        completion(nil)
+                        return
+                    }
+                    
+                    completion(deviceInfo)
+                case .failure(let response):
+                    completion(nil)
+            }
+        }
+    }
+}
+
+// MARK: -
+// MARK: Log
+extension PulseProvider {
+    func sendNewLog(_ log: NewLogModel) {
+        self.urlSession.dataTask(with: URLRequest(type: PulseApi.newLog(log: log), shouldPrintLog: self.shouldPrintLog), response: { _ in })
+    }
+}
+
 fileprivate extension PulseProvider {
     func parseError(response: Failure, closure: PulseDefaultErrorV3Closure?, retryClosure: (() -> ())? = nil) {
         response.sendLog()
@@ -812,6 +848,43 @@ fileprivate extension PulseProvider {
         } else {
             closure?(nil, nil)
         }
+    }
+    
+    func sendLog(response: Failure, logError: LogError) {
+        guard response.statusCode != 401 else { return }
+        
+        PulseProvider.shared.sendNewLog(
+            NewLogModel(
+                screenId: MainCoordinator.shared.currentBaseViewController?.screenIdUrl,
+                errorType: .request,
+                trace: Thread.simpleCallStackSymbols,
+                cURL: response.cURL,
+                additionalParameters: self.parseErrorForLog(response: response),
+                logError: logError
+            )
+        )
+    }
+    
+    func parseErrorForLog(response: Failure) -> [String: Any]? {
+        if let error = response.data?.map(to: PulseBaseErrorModel.self) {
+            var dict = [
+                "key": error.localizationKey,
+                "statusCode": response.statusCode
+            ] as [String : Any]
+            
+            if let parameter = error.localizationParameter {
+                dict["parameter"] = parameter
+            }
+            
+            return dict
+        } else if let error = response.error {
+            return [
+                "error": error.localizedDescription,
+                "statusCode": response.statusCode
+            ]
+        }
+        
+        return nil
     }
     
     func refreshTokens(completion: @escaping(() -> ())) {

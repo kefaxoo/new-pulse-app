@@ -26,12 +26,37 @@ fileprivate final class NowPlayingTabBar: UITabBar {
 }
 
 final class MainTabBarController: UITabBarController {
+    enum ViewController: Int, CaseIterable {
+        case main = 0
+        case library = 1
+        case search = 2
+        case settings = 3
+        
+        static func from(rawValue index: Int) -> ViewController? {
+            let cases = Self.allCases
+            return cases.indices.contains(index) ? cases[index] : nil
+        }
+    }
+    
     private lazy var nowPlayingView = NowPlayingView()
     private lazy var topBlurBackgroundView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: self.traitCollection.userInterfaceStyle == .dark ? .dark : .light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         return blurEffectView
     }()
+    
+    var currentController: ViewController? {
+        get {
+            return ViewController.from(rawValue: self.selectedIndex)
+        }
+        set {
+            DispatchQueue.main.async { [weak self] in
+                guard let index = newValue?.rawValue else { return }
+                
+                self?.selectedIndex = index
+            }
+        }
+    }
     
     init() {
         super.init(nibName: nil, bundle: nil)

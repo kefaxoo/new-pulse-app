@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PulseUIComponents
 
 final class MainCoordinator: NSObject {
     static let shared = MainCoordinator()
@@ -43,6 +44,14 @@ final class MainCoordinator: NSObject {
         }
         
         return currentVC
+    }
+    
+    var currentBaseViewController: BaseUIViewController? {
+        if let navigationController = self.currentViewController as? UINavigationController {
+            return navigationController.viewControllers.last as? BaseUIViewController
+        }
+        
+        return self.currentViewController as? BaseUIViewController
     }
     
     var isDarkMode: Bool {
@@ -136,17 +145,20 @@ final class MainCoordinator: NSObject {
     }
     
     func makeAuthViewControllerAsRoot() {
-        let authVC = AuthViewController(nibName: nil, bundle: nil).configureNavigationController(preferesLargeTitles: false)
-        self.makeRootVC(vc: authVC)
+        let authVC = AuthViewController()
+        authVC.screenIdUrl = URL(string: "auth")
+        self.makeRootVC(vc: authVC.configureNavigationController(preferesLargeTitles: false))
     }
     
     func pushSignUpViewController(covers: [PulseCover]) {
         let signUpVC = SignUpViewController(covers: covers)
+        signUpVC.screenIdUrl = self.currentBaseViewController?.screenIdUrl?.appendingPathComponent("signUp")
         self.pushViewController(vc: signUpVC)
     }
     
     func pushSignInViewController(covers: [PulseCover] = []) {
         let signInVC = SignInViewController(covers: covers)
+        signInVC.screenIdUrl = self.currentBaseViewController?.screenIdUrl?.appendingPathComponent("signIn")
         self.pushViewController(vc: signInVC)
     }
     

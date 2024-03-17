@@ -227,9 +227,13 @@ extension ServiceSignTableViewCell: WebViewControllerDelegate {
                             system: .iOS16AppleMusic
                         )
                         
-                        guard let self else { return }
+                        if let self {
+                            self.delegate?.reloadCells(at: self.section)
+                        } else {
+                            self?.delegate?.reloadData()
+                        }
                         
-                        self.delegate?.reloadCells(at: self.section)
+                        PulseProvider.shared.syncTracks()
                     } failure: { error in
                         MainCoordinator.shared.currentViewController?.dismissSpinner()
                         AlertView.shared.presentError(
@@ -252,6 +256,7 @@ extension ServiceSignTableViewCell: WebViewControllerDelegate {
                 )
                 
                 self.delegate?.reloadCells(at: self.section)
+                PulseProvider.shared.syncTracks()
             default:
                 break
         }
