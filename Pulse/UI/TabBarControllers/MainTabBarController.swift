@@ -106,8 +106,8 @@ final class MainTabBarController: UITabBarController {
         
         settingsVC.tabBarItem = UITabBarItem(title: Localization.Words.settings.localization, image: Constants.Images.settings.image, tag: 1000)
         
-        let searchVC = SearchViewController()
-        searchVC.tabBarItem = UITabBarItem(title: Localization.Words.search.localization, image: Constants.Images.search.image, tag: 1001)
+        let searchCoordinator = SearchCoordinator(navigationController: UINavigationController())
+        searchCoordinator.start()
         
         let libraryVC = LibraryViewController(type: .library, service: .none)
         libraryVC.tabBarItem = UITabBarItem(
@@ -127,7 +127,7 @@ final class MainTabBarController: UITabBarController {
         self.viewControllers = [
             mainVC.configureNavigationController(title: Localization.Words.main.localization),
             libraryVC.configureNavigationController(title: Localization.Words.library.localization),
-            searchVC.configureNavigationController(title: Localization.Words.search.localization),
+            searchCoordinator.navigationController,
             settingsVC.configureNavigationController(title: Localization.Words.settings.localization)
         ]
     }

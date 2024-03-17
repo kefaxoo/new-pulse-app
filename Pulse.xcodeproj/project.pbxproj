@@ -281,18 +281,24 @@
 		70F9F8642B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F8632B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift */; };
 		70F9F8692B48DB94006CD1AA /* StoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F8682B48DB94006CD1AA /* StoryCollectionViewCell.swift */; };
 		70F9F86B2B48DE68006CD1AA /* StoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */; };
-		83B721002B825EC800BF56D1 /* DeezerApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B720FF2B825EC800BF56D1 /* DeezerApi.swift */; };
-		83B721032B825F4100BF56D1 /* ResponseDeezerArtistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B721022B825F4100BF56D1 /* ResponseDeezerArtistModel.swift */; };
-		83B721052B825F9A00BF56D1 /* DeezerTypealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B721042B825F9A00BF56D1 /* DeezerTypealiases.swift */; };
-		83B721072B825FF700BF56D1 /* DeezerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B721062B825FF700BF56D1 /* DeezerProvider.swift */; };
 		83319C912B8A840000CA930E /* ResponseYandexMusicSuggestionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83319C902B8A840000CA930E /* ResponseYandexMusicSuggestionsModel.swift */; };
 		83319C932B8A847700CA930E /* SearchSuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83319C922B8A847700CA930E /* SearchSuggestionTableViewCell.swift */; };
 		83319C952B8A8C3700CA930E /* ResponseYandexMusicSearchHistoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83319C942B8A8C3700CA930E /* ResponseYandexMusicSearchHistoryModel.swift */; };
 		8362BD462B939BCC00BCA128 /* LogoutPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8362BD452B939BCC00BCA128 /* LogoutPopUpViewController.swift */; };
+		8373DAE72BA6069D001E9703 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8373DAE62BA6069D001E9703 /* Coordinator.swift */; };
+		8373DAEC2BA60743001E9703 /* SearchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8373DAEB2BA60743001E9703 /* SearchCoordinator.swift */; };
+		8373DAF22BA60CEE001E9703 /* NewSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8373DAF12BA60CEE001E9703 /* NewSearchViewController.swift */; };
+		8373DAF42BA60CF2001E9703 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8373DAF32BA60CF2001E9703 /* SearchViewModel.swift */; };
+		8373DAF62BA60D21001E9703 /* Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8373DAF52BA60D21001E9703 /* Dynamic.swift */; };
+		8373DAFA2BA618D8001E9703 /* ConstraintMakerEditable+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8373DAF92BA618D8001E9703 /* ConstraintMakerEditable+Ext.swift */; };
+		83B721002B825EC800BF56D1 /* DeezerApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B720FF2B825EC800BF56D1 /* DeezerApi.swift */; };
+		83B721032B825F4100BF56D1 /* ResponseDeezerArtistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B721022B825F4100BF56D1 /* ResponseDeezerArtistModel.swift */; };
+		83B721052B825F9A00BF56D1 /* DeezerTypealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B721042B825F9A00BF56D1 /* DeezerTypealiases.swift */; };
+		83B721072B825FF700BF56D1 /* DeezerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B721062B825FF700BF56D1 /* DeezerProvider.swift */; };
 		83B7210A2B826B6300BF56D1 /* SplashScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B721092B826B6300BF56D1 /* SplashScreenViewController.swift */; };
 		83B7210C2B826B9F00BF56D1 /* LogoColumnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B7210B2B826B9F00BF56D1 /* LogoColumnView.swift */; };
-		83DF560D2BA2247F0079242D /* LikeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DF560C2BA2247F0079242D /* LikeButton.swift */; };
 		83DF560A2BA0C17E0079242D /* NowPlayingLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DF56092BA0C17E0079242D /* NowPlayingLabelView.swift */; };
+		83DF560D2BA2247F0079242D /* LikeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DF560C2BA2247F0079242D /* LikeButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -564,18 +570,24 @@
 		70F9F8632B48B46D006CD1AA /* ResponsePulseExclusiveTrackInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsePulseExclusiveTrackInfoModel.swift; sourceTree = "<group>"; };
 		70F9F8682B48DB94006CD1AA /* StoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		70F9F86A2B48DE68006CD1AA /* StoriesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesTableViewCell.swift; sourceTree = "<group>"; };
-		83B720FF2B825EC800BF56D1 /* DeezerApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeezerApi.swift; sourceTree = "<group>"; };
-		83B721022B825F4100BF56D1 /* ResponseDeezerArtistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseDeezerArtistModel.swift; sourceTree = "<group>"; };
-		83B721042B825F9A00BF56D1 /* DeezerTypealiases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeezerTypealiases.swift; sourceTree = "<group>"; };
-		83B721062B825FF700BF56D1 /* DeezerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeezerProvider.swift; sourceTree = "<group>"; };
 		83319C902B8A840000CA930E /* ResponseYandexMusicSuggestionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicSuggestionsModel.swift; sourceTree = "<group>"; };
 		83319C922B8A847700CA930E /* SearchSuggestionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionTableViewCell.swift; sourceTree = "<group>"; };
 		83319C942B8A8C3700CA930E /* ResponseYandexMusicSearchHistoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseYandexMusicSearchHistoryModel.swift; sourceTree = "<group>"; };
 		8362BD452B939BCC00BCA128 /* LogoutPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutPopUpViewController.swift; sourceTree = "<group>"; };
+		8373DAE62BA6069D001E9703 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		8373DAEB2BA60743001E9703 /* SearchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCoordinator.swift; sourceTree = "<group>"; };
+		8373DAF12BA60CEE001E9703 /* NewSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSearchViewController.swift; sourceTree = "<group>"; };
+		8373DAF32BA60CF2001E9703 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		8373DAF52BA60D21001E9703 /* Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dynamic.swift; sourceTree = "<group>"; };
+		8373DAF92BA618D8001E9703 /* ConstraintMakerEditable+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConstraintMakerEditable+Ext.swift"; sourceTree = "<group>"; };
+		83B720FF2B825EC800BF56D1 /* DeezerApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeezerApi.swift; sourceTree = "<group>"; };
+		83B721022B825F4100BF56D1 /* ResponseDeezerArtistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseDeezerArtistModel.swift; sourceTree = "<group>"; };
+		83B721042B825F9A00BF56D1 /* DeezerTypealiases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeezerTypealiases.swift; sourceTree = "<group>"; };
+		83B721062B825FF700BF56D1 /* DeezerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeezerProvider.swift; sourceTree = "<group>"; };
 		83B721092B826B6300BF56D1 /* SplashScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenViewController.swift; sourceTree = "<group>"; };
 		83B7210B2B826B9F00BF56D1 /* LogoColumnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoColumnView.swift; sourceTree = "<group>"; };
-		83DF560C2BA2247F0079242D /* LikeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButton.swift; sourceTree = "<group>"; };
 		83DF56092BA0C17E0079242D /* NowPlayingLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingLabelView.swift; sourceTree = "<group>"; };
+		83DF560C2BA2247F0079242D /* LikeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -716,6 +728,7 @@
 		70017E2B2AEEDB34001E1C02 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				8373DAE92BA60735001E9703 /* Modules */,
 				83B721082B826B5700BF56D1 /* SplashScreenViewController */,
 				709A91862B5429DD00D1E693 /* AccountBlockedViewController */,
 				701B75C52B496F350090FACB /* StoryTrackViewController */,
@@ -926,6 +939,7 @@
 				70D49FE52B4AA39B0058FA0A /* UserDefaults+Ext.swift */,
 				70C0E18C2B6198920078C13B /* NSNotification.Name+Ext.swift */,
 				709339592B631CE10080125D /* Locale+Ext.swift */,
+				8373DAF92BA618D8001E9703 /* ConstraintMakerEditable+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1028,6 +1042,8 @@
 				70017E9E2AEEDB34001E1C02 /* BaseKeychainModel.swift */,
 				70017E9F2AEEDB34001E1C02 /* BasePresenter.swift */,
 				70017EA02AEEDB34001E1C02 /* BaseTableViewPresenter.swift */,
+				8373DAE62BA6069D001E9703 /* Coordinator.swift */,
+				8373DAF52BA60D21001E9703 /* Dynamic.swift */,
 			);
 			path = BaseItems;
 			sourceTree = "<group>";
@@ -1457,6 +1473,32 @@
 			path = CollectionViewCells;
 			sourceTree = "<group>";
 		};
+		8362BD442B939BB800BCA128 /* LogoutPopUpViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8362BD452B939BCC00BCA128 /* LogoutPopUpViewController.swift */,
+			);
+			path = LogoutPopUpViewController;
+			sourceTree = "<group>";
+		};
+		8373DAE92BA60735001E9703 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				8373DAEA2BA6073C001E9703 /* Search */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		8373DAEA2BA6073C001E9703 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				8373DAEB2BA60743001E9703 /* SearchCoordinator.swift */,
+				8373DAF12BA60CEE001E9703 /* NewSearchViewController.swift */,
+				8373DAF32BA60CF2001E9703 /* SearchViewModel.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
 		83B720FE2B825EC300BF56D1 /* Deezer */ = {
 			isa = PBXGroup;
 			children = (
@@ -1476,14 +1518,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		8362BD442B939BB800BCA128 /* LogoutPopUpViewController */ = {
-			isa = PBXGroup;
-			children = (
-				8362BD452B939BCC00BCA128 /* LogoutPopUpViewController.swift */,
-			);
-			path = LogoutPopUpViewController;
-			sourceTree = "<group>";
-		};
 		83B721082B826B5700BF56D1 /* SplashScreenViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1498,14 +1532,6 @@
 				83DF560C2BA2247F0079242D /* LikeButton.swift */,
 			);
 			path = Buttons;
-			sourceTree = "<group>";
-		};
-		83B721082B826B5700BF56D1 /* SplashScreenViewController */ = {
-			isa = PBXGroup;
-			children = (
-				83B721092B826B6300BF56D1 /* SplashScreenViewController.swift */,
-			);
-			path = SplashScreenViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1640,6 +1666,8 @@
 				70017F5D2AEEDB34001E1C02 /* Device.swift in Sources */,
 				70017F932AEEDB34001E1C02 /* ResponseSoundcloudPlayableLinksModel.swift in Sources */,
 				70017F2D2AEEDB34001E1C02 /* MainTabBarController.swift in Sources */,
+				8373DAFA2BA618D8001E9703 /* ConstraintMakerEditable+Ext.swift in Sources */,
+				8373DAEC2BA60743001E9703 /* SearchCoordinator.swift in Sources */,
 				709A7F112B38EE1D001D4AF1 /* NowPlayingArtistInfoView.swift in Sources */,
 				70017F942AEEDB34001E1C02 /* SoundcloudTypealiases.swift in Sources */,
 				70017F422AEEDB34001E1C02 /* NSRegularExpression+Ext.swift in Sources */,
@@ -1669,6 +1697,7 @@
 				70017F212AEEDB34001E1C02 /* AuthViewController.swift in Sources */,
 				70017F792AEEDB34001E1C02 /* ResponsePulseFeaturesModel.swift in Sources */,
 				7072CC252AF9857C00E51E0A /* ResponsePulseLoginUserV3Model.swift in Sources */,
+				8373DAE72BA6069D001E9703 /* Coordinator.swift in Sources */,
 				70F9F85E2B480C38006CD1AA /* ResponsePulseWidgetModel.swift in Sources */,
 				83B721032B825F4100BF56D1 /* ResponseDeezerArtistModel.swift in Sources */,
 				70017F0C2AEEDB34001E1C02 /* CoversViewController.swift in Sources */,
@@ -1689,6 +1718,7 @@
 				707C579C2B49B6730069D3CF /* ResponsePulseSettingsRootModel.swift in Sources */,
 				709F4BC42B3C634E0016C454 /* ArtistTableHeaderView.swift in Sources */,
 				70017F892AEEDB34001E1C02 /* PulseProvider.swift in Sources */,
+				8373DAF62BA60D21001E9703 /* Dynamic.swift in Sources */,
 				70017F9A2AEEDB34001E1C02 /* LibraryPlaylistType.swift in Sources */,
 				70017F0E2AEEDB34001E1C02 /* LibraryViewController.swift in Sources */,
 				70017F9C2AEEDB34001E1C02 /* SearchType.swift in Sources */,
@@ -1873,6 +1903,8 @@
 				70017F672AEEDB34001E1C02 /* ResponseMuffonArtistModel.swift in Sources */,
 				7013E34C2B0D58F90038A600 /* MPVolumeView+Ext.swift in Sources */,
 				70017F8C2AEEDB34001E1C02 /* ResponseSoundcloudTrackModel.swift in Sources */,
+				8373DAF42BA60CF2001E9703 /* SearchViewModel.swift in Sources */,
+				8373DAF22BA60CEE001E9703 /* NewSearchViewController.swift in Sources */,
 				70E560972B0173A80000E26F /* ResponsePulseBaseContentModel.swift in Sources */,
 				70017F142AEEDB34001E1C02 /* PlaylistsViewController.swift in Sources */,
 				70017F512AEEDB34001E1C02 /* RealmManager.swift in Sources */,
