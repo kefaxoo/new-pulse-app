@@ -52,7 +52,7 @@ final class YandexMusicProvider: BaseRestApiProvider {
             task?.cancel()
         }
         
-        task = urlSession.returnDataTask(
+        task = urlSession.dataTask(
             with: URLRequest(type: YandexMusicApi.search(query: query, page: page, type: searchType), shouldPrintLog: self.shouldPrintLog),
             response: { response in
                 switch response {
@@ -76,7 +76,7 @@ final class YandexMusicProvider: BaseRestApiProvider {
             task?.cancel()
         }
         
-        task = urlSession.returnDataTask(
+        task = urlSession.dataTask(
             with: URLRequest(
                 type: YandexMusicApi.fetchAudioLinkStep1(trackId: trackId), 
                 shouldPrintLog: self.shouldPrintLog
@@ -197,7 +197,7 @@ final class YandexMusicProvider: BaseRestApiProvider {
     func fetchSearchSuggestions(query: String, success: @escaping((SearchResponse) -> ())) {
         task?.cancel()
         
-        task = self.urlSession.returnDataTask(with: URLRequest(type: YandexMusicApi.searchSuggestions(query: query), shouldPrintLog: self.shouldPrintLog)
+        task = self.urlSession.dataTask(with: URLRequest(type: YandexMusicApi.searchSuggestions(query: query), shouldPrintLog: self.shouldPrintLog)
         ) { response in
             switch response {
                 case .success(let response):
