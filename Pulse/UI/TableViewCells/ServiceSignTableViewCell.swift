@@ -45,10 +45,12 @@ class ServiceSignTableViewCell: BaseUITableViewCell {
     private var webViewType: WebViewType = .none
     private var type: SettingType = .none
     private var section: Int = 0
+    private var screenId: URL?
     
-    func setupCell(type: SettingType, section: Int) {
+    func setupCell(type: SettingType, section: Int, screenId: URL? = nil) {
         self.section = section
         self.serviceImageView.image = type.service.image
+        self.screenId = screenId
         switch type.service {
             case .soundcloud:
                 guard SettingsManager.shared.soundcloud.isSigned else { break }
@@ -116,7 +118,7 @@ extension ServiceSignTableViewCell {
             make.centerY.equalToSuperview()
             guard yandexPlusImageView.isHidden else { return }
             
-            make.trailing.greaterThanOrEqualTo(signButton.snp.leading).offset(-10)
+            make.trailing.equalTo(signButton.snp.leading).offset(-10)
         }
         
         yandexPlusImageView.snp.makeConstraints { make in
@@ -227,9 +229,20 @@ extension ServiceSignTableViewCell: WebViewControllerDelegate {
                             system: .iOS16AppleMusic
                         )
                         
-                        guard let self else { return }
+                        if let self {
+                            self.delegate?.reloadCells(at: self.section)
+                        } else {
+                            PulseProvider.shared.sendNewLog(
+                                NewLogModel(
+                                    screenId: self?.screenId?.appendingPathComponent("soundcloud"),
+                                    errorType: .ui,
+                                    trace: Thread.simpleCallStackSymbols,
+                                    logError: .soundcloudSignInCellDidNotRefresh
+                                )
+                            )
+                        }
                         
-                        self.delegate?.reloadCells(at: self.section)
+                        PulseProvider.shared.syncTracks()
                     } failure: { error in
                         MainCoordinator.shared.currentViewController?.dismissSpinner()
                         AlertView.shared.presentError(
@@ -252,6 +265,7 @@ extension ServiceSignTableViewCell: WebViewControllerDelegate {
                 )
                 
                 self.delegate?.reloadCells(at: self.section)
+                PulseProvider.shared.syncTracks()
             default:
                 break
         }

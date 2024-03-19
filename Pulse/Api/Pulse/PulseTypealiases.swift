@@ -68,6 +68,9 @@ typealias PulseQualitySettings = ResponsePulseQualitySettingsModel
 typealias PulseSpotifyCanvas = ResponsePulseSpotifyCanvasModel
 typealias PulseCanvas        = ResponsePulseCanvasModel
 
+// Device
+typealias PulseDeviceInfo = ResponsePulseDeviceInfoModel
+
 // MARK: -
 // MARK: Closures
 typealias PulseDefaultErrorClosure = ((PulseError?) -> ())

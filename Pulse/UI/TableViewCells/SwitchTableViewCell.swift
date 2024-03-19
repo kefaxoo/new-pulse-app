@@ -40,10 +40,17 @@ class SwitchTableViewCell: BaseUITableViewCell {
     private lazy var `switch`: UISwitch = {
         let `switch` = UISwitch()
         `switch`.addTarget(self, action: #selector(switchStateChanged), for: .valueChanged)
+        `switch`.onTintColor = SettingsManager.shared.color.color
         return `switch`
     }()
     
     private var closure: ((Bool) -> ())?
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.switch.onTintColor = SettingsManager.shared.color.color
+    }
     
     override func setupLayout() {
         self.contentView.addSubview(mainStackView)

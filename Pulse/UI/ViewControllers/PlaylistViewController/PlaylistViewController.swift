@@ -54,6 +54,8 @@ extension PlaylistViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = false
         AudioPlayer.shared.tableViewDelegate = self
         self.applyColor()
+        
+        self.addNotification(name: .trackLibraryStateWasUpdated, selector: #selector(updateLibraryState))
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -136,6 +138,14 @@ extension PlaylistViewController: UITableViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.presenter.scrollViewDidScroll(scrollView)
     }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        return ActionsManager(nil).trackSwipeActionsConfiguration(for: self.presenter.track(at: indexPath), swipeDirection: .leadingToTrailing)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        return ActionsManager(nil).trackSwipeActionsConfiguration(for: self.presenter.track(at: indexPath), swipeDirection: .trailingToLeading)
+    }
 }
 
 // MARK: -
@@ -158,5 +168,23 @@ extension PlaylistViewController: PlaylistTableHeaderViewDelegate {
     
     func shuffle() {
         self.presenter.shuffle()
+    }
+}
+
+// MARK: -
+// MARK: Actions
+private extension PlaylistViewController {
+    @objc func updateLibraryState(_ notification: Notification) {
+        let (track, state) = NewLibraryManager.parseNotification(notification)
+        
+        guard let track,
+              let index = self.presenter.index(for: track),
+              let state
+        else { return }
+        
+        let cell = self.playlistTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? TrackTableViewCell
+        
+        cell?.updateButtonMenu()
+        cell?.updateTrackState(state)
     }
 }

@@ -49,11 +49,7 @@ final class SettingsPresenter: SettingsPresenterProtocol {
     }
     
     func signOut() {
-        guard SettingsManager.shared.signOut(),
-              LibraryManager.shared.cleanLibrary()
-        else { return }
-                
-        MainCoordinator.shared.makeAuthViewControllerAsRoot()
+        LogoutPopUpViewController().present()
     }
 }
 
@@ -86,7 +82,8 @@ extension SettingsPresenter {
                 (cell as? ButtonTableViewCell)?.setupCell(type: setting, indexPath: indexPath)
                 (cell as? ButtonTableViewCell)?.delegate = self
             case .service:
-                (cell as? ServiceSignTableViewCell)?.setupCell(type: setting, section: indexPath.section)
+                (cell as? ServiceSignTableViewCell)?
+                    .setupCell(type: setting, section: indexPath.section, screenId: (self.view as? BaseUIViewController)?.screenIdUrl)
                 (cell as? ServiceSignTableViewCell)?.delegate = self
             default:
                 break

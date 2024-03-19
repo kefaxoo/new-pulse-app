@@ -64,9 +64,7 @@ open class PinterestSegmentedControl: UIControl {
     }
     
     public var titleElements: [TitleElement] {
-        get {
-            return _titleElements
-        }
+        return self._titleElements
     }
     
     public var titles: [String] {
@@ -120,7 +118,7 @@ open class PinterestSegmentedControl: UIControl {
     
     public init(frame: CGRect, segmentStyle: PinterestSegmentStyle, titles: [String]) {
         self.style = segmentStyle
-        self._titleElements = titles.map({ TitleElement(title: $0)})
+        self._titleElements = titles.map({ TitleElement(title: $0) })
         super.init(frame: frame)
         shareInit()
     }
@@ -156,7 +154,6 @@ open class PinterestSegmentedControl: UIControl {
                 break
             }
         }
-        
     }
     
     public func setRichTextTitles(_ titles: [TitleElement]) {
@@ -164,23 +161,22 @@ open class PinterestSegmentedControl: UIControl {
     }
     
     private func setSelectIndex(index: Int, animated: Bool, sendAction: Bool, forceUpdate: Bool = false) {
-        
-        guard (index != selectIndex || forceUpdate), index >= 0, index < titleLabels.count else { return }
+        guard index != selectIndex || forceUpdate,
+              index >= 0,
+              index < titleLabels.count
+        else { return }
         
         let currentLabel = titleLabels[index]
-        let offSetX = min(max(0, currentLabel.center.x - bounds.width / 2),
-                          max(0, scrollView.contentSize.width - bounds.width))
+        let offSetX = min(max(0, currentLabel.center.x - bounds.width / 2), max(0, scrollView.contentSize.width - bounds.width))
         scrollView.setContentOffset(CGPoint(x: offSetX, y: 0), animated: true)
         
         if animated {
-            
             UIView.animate(withDuration: 0.2, animations: {
                 var rect = self.indicator.frame
                 rect.origin.x = currentLabel.frame.origin.x
                 rect.size.width = currentLabel.frame.size.width
                 self.setIndicatorFrame(rect)
             })
-            
         } else {
             var rect = indicator.frame
             rect.origin.x = currentLabel.frame.origin.x
@@ -198,7 +194,6 @@ open class PinterestSegmentedControl: UIControl {
     private func setIndicatorFrame(_ frame: CGRect) {
         indicator.frame = frame
         selectedLabelsMaskView.frame = frame
-        
     }
     
     // Data handler
@@ -259,10 +254,9 @@ open class PinterestSegmentedControl: UIControl {
         }
         
         for (index, item) in titleElements.enumerated() {
-            
             var titlePendingHorizontal = style.titlePendingHorizontal
             
-            //if we are using images, then add a bit of extra horizontal spacing
+            // if we are using images, then add a bit of extra horizontal spacing
             if item.normalImage != nil || item.selectedImage != nil {
                 titlePendingHorizontal += font.lineHeight
             }
@@ -332,12 +326,10 @@ open class PinterestSegmentedControl: UIControl {
         addGestureRecognizer(tapGesture)
         
         setSelectIndex(index: selectIndex, animated: animated, sendAction: sendAction, forceUpdate: true)
-        
     }
 }
 
 extension PinterestSegmentedControl {
-    
     public var titleFont: UIFont {
         get {
             return style.titleFont
@@ -427,7 +419,6 @@ extension PinterestSegmentedControl {
             style.selectedBorderColor = newValue
         }
     }
-    
 }
 
 extension UILabel {
@@ -447,8 +438,14 @@ extension UILabel {
             mutableAttributedString.append(attachmentStr)
         }
         
-        if let text = self.text {
-            let textString = NSAttributedString(string: text, attributes: [.font: self.font, .foregroundColor: self.textColor])
+        if let text = self.text,
+           let font = self.font,
+           let textColor = self.textColor {
+            let textString = NSAttributedString(string: text, attributes: [
+                .font: font as Any,
+                .foregroundColor: textColor as Any
+            ])
+            
             mutableAttributedString.append(textString)
         }
         

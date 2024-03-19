@@ -102,7 +102,8 @@ extension ParallaxTableView {
         if let tableHeaderView {
             tableHeaderView.snp.makeConstraints { make in
                 make.height.equalTo(self.topOffset)
-                make.top.leading.trailing.equalToSuperview().inset(UIEdgeInsets(top: -(UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0)))
+                make.top.leading.trailing.equalToSuperview()
+                    .inset(UIEdgeInsets(top: -(UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0)))
             }
             
             tableView.snp.makeConstraints { make in

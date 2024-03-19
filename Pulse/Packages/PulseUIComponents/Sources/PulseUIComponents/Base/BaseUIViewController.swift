@@ -8,6 +8,10 @@
 import UIKit
 
 open class BaseUIViewController: UIViewController {
+    private var notificationNames = [Notification.Name]()
+
+    public var screenIdUrl: URL?
+    
     open override func viewDidLoad() {
         super.viewDidLoad()
         self.setupInterface()
@@ -16,6 +20,7 @@ open class BaseUIViewController: UIViewController {
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.removeKeyboardObserversIfNeeded()
+        self.removeAllNotifications()
     }
 }
 
@@ -138,5 +143,15 @@ extension BaseUIViewController {
     
     open override var preferredStatusBarStyle: UIStatusBarStyle {
         return StatusBar.style
+    }
+}
+
+extension BaseUIViewController {
+    public func addNotification(name: Notification.Name, selector: Selector, object: Any? = nil) {
+        NotificationCenter.default.addObserver(self, selector: selector, name: name, object: object)
+    }
+    
+    private func removeAllNotifications() {
+        self.notificationNames.forEach({ NotificationCenter.default.removeObserver(self, name: $0, object: nil) })
     }
 }

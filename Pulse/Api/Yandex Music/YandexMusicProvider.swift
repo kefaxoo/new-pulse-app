@@ -48,11 +48,9 @@ final class YandexMusicProvider: BaseRestApiProvider {
     }
     
     func search(query: String, searchType: SearchType, page: Int = 0, success: @escaping((SearchResponse) -> ())) {
-        if shouldCancelTask {
-            task?.cancel()
-        }
+        task?.cancel()
         
-        task = urlSession.returnDataTask(
+        task = urlSession.dataTask(
             with: URLRequest(type: YandexMusicApi.search(query: query, page: page, type: searchType), shouldPrintLog: self.shouldPrintLog),
             response: { response in
                 switch response {
@@ -76,7 +74,7 @@ final class YandexMusicProvider: BaseRestApiProvider {
             task?.cancel()
         }
         
-        task = urlSession.returnDataTask(
+        task = urlSession.dataTask(
             with: URLRequest(
                 type: YandexMusicApi.fetchAudioLinkStep1(trackId: trackId), 
                 shouldPrintLog: self.shouldPrintLog
@@ -87,7 +85,7 @@ final class YandexMusicProvider: BaseRestApiProvider {
                     guard let downloadInfo = response.data?.map(to: YandexMusicBaseResult<[YandexMusicDownloadInfo]>.self),
                           let downloadInfoWithBitrate = downloadInfo.result.first(where: {
                               $0.bitrate == SettingsManager.shared.yandexMusic.streamingQuality.rawValue
-                          }),
+                          }) ?? downloadInfo.result.first(where: { $0.bitrate == downloadInfo.result.map({ $0.bitrate }).max() ?? 128 }),
                           let urlComponents = URLComponents(string: downloadInfoWithBitrate.downloadInfoUrl)
                     else {
                         completion(nil)
@@ -190,6 +188,41 @@ final class YandexMusicProvider: BaseRestApiProvider {
                     success(artist)
                 case .failure:
                     failure?()
+            }
+        }
+    }
+    
+    func fetchSearchSuggestions(query: String, success: @escaping((SearchResponse) -> ())) {
+        task?.cancel()
+        
+        task = self.urlSession.dataTask(with: URLRequest(type: YandexMusicApi.searchSuggestions(query: query), shouldPrintLog: self.shouldPrintLog)
+        ) { response in
+            switch response {
+                case .success(let response):
+                    guard let suggestions = response.data?.map(to: YandexMusicBaseResult<YandexMusicSuggestions>.self)?.result.suggestions else {
+                        return
+                    }
+                    
+                    success(SearchResponse(results: suggestions, canLoadMore: false))
+                case .failure:
+                    break
+            }
+        }
+    }
+    
+    func fetchSearchHistory(type: SearchType, success: @escaping((SearchResponse) -> ())) {
+        self.urlSession.dataTask(with: URLRequest(type: YandexMusicApi.searchHistory(type: type), shouldPrintLog: self.shouldPrintLog)) { response in
+            switch response {
+                case .success(let response):
+                    guard let history = response
+                        .data?
+                        .map(to: YandexMusicBaseResult<[ResponseYandexMusicSearchHistoryModel]>.self)?
+                        .result
+                    else { return }
+                    
+                    success(SearchResponse(results: history, canLoadMore: false))
+                case .failure:
+                    break
             }
         }
     }

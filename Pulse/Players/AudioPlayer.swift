@@ -258,24 +258,13 @@ fileprivate extension AudioPlayer {
            !coverModel.isImageLocal {
             switch self.track?.source {
                 case .soundcloud:
-                    if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSoundcloud?.prod ?? false {
-                        PulseProvider.shared.soundcloudArtworkV2(link: coverModel.original) { [weak self] cover in
-                            self?.track?.image = ImageModel(cover)
-                            self?.fetchCover(from: cover.xl)
-                            
-                            guard let self else { return }
-                            
-                            self.playlist[self.position].image = ImageModel(cover)
-                        }
-                    } else {
-                        PulseProvider.shared.soundcloudArtwork(exampleLink: coverModel.original) { [weak self] cover in
-                            self?.track?.image = ImageModel(cover)
-                            self?.fetchCover(from: cover.xl)
-                            
-                            guard let self else { return }
-                            
-                            self.playlist[self.position].image = ImageModel(cover)
-                        }
+                    PulseProvider.shared.soundcloudArtworkV2(link: coverModel.original) { [weak self] cover in
+                        self?.track?.image = ImageModel(cover)
+                        self?.fetchCover(from: cover.xl)
+                        
+                        guard let self else { return }
+                        
+                        self.playlist[self.position].image = ImageModel(cover)
                     }
                 case .pulse:
                     self.fetchCover(from: coverModel.original)
@@ -437,6 +426,10 @@ extension AudioPlayer {
     var previousPosition: Int {
         return self.position - 1 > -1 ? self.position - 1 : self.playlist.count - 1
     }
+    
+    private var nextPositionAfterRemove: Int {
+        return self.position + 1 < self.playlist.count - 1 ? self.position + 1 : 0
+    }
 }
 
 // MARK: -
@@ -526,6 +519,14 @@ extension AudioPlayer {
         }
         
         AlertView.shared.present(title: Localization.Lines.playingLast.localization, alertType: type, system: .iOS17AppleMusic)
+    }
+    
+    func removeTrack(_ track: TrackModel) {
+        guard let index = self.playlist.firstIndex(of: track) else { return }
+        
+        self.playlist.remove(at: index)
+        let nextPosition = index < self.playlist.count ? index : 0
+        self.play(from: self.playlist[nextPosition], position: nextPosition)
     }
 }
 

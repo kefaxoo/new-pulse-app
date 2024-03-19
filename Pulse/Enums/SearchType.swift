@@ -63,12 +63,7 @@ enum SearchType {
                 let types: [SearchType] = [.tracks]
                 return types
             case .soundcloud:
-                var soundcloudTypes: [SearchType] = [.tracks]
-                if service.source == .soundcloud,
-                   AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.searchSoundcloudPlaylists?.prod ?? false {
-                    soundcloudTypes.append(.playlists)
-                }
-                
+                let soundcloudTypes: [SearchType] = [.tracks, .playlists]
                 return soundcloudTypes
             case .deezer:
                 return [.tracks]
@@ -100,6 +95,15 @@ enum SearchType {
                 return PlaylistTableViewCell.id
             default:
                 return ""
+        }
+    }
+    
+    static func yandexMusicInit(rawValue: String) -> SearchType {
+        switch rawValue {
+            case "track":
+                return .tracks
+            default:
+                return .none
         }
     }
 }

@@ -7,13 +7,14 @@
 
 import UIKit
 import AlertKit
-
-fileprivate struct UIViewControllerStoredVariables {
-    static var spinnerAlert: AlertAppleMusic16View?
-    static var isSpinnerPresented = false
-}
+import PulseUIComponents
 
 extension UIViewController {
+    fileprivate struct UIViewControllerStoredVariables {
+        static var spinnerAlert: AlertAppleMusic16View?
+        static var isSpinnerPresented = false
+    }
+    
     private var spinnerAlert: AlertAppleMusic16View? {
         get {
             return UIViewControllerStoredVariables.spinnerAlert
@@ -86,7 +87,7 @@ extension UIViewController {
 }
 
 extension UIViewController {
-    var topScreenInset: CGFloat {
-        return -(UIApplication.shared.statusBarFrame.height + (self.navigationController?.navigationBar.frame.height ?? 0))
-    }
+    static var safeAreaInsets: UIEdgeInsets? {
+         return UIApplication.shared.keyWindow?.safeAreaInsets
+     }
 }

@@ -97,10 +97,6 @@ final class TrackTableViewCell: BaseUITableViewCell {
         return stackView
     }()
     
-    private lazy var actionsManager: ActionsManager = {
-        return ActionsManager(self)
-    }()
-    
     private var track: TrackModel?
     private var isLibraryController = false
 }
@@ -192,7 +188,7 @@ extension TrackTableViewCell {
             }
         }
         
-        self.actionsManager.trackActions(for: track) { [weak self] menu in
+        ActionsManager(nil).trackActions(for: track) { [weak self] menu in
             DispatchQueue.main.async {
                 self?.actionsButton.menu = menu
             }
@@ -214,18 +210,14 @@ extension TrackTableViewCell {
 // MARK: -
 // MARK: ActionsManagerDelegate
 extension TrackTableViewCell: ActionsManagerDelegate {
-    func updatedTrack(_ track: TrackModel) {
-        self.track = track
-    }
-    
     func updateButtonMenu() {
         guard let track else { return }
         
-        self.actionsButton.menu = actionsManager.trackActions(track)
-    }
-    
-    func reloadData() {
-        self.delegate?.reloadData()
+        ActionsManager(nil).trackActions(for: track) { [weak self] menu in
+            DispatchQueue.main.async {
+                self?.actionsButton.menu = menu
+            }
+        }
     }
     
     func updateTrackState(_ state: TrackLibraryState) {

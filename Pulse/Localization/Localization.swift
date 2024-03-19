@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol Localizable {
+    var localization: String { get }
+}
+
 enum Localization {}
 
 // MARK: -
@@ -45,6 +49,7 @@ extension Localization {
         case appearance  = "words.appearance"
         case help        = "words.help"
         case main        = "words.main"
+        case cancel      = "words.cancel"
         
         var localization: String {
             return self.rawValue.localized
@@ -61,6 +66,7 @@ extension Localization {
         enum Playlists {}
         enum Tracks {}
         enum Search {}
+        enum AccountBlocked {}
     }
 }
 
@@ -136,6 +142,18 @@ extension Localization.Controllers.Search {
     }
 }
 
+// MARK: Account Blocked
+extension Localization.Controllers.AccountBlocked {
+    enum Label: String, Localizable {
+        case title = "controller.accountBlocked.label.title"
+        case description = "controller.accountBlocked.label.description"
+        
+        var localization: String {
+            return self.rawValue.localized
+        }
+    }
+}
+
 // MARK: -
 // MARK: Pop Up
 extension Localization {
@@ -145,6 +163,14 @@ extension Localization {
             
             func localization(with parameter: String) -> String {
                 return self.rawValue.localized(parameters: [parameter])
+            }
+        }
+        
+        enum Logout: String {
+            case title = "popUp.logout.title"
+            
+            var localization: String {
+                return self.rawValue.localized
             }
         }
     }

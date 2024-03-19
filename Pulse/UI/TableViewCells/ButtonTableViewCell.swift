@@ -35,6 +35,7 @@ class ButtonTableViewCell: BaseUITableViewCell {
         button.tintColor = SettingsManager.shared.color.color
         button.configuration = .tinted()
         button.showsMenuAsPrimaryAction = self.type.isMenu
+        button.setContentHuggingPriority(.required, for: .horizontal)
         return button
     }()
     
@@ -98,8 +99,6 @@ extension ButtonTableViewCell {
             make.leading.equalTo(self.contentStackView.snp.trailing).offset(16)
             make.centerY.equalTo(self.contentStackView.snp.centerY)
         }
-        
-        self.layoutIfNeeded()
     }
     
     private func setupButton() {

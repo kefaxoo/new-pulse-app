@@ -46,6 +46,13 @@ final class ArtistModel {
         self.service = .pulse
     }
     
+    init(_ artist: DeezerArtist) {
+        self.id = artist.id
+        self.name = artist.name
+        self.image = ImageModel(small: artist.pictureSmall, original: artist.pictureBig)
+        self.service = .deezer
+    }
+    
     var json: [String: Any] {
         return [
             "id"  : self.id,

@@ -11,7 +11,7 @@ import PulseUIComponents
 final class AccountBlockedViewController: BaseUIViewController {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Access Denied"
+        label.text = Localization.Controllers.AccountBlocked.Label.title.localization
         label.font = .systemFont(ofSize: 30, weight: .semibold)
         label.textAlignment = .center
         return label
@@ -19,7 +19,7 @@ final class AccountBlockedViewController: BaseUIViewController {
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "Your account and device do not have access to Pulse"
+        label.text = Localization.Controllers.AccountBlocked.Label.description.localization
         label.textAlignment = .center
         label.numberOfLines = 0
         return label
@@ -45,7 +45,7 @@ extension AccountBlockedViewController {
     override func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(UIEdgeInsets(horizontal: 16))
+            make.leading.trailing.equalToSuperview().inset(horizontal: 16)
         }
     }
 }

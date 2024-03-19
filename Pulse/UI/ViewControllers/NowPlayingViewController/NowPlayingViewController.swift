@@ -80,7 +80,7 @@ final class NowPlayingViewController: BaseUIViewController {
         button.showsMenuAsPrimaryAction = true
         button.titleLabel?.font = .systemFont(ofSize: 15)
         if let artist = self.artist {
-            button.menu = self.actionsManager.artistNowPlayingActions(artist)
+            button.menu = ActionsManager(nil).artistNowPlayingActions(artist)
         }
         
         return button
@@ -88,6 +88,31 @@ final class NowPlayingViewController: BaseUIViewController {
     
     private lazy var artistMarqueeView: MarqueeView = {
         return self.artistButton.wrapIntoMarquee()
+    }()
+    
+    private lazy var likeButton: LikeButton = {
+        let isLiked: Bool
+        if let track = AudioPlayer.shared.track {
+            isLiked = LibraryManager.shared.isTrackInLibrary(track)
+        } else {
+            isLiked = false
+        }
+        
+        let button = LikeButton(isLiked: isLiked) { [weak self] isLiked in
+            guard let track = AudioPlayer.shared.track else { return }
+            
+            if isLiked {
+                NewLibraryManager.likeTrack(track)
+            } else {
+                NewLibraryManager.dislikeTrack(track)
+            }
+        }
+        
+        var configuration = UIButton.Configuration.plain()
+        configuration.preferredSymbolConfigurationForImage = .init(font: .systemFont(ofSize: 17), scale: .large)
+        button.configuration = configuration
+        button.tintColor = SettingsManager.shared.color.color
+        return button
     }()
     
     private lazy var actionsButton: UIButton = {
@@ -100,7 +125,7 @@ final class NowPlayingViewController: BaseUIViewController {
         button.configuration = configuration
         button.showsMenuAsPrimaryAction = true
         if let track = self.track {
-            button.menu = self.actionsManager.trackActions(track, shouldReverseActions: true)
+            button.menu = ActionsManager(nil).trackActions(track, shouldReverseActions: true)
         }
         
         return button
@@ -110,6 +135,7 @@ final class NowPlayingViewController: BaseUIViewController {
         let view = UIView(with: .clear)
         view.addSubview(titleMarqueeView)
         view.addSubview(artistMarqueeView)
+        view.addSubview(likeButton)
         view.addSubview(actionsButton)
         return view
     }()
@@ -120,8 +146,7 @@ final class NowPlayingViewController: BaseUIViewController {
         slider.tag = 1001
         slider.defaultProgressColor = SettingsManager.shared.color.color
         slider.enlargedProgressColor = SettingsManager.shared.color.color
-        slider.value = Float((AudioPlayer.shared.currentTime ?? 0
-                             ) / (AudioPlayer.shared.duration ?? 0))
+        slider.value = 0
         return slider
     }()
     
@@ -129,6 +154,13 @@ final class NowPlayingViewController: BaseUIViewController {
         let label = UILabel()
         label.font = .systemFont(ofSize: 13)
         label.text = "--:--"
+        return label
+    }()
+    
+    private lazy var trackLabel: NowPlayingLabelView = {
+        let label = NowPlayingLabelView()
+        label.isHidden = true
+        label.alpha = 0
         return label
     }()
     
@@ -266,10 +298,6 @@ final class NowPlayingViewController: BaseUIViewController {
         return UIPanGestureRecognizer(target: self, action: #selector(swipeDismissAction))
     }()
     
-    private lazy var actionsManager: ActionsManager = { 
-        return ActionsManager(self)
-    }()
-    
     private var track: TrackModel? {
         return AudioPlayer.shared.track
     }
@@ -312,9 +340,11 @@ extension NowPlayingViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        self.durationSlider.isUserInteractionEnabled = AudioPlayer.shared.isTrackLoaded
         guard AudioPlayer.shared.isTrackLoaded else { return }
         
         shouldFetchCanvas()
+        self.trackLabel.updateLabel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -322,6 +352,8 @@ extension NowPlayingViewController {
         
         self.statusBarStyle = .default
         self.overrideUserInterfaceStyle = SettingsManager.shared.appearance.userIntefaceStyle
+        
+        self.addNotification(name: .trackLibraryStateWasUpdated, selector: #selector(updateLibraryState))
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -346,6 +378,7 @@ extension NowPlayingViewController {
         self.view.addSubview(artistInfoView)
         self.view.addSubview(dismissButton)
         self.view.addSubview(contentVerticalStackView)
+        self.view.addSubview(trackLabel)
     }
     
     override func setupConstraints() {
@@ -353,9 +386,8 @@ extension NowPlayingViewController {
         canvasSubstrateView.snp.makeConstraints({ $0.edges.equalToSuperview() })
         
         artistInfoView.snp.makeConstraints { make in
-            make.bottom.equalTo(MainCoordinator.shared.safeAreaInsets.bottom).offset(-30)
-            make.leading.trailing.equalToSuperview().inset(UIEdgeInsets(horizontal: 30))
-            make.height.equalTo(30)
+            make.bottom.leading.trailing.equalToSuperview()
+            make.height.equalTo(60 + MainCoordinator.shared.safeAreaInsets.bottom)
         }
         
         dismissButton.snp.makeConstraints { make in
@@ -374,15 +406,21 @@ extension NowPlayingViewController {
         
         titleMarqueeView.snp.makeConstraints { make in
             make.top.leading.equalToSuperview()
-            make.trailing.equalTo(actionsButton.snp.leading).offset(-20)
+            make.trailing.equalTo(likeButton.snp.leading).offset(-20)
             make.height.equalTo(titleLabel.textSize.height)
         }
         
         artistMarqueeView.snp.makeConstraints { make in
             make.bottom.leading.equalToSuperview()
             make.top.equalTo(titleMarqueeView.snp.bottom).offset(8)
-            make.trailing.equalTo(actionsButton.snp.leading).offset(-20)
+            make.trailing.equalTo(likeButton.snp.leading).offset(-20)
             make.height.equalTo(artistButton.titleLabel?.textSize.height ?? 0)
+        }
+        
+        likeButton.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.width.equalTo(trackInfoView.snp.height)
+            make.trailing.equalTo(actionsButton.snp.leading).offset(-10)
         }
         
         actionsButton.snp.makeConstraints { make in
@@ -395,6 +433,11 @@ extension NowPlayingViewController {
         })
         
         durationStackView.snp.makeConstraints({ $0.height.equalTo(currentTimeLabel.textSize.height) })
+        
+        trackLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(durationStackView.snp.centerY)
+            make.centerX.equalToSuperview()
+        }
         
         volumeStackView.snp.makeConstraints({ $0.height.equalTo(20) })
         
@@ -443,13 +486,16 @@ extension NowPlayingViewController: NowPlayingPresenterDelegate {
     func setTrack(_ track: TrackModel) {
         self.titleLabel.text = track.title
         self.artistButton.setTitle(track.artistText, for: .normal)
-        self.actionsButton.menu = actionsManager.trackActions(track, shouldReverseActions: true)
+        self.actionsButton.menu = ActionsManager(nil).trackActions(track, shouldReverseActions: true)
         if let artist = track.artist {
-            self.artistButton.menu = actionsManager.artistNowPlayingActions(artist)
+            self.artistButton.menu = ActionsManager(nil).artistNowPlayingActions(artist)
         }
         
         self.titleMarqueeView.reloadData()
         self.artistMarqueeView.reloadData()
+        
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(fetchArtistIfNeeded), object: nil)
+        perform(#selector(fetchArtistIfNeeded), with: nil)
     }
 }
 
@@ -485,6 +531,7 @@ extension NowPlayingViewController {
     
     @objc private func previousTrackAction(_ sender: UIButton) {
         AudioPlayer.shared.previousTrack()
+        self.trackDidChanged()
     }
     
     @objc private func playPauseAction(_ sender: UIButton) {
@@ -500,6 +547,7 @@ extension NowPlayingViewController {
     
     @objc private func nextTrackAction(_ sender: UIButton) {
         AudioPlayer.shared.nextTrack()
+        self.trackDidChanged()
     }
     
     @objc private func didTapAction(_ sender: UITapGestureRecognizer) {
@@ -511,6 +559,28 @@ extension NowPlayingViewController {
         self.contentVerticalStackView.smoothIsHiddenAfterAlpha.toggle()
         self.canvasSubstrateView.smoothIsHidden.toggle()
         self.artistInfoView.smoothIsHidden.toggle()
+        self.trackLabel.smoothIsHiddenAfterAlpha.toggle()
+    }
+    
+    func trackDidChanged() {
+        self.durationSlider.isUserInteractionEnabled = false
+        self.durationSlider.value = 0
+        self.leftTimeLabel.text = "--:--"
+        self.currentTimeLabel.text = "--:--"
+    }
+    
+    @objc func updateLibraryState(_ notification: Notification) {
+        guard let track = AudioPlayer.shared.track,
+              let state = NewLibraryManager.parseNotification(notification).1
+        else { return }
+        
+        self.actionsButton.menu = ActionsManager(nil).trackActions(track, shouldReverseActions: true)
+        
+        if let artist = track.artist {
+            self.artistButton.menu = ActionsManager(nil).artistNowPlayingActions(artist)
+        }
+        
+        self.likeButton.isLikedWithoutCompletion = state != .none
     }
 }
 
@@ -527,6 +597,7 @@ extension NowPlayingViewController: AudioPlayerControllerDelegate {
         self.artistInfoView.smoothIsHidden = true
         self.contentVerticalStackView.smoothIsHiddenAfterAlpha = false
         self.coverImageView.smoothIsHiddenWithAlpha = false
+        self.trackDidChanged()
         self.removeTap()
         self.canvasView.removeVideo()
         self.overrideUserInterfaceStyle = SettingsManager.shared.appearance.userIntefaceStyle
@@ -537,6 +608,20 @@ extension NowPlayingViewController: AudioPlayerControllerDelegate {
         self.artistButton.setTitle(track.artistText, for: .normal)
         self.titleMarqueeView.reloadData()
         self.artistMarqueeView.reloadData()
+        
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(fetchArtistIfNeeded), object: nil)
+        perform(#selector(fetchArtistIfNeeded), with: nil)
+    }
+    
+    @objc func fetchArtistIfNeeded() {
+        guard let track = AudioPlayer.shared.track,
+              let artist = track.artist,
+              track.service == .deezer
+        else { return }
+        
+        DeezerProvider.shared.fetchArtistInfo(for: artist) { [weak self] artist in
+            self?.artistInfoView.artist = artist
+        }
     }
     
     func updateDuration(_ duration: Float, currentTime: Float) {
@@ -564,8 +649,10 @@ extension NowPlayingViewController: AudioPlayerControllerDelegate {
             for: .normal
         )
         
+        self.durationSlider.isUserInteractionEnabled = true
         self.changeCoverSize(isSmall: !AudioPlayer.shared.isPlaying)
         shouldFetchCanvas()
+        self.trackLabel.updateLabel()
     }
 }
 
@@ -607,16 +694,6 @@ extension NowPlayingViewController: SliderControlDelegate {
     
     func valueDidNotChange(tag: Int) {
         self.configureSwipe()
-    }
-}
-
-// MARK: -
-// MARK: ActionsManagerDelegate
-extension NowPlayingViewController: ActionsManagerDelegate {
-    func updateButtonMenu() {
-        guard let track else { return }
-        
-        actionsButton.menu = actionsManager.trackActions(track, shouldReverseActions: true)
     }
 }
 

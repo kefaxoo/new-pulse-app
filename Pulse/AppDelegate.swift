@@ -9,6 +9,7 @@ import UIKit
 import PulseMedia
 import FirebaseCore
 import FirebasePerformance
+import CallStackParserSPM
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,18 +21,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         debugLog(AppEnvironment.current)
-        MainCoordinator.shared.makeLaunchScreenAsRoot()
+        MainCoordinator.shared.makeSplashScreenAsRoot()
         SettingsManager.shared.initRealmVariables()
         NetworkManager.shared.checkNetwork()
         NetworkManager.shared.updateValues()
         ServicesManager.shared.refreshTokens()
-        SettingsManager.shared.yandexMusic.checkPlusSubscription()
-        LibraryManager.shared.removeTemporaryCache()
-        PulseProvider.shared.fetchSettings()
+        if SettingsManager.shared.yandexMusic.isSigned {
+            SettingsManager.shared.yandexMusic.checkPlusSubscription()
+        }
+        
+        if SettingsManager.shared.pulse.isSignedIn {
+            PulseProvider.shared.fetchSettings()
+        }
+        
         SettingsManager.shared.pulse.isUserBlocked {
             SettingsManager.shared.updateFeatures {
                 MainCoordinator.shared.firstLaunch {
-                    LibraryManager.shared.initialSetup()
+                    NewLibraryManager.appStarting()
                     trace?.stop()
                 }
             }

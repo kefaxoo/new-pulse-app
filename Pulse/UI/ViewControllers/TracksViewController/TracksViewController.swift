@@ -93,13 +93,7 @@ extension TracksViewController {
         super.viewWillAppear(animated)
         self.applyColor()
         AudioPlayer.shared.tableViewDelegate = self
-        NotificationCenter.default.addObserver(self, selector: #selector(updateLibraryState), name: .updateLibraryState, object: nil)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        NotificationCenter.default.removeObserver(self, name: .updateLibraryState, object: nil)
+        self.addNotification(name: .trackLibraryStateWasUpdated, selector: #selector(updateLibraryState))
     }
 }
 
@@ -125,6 +119,21 @@ extension TracksViewController: UITableViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.presenter.scrollViewDidScroll(scrollView)
+    }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        return ActionsManager(nil)
+            .trackSwipeActionsConfiguration(
+                for: self.presenter.track(at: indexPath),
+                swipeDirection: .leadingToTrailing
+            )
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        return ActionsManager(nil).trackSwipeActionsConfiguration(
+                for: self.presenter.track(at: indexPath),
+                swipeDirection: .trailingToLeading
+            )
     }
 }
 
@@ -175,11 +184,23 @@ extension TracksViewController: AudioPlayerTableViewDelegate {
 // MARK: Actions
 extension TracksViewController {
     @objc func updateLibraryState(_ notification: Notification) {
-        guard let track = notification.userInfo?["track"] as? TrackModel,
-              let state = notification.userInfo?["state"] as? TrackLibraryState,
-              let index = self.presenter.index(for: track)
+        let (track, state) = NewLibraryManager.parseNotification(notification)
+        
+        guard let track,
+              let index = self.presenter.index(for: track),
+              let state
         else { return }
         
-        (self.tracksTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? TrackTableViewCell)?.updateTrackState(state)
+        if self.type == .library,
+           state == .none {
+            self.presenter.removeTrack(atIndex: index)
+            self.tracksTableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .left)
+            AudioPlayer.shared.removeTrack(track)
+        } else {
+            let cell = self.tracksTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? TrackTableViewCell
+            
+            cell?.updateButtonMenu()
+            cell?.updateTrackState(state)
+        }
     }
 }

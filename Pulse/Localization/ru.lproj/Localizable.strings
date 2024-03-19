@@ -24,6 +24,9 @@
 "alert.password.doesnt.meet.requirements" = "Пароль не соответствует требованиям";
 
 /*  */
+"controller.accountBlocked.label.description" = "Ваш аккаунт и устройство не имеет доступа к Pulse";
+
+/*  */
 "controller.auth.button.continue.with.apple" = "Продолжить через Apple";
 
 /*  */
@@ -180,6 +183,9 @@
 "lines.yourPlaylists" = "Ваши плейлисты";
 
 /*  */
+"popUp.logout.title" = "Вы уверены, что хотите выйти?";
+
+/*  */
 "popUp.verifyPulseAccount.buttons.openTelegramBot" = "Открыть Telegram бота";
 
 /*  */
@@ -223,6 +229,9 @@
 
 /*  */
 "words.blue" = "Синий";
+
+/*  */
+"words.cancel" = "Отмена";
 
 /*  */
 "words.cyan" = "Голубой";

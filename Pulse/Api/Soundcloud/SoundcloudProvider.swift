@@ -169,7 +169,7 @@ final class SoundcloudProvider: BaseRestApiProvider {
             task?.cancel()
         }
         
-        task = urlSession.returnDataTask(
+        task = urlSession.dataTask(
             with: URLRequest(
                 type: SoundcloudApi.playableLink(
                     id: id
@@ -251,7 +251,7 @@ final class SoundcloudProvider: BaseRestApiProvider {
             task?.cancel()
         }
         
-        task = urlSession.returnDataTask(
+        task = urlSession.dataTask(
             with: URLRequest(
                 type: SoundcloudApi.search(
                     type: searchType,

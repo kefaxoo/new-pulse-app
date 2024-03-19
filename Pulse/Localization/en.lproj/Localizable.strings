@@ -40,6 +40,7 @@
 "words.appearance"  = "Appearance";
 "words.help"        = "Help";
 "words.main"        = "Main";
+"words.cancel"      = "Cancel";
 
 // MARK: -
 // MARK: Controllers
@@ -57,7 +58,7 @@
 "controller.playlists.searchController.typeQuery" = "Type playlist name...";
 
 // MARK: Tracks controller
-// MARK: Search controllers
+// MARK: Search controller
 "controller.tracks.searchController.typeQuery" = "Type track...";
 
 // MARK: Content Unavailable Views
@@ -70,10 +71,18 @@
 // MARK: Content Unavailable Views
 "controller.search.contentUnavailableView.typeQuery" = "Type query in search bar";
 
+// MARK: Account Blocked controller
+// MARK: Labels
+"controller.accountBlocked.label.title" = "Access Denied";
+"controller.accountBlocked.label.description" = "Your account and device do not have access to Pulse";
+
 // MARK: -
 // MARK: Pop Up
 // MARK: Verify Pulse Account Pop Up
 "popUp.verifyPulseAccount.description" = "To verify account, go to Telegrm bot and send \\verify %@";
+
+// MARK: Logout Pop Up
+"popUp.logout.title" = "Are you sure to log out?";
 
 // MARK: Buttons
 "popUp.verifyPulseAccount.buttons.openTelegramBot" = "Open Telegram Bot";
