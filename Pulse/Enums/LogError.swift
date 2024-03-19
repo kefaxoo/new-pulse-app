@@ -12,4 +12,5 @@ enum LogError: String {
     case none = ""
     case pulseExternalSign = "Pulse | External Sign"
     case pulseSignIn = "Pulse | Sign In"
+    case soundcloudSignInCellDidNotRefresh = "Soundcloud | Sign In | Cell did not refresh"
 }

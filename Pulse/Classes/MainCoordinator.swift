@@ -164,7 +164,6 @@ final class MainCoordinator: NSObject {
     
     func makeTabBarAsRoot() {
         self.mainTabBarController = MainTabBarController()
-        LibraryManager.shared.fetchLibrary()
         self.makeRootVC(vc: self.mainTabBarController)
     }
     

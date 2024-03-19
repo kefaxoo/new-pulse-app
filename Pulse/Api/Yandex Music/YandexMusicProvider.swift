@@ -216,7 +216,11 @@ final class YandexMusicProvider: BaseRestApiProvider {
         self.urlSession.dataTask(with: URLRequest(type: YandexMusicApi.searchHistory(type: type), shouldPrintLog: self.shouldPrintLog)) { response in
             switch response {
                 case .success(let response):
-                    guard let history = response.data?.map(to: YandexMusicBaseResult<[ResponseYandexMusicSearchHistoryModel]>.self)?.result else { return }
+                    guard let history = response
+                        .data?
+                        .map(to: YandexMusicBaseResult<[ResponseYandexMusicSearchHistoryModel]>.self)?
+                        .result
+                    else { return }
                     
                     success(SearchResponse(results: history, canLoadMore: false))
                 case .failure:

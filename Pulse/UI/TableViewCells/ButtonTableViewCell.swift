@@ -35,6 +35,7 @@ class ButtonTableViewCell: BaseUITableViewCell {
         button.tintColor = SettingsManager.shared.color.color
         button.configuration = .tinted()
         button.showsMenuAsPrimaryAction = self.type.isMenu
+        button.setContentHuggingPriority(.required, for: .horizontal)
         return button
     }()
     

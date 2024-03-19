@@ -9,14 +9,12 @@ import Foundation
 import RealmSwift
 
 extension Notification.Name {
-    static let removeTrackFromLibrary = Notification.Name("removeTrackFromLibrary")
-    static let addTrackToLibrary = Notification.Name("addTrackToLibrary")
-    static let trackWasCached = Notification.Name("trackWasCached")
+    static let trackLibraryStateWasUpdated = Notification.Name("trackLibraryStateWasUpdated")
 }
 
 final class NewLibraryManager {
     static func appStarting() {
-        debugPrint(URL(filename: "", path: .documentDirectory)?.absoluteString)
+        debugPrint(URL(filename: "", path: .documentDirectory)?.absoluteString as Any)
         
         self.createDirectoriesIfNeeded()
         self.loadCoversIfNeeded()
@@ -34,6 +32,21 @@ extension NewLibraryManager {
         DispatchQueue.main.async {
             let libraryTrack = LibraryTrackModel(track)
             RealmManager<LibraryTrackModel>().write(object: libraryTrack)
+            AudioPlayer.shared.setupTrackNowPlayingCommands()
+            
+            NotificationCenter.default.post(name: .trackLibraryStateWasUpdated, object: nil, userInfo: [
+                "track": track,
+                "state": TrackLibraryState.added
+            ])
+            
+            if SettingsManager.shared.autoDownload {
+                DownloadManager.shared.addTrackToQueue(track) {
+                    NotificationCenter.default.post(name: .trackLibraryStateWasUpdated, object: nil, userInfo: [
+                        "track": track,
+                        "state": TrackLibraryState.downloaded
+                    ])
+                }
+            }
         }
         
         switch track.service {
@@ -55,26 +68,15 @@ extension NewLibraryManager {
         
         AlertView.shared.present(title: "Added to library", alertType: .done, system: .iOS17AppleMusic)
         
-        NotificationCenter.default.post(name: .addTrackToLibrary, object: nil, userInfo: [
-            "track": track,
-            "state": TrackLibraryState.added
-        ])
-        
         PulseProvider.shared.likeTrack(track)
-        
-        if SettingsManager.shared.autoDownload {
-            DownloadManager.shared.addTrackToQueue(track) {
-                NotificationCenter.default.post(name: .trackWasCached, object: nil, userInfo: [
-                    "track": track,
-                    "state": TrackLibraryState.downloaded
-                ])
-            }
-        }
     }
     
     static func dislikeTrack(_ track: TrackModel) {
         DispatchQueue.main.async {
-            guard let libraryTrack = RealmManager<LibraryTrackModel>().read().first(where: { $0.id == track.id && $0.service == track.service.rawValue && $0.source == track.source.rawValue }) else { return }
+            guard let libraryTrack = RealmManager<LibraryTrackModel>()
+                .read()
+                .first(where: { $0.id == track.id && $0.service == track.service.rawValue && $0.source == track.source.rawValue })
+            else { return }
             
             if !libraryTrack.coverFilename.isEmpty,
                RealmManager<LibraryTrackModel>().read().filter({ track.image?.contains($0.coverFilename) ?? false }).count < 2,
@@ -86,13 +88,17 @@ extension NewLibraryManager {
                 }
             }
             
-            let tracks = RealmManager<LibraryTrackModel>().read().filter({ $0.artistId == (track.artist?.id ?? -1) || $0.artistIds.contains(track.artist?.id ?? -1) })
+            let tracks = RealmManager<LibraryTrackModel>()
+                .read()
+                .filter({ $0.artistId == (track.artist?.id ?? -1) || $0.artistIds.contains(track.artist?.id ?? -1) })
+            
             if tracks.count < 2,
                let artist = RealmManager<LibraryArtistModel>().read().first(where: { $0.id == tracks.first?.artistId }) {
                 RealmManager<LibraryArtistModel>().delete(object: artist)
             }
             
             RealmManager<LibraryTrackModel>().delete(object: libraryTrack)
+            AudioPlayer.shared.setupTrackNowPlayingCommands()
         }
         
         switch track.service {
@@ -114,7 +120,7 @@ extension NewLibraryManager {
         
         AlertView.shared.present(title: "Removed from library", alertType: .done, system: .iOS17AppleMusic)
         
-        NotificationCenter.default.post(name: .removeTrackFromLibrary, object: nil, userInfo: [
+        NotificationCenter.default.post(name: .trackLibraryStateWasUpdated, object: nil, userInfo: [
             "track": track,
             "state": TrackLibraryState.none
         ])
@@ -123,11 +129,16 @@ extension NewLibraryManager {
     }
     
     static func getCachedFilename(for track: TrackModel) -> String? {
-        return RealmManager<LibraryTrackModel>().read().first(where: { $0.id == track.id && $0.service == track.service.rawValue && $0.source == track.source.rawValue })?.trackFilename
+        return RealmManager<LibraryTrackModel>()
+            .read()
+            .first(where: { $0.id == track.id && $0.service == track.service.rawValue && $0.source == track.source.rawValue })?
+            .trackFilename
     }
     
     static func isTrackInLibrary(_ track: TrackModel) -> Bool {
-        return RealmManager<LibraryTrackModel>().read().first(where: { return $0.id == track.id && $0.service == track.service.rawValue && $0.source == track.source.rawValue }) != nil
+        return RealmManager<LibraryTrackModel>()
+            .read()
+            .first(where: { return $0.id == track.id && $0.service == track.service.rawValue && $0.source == track.source.rawValue }) != nil
     }
     
     static func isTrackDownloaded(_ track: TrackModel) -> Bool {
@@ -266,5 +277,13 @@ extension NewLibraryManager {
         let artistsIds = List<Int>()
         artists.forEach({ artistsIds.append(self.createArtistIfNeeded($0)) })
         return artistsIds
+    }
+}
+
+// MARK: -
+// MARK: Notifications
+extension NewLibraryManager {
+    static func parseNotification(_ notification: Notification) -> (TrackModel?, TrackLibraryState?) {
+        return (notification.userInfo?["track"] as? TrackModel, notification.userInfo?["state"] as? TrackLibraryState)
     }
 }

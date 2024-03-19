@@ -30,6 +30,18 @@ final class LikeButton: UIButton {
         }
     }
     
+    var isLikedWithoutCompletion: Bool {
+        get {
+            return self._isLiked
+        }
+        set {
+            guard newValue != self._isLiked else { return }
+            
+            self._isLiked = newValue
+            self.animate()
+        }
+    }
+    
     init(isLiked: Bool = false, toggleCompletion: ToggleCompletion? = nil) {
         self._isLiked = isLiked
         self.toggleCompletion = toggleCompletion

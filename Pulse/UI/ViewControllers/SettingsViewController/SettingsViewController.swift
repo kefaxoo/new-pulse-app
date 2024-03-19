@@ -38,6 +38,7 @@ class SettingsViewController: BaseUIViewController {
         
         super.init(nibName: nil, bundle: nil)
         self.presenter.setView(self)
+        self.screenIdUrl = URL(string: "settings")
     }
     
     required init?(coder: NSCoder) {

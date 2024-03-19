@@ -83,6 +83,8 @@ final class NewSearchViewController: BaseUIViewController {
         return UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardAction))
     }()
     
+    private var isViewWillAppear: Bool = false
+    
     private let viewModel: SearchViewModel
     
     init(viewModel: SearchViewModel) {
@@ -107,7 +109,8 @@ extension NewSearchViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.addNotification(name: .updateLibraryState, selector: #selector(updateLibraryState), object: nil)
+        self.isViewWillAppear = true
+        self.addNotification(name: .trackLibraryStateWasUpdated, selector: #selector(updateLibraryState), object: nil)
         self.searchController.view.addGestureRecognizer(self.dismissKeyboardGesture)
         self.searchController.searchBar.tintColor = SettingsManager.shared.color.color
         AudioPlayer.shared.tableViewDelegate = self
@@ -226,13 +229,18 @@ private extension NewSearchViewController {
     }
     
     @objc func updateLibraryState(_ notification: Notification) {
+        let (track, state) = NewLibraryManager.parseNotification(notification)
+        
         guard self.viewModel.currentType == .tracks,
-              let track = notification.userInfo?["track"] as? TrackModel,
+              let track,
               let index = self.viewModel.trackIndex(for: track),
-              let state = notification.userInfo?["state"] as? TrackLibraryState
+              let state
         else { return }
         
-        (self.resultsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? TrackTableViewCell)?.updateTrackState(state)
+        let cell = self.resultsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? TrackTableViewCell
+        
+        cell?.updateButtonMenu()
+        cell?.updateTrackState(state)
     }
 }
 
@@ -253,7 +261,11 @@ extension NewSearchViewController: UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         self.serviceSegmentedControl.smoothIsHidden = false
         self.typeSegmentedControl.smoothIsHidden = false
-        self.viewModel.isSearchSuggestions = true
+        if !self.isViewWillAppear {
+            self.viewModel.isSearchSuggestions = true
+        }
+        
+        self.isViewWillAppear = false
     }
     
     func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
@@ -263,7 +275,6 @@ extension NewSearchViewController: UISearchBarDelegate {
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        self.emptySearchQueryContentView.show()
         self.viewModel.isSearchSuggestions = false
         self.viewModel.searchFor(query: "")
     }
@@ -329,6 +340,9 @@ extension NewSearchViewController: AudioPlayerTableViewDelegate {
     func changeStateImageView(_ state: CoverImageViewState, for track: TrackModel) {
         guard let index = self.viewModel.trackIndex(for: track) else { return }
         
-        (self.resultsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? TrackTableViewCell)?.changeState(state)
+        let cell = self.resultsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? TrackTableViewCell
+        
+        cell?.changeState(state)
+        cell?.updateButtonMenu()
     }
 }

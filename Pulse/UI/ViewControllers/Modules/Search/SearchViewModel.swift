@@ -25,6 +25,8 @@ final class SearchViewModel: NSObject {
         return self.currentService.source
     }
     
+    private var previousSource: SourceType = .none
+    
     private var searchResponse: Dynamic<SearchResponse?> = Dynamic(nil)
     
     private var query = ""
@@ -71,6 +73,7 @@ final class SearchViewModel: NSObject {
 extension SearchViewModel {
     func viewDidLoad() {
         self.currentService = self.services.first ?? .none
+        self.previousSource = self.currentService.source
         self.currentServices.value = self.services
         
         self.currentTypes.value = SearchType.types(for: self.currentService)
@@ -118,9 +121,14 @@ extension SearchViewModel {
 extension SearchViewModel {
     func serviceDidChange(index: Int) {
         self.currentService = self.currentServices.value[index]
+        self.previousSource = self.currentService.source
         self.currentTypes.value = SearchType.types(for: self.currentService)
         self.currentType = self.currentTypes.value.first ?? .none
         self.shouldScrollToTop = true
+        if self.query.isEmpty {
+            self.searchResponse.value = nil
+            self.shouldShowContentUnavailableView.value = self.currentService != .yandexMusic
+        }
         self.search()
     }
     
@@ -131,6 +139,14 @@ extension SearchViewModel {
     }
     
     func searchFor(query: String) {
+        guard self.query != query else { 
+            if query.isEmpty {
+                self.shouldShowContentUnavailableView.value = !self.currentSource.isHistoryAvailable
+            }
+            
+            return
+        }
+        
         self.query = query
         if isQueryActive {
             NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(search), object: nil)
@@ -214,6 +230,23 @@ private extension SearchViewModel {
         let types = SearchType.types(for: self.currentService)
         if self.currentTypes.value != types {
             self.currentTypes.value = types
+            shouldUpdateResponse = true
+        }
+        
+        if self.previousSource != self.currentSource {
+            self.previousSource = self.currentSource
+            if self.currentService == .yandexMusic {
+                if self.currentSource == .muffon {
+                    self.shouldShowContentUnavailableView.value = true
+                    if self.query.isEmpty {
+                        self.searchResponse.value = nil
+                    }
+                } else {
+                    self.isSearchSuggestions = !self.query.isEmpty
+                    self.shouldShowContentUnavailableView.value = self.query.isEmpty
+                }
+            }
+            
             shouldUpdateResponse = true
         }
         

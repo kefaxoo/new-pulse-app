@@ -80,7 +80,7 @@ final class NowPlayingViewController: BaseUIViewController {
         button.showsMenuAsPrimaryAction = true
         button.titleLabel?.font = .systemFont(ofSize: 15)
         if let artist = self.artist {
-            button.menu = self.actionsManager.artistNowPlayingActions(artist)
+            button.menu = ActionsManager(nil).artistNowPlayingActions(artist)
         }
         
         return button
@@ -102,9 +102,9 @@ final class NowPlayingViewController: BaseUIViewController {
             guard let track = AudioPlayer.shared.track else { return }
             
             if isLiked {
-                LibraryManager.shared.likeTrack(track)
+                NewLibraryManager.likeTrack(track)
             } else {
-                LibraryManager.shared.dislikeTrack(track)
+                NewLibraryManager.dislikeTrack(track)
             }
         }
         
@@ -125,7 +125,7 @@ final class NowPlayingViewController: BaseUIViewController {
         button.configuration = configuration
         button.showsMenuAsPrimaryAction = true
         if let track = self.track {
-            button.menu = self.actionsManager.trackActions(track, shouldReverseActions: true)
+            button.menu = ActionsManager(nil).trackActions(track, shouldReverseActions: true)
         }
         
         return button
@@ -298,10 +298,6 @@ final class NowPlayingViewController: BaseUIViewController {
         return UIPanGestureRecognizer(target: self, action: #selector(swipeDismissAction))
     }()
     
-    private lazy var actionsManager: ActionsManager = { 
-        return ActionsManager(self)
-    }()
-    
     private var track: TrackModel? {
         return AudioPlayer.shared.track
     }
@@ -356,6 +352,8 @@ extension NowPlayingViewController {
         
         self.statusBarStyle = .default
         self.overrideUserInterfaceStyle = SettingsManager.shared.appearance.userIntefaceStyle
+        
+        self.addNotification(name: .trackLibraryStateWasUpdated, selector: #selector(updateLibraryState))
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -488,9 +486,9 @@ extension NowPlayingViewController: NowPlayingPresenterDelegate {
     func setTrack(_ track: TrackModel) {
         self.titleLabel.text = track.title
         self.artistButton.setTitle(track.artistText, for: .normal)
-        self.actionsButton.menu = actionsManager.trackActions(track, shouldReverseActions: true)
+        self.actionsButton.menu = ActionsManager(nil).trackActions(track, shouldReverseActions: true)
         if let artist = track.artist {
-            self.artistButton.menu = actionsManager.artistNowPlayingActions(artist)
+            self.artistButton.menu = ActionsManager(nil).artistNowPlayingActions(artist)
         }
         
         self.titleMarqueeView.reloadData()
@@ -569,6 +567,20 @@ extension NowPlayingViewController {
         self.durationSlider.value = 0
         self.leftTimeLabel.text = "--:--"
         self.currentTimeLabel.text = "--:--"
+    }
+    
+    @objc func updateLibraryState(_ notification: Notification) {
+        guard let track = AudioPlayer.shared.track,
+              let state = NewLibraryManager.parseNotification(notification).1
+        else { return }
+        
+        self.actionsButton.menu = ActionsManager(nil).trackActions(track, shouldReverseActions: true)
+        
+        if let artist = track.artist {
+            self.artistButton.menu = ActionsManager(nil).artistNowPlayingActions(artist)
+        }
+        
+        self.likeButton.isLikedWithoutCompletion = state != .none
     }
 }
 
@@ -682,16 +694,6 @@ extension NowPlayingViewController: SliderControlDelegate {
     
     func valueDidNotChange(tag: Int) {
         self.configureSwipe()
-    }
-}
-
-// MARK: -
-// MARK: ActionsManagerDelegate
-extension NowPlayingViewController: ActionsManagerDelegate {
-    func updateButtonMenu() {
-        guard let track else { return }
-        
-        actionsButton.menu = actionsManager.trackActions(track, shouldReverseActions: true)
     }
 }
 
