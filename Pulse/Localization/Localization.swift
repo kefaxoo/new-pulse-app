@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol Localizable {
+    var localization: String { get }
+}
+
 enum Localization {}
 
 // MARK: -
@@ -62,6 +66,7 @@ extension Localization {
         enum Playlists {}
         enum Tracks {}
         enum Search {}
+        enum AccountBlocked {}
     }
 }
 
@@ -130,6 +135,18 @@ extension Localization.Controllers.Search {
     
     enum ContentUnavailableViews: String {
         case typeQuery = "controller.search.contentUnavailableView.typeQuery"
+        
+        var localization: String {
+            return self.rawValue.localized
+        }
+    }
+}
+
+// MARK: Account Blocked
+extension Localization.Controllers.AccountBlocked {
+    enum Label: String, Localizable {
+        case title = "controller.accountBlocked.label.title"
+        case description = "controller.accountBlocked.label.description"
         
         var localization: String {
             return self.rawValue.localized

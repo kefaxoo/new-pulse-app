@@ -2,10 +2,11 @@
 //  ConstraintMakerEditable+Ext.swift
 //  Pulse
 //
-//  Created by Bahdan Piatrouski on 16.03.24.
+//  Created by Bahdan Piatrouski on 25.02.24.
 //
 
 import UIKit
+import PulseUIComponents
 import SnapKit
 
 extension ConstraintMakerEditable {

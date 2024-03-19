@@ -145,8 +145,6 @@ extension AuthViewController {
     }
     
     @objc private func googleSignAction(_ sender: UIButton) {
-        guard AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSign?.prod ?? false else { return }
-        
         GIDSignIn.sharedInstance.signIn(withPresenting: self) { [weak self] signInResult, error in
             guard let email = signInResult?.user.profile?.email else {
                 if (error as? GIDSignInError)?.code != GIDSignInError.canceled {
@@ -176,8 +174,6 @@ extension AuthViewController {
     }
     
     @objc private func appleSignAction(_ sender: UIButton) {
-        guard AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSign?.prod ?? false else { return }
-        
         self.presenter.appleSign()
     }
 }

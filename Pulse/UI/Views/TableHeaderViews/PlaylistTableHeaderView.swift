@@ -22,18 +22,10 @@ final class PlaylistTableHeaderView: BaseUIView {
             if self.playlist.source != .soundcloud {
                 imageView.setImage(from: self.playlist.image?.original)
             } else {
-                if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSoundcloud?.prod ?? false {
-                    PulseProvider.shared.soundcloudPlaylistArtworkV2(for: playlist) { [weak self] cover in
-                        imageView.setImage(from: cover.xl)
-                    } failure: { _, _ in
-                        imageView.image = Constants.Images.warning.image
-                    }
-                } else {
-                    PulseProvider.shared.soundcloudPlaylistArtwork(for: playlist) { [weak self] cover in
-                        imageView.setImage(from: cover.xl)
-                    } failure: { _ in
-                        imageView.image = Constants.Images.warning.image
-                    }
+                PulseProvider.shared.soundcloudPlaylistArtworkV2(for: playlist) { [weak self] cover in
+                    imageView.setImage(from: cover.xl)
+                } failure: { _, _ in
+                    imageView.image = Constants.Images.warning.image
                 }
             }
         }

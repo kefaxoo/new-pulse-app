@@ -66,52 +66,32 @@ final class MainCoordinator: NSObject {
     func firstLaunch(completion: @escaping(() -> ())) {
         if SettingsManager.shared.pulse.isSignedIn {
             if NetworkManager.shared.isReachable {
-                if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSign?.prod ?? false {
-                    guard SettingsManager.shared.pulse.shouldUpdateToken else {
-                        self.makeTabBarAsRoot()
-                        completion()
+                guard SettingsManager.shared.pulse.shouldUpdateToken else {
+                    self.makeTabBarAsRoot()
+                    completion()
+                    return
+                }
+                
+                PulseProvider.shared.accessTokenV3 { [weak self] tokens in
+                    SettingsManager.shared.pulse.updateTokens(tokens.tokens)
+                    completion()
+                    self?.makeTabBarAsRoot()
+                } failure: { [weak self] serverError, internalError in
+                    self?.makeAuthViewControllerAsRoot()
+                    completion()
+                    let localizedError = LocalizationManager.shared.localizeError(
+                        server: serverError,
+                        internal: internalError,
+                        default: Localization.Lines.unknownError.localization(with: "Pulse")
+                    )
+                    
+                    guard !SettingsManager.shared.pulse.username.isEmpty else {
+                        AlertView.shared.presentError(error: localizedError, system: .iOS16AppleMusic)
                         return
                     }
                     
-                    PulseProvider.shared.accessTokenV3 { [weak self] tokens in
-                        SettingsManager.shared.pulse.updateTokens(tokens.tokens)
-                        completion()
-                        self?.makeTabBarAsRoot()
-                    } failure: { [weak self] serverError, internalError in
-                        self?.makeAuthViewControllerAsRoot()
-                        completion()
-                        let localizedError = LocalizationManager.shared.localizeError(
-                            server: serverError,
-                            internal: internalError,
-                            default: Localization.Lines.unknownError.localization(with: "Pulse")
-                        )
-                        
-                        guard !SettingsManager.shared.pulse.username.isEmpty else {
-                            AlertView.shared.presentError(error: localizedError, system: .iOS16AppleMusic)
-                            return
-                        }
-                        
-                        self?.pushSignInViewController()
-                        AlertView.shared.presentError(error: localizedError, system: .iOS16AppleMusic)
-                    }
-                } else {
-                    PulseProvider.shared.accessToken { [weak self] loginUser in
-                        SettingsManager.shared.pulse.expireAt = loginUser.expireAt ?? 0
-                        SettingsManager.shared.pulse.updateAccessToken(loginUser.accessToken)
-                        LibraryManager.shared.fetchLibrary()
-                        completion()
-                        self?.makeTabBarAsRoot()
-                    } failure: { [weak self] error in
-                        self?.makeAuthViewControllerAsRoot()
-                        completion()
-                        guard !SettingsManager.shared.pulse.username.isEmpty else {
-                            AlertView.shared.presentError(error: error?.errorDescription, system: .iOS16AppleMusic)
-                            return
-                        }
-                        
-                        self?.pushSignInViewController()
-                        AlertView.shared.presentError(error: error?.errorDescription, system: .iOS16AppleMusic)
-                    }
+                    self?.pushSignInViewController()
+                    AlertView.shared.presentError(error: localizedError, system: .iOS16AppleMusic)
                 }
             } else {
                 completion()

@@ -45,35 +45,20 @@ final class SignUpPresenter: CoversPresenter<SignUpViewController> {
         
         let pulseAccount = Credentials(email: email, password: password)
         MainCoordinator.shared.currentViewController?.presentSpinner()
-        if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSign?.prod ?? false {
-            PulseProvider.shared.createUserV3(credentials: pulseAccount.withEncryptedPassword, signMethod: .email) { createUser in
-                MainCoordinator.shared.currentViewController?.dismissSpinner()
-                SettingsManager.shared.pulse.username = email
-                VerifyPulseAccountPopUpViewController(verificationCode: createUser.verifyModel).present()
-            } failure: { serverError, internalError in
-                MainCoordinator.shared.currentViewController?.dismissSpinner()
-                AlertView.shared.presentError(
-                    error: LocalizationManager.shared.localizeError(
-                        server: serverError,
-                        internal: internalError,
-                        default: Localization.Lines.unknownError.localization(with: "Pulse")
-                    ),
-                    system: .iOS16AppleMusic
-                )
-            }
-        } else {
-            PulseProvider.shared.createUser(credentials: pulseAccount.withEncryptedPassword) { createUser in
-                MainCoordinator.shared.currentViewController?.dismissSpinner()
-                SettingsManager.shared.pulse.username = email
-                SettingsManager.shared.pulse.saveCredentials(pulseAccount)
-                VerifyPulseAccountPopUpViewController(verificationCode: createUser.model).present()
-            } failure: { error in
-                MainCoordinator.shared.currentViewController?.dismissSpinner()
-                AlertView.shared.presentError(
-                    error: error?.errorDescription ?? Localization.Lines.unknownError.localization(with: "Pulse"),
-                    system: .iOS16AppleMusic
-                )
-            }
+        PulseProvider.shared.createUserV3(credentials: pulseAccount.withEncryptedPassword, signMethod: .email) { createUser in
+            MainCoordinator.shared.currentViewController?.dismissSpinner()
+            SettingsManager.shared.pulse.username = email
+            VerifyPulseAccountPopUpViewController(verificationCode: createUser.verifyModel).present()
+        } failure: { serverError, internalError in
+            MainCoordinator.shared.currentViewController?.dismissSpinner()
+            AlertView.shared.presentError(
+                error: LocalizationManager.shared.localizeError(
+                    server: serverError,
+                    internal: internalError,
+                    default: Localization.Lines.unknownError.localization(with: "Pulse")
+                ),
+                system: .iOS16AppleMusic
+            )
         }
     }
 }

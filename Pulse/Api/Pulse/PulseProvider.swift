@@ -386,7 +386,7 @@ final class PulseProvider: BaseRestApiProvider {
                     SettingsManager.shared.color = settings.color
                     SettingsManager.shared.soundcloudLike = settings.soundcloud.like
                     SettingsManager.shared.soundcloud.currentSource = settings.soundcloud.source.soundcloudService
-                    SettingsManager.shared.yandexMusicLike = settings.yandexMusic.like
+                    SettingsManager.shared.settings.yandexMusicLike = settings.yandexMusic.like
                     SettingsManager.shared.yandexMusic.currentSource = settings.yandexMusic.source.yandexMusicService
                     if let quality = settings.yandexMusic.quality,
                        let streaming = YandexMusicModel.Quality(rawValue: quality.streaming),

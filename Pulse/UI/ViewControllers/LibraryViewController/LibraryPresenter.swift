@@ -7,17 +7,18 @@
 
 import UIKit
 
-protocol LibraryPresenterDelegate: AnyObject {
-    func reloadData()
-    func setupNavigationTitle(_ title: String)
+protocol LibraryPresenterProtocol: BasePresenter, BaseTableViewPresenter {
+    var libraryTypesCount: Int { get }
+    
+    func setView(_ view: LibraryView?)
 }
 
-final class LibraryPresenter: BasePresenter {
+final class LibraryPresenter: LibraryPresenterProtocol {
     private var libraryTypes: [LibraryType]
     private var service: ServiceType
     private let libraryControllerType: LibraryControllerType
     
-    weak var delegate: LibraryPresenterDelegate?
+    weak var view: LibraryView?
     
     init(service: ServiceType, libraryControllerType: LibraryControllerType) {
         self.libraryTypes = LibraryType.allCases(by: service)
@@ -30,12 +31,16 @@ final class LibraryPresenter: BasePresenter {
     }
     
     func viewDidLoad() {
-        self.delegate?.setupNavigationTitle(self.libraryControllerType.title)
+        self.view?.setupNavigationTitle(self.libraryControllerType.title)
     }
     
     func viewWillAppear() {
         self.libraryTypes = LibraryType.allCases(by: service)
-        self.delegate?.reloadData()
+        self.view?.reloadData()
+    }
+    
+    func setView(_ view: LibraryView?) {
+        self.view = view
     }
 }
 

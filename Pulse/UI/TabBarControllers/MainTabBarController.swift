@@ -135,6 +135,7 @@ final class MainTabBarController: UITabBarController {
         searchCoordinator.start()
         
         let libraryVC = LibraryViewController(type: .library, service: .none)
+        
         libraryVC.tabBarItem = UITabBarItem(
             title: Localization.Words.library.localization,
             image: Constants.Images.libraryNonSelected.image,

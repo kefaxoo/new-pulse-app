@@ -148,15 +148,11 @@ final class ActionsManager {
             AudioPlayer.shared.setupTrackNowPlayingCommands()
             AlertView.shared.present(title: "Removed from library", alertType: .done, system: .iOS17AppleMusic)
             
-            if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newLibrary?.prod ?? false {
-                PulseProvider.shared.dislikeTrack(track)
-            } else {
-                LibraryManager.shared.removeTrack(track)
-            }
+            PulseProvider.shared.dislikeTrack(track)
             
             switch track.service {
                 case .yandexMusic:
-                    guard SettingsManager.shared.yandexMusicLike else { break }
+                    guard SettingsManager.shared.settings.yandexMusicLike else { return }
                     
                     YandexMusicProvider.shared.removeLikeTrack(track)
                 case .soundcloud:

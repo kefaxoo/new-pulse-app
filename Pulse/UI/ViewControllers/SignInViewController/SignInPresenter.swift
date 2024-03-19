@@ -44,47 +44,24 @@ final class SignInPresenter: CoversPresenter<SignInViewController> {
         
         let pulseAccount = Credentials(email: email, password: password)
         MainCoordinator.shared.currentViewController?.presentSpinner()
-        if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSign?.prod ?? false {
-            PulseProvider.shared.loginUserV3(credentials: pulseAccount.withEncryptedPassword, signMethod: .email) { loginUser in
-                MainCoordinator.shared.currentViewController?.dismissSpinner()
-                SettingsManager.shared.pulse.username = email
-                SettingsManager.shared.pulse.saveTokens(loginUser.tokens)
-                MainCoordinator.shared.makeTabBarAsRoot()
-            } failure: { serverError, internalError in
-                MainCoordinator.shared.currentViewController?.dismissSpinner()
-                AlertView.shared.presentError(
-                    error: LocalizationManager.shared.localizeError(
-                        server: serverError,
-                        internal: internalError,
-                        default: Localization.Lines.unknownError.localization(with: "Pulse")),
-                    system: .iOS16AppleMusic
-                )
-            } verifyClosure: { verificationCode in
-                MainCoordinator.shared.currentViewController?.dismissSpinner()
-                SettingsManager.shared.pulse.username = email
-                VerifyPulseAccountPopUpViewController(verificationCode: verificationCode.verifyModel).present()
-            }
-        } else {
-            PulseProvider.shared.loginUser(credentials: pulseAccount.withEncryptedPassword) { loginUser in
-                MainCoordinator.shared.currentViewController?.dismissSpinner()
-                SettingsManager.shared.pulse.username = email
-                SettingsManager.shared.pulse.expireAt = loginUser.expireAt ?? 0
-                SettingsManager.shared.pulse.saveCredentials(pulseAccount)
-                SettingsManager.shared.pulse.saveAcceessToken(Credentials(email: email, accessToken: loginUser.accessToken))
-                LibraryManager.shared.fetchLibrary()
-                MainCoordinator.shared.makeTabBarAsRoot()
-            } failure: { error in
-                MainCoordinator.shared.currentViewController?.dismissSpinner()
-                AlertView.shared.presentError(
-                    error: error?.errorDescription ?? Localization.Lines.unknownError.localization(with: "Pulse"),
-                    system: .iOS16AppleMusic
-                )
-            } verifyClosure: { verificationCode in
-                MainCoordinator.shared.currentViewController?.dismissSpinner()
-                SettingsManager.shared.pulse.username = email
-                SettingsManager.shared.pulse.saveCredentials(pulseAccount)
-                VerifyPulseAccountPopUpViewController(verificationCode: verificationCode.model).present()
-            }
+        PulseProvider.shared.loginUserV3(credentials: pulseAccount.withEncryptedPassword, signMethod: .email) { loginUser in
+            MainCoordinator.shared.currentViewController?.dismissSpinner()
+            SettingsManager.shared.pulse.username = email
+            SettingsManager.shared.pulse.saveTokens(loginUser.tokens)
+            MainCoordinator.shared.makeTabBarAsRoot()
+        } failure: { serverError, internalError in
+            MainCoordinator.shared.currentViewController?.dismissSpinner()
+            AlertView.shared.presentError(
+                error: LocalizationManager.shared.localizeError(
+                    server: serverError,
+                    internal: internalError,
+                    default: Localization.Lines.unknownError.localization(with: "Pulse")),
+                system: .iOS16AppleMusic
+            )
+        } verifyClosure: { verificationCode in
+            MainCoordinator.shared.currentViewController?.dismissSpinner()
+            SettingsManager.shared.pulse.username = email
+            VerifyPulseAccountPopUpViewController(verificationCode: verificationCode.verifyModel).present()
         }
     }
     
@@ -95,33 +72,19 @@ final class SignInPresenter: CoversPresenter<SignInViewController> {
         
         let pulseAccount = Credentials(email: email, password: password)
         MainCoordinator.shared.currentViewController?.presentSpinner()
-        if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSign?.prod ?? false {
-            PulseProvider.shared.resetPasswordV3(credentials: pulseAccount.withEncryptedPassword) { resetPassword in
-                MainCoordinator.shared.currentViewController?.dismissSpinner()
-                SettingsManager.shared.pulse.username = email
-                VerifyPulseAccountPopUpViewController(verificationCode: resetPassword.verifyModel).present()
-            } failure: { serverError, internalError in
-                MainCoordinator.shared.currentViewController?.dismissSpinner()
-                AlertView.shared.presentError(
-                    error: LocalizationManager.shared.localizeError(
-                        server: serverError,
-                        internal: internalError,
-                        default: Localization.Lines.unknownError.localization(with: "Pulse")),
-                    system: .iOS16AppleMusic
-                )
-            }
-        } else {
-            PulseProvider.shared.resetPassword(credentials: pulseAccount.withEncryptedPassword) { verificationCode in
-                MainCoordinator.shared.currentViewController?.dismissSpinner()
-                SettingsManager.shared.pulse.username = email
-                VerifyPulseAccountPopUpViewController(verificationCode: verificationCode.model).present()
-            } failure: { error in
-                MainCoordinator.shared.currentViewController?.dismissSpinner()
-                AlertView.shared.presentError(
-                    error: error?.errorDescription ?? Localization.Lines.unknownError.localization(with: "Pulse"),
-                    system: .iOS16AppleMusic
-                )
-            }
+        PulseProvider.shared.resetPasswordV3(credentials: pulseAccount.withEncryptedPassword) { resetPassword in
+            MainCoordinator.shared.currentViewController?.dismissSpinner()
+            SettingsManager.shared.pulse.username = email
+            VerifyPulseAccountPopUpViewController(verificationCode: resetPassword.verifyModel).present()
+        } failure: { serverError, internalError in
+            MainCoordinator.shared.currentViewController?.dismissSpinner()
+            AlertView.shared.presentError(
+                error: LocalizationManager.shared.localizeError(
+                    server: serverError,
+                    internal: internalError,
+                    default: Localization.Lines.unknownError.localization(with: "Pulse")),
+                system: .iOS16AppleMusic
+            )
         }
     }
 }
