@@ -3,7 +3,7 @@ name: TestFlight
 on:
   push:
     tags:
-      - 'test'
+      - 'test*'
       - 'release-*'
 
 jobs:
@@ -25,6 +25,8 @@ jobs:
     steps:
         - name: Checkout repository
           uses: actions/checkout@v4
+        - name: Setup Latest Swift
+          uses: SwiftyLab/setup-swift@latest  
         - name: Install Bundler
           run: gem install bundler
         - name: Install Dependencies for Bundler
