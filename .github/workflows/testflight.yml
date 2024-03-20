@@ -1,16 +1,10 @@
 name: TestFlight
 
 on:
-  workflow_dispatch:
-    inputs:
-      kind_of_build:
-        default: 'test_server_debug'
-        required: true
-        type: choice
-        options:
-        - test_server_debug
-        - release_server_debug
-        - release_server_prod
+  push:
+    tags:
+      - 'test'
+      - 'release-*'
 
 jobs:
   swiftlint:
@@ -27,7 +21,7 @@ jobs:
     name: Upload TestServerDebug Scheme
     runs-on: macos-latest
     needs: swiftlint
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.job == 'test_server_debug'
+    if: github.ref_type == 'tag' && contains(github.ref_name, 'test')
     steps:
         - name: Checkout repository
           uses: actions/checkout@v4
@@ -44,7 +38,7 @@ jobs:
     name: Upload ReleaseServerDebug Scheme
     runs-on: macos-latest
     needs: swiftlint
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.job == 'release_server_debug'
+    if: github.ref_type == 'tag' && contains(github.ref_name, 'release-debug')
     steps:
         - name: Checkout repository
           uses: actions/checkout@v4
@@ -61,7 +55,7 @@ jobs:
     name: Upload ReleaseServerProd Scheme
     runs-on: macos-latest
     needs: swiftlint
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.job == 'release_server_prod'
+    if: github.ref_type == 'tag' && contains(github.ref_name, 'release-prod')
     steps:
         - name: Checkout repository
           uses: actions/checkout@v4
