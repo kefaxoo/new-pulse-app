@@ -58,6 +58,7 @@ extension MainFeedViewController {
         super.viewWillAppear(animated)
         self.applyColor()
         AudioPlayer.shared.tableViewDelegate = self
+        self.addNotification(name: .trackLibraryStateWasUpdated, selector: #selector(updateLibraryState))
     }
 }
 
@@ -94,6 +95,20 @@ private extension MainFeedViewController {
             default:
                 break
         }
+    }
+    
+    @objc func updateLibraryState(_ notification: Notification) {
+        let (track, state) = NewLibraryManager.parseNotification(notification)
+        
+        guard let track,
+              let indexPath = self.presenter.indexPath(for: track),
+              let state
+        else { return }
+        
+        let cell = self.mainFeedTableView.cellForRow(at: indexPath) as? TrackTableViewCell
+        
+        cell?.updateButtonMenu()
+        cell?.updateTrackState(state)
     }
 }
 

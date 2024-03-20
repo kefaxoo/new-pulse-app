@@ -1,5 +1,5 @@
 //
-//  LibaryTrackModel.swift
+//  LibraryTrackModel.swift
 //  Pulse
 //
 //  Created by Bahdan Piatrouski on 8.09.23.
@@ -62,5 +62,9 @@ class LibraryTrackModel: Object {
                 self?.coverFilename = filename
             }
         }
+    }
+    
+    var trackModel: TrackModel {
+        return TrackModel(self)
     }
 }

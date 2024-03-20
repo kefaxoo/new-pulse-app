@@ -57,4 +57,22 @@ enum SourceType: String {
                 .none
         }
     }
+    
+    var isSearchSuggestionsAvailable: Bool {
+        return switch self {
+            case .yandexMusic:
+                true
+            default:
+                false
+        }
+    }
+    
+    var isHistoryAvailable: Bool {
+        return switch self {
+            case .yandexMusic:
+                true
+            default:
+                false
+        }
+    }
 }

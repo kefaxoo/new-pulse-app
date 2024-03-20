@@ -19,6 +19,7 @@ final class OpenInServiceViewController: BaseUIViewController {
     
     private lazy var servicesTableView: BaseUITableView = {
         let tableView = BaseUITableView()
+        tableView.tableHeaderView = trackInfoTableHeaderView
         tableView.register(ServiceTableViewCell.self)
         tableView.dataSource = self
         tableView.delegate = self
@@ -54,19 +55,16 @@ extension OpenInServiceViewController {
 // MARK: Setup interface methods
 extension OpenInServiceViewController {
     override func setupLayout() {
-        self.view.addSubview(trackInfoTableHeaderView)
         self.view.addSubview(servicesTableView)
     }
     
     override func setupConstraints() {
         trackInfoTableHeaderView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
+            make.height.equalTo(trackInfoTableHeaderView.height)
+            make.width.equalTo(UIScreen.main.bounds.width)
         }
         
-        servicesTableView.snp.makeConstraints { make in
-            make.top.equalTo(trackInfoTableHeaderView.snp.bottom).offset(16)
-            make.trailing.leading.bottom.equalTo(self.view.safeAreaLayoutGuide)
-        }
+        servicesTableView.snp.makeConstraints({ $0.edges.equalToSuperview() })
     }
 }
 

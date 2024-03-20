@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PulseUIComponents
 
 final class MainCoordinator: NSObject {
     static let shared = MainCoordinator()
@@ -45,6 +46,14 @@ final class MainCoordinator: NSObject {
         return currentVC
     }
     
+    var currentBaseViewController: BaseUIViewController? {
+        if let navigationController = self.currentViewController as? UINavigationController {
+            return navigationController.viewControllers.last as? BaseUIViewController
+        }
+        
+        return self.currentViewController as? BaseUIViewController
+    }
+    
     var isDarkMode: Bool {
         return self.mainTabBarController.traitCollection.userInterfaceStyle == .dark
     }
@@ -57,52 +66,32 @@ final class MainCoordinator: NSObject {
     func firstLaunch(completion: @escaping(() -> ())) {
         if SettingsManager.shared.pulse.isSignedIn {
             if NetworkManager.shared.isReachable {
-                if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSign?.prod ?? false {
-                    guard SettingsManager.shared.pulse.shouldUpdateToken else {
-                        self.makeTabBarAsRoot()
-                        completion()
+                guard SettingsManager.shared.pulse.shouldUpdateToken else {
+                    self.makeTabBarAsRoot()
+                    completion()
+                    return
+                }
+                
+                PulseProvider.shared.accessTokenV3 { [weak self] tokens in
+                    SettingsManager.shared.pulse.updateTokens(tokens.tokens)
+                    completion()
+                    self?.makeTabBarAsRoot()
+                } failure: { [weak self] serverError, internalError in
+                    self?.makeAuthViewControllerAsRoot()
+                    completion()
+                    let localizedError = LocalizationManager.shared.localizeError(
+                        server: serverError,
+                        internal: internalError,
+                        default: Localization.Lines.unknownError.localization(with: "Pulse")
+                    )
+                    
+                    guard !SettingsManager.shared.pulse.username.isEmpty else {
+                        AlertView.shared.presentError(error: localizedError, system: .iOS16AppleMusic)
                         return
                     }
                     
-                    PulseProvider.shared.accessTokenV3 { [weak self] tokens in
-                        SettingsManager.shared.pulse.updateTokens(tokens.tokens)
-                        completion()
-                        self?.makeTabBarAsRoot()
-                    } failure: { [weak self] serverError, internalError in
-                        self?.makeAuthViewControllerAsRoot()
-                        completion()
-                        let localizedError = LocalizationManager.shared.localizeError(
-                            server: serverError,
-                            internal: internalError,
-                            default: Localization.Lines.unknownError.localization(with: "Pulse")
-                        )
-                        
-                        guard !SettingsManager.shared.pulse.username.isEmpty else {
-                            AlertView.shared.presentError(error: localizedError, system: .iOS16AppleMusic)
-                            return
-                        }
-                        
-                        self?.pushSignInViewController()
-                        AlertView.shared.presentError(error: localizedError, system: .iOS16AppleMusic)
-                    }
-                } else {
-                    PulseProvider.shared.accessToken { [weak self] loginUser in
-                        SettingsManager.shared.pulse.expireAt = loginUser.expireAt ?? 0
-                        SettingsManager.shared.pulse.updateAccessToken(loginUser.accessToken)
-                        LibraryManager.shared.fetchLibrary()
-                        completion()
-                        self?.makeTabBarAsRoot()
-                    } failure: { [weak self] error in
-                        self?.makeAuthViewControllerAsRoot()
-                        completion()
-                        guard !SettingsManager.shared.pulse.username.isEmpty else {
-                            AlertView.shared.presentError(error: error?.errorDescription, system: .iOS16AppleMusic)
-                            return
-                        }
-                        
-                        self?.pushSignInViewController()
-                        AlertView.shared.presentError(error: error?.errorDescription, system: .iOS16AppleMusic)
-                    }
+                    self?.pushSignInViewController()
+                    AlertView.shared.presentError(error: localizedError, system: .iOS16AppleMusic)
                 }
             } else {
                 completion()
@@ -136,23 +125,25 @@ final class MainCoordinator: NSObject {
     }
     
     func makeAuthViewControllerAsRoot() {
-        let authVC = AuthViewController(nibName: nil, bundle: nil).configureNavigationController(preferesLargeTitles: false)
-        self.makeRootVC(vc: authVC)
+        let authVC = AuthViewController()
+        authVC.screenIdUrl = URL(string: "auth")
+        self.makeRootVC(vc: authVC.configureNavigationController(preferesLargeTitles: false))
     }
     
     func pushSignUpViewController(covers: [PulseCover]) {
         let signUpVC = SignUpViewController(covers: covers)
+        signUpVC.screenIdUrl = self.currentBaseViewController?.screenIdUrl?.appendingPathComponent("signUp")
         self.pushViewController(vc: signUpVC)
     }
     
     func pushSignInViewController(covers: [PulseCover] = []) {
         let signInVC = SignInViewController(covers: covers)
+        signInVC.screenIdUrl = self.currentBaseViewController?.screenIdUrl?.appendingPathComponent("signIn")
         self.pushViewController(vc: signInVC)
     }
     
     func makeTabBarAsRoot() {
         self.mainTabBarController = MainTabBarController()
-        LibraryManager.shared.fetchLibrary()
         self.makeRootVC(vc: self.mainTabBarController)
     }
     

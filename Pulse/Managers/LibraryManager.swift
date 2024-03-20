@@ -20,10 +20,7 @@ final class LibraryManager {
         loadCoversIfNeeded()
         
         DownloadManager.shared.cacheTracksIfNeeded()
-        
-        if !(AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newLibrary?.prod ?? false) {
-            syncTracksIfNeeded()
-        }
+        syncTracksIfNeeded()
     }
     
     private func createDirectoriesIfNeeded() {
@@ -162,7 +159,7 @@ final class LibraryManager {
         PulseProvider.shared.syncTracks()
     }
     
-    func cleanLibrary() -> Bool {
+    @discardableResult func cleanLibrary() -> Bool {
         LibraryManager.shared.removeFile(URL(filename: "Covers", path: .documentDirectory))
         LibraryManager.shared.removeFile(URL(filename: "Tracks", path: .documentDirectory))
         LibraryManager.shared.removeFile(URL(filename: "", path: .cachesDirectory))
@@ -176,70 +173,7 @@ final class LibraryManager {
     
     func fetchLibrary() {
         createDirectoriesIfNeeded()
-        
-        if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newLibrary?.prod ?? false {
-            PulseProvider.shared.syncTracks()
-        } else {
-            PulseProvider.shared.fetchTracks { tracks in
-                tracks.forEach { track in
-                    switch track.source {
-                        case .muffon:
-                            MuffonProvider.shared.trackInfo(id: track.id, service: track.service, shouldCancelTask: false) { muffonTrack in
-                                guard !RealmManager<LibraryTrackModel>().read().contains(where: {
-                                    Int($0.id) == muffonTrack.source.id && $0.service == muffonTrack.source.service.rawValue
-                                }) else { return }
-                                
-                                let trackObj = TrackModel(muffonTrack)
-                                ImageManager.shared.saveCover(trackObj) { filename in
-                                    let libraryTrack = LibraryTrackModel(trackObj)
-                                    libraryTrack.isSynced = true
-                                    if let filename {
-                                        libraryTrack.coverFilename = filename
-                                    }
-                                    
-                                    RealmManager<LibraryTrackModel>().write(object: libraryTrack)
-                                }
-                            }
-                        case .soundcloud:
-                            SoundcloudProvider.shared.trackInfo(id: track.id) { soundcloudTrack in
-                                guard !RealmManager<LibraryTrackModel>().read().contains(where: {
-                                    Int($0.id) == soundcloudTrack.id && $0.service == ServiceType.soundcloud.rawValue
-                                }) else { return }
-                                
-                                let trackObj = TrackModel(soundcloudTrack)
-                                ImageManager.shared.saveCover(trackObj) { filename in
-                                    let libraryTrack = LibraryTrackModel(trackObj)
-                                    libraryTrack.isSynced = true
-                                    if let filename {
-                                        libraryTrack.coverFilename = filename
-                                    }
-                                    
-                                    RealmManager<LibraryTrackModel>().write(object: libraryTrack)
-                                }
-                            }
-                        case .yandexMusic:
-                            YandexMusicProvider.shared.trackInfo(id: track.id) { yandexMusicTrack in
-                                guard !RealmManager<LibraryTrackModel>().read().contains(where: {
-                                    $0.id == yandexMusicTrack.id && $0.service == ServiceType.yandexMusic.rawValue
-                                }) else { return }
-                                
-                                let trackObj = TrackModel(yandexMusicTrack)
-                                ImageManager.shared.saveCover(trackObj) { filename in
-                                    let libraryTrack = LibraryTrackModel(trackObj)
-                                    libraryTrack.isSynced = true
-                                    if let filename {
-                                        libraryTrack.coverFilename = filename
-                                    }
-                                    
-                                    RealmManager<LibraryTrackModel>().write(object: libraryTrack)
-                                }
-                            }
-                        default:
-                            break
-                    }
-                }
-            }
-        }
+        PulseProvider.shared.syncTracks()
     }
     
     func syncTrack(_ track: TrackModel) {
@@ -280,11 +214,7 @@ final class LibraryManager {
                 "state": TrackLibraryState.added
             ])
             
-            if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newLibrary?.prod ?? false {
-                PulseProvider.shared.likeTrack(track)
-            } else {
-                LibraryManager.shared.syncTrack(track)
-            }
+			PulseProvider.shared.likeTrack(track)
             
             switch track.service {
                 case .soundcloud:
@@ -293,7 +223,7 @@ final class LibraryManager {
                         SoundcloudProvider.shared.likeTrack(id: track.id)
                     }
                 case .yandexMusic:
-                    if SettingsManager.shared.yandexMusicLike,
+                    if SettingsManager.shared.settings.yandexMusicLike,
                        SettingsManager.shared.yandexMusic.isSigned {
                         YandexMusicProvider.shared.likeTrack(track)
                     }
@@ -338,11 +268,7 @@ final class LibraryManager {
                 "state": TrackLibraryState.none
             ])
             
-            if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newLibrary?.prod ?? false {
-                PulseProvider.shared.dislikeTrack(track)
-            } else {
-                LibraryManager.shared.removeTrack(track)
-            }
+            PulseProvider.shared.dislikeTrack(track)
         }
     }
 }

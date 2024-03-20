@@ -55,7 +55,7 @@ extension PlaylistViewController {
         AudioPlayer.shared.tableViewDelegate = self
         self.applyColor()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updateLibraryState), name: .updateLibraryState, object: nil)
+        self.addNotification(name: .trackLibraryStateWasUpdated, selector: #selector(updateLibraryState))
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -66,8 +66,6 @@ extension PlaylistViewController {
         ]
         
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        
-        NotificationCenter.default.removeObserver(self, name: .updateLibraryState, object: nil)
     }
 }
 
@@ -177,11 +175,16 @@ extension PlaylistViewController: PlaylistTableHeaderViewDelegate {
 // MARK: Actions
 private extension PlaylistViewController {
     @objc func updateLibraryState(_ notification: Notification) {
-        guard let track = notification.userInfo?["track"] as? TrackModel,
-              let state = notification.userInfo?["state"] as? TrackLibraryState,
-              let index = self.presenter.index(for: track)
+        let (track, state) = NewLibraryManager.parseNotification(notification)
+        
+        guard let track,
+              let index = self.presenter.index(for: track),
+              let state
         else { return }
         
-        (self.playlistTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? TrackTableViewCell)?.updateTrackState(state)
+        let cell = self.playlistTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? TrackTableViewCell
+        
+        cell?.updateButtonMenu()
+        cell?.updateTrackState(state)
     }
 }

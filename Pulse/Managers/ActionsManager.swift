@@ -32,7 +32,8 @@ final class ActionsManager {
     
     func trackActions(for track: TrackModel, completion: @escaping((UIMenu?) -> ())) {
         DispatchQueue.global(qos: .background).async { [weak self] in
-            completion(self?.trackActions(track))
+            let manager = self ?? Self(nil)
+            completion(manager.trackActions(track))
         }
     }
     
@@ -99,54 +100,8 @@ final class ActionsManager {
     }
     
     private func addTrackToLibrary(_ track: TrackModel) -> UIAction {
-        let action = UIAction(title: "Add to library", image: Constants.Images.inLibrary.image) { [weak self] _ in
-            AudioManager.shared.updatePlayableLink(for: track) { updatedTrack in
-                let track = updatedTrack.track
-                guard track.isAvailable else {
-                    AlertView.shared.presentError(error: "Unavailable to add", system: .iOS16AppleMusic)
-                    return
-                }
-                
-                let libraryTrack = LibraryTrackModel(track)
-                RealmManager<LibraryTrackModel>().write(object: libraryTrack)
-                AudioPlayer.shared.setupTrackNowPlayingCommands()
-                AlertView.shared.present(title: "Added to library", alertType: .done, system: .iOS17AppleMusic)
-                track.image = ImageModel(coverFilename: libraryTrack.coverFilename)
-                self?.delegate?.updateButtonMenu()
-                self?.delegate?.updatedTrack(track)
-                self?.delegate?.updateTrackState(.added)
-                NotificationCenter.default.post(name: .updateLibraryState, object: nil, userInfo: [
-                    "track": track,
-                    "state": TrackLibraryState.added
-                ])
-                
-                if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newSign?.prod ?? false {
-                    PulseProvider.shared.likeTrack(track)
-                } else {
-                    LibraryManager.shared.syncTrack(track)
-                }
-                
-                switch track.service {
-                    case .soundcloud:
-                        if SettingsManager.shared.soundcloudLike,
-                           SettingsManager.shared.soundcloud.isSigned {
-                            SoundcloudProvider.shared.likeTrack(id: track.id)
-                        }
-                    case .yandexMusic:
-                        if SettingsManager.shared.yandexMusicLike,
-                           SettingsManager.shared.yandexMusic.isSigned {
-                            YandexMusicProvider.shared.likeTrack(track)
-                        }
-                    default:
-                        break
-                }
-                
-                guard SettingsManager.shared.autoDownload else { return }
-                
-                DownloadManager.shared.addTrackToQueue(track) {
-                    self?.delegate?.updateButtonMenu()
-                }
-            }
+        let action = UIAction(title: "Add to library", image: Constants.Images.inLibrary.image) { _ in
+            NewLibraryManager.likeTrack(track)
         }
         
         return action
@@ -193,15 +148,11 @@ final class ActionsManager {
             AudioPlayer.shared.setupTrackNowPlayingCommands()
             AlertView.shared.present(title: "Removed from library", alertType: .done, system: .iOS17AppleMusic)
             
-            if AppEnvironment.current.isDebug || SettingsManager.shared.localFeatures.newLibrary?.prod ?? false {
-                PulseProvider.shared.dislikeTrack(track)
-            } else {
-                LibraryManager.shared.removeTrack(track)
-            }
+            PulseProvider.shared.dislikeTrack(track)
             
             switch track.service {
                 case .yandexMusic:
-                    guard SettingsManager.shared.yandexMusicLike else { break }
+                    guard SettingsManager.shared.settings.yandexMusicLike else { return }
                     
                     YandexMusicProvider.shared.removeLikeTrack(track)
                 case .soundcloud:

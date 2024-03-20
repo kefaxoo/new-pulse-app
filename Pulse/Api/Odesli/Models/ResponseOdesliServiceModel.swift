@@ -10,10 +10,12 @@ import Foundation
 final class ResponseOdesliServiceModel: Decodable {
     let url            : String
     let entitiyUniqueId: String
+    let appleMusicUrl  : String?
     
     enum CodingKeys: String, CodingKey {
         case url
         case entityUniqueId
+        case appleMusicUrl = "nativeAppUriMobile"
     }
     
     init(from decoder: Decoder) throws {
@@ -21,5 +23,6 @@ final class ResponseOdesliServiceModel: Decodable {
         
         self.url = try container.decode(String.self, forKey: .url)
         self.entitiyUniqueId = try container.decode(String.self, forKey: .entityUniqueId)
+        self.appleMusicUrl = try container.decodeIfPresent(String.self, forKey: .appleMusicUrl)
     }
 }

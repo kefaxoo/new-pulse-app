@@ -42,7 +42,15 @@ extension OpenInServicePresenter: OpenInServiceProtocol {
     }
     
     func didSelectItem(at indexPath: IndexPath) {
-        let link = self.links[indexPath.row].service.url
+        let link: String
+        if self.links[indexPath.row].type == .appleMusic,
+           let appleMusicLink = self.links[indexPath.row].service.appleMusicUrl {
+            link = appleMusicLink
+        } else {
+            link = self.links[indexPath.row].service.url
+        }
+        
+        
         guard let url = URL(string: link),
               UIApplication.shared.canOpenURL(url)
         else { return }

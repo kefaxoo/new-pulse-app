@@ -31,7 +31,7 @@ final class MuffonProvider: BaseRestApiProvider {
             task?.cancel()
         }
         
-        task = urlSession.returnDataTask(
+        task = urlSession.dataTask(
             with: URLRequest(
                 type: MuffonApi.search(
                     type: type,
@@ -63,7 +63,7 @@ final class MuffonProvider: BaseRestApiProvider {
             task?.cancel()
         }
         
-        task = urlSession.returnDataTask(
+        task = urlSession.dataTask(
             with: URLRequest(
                 type: MuffonApi.trackInfo(track),
                 shouldPrintLog: self.shouldPrintLog
@@ -98,7 +98,7 @@ final class MuffonProvider: BaseRestApiProvider {
             task?.cancel()
         }
         
-        task = urlSession.returnDataTask(
+        task = urlSession.dataTask(
             with: URLRequest(
                 type: MuffonApi.trackInfoById(id, service: service),
                 shouldPrintLog: self.shouldPrintLog

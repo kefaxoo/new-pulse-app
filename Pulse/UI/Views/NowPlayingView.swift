@@ -85,7 +85,7 @@ final class NowPlayingView: BaseUIView {
     private lazy var nextTrackButton: UIButton = {
         let button = UIButton()
         button.tintColor = SettingsManager.shared.color.color
-        button.setImage(Constants.Images.nextTrack.image, for: .normal)
+        button.setImage(.nextTrack)
         button.addTarget(self, action: #selector(nextTrackAction), for: .touchUpInside)
         return button
     }()
@@ -138,12 +138,12 @@ extension NowPlayingView {
         
         roundedContentView.snp.makeConstraints { make in
             make.bottom.equalToSuperview().inset(10)
-            make.leading.trailing.top.equalToSuperview().inset(UIEdgeInsets(horizontal: 10))
+            make.leading.trailing.top.equalToSuperview().inset(horizontal: 10)
             make.height.equalTo(52)
         }
         
         coverImageView.snp.makeConstraints { make in
-            make.top.leading.bottom.equalToSuperview().inset(UIEdgeInsets(horizontal: 10, vertical: 6))
+            make.top.leading.bottom.equalToSuperview().inset(horizontal: 10, vertical: 6)
             make.height.width.equalTo(40)
         }
         
@@ -171,7 +171,7 @@ extension NowPlayingView {
         }
         
         nextTrackButton.snp.makeConstraints { make in
-            make.top.bottom.trailing.equalToSuperview().inset(UIEdgeInsets(horizontal: 18, vertical: 6))
+            make.top.bottom.trailing.equalToSuperview().inset(horizontal: 18, vertical: 6)
             make.width.equalTo(40)
         }
     }
@@ -186,7 +186,7 @@ private extension NowPlayingView {
             return
         }
         
-        let playlist = RealmManager<LibraryTrackModel>().read().reversed().map({ TrackModel($0) })
+        let playlist = RealmManager<LibraryTrackModel>().read().reversed().map({ $0.trackModel })
         guard !playlist.isEmpty else { return }
         
         AudioPlayer.shared.play(from: playlist[0], playlist: playlist, position: 0, isNewPlaylist: true)

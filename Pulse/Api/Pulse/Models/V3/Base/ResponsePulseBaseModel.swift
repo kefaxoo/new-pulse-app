@@ -12,6 +12,7 @@ class ResponsePulseBaseModel: Decodable {
     let localizationKey      : String
     let localizationParameter: String?
     let message              : String?
+    let statusCode           : Int
     let localizedMessage     : String?
     
     enum CodingKeys: String, CodingKey {
@@ -19,6 +20,7 @@ class ResponsePulseBaseModel: Decodable {
         case localizationKey
         case localizationParameter
         case message
+        case statusCode = "responseCode"
         case localizedMessage = "localizable"
     }
     
@@ -29,6 +31,7 @@ class ResponsePulseBaseModel: Decodable {
         self.localizationKey = try container.decode(String.self, forKey: .localizationKey)
         self.localizationParameter = try container.decodeIfPresent(String.self, forKey: .localizationParameter)
         self.message = try container.decodeIfPresent(String.self, forKey: .message)
+        self.statusCode = try container.decode(Int.self, forKey: .statusCode)
         self.localizedMessage = try container.decodeIfPresent(String.self, forKey: .localizedMessage)
     }
 }

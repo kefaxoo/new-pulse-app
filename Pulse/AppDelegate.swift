@@ -9,6 +9,7 @@ import UIKit
 import PulseMedia
 import FirebaseCore
 import FirebasePerformance
+import CallStackParserSPM
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -29,7 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             SettingsManager.shared.yandexMusic.checkPlusSubscription()
         }
         
-        LibraryManager.shared.removeTemporaryCache()
         if SettingsManager.shared.pulse.isSignedIn {
             PulseProvider.shared.fetchSettings()
         }
@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SettingsManager.shared.pulse.isUserBlocked {
             SettingsManager.shared.updateFeatures {
                 MainCoordinator.shared.firstLaunch {
-                    LibraryManager.shared.initialSetup()
+                    NewLibraryManager.appStarting()
                     trace?.stop()
                 }
             }
