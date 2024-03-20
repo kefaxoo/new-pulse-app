@@ -389,21 +389,12 @@ extension AudioPlayer {
             self.likeTarget = commandCenter.likeCommand.addTarget { [track, weak self] _ in
                 guard let self else { return .commandFailed }
                 
-                let state: TrackLibraryState
                 if self.commandCenter.likeCommand.isActive {
-                    LibraryManager.shared.dislikeTrack(track)
-                    state = .none
+                    NewLibraryManager.dislikeTrack(track)
                 } else {
-                    LibraryManager.shared.likeTrack(track)
-                    state = .added
+                    NewLibraryManager.likeTrack(track)
                 }
                 
-                NotificationCenter.default.post(name: .updateLibraryState, object: nil, userInfo: [
-                    "track": track,
-                    "state": state
-                ])
-                
-                self.commandCenter.likeCommand.isActive.toggle()
                 return .success
             }
         }
