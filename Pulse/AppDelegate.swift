@@ -66,3 +66,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         LibraryManager.shared.removeTemporaryCache()
     }
 }
+
+// MARK: -
+// MARK: Universal Links
+extension AppDelegate {
+    func application(
+        _ application: UIApplication,
+        continue userActivity: NSUserActivity,
+        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
+    ) -> Bool {
+        print(userActivity.webpageURL?.absoluteString)
+        return true
+    }
+}
