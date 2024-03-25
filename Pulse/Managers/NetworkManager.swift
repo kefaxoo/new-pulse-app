@@ -29,6 +29,14 @@ final class NetworkManager {
     private var status: NWPath.Status = .requiresConnection
     private(set) var isReachableOnCellurar = false
     
+    var isPong = true {
+        didSet {
+            self.setupPingPongTimer()
+        }
+    }
+    
+    private var pingPongTimer: Timer?
+    
     var isReachable: Bool {
         return self.status == .satisfied
     }
@@ -157,5 +165,17 @@ extension NetworkManager {
     
     private func stopMonitoring() {
         monitor.cancel()
+    }
+}
+
+// MARK: -
+// MARK: Ping-Pong Pulse Api
+extension NetworkManager {
+    func setupPingPongTimer() {
+        self.pingPongTimer?.invalidate()
+        
+        self.pingPongTimer = Timer.scheduledTimer(withTimeInterval: 10 * 60, repeats: true, block: { _ in
+            PulseProvider.shared.ping()
+        })
     }
 }

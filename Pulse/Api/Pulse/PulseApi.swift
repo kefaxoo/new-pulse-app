@@ -70,6 +70,9 @@ enum PulseApi {
     // Device
     case model
     case newLog(log: NewLogModel)
+    
+    // Ping-Pong
+    case pingPong
 }
 
 extension PulseApi: BaseRestApiEnum {
@@ -158,6 +161,8 @@ extension PulseApi: BaseRestApiEnum {
                 return "/device/model"
             case .newLog:
                 return "/v2/log"
+            case .pingPong:
+                return "/ping"
         }
     }
     

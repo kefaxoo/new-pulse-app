@@ -833,6 +833,21 @@ extension PulseProvider {
     }
 }
 
+// MARK: -
+// MARK: Ping-Pong
+extension PulseProvider {
+    func ping() {
+        self.urlSession.dataTask(with: URLRequest(type: PulseApi.pingPong, shouldPrintLog: self.shouldPrintLog)) { response in
+            switch response {
+                case .success(let response):
+                    NetworkManager.shared.isPong = response.statusCode == 200
+                case .failure:
+                    NetworkManager.shared.isPong = false
+            }
+        }
+    }
+}
+
 fileprivate extension PulseProvider {
     func parseError(response: Failure, closure: PulseDefaultErrorV3Closure?, retryClosure: (() -> ())? = nil) {
         response.sendLog()
